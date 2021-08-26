@@ -3,7 +3,10 @@ local fs=require"nixio.fs"
 local http=require"luci.http"
 local uci=require"luci.model.uci".cursor()
 function index()
-entry({"admin", "services", "AdGuardHome"},alias("admin", "services", "AdGuardHome", "base"),_("AdGuard Home"), 10).dependent = true
+local page = entry({"admin", "services", "AdGuardHome"},alias("admin", "services", "AdGuardHome", "base"),_("AdGuard Home"))
+page.order = 10
+page.dependent = true
+page.acl_depends = { "luci-app-adguardhome" }
 entry({"admin","services","AdGuardHome","base"},cbi("AdGuardHome/base"),_("Base Setting"),1).leaf = true
 entry({"admin","services","AdGuardHome","log"},form("AdGuardHome/log"),_("Log"),2).leaf = true
 entry({"admin","services","AdGuardHome","manual"},cbi("AdGuardHome/manual"),_("Manual Config"),3).leaf = true
@@ -14,11 +17,11 @@ entry({"admin", "services", "AdGuardHome", "getlog"}, call("get_log"))
 entry({"admin", "services", "AdGuardHome", "dodellog"}, call("do_dellog"))
 entry({"admin", "services", "AdGuardHome", "reloadconfig"}, call("reload_config"))
 entry({"admin", "services", "AdGuardHome", "gettemplateconfig"}, call("get_template_config"))
-end 
+end
 function get_template_config()
 	local b
 	local d=""
-	for cnt in io.lines("/tmp/resolv.conf.auto") do
+	for cnt in io.lines("/tmp/resolv.conf.d/resolv.conf.auto") do
 		b=string.match (cnt,"^[^#]*nameserver%s+([^%s]+)$")
 		if (b~=nil) then
 			d=d.."  - "..b.."\n"
