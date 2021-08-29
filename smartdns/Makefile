@@ -1,28 +1,17 @@
+# SPDX-Identifier-License: GPL-3.0-or-later
 #
 # Copyright (C) 2018-2020 Ruilin Peng (Nick) <pymumu@gmail.com>.
-#
-# smartdns is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# smartdns is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=smartdns
-PKG_VERSION:=1.2021.24
-PKG_RELEASE:=1
+PKG_VERSION:=8.2021.27
+PKG_RELEASE:=$(AUTORELEASE)
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/pymumu/smartdns.git
-PKG_MIRROR_HASH:=282bd4926fd33a949ba8a8a7f2a9eb83c09b540e88c782b2c739c6cb82b062a5
-PKG_SOURCE_VERSION:=11cf7b614c2ad42acf12cf4843daa1b67696763b
+PKG_SOURCE_VERSION:=f50e4dd0813da9300580f7188e44ed72a27ae79c
+PKG_MIRROR_HASH:=cc88728793c90d2bfc27753c13aa491c1fab95fb01adf167629f2b99724d451d
 
 PKG_MAINTAINER:=Nick Peng <pymumu@gmail.com>
 PKG_LICENSE:=GPL-3.0-or-later
