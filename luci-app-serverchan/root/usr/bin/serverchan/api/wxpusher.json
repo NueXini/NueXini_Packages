@@ -9,7 +9,7 @@
     "str_title_end": "",
     "str_linefeed": "\\n",
     "str_splitline": "\\n----\\n",
-    "str_percent": " ",
+    "str_space": " ",
     "str_tab": "    ",
     "type":
       {

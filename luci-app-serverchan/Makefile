@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-serverchan
-PKG_VERSION:=2.0.1
+PKG_VERSION:=2.0.2
 PKG_RELEASE:=9
 
 include $(INCLUDE_DIR)/package.mk

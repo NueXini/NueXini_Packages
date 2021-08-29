@@ -6,7 +6,7 @@
     "_str_title_end": "标题粗体字结束符号",
     "_str_linefeed": "换行符号",
     "_str_splitline": "分隔符",
-    "_str_percent": "空格",
+    "_str_space": "空格",
     "_str_tab": "TAB（用于生成区块）",
     "_//": "参照注释内容，填入相关参数,这里以 telegram 为例",
     
@@ -17,7 +17,7 @@
     "str_title_end": "</b>",
     "str_linefeed": "\\n",
     "str_splitline": "\\n----\\n",
-    "str_percent": " ",
+    "str_space": " ",
     "str_tab": "    ",
     "type":
       {

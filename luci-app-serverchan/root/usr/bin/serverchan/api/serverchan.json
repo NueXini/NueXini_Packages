@@ -9,7 +9,7 @@
     "str_title_end": "",
     "str_linefeed": "%0D%0A%0D%0A",
     "str_splitline": "%0D%0A%0D%0A----%0D%0A%0D%0A",
-    "str_percent": " ",
+    "str_space": " ",
     "str_tab": "    ",
     "type":
       {
