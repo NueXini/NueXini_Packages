@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-serverchan
-PKG_VERSION:=2.0.2
+PKG_VERSION:=2.0.3
 PKG_RELEASE:=9
 
 include $(INCLUDE_DIR)/package.mk
@@ -25,6 +25,8 @@ endef
 
 define Package/$(PKG_NAME)/conffiles
 /etc/config/serverchan
+/usr/bin/serverchan/api/diy.json
+/usr/bin/serverchan/api/logo.png
 endef
 
 define Package/$(PKG_NAME)/install

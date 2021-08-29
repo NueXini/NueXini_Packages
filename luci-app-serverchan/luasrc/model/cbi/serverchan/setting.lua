@@ -69,8 +69,9 @@ a:depends("jsonpath","/usr/bin/serverchan/api/qywx_mpnews.json")
 a:depends("jsonpath","/usr/bin/serverchan/api/qywx_markdown.json")
 a=s:taboption("basic", Value,"mediapath",translate('图片缩略图文件路径'))
 a.rmempty = true
-a.default = "/usr/bin/serverchan/api/ServerChan.png"
+a.default = "/usr/bin/serverchan/api/logo.jpg"
 a:depends("jsonpath","/usr/bin/serverchan/api/qywx_mpnews.json")
+a.description = translate("只支持 2MB 以内 JPG,PNG 格式 <br> 900*383 或 2.35:1 为佳 ")
 
 a=s:taboption("basic",Value,"wxpusher_apptoken",translate('appToken'),translate("").."获取 appToken <a href='https://wxpusher.zjiecode.com/docs/#/?id=%e5%bf%ab%e9%80%9f%e6%8e%a5%e5%85%a5' target='_blank'>点击这里</a><br>")
 a.rmempty = true

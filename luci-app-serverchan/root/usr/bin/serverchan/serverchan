@@ -35,7 +35,6 @@ function read_config(){
 	str_title_end=`/usr/bin/jq -r '.str_title_end' ${jsonpath}`
 	str_linefeed=`/usr/bin/jq -r '.str_linefeed' ${jsonpath}`
 	str_splitline=`/usr/bin/jq -r '.str_splitline' ${jsonpath}`
-	str_percent=`/usr/bin/jq -r '.str_percent' ${jsonpath}`
 	str_space=`/usr/bin/jq -r '.str_space' ${jsonpath}`
 	str_tab=`/usr/bin/jq -r '.str_tab' ${jsonpath}`
 	( echo "$lite_enable"|grep -q "content" ) && str_title_start="" && str_title_end="" && str_splitline="" && str_linefeed="" && str_tab=""
@@ -63,11 +62,18 @@ function serverchan_init(){
 
 # 推送
 function diy_send(){
+	( ! echo "$lite_enable"|grep -q "content" ) && ( ! echo "$lite_enable"|grep -q "nowtime" ) && local nowtime=`date "+%Y-%m-%d %H:%M:%S"`
 	local diyurl=`/usr/bin/jq -r .url ${3}` && local diyurl=`eval echo ${diyurl}`
 	local type=`/usr/bin/jq -r '.type' ${3}` && local type=`eval echo ${type}`
 	local data=`/usr/bin/jq -r '.data' ${3}` && local data=`eval echo ${data}`
 	local content_type=`/usr/bin/jq -r '.content_type' ${3}`
 	/usr/bin/jq ".type + $type" ${jsonpath} > ${tempjsonpath}
+	
+	/usr/bin/jq -r '.[]' ${tempjsonpath}|grep -w "null" && echo "`date "+%Y-%m-%d %H:%M:%S"` 【！！！】参数值错误，请检查设置项  `/usr/bin/jq -r '.' ${tempjsonpath}|grep "null"`" >> ${logfile} && return 1
+	[ -f ${tempjsonpath} ] && local logrow=$(grep -c "" ${tempjsonpath}) || local logrow="0"
+	[ $logrow -eq "0" ] && echo "`date "+%Y-%m-%d %H:%M:%S"` 【！！！】json 文件生成失败，请检查文件格式" >> ${logfile} && return 1
+	/usr/bin/jq -r '.[]' ${tempjsonpath}|grep "null" && echo "`date "+%Y-%m-%d %H:%M:%S"` 【！！！】参数变量生成失败，请检查设置项 `/usr/bin/jq -r '.' ${tempjsonpath}|grep "null"`" >> ${logfile}
+	
 	curl -X POST -H "$content_type" -d "${data}" "${diyurl}"
 }
 
@@ -361,9 +367,9 @@ function cut_str {
 
 # 随机数
 function rand(){
-    min=$1
-    max=$(($2- $min + 1))
-    num=$(date +%s%N)
+    local min=$1
+    local max=$(($2- $min + 1))
+    local num=$(date +%s%N)
     echo $(($num % $max + $min))
 }
 
@@ -919,7 +925,7 @@ function cputop(){
 			local top_load=`cat ${dir}top|awk 'NR=='${top_i}|awk '{print $7}'`
 			local temp_top="${top_name} ${top_load}"
 			[ ! -z "$1" ] && local logtop="$logtop  $temp_top"
-			[ -z "$1" ] && content="${content}${str_linefeed}${str_tab}${temp_top}${str_percent}"
+			[ -z "$1" ] && content="${content}${str_linefeed}${str_tab}${temp_top}"
 			local i=`expr ${i} + 1`
 		fi
 		local top_i=`expr ${top_i} + 1`
@@ -945,8 +951,8 @@ function send(){
 		local systemstatustime=`cat /proc/uptime|awk -F. '{run_days=$1 / 86400;run_hour=($1 % 86400)/3600;run_minute=($1 % 3600)/60;run_second=$1 % 60;printf("运行时间：%d天%d时%d分%d秒",run_days,run_hour,run_minute,run_second)}'`;unset run_days run_hour run_minute run_second
 		local send_content="${send_content}${str_splitline}${str_title_start} 系统运行状态"${str_title_end}
 		local send_content="${send_content}${str_linefeed}${str_tab}平均负载：${systemload}"
-		local send_content="${send_content}${str_linefeed}${str_tab}CPU占用：${cpuload}${str_percent}"
-		local send_content="${send_content}${str_linefeed}${str_tab}内存占用：${ramload}${str_percent}"
+		local send_content="${send_content}${str_linefeed}${str_tab}CPU占用：${cpuload}"
+		local send_content="${send_content}${str_linefeed}${str_tab}内存占用：${ramload}"
 		local send_content="${send_content}${str_linefeed}${str_tab}${systemstatustime}"
 	fi
 
@@ -990,7 +996,6 @@ function send(){
 	fi
 	[ ! -z "$device_name" ] && local send_title="【$device_name】${send_title}"
 	[ -z "$send_content" ] && local send_content="${str_splitline}${str_title_start} 我遇到了一个难题${str_title_end}${str_linefeed}${str_tab}定时发送选项错误，你没有选择需要发送的项目，该怎 么办呢${str_splitline}"
-	local nowtime=`date "+%Y-%m-%d %H:%M:%S"`
 	[ "$send_disturb" -eq "0" ] && diy_send "${send_title}" "${send_content}" "${jsonpath}" >/dev/null 2>&1
 	[ $? -eq 1 ] && echo "`date "+%Y-%m-%d %H:%M:%S"` 【！！！】定时推送失败，请检查网络或设置信息" >> ${logfile} || echo "`date "+%Y-%m-%d %H:%M:%S"` ${disturb_text}定时推送任务完成" >> ${logfile}
 	deltemp
@@ -1070,7 +1075,6 @@ while [ "$serverchan_enable" -eq "1" ]; do
 	[ ! -f "${dir}send_enable.lock" ] && get_client_usage
 
 	if [ ! -f "${dir}send_enable.lock" ] && [ ! -z "$title" ] && [ ! -z "$content" ]; then
-		( ! echo "$lite_enable"|grep -q "content" ) && ( ! echo "$lite_enable"|grep -q "nowtime" ) && nowtime=`date "+%Y-%m-%d %H:%M:%S"`
 		[ ! -z "$device_name" ] && title="【$device_name】$title"
 		( echo "$lite_enable"|grep -q "content" ) && content="$title"
 		[ "$disturb" -eq "0" ] && diy_send "${title}" "${content}" "${jsonpath}" >/dev/null 2>&1
