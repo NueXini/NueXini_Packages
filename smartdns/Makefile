@@ -1,4 +1,4 @@
-# SPDX-Identifier-License: GPL-3.0-or-later
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
 # Copyright (C) 2018-2020 Ruilin Peng (Nick) <pymumu@gmail.com>.
 
