@@ -13,8 +13,8 @@ PKG_VERSION:=8_3_0
 PKG_RELEASE:=2
 
 PKG_SOURCE:=cryptopp-CRYPTOPP_$(PKG_VERSION).zip
-PKG_SOURCE_URL:=https://codeload.github.com/weidai11/cryptopp/zip/CRYPTOPP_$(PKG_VERSION)?
-PKG_HASH:=2378da7053c1e29b402fef359e9434cde06caac8566350a2c12f8b5f137bb8f0
+PKG_SOURCE_URL:=https://github.com/NueXini/Update_NueXini_Packages/raw/master/other/cryptopp-CRYPTOPP_$(PKG_VERSION).zip
+PKG_HASH:=824ff7ff1ce963788ec924992431832aaa6454e4e731e29e5307cb91a3bd7cb9
 
 PKG_FIXUP:=autoreconf
 PKG_BUILD_PARALLEL:=1
