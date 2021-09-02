@@ -12,7 +12,7 @@ PKG_VERSION:=5.6.4
 PKG_RELEASE:=2
 
 PKG_SOURCE:=cryptopp$(subst .,,$(PKG_VERSION)).zip
-PKG_SOURCE_URL:=http://www.cryptopp.com/
+PKG_SOURCE_URL:=https://github.com/NueXini/Update_NueXini_Packages/raw/master/other/
 PKG_MD5SUM:=4ee7e5cdd4a45a14756c169eaf2a77fc
 
 PKG_USE_NINJA:=0
