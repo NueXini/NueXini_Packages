@@ -1,2 +1,2 @@
-# Update_NueXini_Packages
+# NueXini_Packages
 **Hello World!**
