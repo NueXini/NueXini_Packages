@@ -42,15 +42,15 @@ endef
 define Package/luci-app-rclone/config
 config PACKAGE_luci-app-rclone_INCLUDE_rclone-webui
 	bool "Include rclone-webui"
-	default y
+	default n
 
 config PACKAGE_luci-app-rclone_INCLUDE_rclone-ng
 	bool "Include rclone-ng (another webui)"
-	default y
+	default n
 
 config PACKAGE_luci-app-rclone_INCLUDE_fuse-utils
 	bool "Include fuse-utils (mount cloud storage)"
-	default y
+	default n
 endef
 
 include $(TOPDIR)/feeds/luci/luci.mk
