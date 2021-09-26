@@ -24,7 +24,6 @@ LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+coreutils +coreutils-base64 +dns2socks +dnsmasq-full +ipset \
 	+ip-full +iptables-mod-tproxy +lua +libuci-lua +microsocks +pdnsd-alt \
 	+tcping +resolveip +shadowsocksr-libev-ssr-check +uclient-fetch \
-	+libustream-mbedtls \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_Kcptun:kcptun-client \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy:naiveproxy \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_Redsocks2:redsocks2 \
@@ -44,6 +43,26 @@ LUCI_DEPENDS:=+coreutils +coreutils-base64 +dns2socks +dnsmasq-full +ipset \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_Xray:xray-core
 
 define Package/$(PKG_NAME)/config
+menu "Include libustream-ssl"
+	depends on PACKAGE_$(PKG_NAME)
+	config PACKAGE_$(PKG_NAME)_INCLUDE_libustream-wolfssl
+		bool "Include libustream-wolfssl"
+		default y if DEFAULT_libustream-wolfssl
+		select PACKAGE_libustream-wolfssl
+	
+	config PACKAGE_$(PKG_NAME)_INCLUDE_libustream-mbedtls
+		depends on !PACKAGE_$(PKG_NAME)_INCLUDE_libustream-wolfssl
+		bool "Include libustream-mbedtls"
+		default y if DEFAULT_libustream-mbedtls
+		select PACKAGE_libustream-mbedtls
+
+	config PACKAGE_$(PKG_NAME)_INCLUDE_libustream-mbedtls
+		depends Include !(PACKAGE_$(PKG_NAME)_INCLUDE_libustream-wolfssl || PACKAGE_$(PKG_NAME)_INCLUDE_libustream-mbedtls)
+		bool "Use libustream-mbedtls"
+		default y if DEFAULT_libustream-mbedtls
+		select PACKAGE_libustream-mbedtls
+
+endmenu
 config PACKAGE_$(PKG_NAME)_INCLUDE_Kcptun
 	bool "Include Kcptun"
 	default n
