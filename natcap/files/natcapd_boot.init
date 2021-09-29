@@ -1,0 +1,14 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006-2011 OpenWrt.org
+
+START=10
+
+boot() {
+	mount -t pstore -o noatime pstore /sys/fs/pstore 2>/dev/null;
+	PSTORE=$(ls -l /sys/fs/pstore/ | wc -l)
+	if test $PSTORE -gt 0; then
+		touch /tmp/pstore
+	fi
+	test -f /etc/config/natcap_server.sh && sh /etc/config/natcap_server.sh
+	/usr/sbin/natcapd boot
+}

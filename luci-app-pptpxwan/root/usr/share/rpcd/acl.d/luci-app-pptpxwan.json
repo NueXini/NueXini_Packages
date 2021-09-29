@@ -1,0 +1,11 @@
+{
+	"luci-app-pptpxwan": {
+		"description": "Grant UCI access for luci-app-pptpxwan",
+		"read": {
+			"uci": [ "pptpxwan" ]
+		},
+		"write": {
+			"uci": [ "pptpxwan" ]
+		}
+	}
+}

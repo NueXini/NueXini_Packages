@@ -1,0 +1,87 @@
+<script type="text/javascript">//<![CDATA[
+function natcap_server_change() {
+	var obj = document.getElementById('current_server');
+	if (obj) {
+		obj.innerHTML = "...";
+	}
+
+	(new XHR()).post('<%=luci.dispatcher.build_url("admin/services/natcap/change_server")%>', null,
+		function(x) {
+			var data = eval("(" + x.responseText + ")");
+			if (data && data.cur_server) {
+				obj.innerHTML = data.cur_server;
+			}
+		}
+	);
+}
+
+function bytesToSize(bytes) {
+	var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+	var fixed = [0, 1, 2, 3, 4]
+	if (bytes == 0) return '0 Byte';
+	var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+	var sz = new Number(bytes / Math.pow(1024, i))
+	return sz.toFixed(fixed[i]) + ' ' + sizes[i];
+}
+
+XHR.poll(7, '<%=luci.dispatcher.build_url("admin/services/natcap/status")%>', null,
+	function(x, data) {
+		var obj;
+		if (data) {
+			if (obj = document.getElementById('current_server'))
+				obj.innerHTML = data.cur_server;
+			if (obj = document.getElementById('natcap_uid'))
+				obj.innerHTML = data.uid;
+			if (obj = document.getElementById('natcap_mgr'))
+				obj.innerHTML = data.mgr;
+			if (obj = document.getElementById('natcap_recv'))
+				obj.innerHTML = data.total_rx;
+			if (obj = document.getElementById('natcap_send'))
+				obj.innerHTML = data.total_tx;
+
+			if (data.flows) {
+				if (obj = document.getElementById('natcap_month0'))
+					obj.innerHTML = data.flows[0].from + "-" + data.flows[0].to;
+				if (obj = document.getElementById('natcap_recv0')) {
+					obj.innerHTML = bytesToSize(data.flows[0].rx)
+					obj.title = data.flows[0].rx + " B"
+				}
+				if (obj = document.getElementById('natcap_send0')) {
+					obj.innerHTML = bytesToSize(data.flows[0].tx)
+					obj.title = data.flows[0].tx + " B"
+				}
+
+				if (obj = document.getElementById('natcap_month1'))
+					obj.innerHTML = data.flows[1].from + "-" + data.flows[1].to;
+				if (obj = document.getElementById('natcap_recv1')) {
+					obj.innerHTML = bytesToSize(data.flows[1].rx)
+					obj.title = data.flows[1].rx + " B"
+				}
+				if (obj = document.getElementById('natcap_send1')) {
+					obj.innerHTML = bytesToSize(data.flows[1].tx)
+					obj.title = data.flows[1].tx + " B"
+				}
+			}
+			if (obj = document.getElementById('natcap_exp'))
+				obj.innerHTML = data.exp;
+		}
+	}
+);
+//]]>
+</script>
+
+<fieldset class="cbi-section">
+	<legend><%:Status%></legend>
+	<table width="100%" cellspacing="10">
+		<tr><td width="33%"><strong><%:Current Server%></strong></td><td><span id="current_server">-</span>&nbsp;&nbsp;<input type="button" class="cbi-button cbi-button-reload" style="width:80px" onclick="natcap_server_change()" title="<%:Change Server%>" value="<%:Change%>" /></td></tr>
+		<tr><td width="33%"><strong><%:User ID%></strong></td><td id="natcap_uid">-</td></tr>
+		<tr><td width="33%"><strong><%:Remote Mgr Addr%></strong></td><td id="natcap_mgr">-</td></tr>
+		<tr><td width="33%"><strong><%:This Month%></strong>&nbsp;(<span id="natcap_month0">-</span>)</td><td><%:Recv%>:&nbsp;<span id="natcap_recv0">-</span>&nbsp;&nbsp;<%:Send%>:&nbsp;<span id="natcap_send0">-</span>
+		&nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%=luci.dispatcher.build_url("admin/services/natcap/get_natcap_flows0")%>"><%:Download details%></a>
+		</td></tr>
+		<tr><td width="33%"><strong><%:Last Month%></strong>&nbsp;(<span id="natcap_month1">-</span>)</td><td><%:Recv%>:&nbsp;<span id="natcap_recv1">-</span>&nbsp;&nbsp;<%:Send%>:&nbsp;<span id="natcap_send1">-</span>
+		&nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%=luci.dispatcher.build_url("admin/services/natcap/get_natcap_flows1")%>"><%:Download details%></a>
+		</td></tr>
+		<tr><td width="33%"><strong><%:Expire Date%></strong></td><td id="natcap_exp">-</td></tr>
+	</table>
+</fieldset>

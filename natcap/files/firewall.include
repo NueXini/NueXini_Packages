@@ -1,0 +1,30 @@
+#!/bin/sh
+# natcapd integration for firewall3
+
+if [ x`uci get natcapd.default.dnsproxy 2>/dev/null` = x1 ]; then
+	iptables -t mangle -C PREROUTING -m conntrack --ctstate NEW -p udp --dport 53 -j MARK --set-xmark 0x00800099/0x008000ff 2>/dev/null || \
+	iptables -t mangle -A PREROUTING -m conntrack --ctstate NEW -p udp --dport 53 -j MARK --set-xmark 0x00800099/0x008000ff
+	iptables -t nat -C prerouting_lan_rule -p udp --dport 53 -j REDIRECT --to-ports 53 2>/dev/null || \
+	iptables -t nat -A prerouting_lan_rule -p udp --dport 53 -j REDIRECT --to-ports 53
+	iptables -t nat -C prerouting_lan_rule -p tcp --dport 53 -j REDIRECT --to-ports 53 2>/dev/null || \
+	iptables -t nat -A prerouting_lan_rule -p tcp --dport 53 -j REDIRECT --to-ports 53
+
+	iptables -C input_wan_rule -m mark --mark 0x00800000/0x00800000 -j RETURN 2>/dev/null || \
+	iptables -I input_wan_rule -m mark --mark 0x00800000/0x00800000 -j RETURN
+else
+	iptables -t nat -D prerouting_lan_rule -p udp --dport 53 -j REDIRECT --to-ports 53 2>/dev/null
+	iptables -t nat -D prerouting_lan_rule -p tcp --dport 53 -j REDIRECT --to-ports 53 2>/dev/null
+	iptables -t mangle -D PREROUTING -m conntrack --ctstate NEW -p udp --dport 53 -j MARK --set-xmark 0x00800099/0x008000ff 2>/dev/null
+
+	iptables -I input_wan_rule -m mark --mark 0x00800000/0x00800000 -j RETURN 2>/dev/null
+fi
+
+iptables -C forwarding_wan_rule -m mark --mark 0x99/0xff -j ACCEPT 2>/dev/null || \
+iptables -A forwarding_wan_rule -m mark --mark 0x99/0xff -j ACCEPT
+
+iptables -C input_wan_rule -m mark --mark 0x99/0xff -j ACCEPT 2>/dev/null || \
+iptables -A input_wan_rule -m mark --mark 0x99/0xff -j ACCEPT
+
+test -f /usr/share/natcapd/natcapd.cone_nat_unused.sh && sh /usr/share/natcapd/natcapd.cone_nat_unused.sh init
+
+exit 0

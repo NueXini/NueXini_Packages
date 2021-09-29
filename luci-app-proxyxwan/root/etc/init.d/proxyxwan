@@ -1,0 +1,112 @@
+#!/bin/sh /etc/rc.common
+
+START=91
+boot() {
+	XRELOAD=0 start
+}
+
+cache_redsocks_base() {
+	mkdir -p /tmp/etc
+	cat <<EOF >/tmp/etc/redsocks.conf
+base {
+	log_debug = off;
+	log_info = on;
+	log = "stderr";
+	daemon = off;
+	redirector = iptables;
+}
+EOF
+}
+
+cache_add_proxyxwan_line() {
+	local cfg="$1"
+	local src_net dst_net user pass server port type
+
+	config_get src_net "$cfg" src_net
+	config_get dst_net "$cfg" dst_net
+	config_get user "$cfg" username
+	config_get pass "$cfg" password
+	config_get server "$cfg" server
+	config_get port "$cfg" port
+	config_get type "$cfg" type
+
+	src_net=$(lua /usr/lib/lua/ipops.lua netStrings2ipcidrStrings "$src_net")
+	dst_net=$(lua /usr/lib/lua/ipops.lua netStrings2ipcidrStrings "$dst_net")
+
+	iptables -t nat -A proxy_hook -p tcp ${src_net:+-s} ${src_net} ${dst_net:+-d} ${dst_net} -j REDIRECT --to-ports $((1180+idx))
+
+	_LINE_LOGIN=${user:+login = "${user}";}
+	_LINE_PASSWORD=${user:+password = "${pass}";}
+
+	mkdir -p /tmp/etc
+	cat <<EOF >>/tmp/etc/redsocks.conf
+redsocks {
+	local_ip = "0.0.0.0";
+	local_port = "$((1180+idx))";
+	listenq = "128";
+	ip = "$server";
+	port = "$port";
+	type = "$type";
+	$_LINE_LOGIN
+	$_LINE_PASSWORD
+}
+
+EOF
+
+	idx=$((idx+1))
+}
+
+IPv4_REGEX="((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"
+proxy_local_reload() {
+	ipset flush proxy_local_v4 2>/dev/null || \
+	ipset -! create proxy_local_v4 hash:net
+
+	ip route list table local | awk '{print $2}' | while read local_network_v4; do
+		ipset -! add proxy_local_v4 $local_network_v4 2>/dev/null
+	done
+	ip route list table main | awk '{print $1}' | grep -E "$IPv4_REGEX" | while read connected_network_v4; do
+		ipset -! add proxy_local_v4 $connected_network_v4 2>/dev/null
+	done
+}
+
+stop() {
+	#clear all iptables
+	table="$(iptables -t nat -S)"
+	{
+		echo "*nat";
+		[ -z "${table##*PREROUTING -i br-lan -j proxy_hook*}" ] && echo "-D PREROUTING -i br-lan -j proxy_hook"
+		echo "$table" | awk '{print "-F "$2}' | grep proxy_hook | sort -u
+		echo "$table" | awk '{print "-X "$2}' | grep proxy_hook | sort -u
+		echo "COMMIT"
+	} | iptables-restore -T nat -w -n
+
+	ipset destroy proxy_local_v4 2>/dev/null
+}
+
+start() {
+	local idx=0
+	local enable=$(uci get proxyxwan.proxy.enable 2>/dev/null || echo 0)
+
+	stop
+
+	cache_redsocks_base
+
+	if [ "$enable" = "1" ]; then
+		proxy_local_reload
+		iptables -t nat -N proxy_hook
+		iptables -t nat -A PREROUTING -i br-lan -j proxy_hook
+		iptables -t nat -A proxy_hook -m set --match-set proxy_local_v4 dst -j RETURN
+		config_load proxyxwan
+		config_foreach cache_add_proxyxwan_line line
+	fi
+
+	[ "x$(readlink /etc/redsocks.conf 2>/dev/null)" = "x/tmp/etc/redsocks.conf" ] || \
+	ln -sf /tmp/etc/redsocks.conf /etc/redsocks.conf
+	/etc/init.d/redsocks restart
+}
+
+restart() {
+	XRELOAD=1 start
+}
+
+extra_command "proxy_local_reload" "Reload the proxy_local ipset"
