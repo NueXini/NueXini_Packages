@@ -90,7 +90,6 @@ make_config()
 			uci set openvpn.natcapovpn_$p.dh='/usr/share/natcapd/openvpn/dh2048.pem'
 			uci set openvpn.natcapovpn_$p.server="10.8.$((9+I)).0 255.255.255.0"
 			uci set openvpn.natcapovpn_$p.keepalive='10 120'
-			uci set openvpn.natcapovpn_$p.compress='lzo'
 			uci set openvpn.natcapovpn_$p.persist_key='1'
 			uci set openvpn.natcapovpn_$p.persist_tun='1'
 			uci set openvpn.natcapovpn_$p.user='nobody'
