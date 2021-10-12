@@ -116,6 +116,20 @@ o:depends("en_mode", "redir-host-tun")
 o:depends("en_mode", "redir-host-vpn")
 o:depends("en_mode", "redir-host-mix")
 
+o = s:taboption("op_mode", Flag, "netflix_ip_complete", font_red..bold_on..translate("Completion Netflix IP Rules")..bold_off..font_off)
+o.description = translate("Prevent Some Devices From Directly Using IP Access To Cause Unlocking Failure")
+o.default=0
+
+o = s:taboption("op_mode", Value, "netflix_group_key", translate("Netflix Proxy Group Filter"))
+o.description = translate("Set Keywords To Find Netflix Group, No Case Sensitive")
+o:depends("netflix_ip_complete", "1")
+o.default="NETFLIX|奈飞|NF|网飞"
+o.placeholder = translate("NETFLIX|奈飞|NF|网飞")
+
+o = s:taboption("op_mode", DummyValue, "netflix_ip_update", translate("Update Netflix IP Rules"))
+o:depends("netflix_ip_complete", "1")
+o.template = "openclash/download_netflix_rule"
+
 o = s:taboption("op_mode", Flag, "small_flash_memory", translate("Small Flash Memory"))
 o.description = translate("Move Core And GEOIP Data File To /tmp/etc/openclash For Small Flash Memory Device")
 o.default=0
@@ -214,6 +228,12 @@ o.default=0
 o = s:taboption("dns", Flag, "append_wan_dns", font_red..bold_on..translate("Append Upstream DNS")..bold_off..font_off)
 o.description = font_red..bold_on..translate("Append The Upstream Assigned DNS And Gateway IP To The Nameserver")..bold_off..font_off
 o.default=1
+
+if op_mode == "fake-ip" then
+o = s:taboption("dns", Flag, "store_fakeip", font_red..bold_on..translate("Persistence Fake-IP")..bold_off..font_off)
+o.description = font_red..bold_on..translate("Cache Fake-IP DNS Resolution Records To File, Improve The Response Speed After Startup")..bold_off..font_off
+o.default=1
+end
 
 o = s:taboption("dns", Flag, "ipv6_dns", translate("IPv6 DNS Resolve"))
 o.description = font_red..bold_on..translate("Enable Clash to Resolve IPv6 DNS Requests")..bold_off..font_off
