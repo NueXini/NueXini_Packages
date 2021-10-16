@@ -13,12 +13,12 @@ s.anonymous = true
 s:tab("system", translate("System Settings"))
 
 if nixio.fs.access("/etc/init.d/openvpn") then
-	e = s:taboption("system", Flag, "natcapovpn", translate("Enable OpenVPN Server"), translate("Please enable compress option on OpenVPN client side."))
+	e = s:taboption("system", Flag, "natcapovpn", translate("Enable OpenVPN Server"), translate("Allows you connect to router via VPN, the router need to have a public IP."))
 	e.default = e.disabled
 	e.rmempty = false
 end
 
-e = s:taboption("system", Flag, "pptpd", translate("Enable The PPTP Server"), translate("Allows you to use VPN to connect to router, the router need to have a public IP."))
+e = s:taboption("system", Flag, "pptpd", translate("Enable The PPTP Server"), translate("Allows you connect to router via VPN, the router need to have a public IP."))
 e.default = e.disabled
 e.rmempty = false
 
