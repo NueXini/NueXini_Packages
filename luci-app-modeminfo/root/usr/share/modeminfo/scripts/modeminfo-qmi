@@ -51,7 +51,7 @@ get_signal_info(){
         else
 		COPS_MNC=$COPS_MNC_RAW
 	fi
-        COPS=$(echo ${NETWORK} |awk '{print $3}')
+        COPS="$(echo "${NETWORK}" |tail -1)"
 	SIGNAL=$($QMICTL --nas-get-signal-info)
         MODE=$(echo "$SIGNAL" | awk 'NR ==2{gsub("\:", ""); print $1}')
         STRENGTH=$(echo "$SIGNAL" | awk '/RSSI|RSRQ|RSRP|SNR|ECIO/{gsub("'\''",""); print $2}')
