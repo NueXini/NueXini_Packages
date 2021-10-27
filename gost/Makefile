@@ -1,10 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-only
 #
-# Copyright (C) 2021 ImmortalWrt
-# <https://immortalwrt.org>
-#
-# This is free software, licensed under the GNU General Public License v3.
-# See /LICENSE for more information.
-#
+# Copyright (C) 2021 ImmortalWrt.org
 
 include $(TOPDIR)/rules.mk
 
@@ -36,15 +32,15 @@ include $(INCLUDE_DIR)/package.mk
 include ../../lang/golang/golang-package.mk
 
 define Package/gost
-	SECTION:=net
-	CATEGORY:=Network
-	TITLE:=GO Simple Tunnel
-	URL:=https://github.com/ginuerzh/gost
-	DEPENDS:=$(GO_ARCH_DEPENDS)
+  SECTION:=net
+  CATEGORY:=Network
+  TITLE:=GO Simple Tunnel
+  URL:=https://github.com/ginuerzh/gost
+  DEPENDS:=$(GO_ARCH_DEPENDS)
 endef
 
 define Package/gost/description
-	A simple security tunnel written in Golang
+  A simple security tunnel written in Golang
 endef
 
 define Package/gost/config
