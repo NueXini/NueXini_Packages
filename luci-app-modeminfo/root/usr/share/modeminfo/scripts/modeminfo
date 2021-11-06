@@ -632,9 +632,9 @@ function intel_data(){
 				SC=2
 			elif [ $sca -ge 1200 ] && [ $sca -le 1949 ]; then
 				SC=3
-			elif [ $sca -ge 1950] && [ $sca -le 2399 ]; then
+			elif [ $sca -ge 1950 ] && [ $sca -le 2399 ]; then
 				SC=4
-			elif [ $sca -ge 2400] && [ $sca -le 2469 ]; then
+			elif [ $sca -ge 2400 ] && [ $sca -le 2469 ]; then
 				SC=5
 			elif [ $sca -ge 2750 ] && [ $sca -le 3449 ]; then
 				SC=7
