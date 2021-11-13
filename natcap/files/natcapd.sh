@@ -71,9 +71,10 @@ natcapd_stop()
 	echo debug=$debug >>$DEV
 	echo udp_seq_lock=$udp_seq_lock >>$DEV
 
-	rm -f /tmp/dnsmasq.d/accelerated-domains.gfwlist.dnsmasq.conf 2>/dev/null
-	rm -f /tmp/dnsmasq.d/accelerated-domains.cnlist.dnsmasq.conf 2>/dev/null
-	rm -f /tmp/dnsmasq.d/custom-domains.gfwlist.dnsmasq.conf 2>/dev/null
+	rm -f /tmp/dnsmasq.d/accelerated-domains.gfwlist.dnsmasq.conf \
+	/tmp/dnsmasq.d/accelerated-domains.cnlist.dnsmasq.conf \
+	/tmp/dnsmasq.d/custom-domains.gfwlist.dnsmasq.conf \
+	/tmp/dnsmasq.d/custom-domains.bypasslist.dnsmasq.conf
 	/etc/init.d/dnsmasq restart
 
 	rm -f /tmp/natcapd.running
@@ -690,6 +691,7 @@ elif test -c $DEV; then
 	gfwlist1_file=`uci get natcapd.default.gfwlist1_file 2>/dev/null`
 	gfwlist1=`uci get natcapd.default.gfwlist1 2>/dev/null`
 	gfw_udp_port_list=`uci get natcapd.default.gfw_udp_port_list 2>/dev/null`
+	bypasslist_domain_file=`uci get natcapd.default.bypasslist_domain_file 2>/dev/null`
 	app_list=`uci get natcapd.default.app_list 2>/dev/null`
 	encode_mode=`uci get natcapd.default.encode_mode 2>/dev/null || echo 0`
 	udp_encode_mode=`uci get natcapd.default.udp_encode_mode 2>/dev/null || echo 0`
@@ -860,6 +862,13 @@ elif test -c $DEV; then
 	done
 	for a in $app_list; do
 		add_app_list $a
+	done
+
+	rm -f /tmp/dnsmasq.d/custom-domains.bypasslist.dnsmasq.conf
+	mkdir -p /tmp/dnsmasq.d
+	touch /tmp/dnsmasq.d/custom-domains.bypasslist.dnsmasq.conf
+	cat $bypasslist_domain_file | while read d; do
+		echo ipset=/$d/bypasslist >>/tmp/dnsmasq.d/custom-domains.bypasslist.dnsmasq.conf
 	done
 
 	rm -f /tmp/dnsmasq.d/custom-domains.gfwlist.dnsmasq.conf
