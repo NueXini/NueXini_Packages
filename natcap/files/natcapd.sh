@@ -692,6 +692,7 @@ elif test -c $DEV; then
 	gfwlist1=`uci get natcapd.default.gfwlist1 2>/dev/null`
 	gfw_udp_port_list=`uci get natcapd.default.gfw_udp_port_list 2>/dev/null`
 	bypasslist_domain_file=`uci get natcapd.default.bypasslist_domain_file 2>/dev/null`
+	bypasslist_domain=`uci get natcapd.default.bypasslist_domain 2>/dev/null`
 	app_list=`uci get natcapd.default.app_list 2>/dev/null`
 	encode_mode=`uci get natcapd.default.encode_mode 2>/dev/null || echo 0`
 	udp_encode_mode=`uci get natcapd.default.udp_encode_mode 2>/dev/null || echo 0`
@@ -868,6 +869,9 @@ elif test -c $DEV; then
 	mkdir -p /tmp/dnsmasq.d
 	touch /tmp/dnsmasq.d/custom-domains.bypasslist.dnsmasq.conf
 	cat $bypasslist_domain_file | while read d; do
+		echo ipset=/$d/bypasslist >>/tmp/dnsmasq.d/custom-domains.bypasslist.dnsmasq.conf
+	done
+	for d in $bypasslist_domain; do
 		echo ipset=/$d/bypasslist >>/tmp/dnsmasq.d/custom-domains.bypasslist.dnsmasq.conf
 	done
 
@@ -1118,8 +1122,8 @@ main_trigger() {
 	local hostip
 	local built_in_server
 	local crashlog=0
-	test -e /sys/kernel/debug/crashlog && crashlog=23
-	test -e /tmp/pstore && crashlog=23
+	test -e /sys/kernel/debug/crashlog && crashlog=24
+	test -e /tmp/pstore && crashlog=24
 	cp /usr/share/natcapd/cacert.pem /tmp/cacert.pem
 	while :; do
 		test -f $LOCKDIR/$PID || return 0
