@@ -5,13 +5,16 @@
 FIRMWARE=
 DEVICE=/dev/usb/lp0
 
+logger -t p910nd "Loading device[$PRODUCT]"
+
 case "$PRODUCT" in
 	#HP LaserJet 1000
 	"3f0/517/120")
 	FIRMWARE=/usr/share/p910nd/firmware/sihp1000.dl
 	;;
 
-	#HP LaserJet 1005
+	#HP LaserJet 1005/M1005
+	"3f0/3b17/100"|\
 	"3f0/1317/120")
 	FIRMWARE=/usr/share/p910nd/firmware/sihp1005.dl
 	;;
@@ -26,21 +29,32 @@ case "$PRODUCT" in
 	FIRMWARE=/usr/share/p910nd/firmware/sihp1020.dl
 	;;
 
-	#HP LaserJet P1005/P1007
-	"3f0/4817/100"|
+	#HP LaserJet P1005
 	"3f0/3d17/100")
 	FIRMWARE=/usr/share/p910nd/firmware/sihpP1005.dl
 	;;
 
-	#HP LaserJet P1006/P1008
-	"3f0/4917/100"|
+	#HP LaserJet P1006
 	"3f0/3e17/100")
 	FIRMWARE=/usr/share/p910nd/firmware/sihpP1006.dl
+	;;
+
+	#HP LaserJet P1007
+	"3f0/4817/100")
+	FIRMWARE=/usr/share/p910nd/firmware/sihpP1007.dl
+	;;
+
+	#HP LaserJet P1008
+	"3f0/4917/100")
+	FIRMWARE=/usr/share/p910nd/firmware/sihpP1008.dl
 	;;
 
 	#HP LaserJet P1505
 	"3f0/3f17/100")
 	FIRMWARE=/usr/share/p910nd/firmware/sihpP1505.dl
+	;;
+	*)
+	logger -t p910nd "No firmware support for device[$PRODUCT]"
 	;;
 esac
 
