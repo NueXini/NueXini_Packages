@@ -15,7 +15,7 @@ PKG_MAINTAINER:=jjm2473 <jjm2473@gmail.com>
 
 LUCI_BUILD_DEPENDS:=app-store-ui/host
 
-TARGET_CONFIGURE_OPTS = FRONTEND_DIST="$(BUILD_DIR_HOST)/app-store-ui/host/src/dist" APP_STORE_VERSION="$(PKG_VERSION)"
+TARGET_CONFIGURE_OPTS = FRONTEND_DIST="$(BUILD_DIR_HOST)/app-store-ui/dist" APP_STORE_VERSION="$(PKG_VERSION)"
 
 define Package/luci-app-store/conffiles
 /etc/.app_store.id
