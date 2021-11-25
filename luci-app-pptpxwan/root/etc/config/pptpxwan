@@ -1,6 +1,0 @@
-config globals 'pptp'
-	option delay_reload '5'
-	option enable '1'
-	option mppe '0'
-	list track_ip '114.114.114.114'
-	list track_ip '119.29.29.29'

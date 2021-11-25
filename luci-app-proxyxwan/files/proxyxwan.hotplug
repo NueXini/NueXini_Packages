@@ -1,7 +1,0 @@
-#!/bin/sh
-
-[ "$ACTION" = ifup -o "$ACTION" = ifupdate ] || exit 0
-[ "$ACTION" = ifupdate -a -z "$IFUPDATE_ADDRESSES" -a -z "$IFUPDATE_DATA" ] && exit 0
-
-logger -t proxyxwan "Reloading proxy_local_reload due to $ACTION of $INTERFACE ($DEVICE)"
-/etc/init.d/proxyxwan proxy_local_reload

@@ -1,2 +1,0 @@
-config globals 'proxy'
-	option enable '0'
