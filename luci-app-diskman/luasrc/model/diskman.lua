@@ -28,8 +28,8 @@ function byte_format(byte)
     if byte > 1024 and i < 5 then
       byte = byte / 1024
     else
-      return string.format("%.2f %s", byte, suff[i])
-    end
+      return string.format("%.2f %s", byte, suff[i]) 
+    end 
   end
 end
 
@@ -387,7 +387,7 @@ end
   {
     sda={
       path, model, inuse, size_formated,
-      partitions={
+      partitions={ 
         { name, inuse, size_formated }
         ...
       }
