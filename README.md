@@ -1,22 +1,13 @@
 # NueXini_Packages
 
-------
-
-
-
 ## 1.如何使用NueXini_Packages？ / How to use NueXini_Packages?
 ```bash
 cd lede
 sed -i '$a src-git NueXini_Packages https://github.com/NueXini/NueXini_Packages.git' feeds.conf.default
 ./scripts/feeds update -a && ./scripts/feeds install -a
 ```
-## 2.使用非lede源码编译时，部分插件显示英文 修复方法
-```bash
-#cd feeds/NueXini_Packages
-curl -s https://raw.githubusercontent.com/NueXini/BuildOpenWrt/master/sh/language_fix.sh | sudo bash
-```
 
-## 3.插件说明
+## 2.插件说明
 
 ```
 以下是全部：           注：应用后面标记 “ * ” 为最近新添加；标记“ ! ”与其他插件依赖或冲突。
