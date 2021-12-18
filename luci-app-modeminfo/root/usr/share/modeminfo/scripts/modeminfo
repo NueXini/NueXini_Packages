@@ -536,6 +536,7 @@ function dell_data(){
 	generic_data
 	if [ "$MODE" = "LTE" ]; then
 		EARFCN=$(echo "$O" | awk -F [\:/] '/ARFCN/{gsub(" ","", $3); print $3}')
+		PCI=$(echo "$O" | awk -F [\(,\)] '/PCI/{print $4}')
 		RSRP=$(echo "$O" | awk '/^RSRP/{gsub("dBm",""); printf "%.0f\n", $2}')
 		CSQ_RSSI=$(echo "$O" | awk '/^RSSI/{gsub("dBm",""); printf "%.0f\n", $2}')
 		RSRQ=$(echo  "$O" | awk '/^RSRQ/{gsub("dB",""); printf "%.0f\n", $2}')
