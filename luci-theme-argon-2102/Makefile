@@ -6,7 +6,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=luci-theme-argon
+PKG_NAME:=luci-theme-argon-2102
 PKG_VERSION:=2.2.9
 PKG_RELEASE:=20211217-1
 
