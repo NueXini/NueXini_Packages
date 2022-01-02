@@ -1,8 +1,14 @@
 # qmi addon for luci-app-modeminfo
-# (c) 2020-2021 written by Konstantine Shevlakov (c) at <shevlakov@132lan.ru>
+# (c) 2020-2022 written by Konstantine Shevlakov (c) at <shevlakov@132lan.ru>
 
 get_device_info(){
 	DEVPORT=$(uci -q get modeminfo.@modeminfo[0].device_qmi)
+	if [ -x /usr/bin/qmicli ]; then
+		export QMICTL="qmicli -p -d $DEVPORT"
+	else
+ 		logger -t "luci-app-modeminfo" "qmicli not found!"
+		exit 1
+        fi
 	if [ $DEVPORT ]; then
 		export QMICTL="qmicli -p -d $DEVPORT"
 	else
