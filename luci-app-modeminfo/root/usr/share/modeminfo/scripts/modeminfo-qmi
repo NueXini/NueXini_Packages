@@ -10,7 +10,12 @@ get_device_info(){
 		exit 1
         fi
 	if [ $DEVPORT ]; then
-		export QMICTL="qmicli -p -d $DEVPORT"
+		QPROXY=$(uci -q get modeminfo.@modeminfo[0].qmi_proxy)
+                if [ $QPROXY -eq 1 ]; then           
+                        export QMICTL="qmicli -p -d $DEVPORT"
+                else                              
+                        export QMICTL="qmicli -d $DEVPORT"   
+                fi
 	else
 	       	for qmi in $(ls /dev/cdc-wdm*); do
                 	if [ $qmi ]; then

@@ -132,9 +132,17 @@ msgid "Get device hardware name via mmcli utility if aviable."
 msgstr "Если доступно, использовать утилиту mmcli для имени модема."
 
 #: applications/luci-app-modeminfo/luasrc/model/cbi/modem/modeminfo.lua:59
-msgid ""Name via mmcli"
+msgid "Name via mmcli"
 msgstr "Имя модема через mmcli"
 
 #: applications/luci-app-modeminfo/luasrc/model/cbi/modem/modeminfo.lua:60
 msgid "Get device model via mmcli utility if aviable."
 msgstr "Если доступно, использовать утилиту mmcli для имени модема."
+
+#: applications/luci-app-modeminfo/luasrc/model/cbi/modem/modeminfo.lua:64
+msgid "QMI proxy"
+msgstr "QMI прокси"
+
+#: applications/luci-app-modeminfo/luasrc/model/cbi/modem/modeminfo.lua:64
+msgid "Enable qmi-proxy mode."
+msgstr "Задействовать режим прокси."
