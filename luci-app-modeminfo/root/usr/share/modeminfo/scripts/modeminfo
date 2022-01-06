@@ -130,7 +130,12 @@ function get_csq(){
 		[ $CSQ -ge 15 ] && CSQ_COL="orange"
 		[ $CSQ -ge 20 ] && CSQ_COL="green"
 		CSQ_RSSI=$((2 * CSQ - 113))
-	else
+	# Fibocom RSSI up -51dBm. Thanks to TSA74 at 4pda.to
+	elif [ $CSQ -ge 32 -a $CSQ -le 50 ]; then
+		CSQ_PER="100"
+		CSQ_COL="green"
+		CSQ_RSSI=$((2 * CSQ - 113))
+	else 
 		CSQ_PER="0"
 		CSQ_COL="black"
 	fi
