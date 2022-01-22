@@ -14,7 +14,7 @@ PKG_VERSION:=0.0.1
 PKG_RELEASE:=1
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://fw.koolcenter.com/binary/quickstart/
-PKG_HASH:=9acba95e0194adbad93745d5d4269cd27475ad625add4f1b0fad9589eb7b7c1b
+PKG_HASH:=13018d6d166e58f25d42ae3e4bbf882a1ce30315f432246fc6627558aefd658f
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_VERSION)
 
@@ -25,7 +25,7 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
 	SECTION:=net
-	CATEGORY:=Guide
+	CATEGORY:=Network
 	SUBMENU:=Web Servers/Proxies
 	TITLE:=Quickstart, the quick start.
 	DEPENDS:=
@@ -36,9 +36,7 @@ define Package/$(PKG_NAME)/description
   Quickstart is a dashboard & user guide
 endef
 
-define Package/$(PKG_NAME)/conffiles
 
-endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
