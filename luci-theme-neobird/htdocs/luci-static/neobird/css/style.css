@@ -1272,8 +1272,6 @@ form.inline + form.inline,
 
 .tabs {
     margin: 15px 0;
-    display: flex;
-    align-items: center;
     overflow-x: auto;
 }
 
@@ -1332,6 +1330,7 @@ form.inline + form.inline,
     background-color: var(--tabmenubgColor);
     width: 100%;
     overflow-x: auto;
+    margin-top: 5px;
 }
 
 .cbi-tabmenu > li:hover {
@@ -1772,17 +1771,11 @@ header > .container > .pull-right > * {
 }
 
 #xhr_poll_status > .label.success {
-    background-color: var(--activeColor);
-    color: #fff;
-    font-size: 0.8rem;
     padding: 3px 10px;
     border-radius: 20px;
 }
 
 #xhr_poll_status_off {
-    background-color: var(--progressbarColor);
-    color: var(--bgwhite);
-    font-size: 0.8rem;
     padding: 3px 10px;
     border-radius: 20px;
 }
@@ -1804,6 +1797,18 @@ header > .container > .pull-right > * {
     padding: 3px 10px;
     border-radius: 20px;
     z-index: 10;
+}
+
+#refresh_on, #refresh_off {
+    font-size: 1.5rem;
+    font-family: neobird;
+}
+
+#refresh_on {
+    color: var(--activeColor);
+}
+#refresh_off {
+    color: var(--progressbarColor);
 }
 
 .darkMask {
@@ -2345,6 +2350,10 @@ body.lang_pl.node-main-login .cbi-value-title {
         height: 45px;
     }
 
+    h3 {
+        padding: 0 10px 10px 10px;
+    }
+
     img[src*="/images/logo.png"]
     {    
     height: 45px;
@@ -2476,10 +2485,6 @@ body.lang_pl.node-main-login .cbi-value-title {
     input[type='checkbox'] {
     height: 1.2rem !important;
     width: 1.2rem !important;
-    }
-
-    .mobile-hide {
-        display: none;
     }
 
     #swaptotal div div small,
