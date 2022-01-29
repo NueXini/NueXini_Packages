@@ -599,8 +599,7 @@ function fibocom_data(){
 	if [ "$MODE" = "LTE" ]; then
 		RSRQ=$(echo "$NETWORK" | awk -F [,] '{printf "%.0f\n", -20+($14/2)}')
 		RSRP=$(echo "$NETWORK" | awk -F [,] '{printf "%.0f\n", $13-140}')
-		SINR=$(echo "$NETWORK" | awk -F [,] '{printf "%.0f\n", $11}')
-		#EARFCN=$(echo "$NETWORK" | awk -F [,] '{print $7}')
+		SINR=$(echo "$NETWORK" | awk -F [,] '{printf "%.0f\n", $11/4+5}')
 		PCI=$(echo "$NETWORK" | awk -F [,] '{print $8}')
 		BWDx=$(echo "$NETWORK" | awk -F [,] '{print $10}')
 		case $BWDx in
