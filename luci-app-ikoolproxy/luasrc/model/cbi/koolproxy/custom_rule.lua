@@ -5,7 +5,6 @@ t.anonymous = true
 
 e = t:option(TextValue, "user_rule")
 e.description = translate("输入你的自定义规则，每条规则一行。")
-e.rmempty = false
 e.rows = 28
 e.wrap = "off"
 

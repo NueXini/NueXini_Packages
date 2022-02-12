@@ -5,7 +5,6 @@ t.anonymous = true
 
 e = t:option(TextValue, "adbypass_domain")
 e.description = translate("这些已经加入的网站将不会使用过滤器。请输入网站的域名，每行只能输入一个网站域名。例如google.com。")
-e.rmempty = false
 e.rows = 28
 e.wrap = "off"
 

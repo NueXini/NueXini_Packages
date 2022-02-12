@@ -5,7 +5,6 @@ t.anonymous = true
 
 e = t:option(TextValue, "adblock_domain")
 e.description = translate("加入的网址将走广告过滤端口。只针对黑名单模式。只能输入WEB地址，如：google.com，每个地址一行。")
-e.rmempty = false
 e.rows = 28
 e.wrap = "off"
 

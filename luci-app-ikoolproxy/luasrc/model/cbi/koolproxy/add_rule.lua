@@ -17,7 +17,6 @@ t.create = function(...)
 end
 
 e = t:option(Flag, "load", translate("启用"))
-e.rmempty = false
 e.default = 0
 
 e = t:option(DummyValue, "name", translate("规则名称"))

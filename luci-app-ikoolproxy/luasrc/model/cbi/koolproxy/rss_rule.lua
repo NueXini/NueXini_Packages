@@ -17,14 +17,11 @@ s.anonymous = true
 s.addremove = true
 
 o = s:option(Flag, "load", translate("启用"))
-o.rmempty = false
 o.default = 0
 
 o = s:option(Value, "name", translate("规则描述"))
-o.rmempty = true
 
 o = s:option(Value, "url", translate("规则地址"))
-o.rmempty = false
 o.placeholder="[https|http|ftp]://[Hostname]/[File]"
 function o.validate(self, value)
 	if not value then

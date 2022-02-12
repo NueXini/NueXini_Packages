@@ -9,7 +9,6 @@ t.sortable = true
 t.addremove = true
 
 e = t:option(Value, "remarks", translate("客户端备注"))
-e.rmempty = true
 e.width = "30%"
 
 e = t:option(Value, "ipaddr", translate("内部 IP 地址"))
@@ -23,7 +22,6 @@ end)
 
 e = t:option(Value,"mac",translate("MAC 地址"))
 e.width = "20%"
-e.rmempty = true
 e.datatype = "macaddr"
 luci.ip.neighbors({family = 4}, function(neighbor)
 	if neighbor.reachable then
@@ -32,7 +30,6 @@ luci.ip.neighbors({family = 4}, function(neighbor)
 end)
 
 e = t:option(ListValue, "proxy_mode", translate("访问控制"))
-e.rmempty = false
 e.width = "20%"
 e:value(0,translate("不过滤"))
 e:value(1,translate("过滤HTTP协议"))

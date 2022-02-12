@@ -1,13 +1,3 @@
--- Copyright 2018 Nick Peng (pymumu@gmail.com)
-
-require ("nixio.fs")
-require ("luci.http")
-require ("luci.dispatcher")
-require ("nixio.fs")
-
-local fs = require "nixio.fs"
-local sys = require "luci.sys"
-local http = require "luci.http"
 
 local o,t,e
 local a = luci.sys.exec("head -3 /usr/share/koolproxy/data/rules/koolproxy.txt | grep rules | awk -F' ' '{print $3,$4}'")
@@ -33,7 +23,6 @@ t = o:section(TypedSection, "global")
 t.anonymous = true
 
 e = t:option(Flag, "enabled", translate("启用"))
-e.rmempty = false
 e.default = 0
 
 e = t:option(Value, "startup_delay", translate("启动延迟"))
@@ -42,48 +31,41 @@ for _, v in ipairs({5, 10, 15, 25, 40, 60}) do
 	e:value(v, translate("%u 秒") %{v})
 end
 e.datatype = "uinteger"
-e.rmempty = false
 e.default = 0
 
 e = t:option(ListValue, "koolproxy_mode", translate("过滤模式"))
-e.rmempty = false
 e:value(1, translate("全局模式"))
 e:value(2, translate("IPSET模式"))
 e:value(3, translate("视频模式"))
 e.default = 1
 
 e = t:option(MultiValue, "koolproxy_rules", translate("内置规则"))
-e.optional = false
-e.rmempty = true
 e:value("koolproxy.txt", translate("静态规则"))
 e:value("daily.txt", translate("每日规则"))
 e:value("kp.dat", translate("视频规则"))
 e:value("user.txt", translate("自定义规则"))
+e.optional = false
 
 e = t:option(MultiValue, "thirdparty_rules", translate("第三方规则"))
-e.optional = false
-e.rmempty = true
 e:value("adg.txt", translate("AdGuard规则"))
 e:value("steven.txt", translate("Steven规则"))
 e:value("yhosts.txt", translate("Yhosts规则"))
 e:value("antiad.txt", translate("AntiAD规则"))
 e:value("adgk.txt", translate("Banben规则"))
+e.optional = false
 
 e = t:option(ListValue, "koolproxy_port", translate("端口控制"))
-e.rmempty = false
 e:value(0, translate("关闭"))
 e:value(1, translate("开启"))
 e.default = 0
 
 --e = t:option(ListValue, "koolproxy_ipv6", translate("IPv6支持"))
---e.rmempty = false
 --e:value(0, translate("关闭"))
 --e:value(1, translate("开启"))
 --e.default = 0
 
 e = t:option(Value, "koolproxy_bp_port", translate("例外端口"))
 e.description = translate("单端口:80&nbsp;&nbsp;多端口:80,443")
-e.rmempty = false
 e:depends("koolproxy_port", "1")
 
 e = t:option(Flag, "koolproxy_host", translate("开启Adblock Plus Hosts"))
@@ -92,7 +74,6 @@ e.default = 0
 
 e = t:option(ListValue, "koolproxy_acl_default", translate("默认访问控制"))
 e.description = translate("访问控制设置中其他主机的默认规则")
-e.rmempty = false
 e:value(0, translate("不过滤"))
 e:value(1, translate("过滤HTTP协议"))
 e:value(2, translate("过滤HTTP(S)协议"))
@@ -101,7 +82,6 @@ e.default = 1
 
 e = t:option(ListValue, "time_update", translate("定时更新"))
 e.description = translate("定时更新规则")
-e.rmempty = false
 for t = 0,23 do
 	e:value(t,translate("每天"..t.."点"))
 end

@@ -7,7 +7,6 @@ e = t:option(TextValue, "adblock_ip")
 e.description = translate("这些已经加入的ip地址不会使用过滤器.请输入ip地址或ip地址段，每行只能输入一个ip地址。例如，112.123.134.145 / 24或112.123.134.145。")
 e.rows = 28
 e.wrap = "off"
-e.rmempty = false
 
 local fs = require "nixio.fs"
 local i = "/etc/adblocklist/adblockip"

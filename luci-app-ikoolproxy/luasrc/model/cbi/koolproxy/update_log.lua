@@ -8,7 +8,6 @@ local i = "/var/log/koolproxy.log"
 
 e = t:option(TextValue, "kpupdate_log")
 e.description = translate("查看最近的更新日志")
-e.rmempty = false
 e.rows = 28
 e.wrap = "off"
 
