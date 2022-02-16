@@ -214,7 +214,7 @@ stop(){
 			if [ "$brlan" = "br-lan" ]; then
 				uci del_list network.@device[0].ports='bat0'
 			else
-				sed -i 's/ bat$(TOPDIR)/feeds/packages/etc/config/network
+				sed -i 's/ bat0//' /etc/config/network
 			fi
 			uci commit network
 		fi

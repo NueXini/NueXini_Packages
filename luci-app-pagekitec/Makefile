@@ -11,6 +11,6 @@ LUCI_DEPENDS:=+pagekitec
 
 PKG_MAINTAINER:=Karl Palsson <karlp@tweak.net.au>
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

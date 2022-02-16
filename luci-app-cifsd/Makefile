@@ -10,6 +10,6 @@ PKG_NAME:=luci-app-cifsd
 PKG_VERSION:=1
 PKG_RELEASE:=12
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

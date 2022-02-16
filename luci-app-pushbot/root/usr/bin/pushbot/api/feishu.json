@@ -2,7 +2,7 @@
     "_api": "这是飞书推送 post 模板信息 api 文件",
     "_api": "【飞书推送】",
     
-    "url": "https://open.feishu.cn/open-apis/b$(TOPDIR)/feeds/packages/hook/${fs_webhook}",
+    "url": "https://open.feishu.cn/open-apis/bot/v2/hook/${fs_webhook}",
     "data": "@${tempjsonpath}",
     "content_type": "Content-Type: application/json",
     "str_title_start": "**",

@@ -367,8 +367,8 @@ msgstr ""
 #~ msgid "Sun Microsystems AU format (signed linear)"
 #~ msgstr "Формат Sun Microsystems AU (знаковый линейный)"
 
-#~ msgid "Raw G.726 ($(TOPDIR)/feeds/packages/32/40kbps) data"
-#~ msgstr "Необработанные данные G.726 ($(TOPDIR)/feeds/packages/32/40кбит/с)"
+#~ msgid "Raw G.726 (16/24/32/40kbps) data"
+#~ msgstr "Необработанные данные G.726 (16/24/32/40кбит/с)"
 
 #~ msgid "Raw G729 data"
 #~ msgstr "Необработанные данные G729"

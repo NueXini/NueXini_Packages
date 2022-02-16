@@ -235,7 +235,7 @@ function notify() {
       const amount = disables ? disables.split(",").length : 0
       const disa = !notify || amount ? `【温馨提示】:  检测到${$nobyda.disable?`上次执行意外崩溃, `:``}已禁用${notify?`${amount}个`:`所有`}接口, 如需开启请前往BoxJs或查看脚本内第100行注释.\n` : ``
       $nobyda.notify("", "", Name + one + two + three + four + five + disa + notify, {
-        'media-url': $nobyda.headUrl || 'https://cdn.jsdelivr.n$(TOPDIR)/feeds/packages/NobyDa/mini@master/Color/jd.png'
+        'media-url': $nobyda.headUrl || 'https://cdn.jsdelivr.net/gh/NobyDa/mini@master/Color/jd.png'
       });
       $nobyda.headUrl = null;
       if ($nobyda.isJSBox) {
@@ -498,7 +498,7 @@ function JingRongSteel(s) {
     if (disable("JRSteel")) return resolve()
     setTimeout(() => {
       const JRSUrl = {
-        url: 'https://ms.jr.jd.c$(TOPDIR)/feeds/packages/gener$(TOPDIR)/feeds/packages/h5/m/signIn1',
+        url: 'https://ms.jr.jd.com/gw/generic/hy/h5/m/signIn1',
         headers: {
           Cookie: KEY
         },
@@ -1105,7 +1105,7 @@ function JingDongSubsidy(s) {
     if (disable("subsidy")) return resolve()
     setTimeout(() => {
       const subsidyUrl = {
-        url: 'https://ms.jr.jd.c$(TOPDIR)/feeds/packages/gener$(TOPDIR)/feeds/packages/h5/m/signIn7',
+        url: 'https://ms.jr.jd.com/gw/generic/uc/h5/m/signIn7',
         headers: {
           Referer: "https://active.jd.com/forever/cashback/index",
           Cookie: KEY
@@ -1153,7 +1153,7 @@ function JingRongDoll(s, key, title, code, type, num, award, belong) {
     if (disable(key)) return resolve()
     setTimeout(() => {
       const DollUrl = {
-        url: "https://nu.jr.jd.c$(TOPDIR)/feeds/packages/generic/j$(TOPDIR)/feeds/packages/m/process",
+        url: "https://nu.jr.jd.com/gw/generic/jrm/h5/m/process",
         headers: {
           Cookie: KEY
         },
@@ -1214,7 +1214,7 @@ function JingRongDoll(s, key, title, code, type, num, award, belong) {
                 merge[key].notify = `${title}: 成功, 明细: ${(award?num:merge[key].bean)||`无`}${award?`金贴 💰`:`京豆 🐶`}`
               } else {
                 console.log(`\n${title}领取异常 ${Details}`)
-                if (num) console.log(`\n${title} 请尝试手动领取, 预计可得${num}${award?`金贴`:`京豆`}: \nhttps://uf1.jr.jd.c$(TOPDIR)/feeds/packages/redEnvelopes/index.html?actCode=${code}\n`);
+                if (num) console.log(`\n${title} 请尝试手动领取, 预计可得${num}${award?`金贴`:`京豆`}: \nhttps://uf1.jr.jd.com/up/redEnvelopes/index.html?actCode=${code}\n`);
                 merge[key].fail = 1;
                 merge[key].notify = `${title}: 失败, 原因: 领取异常 ⚠️`;
               }
@@ -1400,7 +1400,7 @@ function JingDongBuyCar(s, ActId) {
     if (disable("JDBuyCar")) return reject();
     setTimeout(() => {
       $nobyda.get({
-        url: 'https://cgame-stadium.jd.com/a$(TOPDIR)/feeds/packages/first/login',
+        url: 'https://cgame-stadium.jd.com/api/v1/first/login',
         headers: {
           Cookie: KEY,
           ActivityId: ActId
@@ -1429,7 +1429,7 @@ function JingDongBuyCar(s, ActId) {
   }).then(async () => {
     await new Promise(resolve => {
       $nobyda.post({
-        url: 'https://cgame-stadium.jd.com/a$(TOPDIR)/feeds/packages/sign',
+        url: 'https://cgame-stadium.jd.com/api/v1/sign',
         headers: {
           Cookie: KEY,
           ActivityId: ActId
@@ -1464,7 +1464,7 @@ function TotalSteel() {
   return new Promise(resolve => {
     if (disable("TSteel")) return resolve()
     $nobyda.get({
-      url: 'https://coin.jd.com$(TOPDIR)/feeds/packages/getBaseInfo.html',
+      url: 'https://coin.jd.com/m/gb/getBaseInfo.html',
       headers: {
         Cookie: KEY
       }
@@ -1558,7 +1558,7 @@ function TotalSubsidy() {
   return new Promise(resolve => {
     if (disable("TotalSubsidy")) return resolve()
     $nobyda.get({
-      url: 'https://ms.jr.jd.c$(TOPDIR)/feeds/packages/gener$(TOPDIR)/feeds/packages/h5/m/mySubsidyBalance',
+      url: 'https://ms.jr.jd.com/gw/generic/uc/h5/m/mySubsidyBalance',
       headers: {
         Cookie: KEY,
         Referer: 'https://active.jd.com/forever/cashback/index?channellv=wojingqb'

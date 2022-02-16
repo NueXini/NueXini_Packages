@@ -2,7 +2,7 @@ local fs = require "nixio.fs"
 
 mp = Map("unblockmusic")
 mp.title = translate("解锁网易云灰色歌曲")
-mp.description = translate("采用 [$(TOPDIR)/feeds/packages/$(TOPDIR)/feeds/packages/咪咕/JOOX]等音源，替换网易云变灰歌曲链接")
+mp.description = translate("采用 [QQ/百度/酷狗/酷我/咪咕/JOOX]等音源，替换网易云变灰歌曲链接")
 
 mp:section(SimpleSection).template = "unblockmusic/unblockmusic_status"
 

@@ -373,7 +373,7 @@ if [ "$2" != "0" ]; then
        	    .gsub(/,Domestic$/, ',$Domestic#d')
        	    .gsub(/,Others$/, ',$Others#d')
        	    .gsub(/,Google FCM$/, ',$GoogleFCM#d')
-       	    .gsu$(TOPDIR)/feeds/packages/, '')
+       	    .gsub(/#d/, '')
        	    };
        	    Value['script']['code'].to_s.gsub!(/\"Bilibili\": \"Asian TV\"/,'\"Bilibili\": \"$Bilibili#d\"')
        	    .gsub!(/\"Bahamut\": \"Global TV\"/,'\"Bahamut\": \"$Bahamut#d\"')
@@ -399,7 +399,7 @@ if [ "$2" != "0" ]; then
        	    .gsub!(/: \"Google FCM\"/,': \"$GoogleFCM#d\"')
        	    .gsub!(/return \"Domestic\"$/, 'return \"$Domestic#d\"')
        	    .gsub!(/return \"Others\"$/, 'return \"$Others#d\"')
-       	    .gsub$(TOPDIR)/feeds/packages/, '');
+       	    .gsub!(/#d/, '');
        	    File.open('$4','w') {|f| YAML.dump(Value, f)};
        	    rescue Exception => e
        	    puts '${LOGTIME} Error: Set lhie1 Rules Error,【' + e.message + '】'
@@ -425,7 +425,7 @@ if [ "$2" != "0" ]; then
        	    .gsub(/,ChinaIP,DIRECT$/, ',ChinaIP,$Domestic#d')
        	    .gsub(/,CN,DIRECT$/, ',CN,$Domestic#d')
        	    .gsub(/,MATCH$/, ',$Others#d')
-       	    .gsu$(TOPDIR)/feeds/packages/, '')
+       	    .gsub(/#d/, '')
        	    };
        	    File.open('$4','w') {|f| YAML.dump(Value, f)};
        	    rescue Exception => e
@@ -440,7 +440,7 @@ if [ "$2" != "0" ]; then
        	    Value['rules'].to_a.collect!{|x|
        	    x.to_s.gsub(/,PROXY$/, ',$Proxy#d')
        	    .gsub(/MATCH,DIRECT$/, 'MATCH,$Others#d')
-       	    .gsu$(TOPDIR)/feeds/packages/, '')
+       	    .gsub(/#d/, '')
        	    };
        	    File.open('$4','w') {|f| YAML.dump(Value, f)};
        	    rescue Exception => e

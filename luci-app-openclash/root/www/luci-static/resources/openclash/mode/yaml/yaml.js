@@ -3,9 +3,9 @@
 
 (function(mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("$(TOPDIR)/feeds/packages/lib/codemirror"));
+    mod(require("../../lib/codemirror"));
   else if (typeof define == "function" && define.amd) // AMD
-    define(["$(TOPDIR)/feeds/packages/lib/codemirror"], mod);
+    define(["../../lib/codemirror"], mod);
   else // Plain browser env
     mod(CodeMirror);
 })(function(CodeMirror) {
@@ -22,7 +22,7 @@ CodeMirror.defineMode("yaml", function() {
       var esc = state.escaped;
       state.escaped = false;
       /* comments */
-      if (ch == "#" && (stream.pos == 0 |$(TOPDIR)/feeds/packages/.test(stream.string.charAt(stream.pos - 1)))) {
+      if (ch == "#" && (stream.pos == 0 || /\s/.test(stream.string.charAt(stream.pos - 1)))) {
         stream.skipToEnd();
         return "comment";
       }

@@ -83,7 +83,7 @@ end
 function Graph._rrdtool( self, def, rrd )
 
 	-- prepare directory
-	local dir = def[1]:gsub$(TOPDIR)/feeds/packages/]+$","")
+	local dir = def[1]:gsub("/[^/]+$","")
 	fs.mkdirr( dir )
 
 	-- construct commandline

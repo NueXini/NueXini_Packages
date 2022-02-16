@@ -16,7 +16,7 @@ stretch() {
 }
 
 backup_servers() {
-	DNSMASQ_DNS=$(uci show dhcp | grep "@dnsmasq" | grep ".server=" | awk -F '=' '{print $2}' | sed $(TOPDIR)/feeds/packages/g" | tr ' ' ',')
+	DNSMASQ_DNS=$(uci show dhcp | grep "@dnsmasq" | grep ".server=" | awk -F '=' '{print $2}' | sed "s/'//g" | tr ' ' ',')
 	if [ -n "${DNSMASQ_DNS}" ]; then
 		uci -q set $CONFIG.@global[0].dnsmasq_servers="${DNSMASQ_DNS}"
 		uci commit $CONFIG
@@ -76,7 +76,7 @@ gen_items() {
 			if(setdns) for(i in dns) if(length(dns[i])==0) delete dns[i];
 			fail=1;
 		}
-		$(TOPDIR)/feeds/packages/&$(TOPDIR)/feeds/packages/ {
+		! /^$/&&!/^#/ {
 			fail=0
 			if(setdns) for(i in dns) printf("server=/.%s/%s\n", $0, dns[i]) >>outf;
 			if(setlist) printf("ipset=/.%s/%s\n", $0, ipsets) >>ipsetoutf;
@@ -97,7 +97,7 @@ gen_address_items() {
 			if(setad) for(i in ad) if(length(ad[i])==0) delete ad[i];
 			fail=1;
 		}
-		$(TOPDIR)/feeds/packages/&$(TOPDIR)/feeds/packages/ {
+		! /^$/&&!/^#/ {
 			fail=0
 			if(setad) for(i in ad) printf("address=/.%s/%s\n", $0, ad[i]) >>outf;
 		}
@@ -106,7 +106,7 @@ gen_address_items() {
 }
 
 ipset_merge() {
-	awk '{gsub(/ipset=\//,""); gsu$(TOPDIR)/feeds/packages/," ");key=$1;value=$2;if (sum[key] != "") {sum[key]=sum[key]","value} else {sum[key]=sum[key]value}} END{for(i in sum) print "ipset=/"i"/"sum[i]}' "${1}/ipset.conf" > "${1}/ipset.conf2"
+	awk '{gsub(/ipset=\//,""); gsub(/\//," ");key=$1;value=$2;if (sum[key] != "") {sum[key]=sum[key]","value} else {sum[key]=sum[key]value}} END{for(i in sum) print "ipset=/"i"/"sum[i]}' "${1}/ipset.conf" > "${1}/ipset.conf2"
 	mv -f "${1}/ipset.conf2" "${1}/ipset.conf"
 }
 
@@ -194,7 +194,7 @@ add() {
 			local str=$(echo -n $(config_n_get $shunt_id domain_list | grep -v 'regexp:\|geosite:\|ext:' | sed 's/domain:\|full:\|//g' | tr -s "\r\n" "\n" | sort -u) | sed "s/ /|/g")
 			[ -n "$str" ] && count_hosts_str="${count_hosts_str}|${str}"
 			[ "$shunt_node_id" = "_direct" ] && {
-				[ -n "$str" ] && echo $str | sed "s$(TOPDIR)/feeds/packages/g" | gen_items ipsets="whitelist,whitelist6" "${LOCAL_DNS}" "${TMP_DNSMASQ_PATH}/13-shunt_host.conf"
+				[ -n "$str" ] && echo $str | sed "s/|/\n/g" | gen_items ipsets="whitelist,whitelist6" "${LOCAL_DNS}" "${TMP_DNSMASQ_PATH}/13-shunt_host.conf"
 				msg_dns="${LOCAL_DNS}"
 				continue
 			}
@@ -205,10 +205,10 @@ add() {
 				local ipset_flag="shuntlist,shuntlist6"
 				if [ "${NO_PROXY_IPV6}" = "1" ]; then
 					ipset_flag="shuntlist"
-					echo $str | sed "s$(TOPDIR)/feeds/packages/g" | gen_address_items address="::" outf="${TMP_DNSMASQ_PATH}/98-shunt_host-noipv6.conf"
+					echo $str | sed "s/|/\n/g" | gen_address_items address="::" outf="${TMP_DNSMASQ_PATH}/98-shunt_host-noipv6.conf"
 				fi
 				[ -n "${REMOTE_FAKEDNS}" ] && unset ipset_flag
-				echo $str | sed "s$(TOPDIR)/feeds/packages/g" | gen_items ipsets="${ipset_flag}" dnss="${fwd_dns}" outf="${TMP_DNSMASQ_PATH}/98-shunt_host.conf" ipsetoutf="${TMP_DNSMASQ_PATH}/ipset.conf"
+				echo $str | sed "s/|/\n/g" | gen_items ipsets="${ipset_flag}" dnss="${fwd_dns}" outf="${TMP_DNSMASQ_PATH}/98-shunt_host.conf" ipsetoutf="${TMP_DNSMASQ_PATH}/ipset.conf"
 				msg_dns="${fwd_dns}"
 			}
 		done

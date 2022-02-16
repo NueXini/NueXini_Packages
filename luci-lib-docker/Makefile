@@ -14,6 +14,6 @@ LUCI_DESCRIPTION:=Docker Engine API for LuCI
 LUCI_DEPENDS:=@(aarch64||arm||x86_64) +luci-lib-jsonc
 LUCI_PKGARCH:=all
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

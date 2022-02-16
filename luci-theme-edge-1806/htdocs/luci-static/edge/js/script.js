@@ -164,7 +164,7 @@
      */
     if (getCurrentNodeByUrl()) {
         mainNodeName = "node-" + luciLocation[0] + "-" + luciLocation[1];
-        mainNodeName = mainNodeName.replace(/[ \t\n\$(TOPDIR)/feeds/packages/g, "_").toLowerCase();
+        mainNodeName = mainNodeName.replace(/[ \t\n\r\/]+/g, "_").toLowerCase();
         $("body").addClass(mainNodeName);
     }
     $(".cbi-button-up").val("");

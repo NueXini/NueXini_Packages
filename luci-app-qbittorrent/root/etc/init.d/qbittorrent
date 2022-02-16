@@ -104,7 +104,7 @@ validate_QBT () {
 
 sed_options () {
 	local Anchor=$1
-	local category=$( echo $2 | sed $(TOPDIR)/feeds/packages/\\\\/g' )
+	local category=$( echo $2 | sed 's/\s/\\\\/g' )
 	shift
 	shift
 
@@ -114,7 +114,7 @@ sed_options () {
 
 	local o; local v; local ol
 	for o in "$@"; do
-		v=$( echo "$(eval echo "\$$o")" | sed $(TOPDIR)/feeds/packages/\.]/\\&/g' )
+		v=$( echo "$(eval echo "\$$o")" | sed 's/[\/\.]/\\&/g' )
 		[ -n "$category" ] && ol="$category\\\\$o" || ol="$o"
 
 		[ -n "$v" ] && {

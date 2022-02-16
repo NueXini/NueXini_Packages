@@ -297,7 +297,7 @@ if [ "$create_config" = "0" ] || [ "$servers_if_update" = "1" ] || [ ! -z "$if_g
       fi
       config_load "openclash"
       config_foreach yml_groups_set "groups"
-      sed -i $(TOPDIR)/feeds/packages//g" "$CONFIG_FILE" 2>/dev/null
+      sed -i "s/#d//g" "$CONFIG_FILE" 2>/dev/null
       rm -rf /tmp/relay_server.list 2>/dev/null
    fi
 fi

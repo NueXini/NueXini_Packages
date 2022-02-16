@@ -398,7 +398,7 @@ msgstr "Źródłowy adres MAC"
 msgid "Source NAT"
 msgstr "NAT źródłowy"
 
-# http://www.digipedia.pl/def/d$(TOPDIR)/feeds/packages/677604507/name/SNAT/
+# http://www.digipedia.pl/def/doc/id/677604507/name/SNAT/
 msgid ""
 "Source NAT is a specific form of masquerading which allows fine grained "
 "control over the source IP used for outgoing traffic, for example to map "

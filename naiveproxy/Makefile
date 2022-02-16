@@ -78,7 +78,7 @@ endef
 GN_VER:=fc295f3ac7ca4fe7acc6cb5fb052d22909ef3a8f
 GN_FILE:=gn-git_revision-$(GN_VER).zip
 define Download/GN_TOOL
-	URL:=https://chrome-infra-packages.appspot.c$(TOPDIR)/feeds/packages/$(TOPDIR)/feeds/packages/linux-amd64/+
+	URL:=https://chrome-infra-packages.appspot.com/dl/gn/gn/linux-amd64/+
 	URL_FILE:=git_revision:$(GN_VER)
 	FILE:=$(GN_FILE)
 	HASH:=cedac495348379e73a53d1a875cbe7eb0b07b358bdbcc9f9169866a0c7473d86
@@ -114,7 +114,7 @@ define Build/Compile
 		. ../init_env.sh "$(ARCH)" $(CPU_TYPE) $(CPU_SUBTYPE) "$(TOOLCHAIN_DIR)" ; \
 		export naive_flags+=" $$$${naive_ccache_flags}" ; \
 		mkdir -p "out" ; \
-	$(TOPDIR)/feeds/packages/out/gn gen "out/Release" --args="$$$${naive_flags}" --script-executable="$(PYTHON)" ; \
+		./gn/out/gn gen "out/Release" --args="$$$${naive_flags}" --script-executable="$(PYTHON)" ; \
 		$(NINJA) -C "$(PKG_BUILD_DIR)/src/out/Release" naive ; \
 	)
 endef

@@ -77,11 +77,11 @@ send_request() {
 }
 
 get_recordid() {
-        sed 's/"record$(TOPDIR)/feeds/packages/g' | sed -n '2p' | sed 's/t$(TOPDIR)/feeds/packages/g' | sed -n 's/.*"id[^0-9]*\([0-9]*\).*/\1\n/p' | sort -ru | se$(TOPDIR)/feeds/packages/d
+        sed 's/"records"/\n/g' | sed -n '2p' | sed 's/ttl/\n/g' | sed -n 's/.*"id[^0-9]*\([0-9]*\).*/\1\n/p' | sort -ru | sed /^$/d
 }
 
 get_recordid2() {
-        sed 's/"recor$(TOPDIR)/feeds/packages/g' | sed -n '2p' |  sed -n 's/.*"id[^0-9]*\([0-9]*\).*/\1\n/p' | sort -ru | se$(TOPDIR)/feeds/packages/d
+        sed 's/"record"/\n/g' | sed -n '2p' |  sed -n 's/.*"id[^0-9]*\([0-9]*\).*/\1\n/p' | sort -ru | sed /^$/d
 }
 
 query_recordid() {

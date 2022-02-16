@@ -24,7 +24,7 @@ print "#programaddend" >"/tmp/tmphost";
 grep programaddstart /etc/hosts >/dev/null 2>&1
 if [ "$?" == "0" ]; then
 	sed -i '/programaddstart/,/programaddend/c\#programaddstart' /etc/hosts
-	sed -i '/programaddsta$(TOPDIR)/feeds/packages/tmp/tmphost /etc/hosts
+	sed -i '/programaddstart/'r/tmp/tmphost /etc/hosts
 else
 	echo "#programaddstart" >>/etc/hosts
 	cat /tmp/tmphost >> /etc/hosts

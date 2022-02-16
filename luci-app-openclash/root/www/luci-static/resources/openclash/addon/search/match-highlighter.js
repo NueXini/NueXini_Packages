@@ -21,9 +21,9 @@
 
 (function(mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("$(TOPDIR)/feeds/packages/lib/codemirror"), require("./matchesonscrollbar"));
+    mod(require("../../lib/codemirror"), require("./matchesonscrollbar"));
   else if (typeof define == "function" && define.amd) // AMD
-    define(["$(TOPDIR)/feeds/packages/lib/codemirror", "./matchesonscrollbar"], mod);
+    define(["../../lib/codemirror", "./matchesonscrollbar"], mod);
   else // Plain browser env
     mod(CodeMirror);
 })(function(CodeMirror) {
@@ -90,9 +90,9 @@
     var state = cm.state.matchHighlighter;
     cm.addOverlay(state.overlay = makeOverlay(query, hasBoundary, style));
     if (state.options.annotateScrollbar && cm.showMatchesOnScrollbar) {
-      var searchFor = hasBoundary ? new RegExp$(TOPDIR)/feeds/packages/.test(query.charAt(0)) ? "\\b" : "") +
+      var searchFor = hasBoundary ? new RegExp((/\w/.test(query.charAt(0)) ? "\\b" : "") +
                                                query.replace(/[\\\[.+*?(){|^$]/g, "\\$&") +
-                                              $(TOPDIR)/feeds/packages/.test(query.charAt(query.length - 1)) ? "\\b" : "")) : query;
+                                               (/\w/.test(query.charAt(query.length - 1)) ? "\\b" : "")) : query;
       state.matchesonscroll = cm.showMatchesOnScrollbar(searchFor, false,
         {className: "CodeMirror-selection-highlight-scrollbar"});
     }
@@ -139,12 +139,12 @@
         if (from.ch > 0) {
             var pos = {line: from.line, ch: from.ch - 1};
             var chr = cm.getRange(pos, from);
-            if (chr.matc$(TOPDIR)/feeds/packages/) === null) return false;
+            if (chr.match(/\W/) === null) return false;
         }
         if (to.ch < cm.getLine(from.line).length) {
             var pos = {line: to.line, ch: to.ch + 1};
             var chr = cm.getRange(to, pos);
-            if (chr.matc$(TOPDIR)/feeds/packages/) === null) return false;
+            if (chr.match(/\W/) === null) return false;
         }
         return true;
     } else return false;

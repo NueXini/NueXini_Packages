@@ -391,7 +391,7 @@ function sortTable(col, IPVer, flag, x, y) {
 	var a = x[byCol], b = y[byCol];
 
 	if (!IPVer || byCol != 0) {
-		if (!(a.matc$(TOPDIR)/feeds/packages/g) || b.matc$(TOPDIR)/feeds/packages/g)))
+		if (!(a.match(/\D/g) || b.match(/\D/g)))
 			a = parseInt(a), b = parseInt(b);
 	}
 	else {

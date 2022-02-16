@@ -14,6 +14,6 @@ PKG_NAME:=luci-app-arpbind
 PKG_VERSION:=1
 PKG_RELEASE:=3
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

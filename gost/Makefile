@@ -29,7 +29,7 @@ GO_PKG_BUILD_PKG:=github.com/ginuerzh/gost/cmd/gost
 GO_PKG_LDFLAGS:=-s -w
 
 include $(INCLUDE_DIR)/package.mk
-include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk
+include ../../lang/golang/golang-package.mk
 
 define Package/gost
   SECTION:=net

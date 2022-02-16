@@ -14,6 +14,6 @@ PKG_NAME:=luci-app-webadmin
 PKG_VERSION:=2
 PKG_RELEASE:=1
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

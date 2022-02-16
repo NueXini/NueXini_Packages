@@ -108,10 +108,10 @@ get_ip_port_from() {
 
 	local val1 val2
 	if [ -n "${__ucipriority}" ]; then
-		val2=$(config_n_get ${__host} port $(echo $__host | sed -n 's/^.*[:#]\([0-9]*\$(TOPDIR)/feeds/packages/p'))
+		val2=$(config_n_get ${__host} port $(echo $__host | sed -n 's/^.*[:#]\([0-9]*\)$/\1/p'))
 		val1=$(config_n_get ${__host} address "${__host%%${val2:+[:#]${val2}*}}")
 	else
-		val2=$(echo $__host | sed -n 's/^.*[:#]\([0-9]*\$(TOPDIR)/feeds/packages/p')
+		val2=$(echo $__host | sed -n 's/^.*[:#]\([0-9]*\)$/\1/p')
 		val1="${__host%%${val2:+[:#]${val2}*}}"
 	fi
 	eval "${__ipv}=\"$val1\"; ${__portv}=\"$val2\""
@@ -144,7 +144,7 @@ hosts_foreach() {
 
 	[ -z "${__hosts}" ] && return 0
 	local __ip __port
-	for __host in $(echo $__hosts | sed 's/[ $(TOPDIR)/feeds/packages/g'); do
+	for __host in $(echo $__hosts | sed 's/[ ,]/\n/g'); do
 		get_ip_port_from "$__host" "__ip" "__port"
 		eval "$__func \"${__host}\" \"\${__ip}\" \"\${__port:-${__default_port}}\" \"$@\""
 		__ret=$?
@@ -356,7 +356,7 @@ run_v2ray_dns_socks() {
 		_extra_param="${_extra_param} -dns_server ${_dns_address} -dns_tcp_server tcp://${_dns_forward}"
 	elif [ "$dns_proto" = "doh" ]; then
 		_doh_url=$(echo $doh | awk -F ',' '{print $1}')
-		_doh_host_port=$(echo $_doh_url | sed "s/https$(TOPDIR)/feeds/packages//g" | awk -F '/' '{print $1}')
+		_doh_host_port=$(echo $_doh_url | sed "s/https:\/\///g" | awk -F '/' '{print $1}')
 		_doh_host=$(echo $_doh_host_port | awk -F ':' '{print $1}')
 		_doh_port=$(echo $_doh_host_port | awk -F ':' '{print $2}')
 		_doh_bootstrap=$(echo $doh | cut -d ',' -sf 2-)
@@ -669,7 +669,7 @@ run_redir() {
 						doh)
 							up_trust_doh=$(config_t_get global up_trust_doh "https://cloudflare-dns.com/dns-query,1.1.1.1")
 							_doh_url=$(echo $up_trust_doh | awk -F ',' '{print $1}')
-							_doh_host_port=$(echo $_doh_url | sed "s/https$(TOPDIR)/feeds/packages//g" | awk -F '/' '{print $1}')
+							_doh_host_port=$(echo $_doh_url | sed "s/https:\/\///g" | awk -F '/' '{print $1}')
 							_doh_host=$(echo $_doh_host_port | awk -F ':' '{print $1}')
 							_doh_port=$(echo $_doh_host_port | awk -F ':' '{print $2}')
 							_doh_bootstrap=$(echo $up_trust_doh | cut -d ',' -sf 2-)
@@ -1085,7 +1085,7 @@ start_dns() {
 				doh)
 					up_trust_doh=$(config_t_get global up_trust_doh "https://cloudflare-dns.com/dns-query,1.1.1.1")
 					_doh_url=$(echo $up_trust_doh | awk -F ',' '{print $1}')
-					_doh_host_port=$(echo $_doh_url | sed "s/https$(TOPDIR)/feeds/packages//g" | awk -F '/' '{print $1}')
+					_doh_host_port=$(echo $_doh_url | sed "s/https:\/\///g" | awk -F '/' '{print $1}')
 					_doh_host=$(echo $_doh_host_port | awk -F ':' '{print $1}')
 					_doh_port=$(echo $_doh_host_port | awk -F ':' '{print $2}')
 					_doh_bootstrap=$(echo $up_trust_doh | cut -d ',' -sf 2-)
@@ -1136,7 +1136,7 @@ start_dns() {
 	[ -n "$chnlist" ] && [ "$CHINADNS_NG" = "1" ] && [ -n "$(first_type chinadns-ng)" ] && [ -s "${RULES_PATH}/chnlist" ] && {
 		china_ng_listen_port=$(expr $dns_listen_port + 1)
 		china_ng_listen="127.0.0.1#${china_ng_listen_port}"
-		china_ng_chn=$(echo -n $(echo "${LOCAL_DNS}" | sed "s$(TOPDIR)/feeds/packages/g" | head -n2) | tr " " ",")
+		china_ng_chn=$(echo -n $(echo "${LOCAL_DNS}" | sed "s/,/\n/g" | head -n2) | tr " " ",")
 		china_ng_gfw="${TUN_DNS}"
 		echolog "  | - (chinadns-ng) 最高支持4级域名过滤..."
 
@@ -1323,7 +1323,7 @@ start_haproxy() {
 
 		[ -z "$haproxy_port" ] || [ -z "$bip" ] && echolog "  - 丢弃1个明显无效的节点" && continue
 		[ "$backup" = "1" ] && bbackup="backup"
-		remark=$(echo $bip | sed $(TOPDIR)/feeds/packages//g" | sed $(TOPDIR)/feeds/packages//g")
+		remark=$(echo $bip | sed "s/\[//g" | sed "s/\]//g")
 
 		[ "$lport" = "${haproxy_port}" ] || {
 			hasvalid="1"
@@ -1470,8 +1470,8 @@ CHINADNS_NG=$(config_t_get global chinadns_ng 0)
 filter_proxy_ipv6=$(config_t_get global filter_proxy_ipv6 0)
 dns_listen_port=${DNS_PORT}
 
-DEFAULT_DNS=$(uci show dhcp | grep "@dnsmasq" | grep "\.server=" | awk -F '=' '{print $2}' | sed $(TOPDIR)/feeds/packages/g" | tr ' ' '\n' | grep -v "\/" | head -2 | sed ':label;N$(TOPDIR)/feeds/packages/,/;b label')
-[ -z "${DEFAULT_DNS}" ] && DEFAULT_DNS=$(echo -n $(sed -n 's/^nameserver[ \t]*\([^ ]*\$(TOPDIR)/feeds/packages/p' "${RESOLVFILE}" | grep -v -E "0.0.0.0|127.0.0.1|::" | head -2) | tr ' ' ',')
+DEFAULT_DNS=$(uci show dhcp | grep "@dnsmasq" | grep "\.server=" | awk -F '=' '{print $2}' | sed "s/'//g" | tr ' ' '\n' | grep -v "\/" | head -2 | sed ':label;N;s/\n/,/;b label')
+[ -z "${DEFAULT_DNS}" ] && DEFAULT_DNS=$(echo -n $(sed -n 's/^nameserver[ \t]*\([^ ]*\)$/\1/p' "${RESOLVFILE}" | grep -v -E "0.0.0.0|127.0.0.1|::" | head -2) | tr ' ' ',')
 LOCAL_DNS="${DEFAULT_DNS:-119.29.29.29}"
 
 PROXY_IPV6=$(config_t_get global_forwarding ipv6_tproxy 0)

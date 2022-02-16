@@ -46,7 +46,7 @@ o.description = translate("AdGuardHome / Host / DNSMASQ rules auto-convert")
 o = s:option(Button,"delete",translate("Delete All Subscribe Rules"))
 o.inputstyle = "reset"
 o.write = function()
-  SYS.exec("rm -f /usr/share/adbyby/rules/da$(TOPDIR)/feeds/packages/usr/share/adbyby/rules/host/*")
+  SYS.exec("rm -f /usr/share/adbyby/rules/data/* /usr/share/adbyby/rules/host/*")
   SYS.exec("/etc/init.d/adbyby restart 2>&1 &")
   luci.http.redirect(luci.dispatcher.build_url("admin", "services", "adbyby", "advanced"))
 end

@@ -56,7 +56,7 @@ function get_images()
 		end
 
 		data[index]["_size"] = string.format("%.2f", tostring(v.Size/1024/1024)).."MB"
-		data[index]["_created"] = os.date("$(TOPDIR)/feeds/packages/%d %H:%M:%S",v.Created)
+		data[index]["_created"] = os.date("%Y/%m/%d %H:%M:%S",v.Created)
 	end
 
 	return data

@@ -65,8 +65,8 @@ local function generate_gfwlist(type)
 		end
 	end
 	for k, v in pairs(domains) do
-		out:write(string.format("serve$(TOPDIR)/feeds/packages/%s#%s\n", k, mydnsip, mydnsport))
-		out:write(string.format("ipse$(TOPDIR)/feeds/packages/%s\n", k, ipsetname))
+		out:write(string.format("server=/%s/%s#%s\n", k, mydnsip, mydnsport))
+		out:write(string.format("ipset=/%s/%s\n", k, ipsetname))
 	end
 	out:close()
 	os.remove("/tmp/ssr-update.tmp")
@@ -85,7 +85,7 @@ local function generate_adblock(type)
 		end
 	end
 	for k, v in pairs(domains) do
-		out:write(string.format("addres$(TOPDIR)/feeds/packages/\n", k))
+		out:write(string.format("address=/%s/\n", k))
 	end
 	out:close()
 	os.remove("/tmp/ssr-update.tmp")

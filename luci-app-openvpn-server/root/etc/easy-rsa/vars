@@ -78,7 +78,7 @@ set_var EASYRSA_PKI		"/etc/easy-rsa/pki"
 #
 # Choices are:
 #   cn_only  - use just a CN value
-#   org      - use the "traditional" Country/Province/City/O$(TOPDIR)/feeds/packages/email/CN format
+#   org      - use the "traditional" Country/Province/City/Org/OU/email/CN format
 
 #set_var EASYRSA_DN	"cn_only"
 

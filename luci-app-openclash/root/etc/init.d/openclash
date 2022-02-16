@@ -137,7 +137,7 @@ EOF
 
 kill_clash()
 {
-   clash_pids=$(pidof clash |sed $(TOPDIR)/feeds/packages/g')
+   clash_pids=$(pidof clash |sed 's/$//g')
    for clash_pid in $clash_pids; do
       kill -9 "$clash_pid" 2>/dev/null
    done >/dev/null 2>&1
@@ -297,13 +297,13 @@ yml_provider_path()
       |x,v|
       if not x['path'].include? '$3' and not x['path'].include? 'game_rules' then
          v=File.basename(x['path'])
-         x['path']=$(TOPDIR)/feeds/packages/'+v
+         x['path']='./$3/'+v
       end
       #CDN Replace
       if '$4' != '0' then
          if '$4' == 'https://cdn.jsdelivr.net/' then
             if x['url'] and x['url'] =~ /^https:\/\/raw.githubusercontent.com/ then
-               x['url'] = 'https://cdn.jsdelivr.n$(TOPDIR)/feeds/packages/' + x['url'].split('/')[3] + '/' + x['url'].split('/')[4] + '@' + x['url'].split(x['url'].split('/')[2] + '/' + x['url'].split('/')[3] + '/' + x['url'].split('/')[4] + '/')[1]
+               x['url'] = 'https://cdn.jsdelivr.net/gh/' + x['url'].split('/')[3] + '/' + x['url'].split('/')[4] + '@' + x['url'].split(x['url'].split('/')[2] + '/' + x['url'].split('/')[3] + '/' + x['url'].split('/')[4] + '/')[1]
             end
          else
             if x['url'] and x['url'] =~ /^https:\/\/(raw.|gist.)(githubusercontent.com|github.com)/ then
@@ -768,7 +768,7 @@ yml_gen_rule_provider_file()
       RULE_PROVIDER_FILE_URL="https://raw.githubusercontent.com/${RULE_PROVIDER_FILE_URL_PATH}"
    else
       if [ "$github_address_mod" == "https://cdn.jsdelivr.net/" ]; then
-         RULE_PROVIDER_FILE_URL="https://cdn.jsdelivr.n$(TOPDIR)/feeds/packages/"$(echo "$RULE_PROVIDER_FILE_URL_PATH" |awk -F '/master' '{print $1}' 2>/dev/null)"@master"$(echo "$RULE_PROVIDER_FILE_URL_PATH" |awk -F 'master' '{print $2}')""
+         RULE_PROVIDER_FILE_URL="https://cdn.jsdelivr.net/gh/"$(echo "$RULE_PROVIDER_FILE_URL_PATH" |awk -F '/master' '{print $1}' 2>/dev/null)"@master"$(echo "$RULE_PROVIDER_FILE_URL_PATH" |awk -F 'master' '{print $2}')""
       else
          RULE_PROVIDER_FILE_URL="${github_address_mod}https://raw.githubusercontent.com/${RULE_PROVIDER_FILE_URL_PATH}"
       fi

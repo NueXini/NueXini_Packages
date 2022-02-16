@@ -5,9 +5,9 @@
 
 (function(mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("$(TOPDIR)/feeds/packages/lib/codemirror"), require("../dialog/dialog"));
+    mod(require("../../lib/codemirror"), require("../dialog/dialog"));
   else if (typeof define == "function" && define.amd) // AMD
-    define(["$(TOPDIR)/feeds/packages/lib/codemirror", "../dialog/dialog"], mod);
+    define(["../../lib/codemirror", "../dialog/dialog"], mod);
   else // Plain browser env
     mod(CodeMirror);
 })(function(CodeMirror) {

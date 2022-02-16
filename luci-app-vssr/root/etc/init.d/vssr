@@ -142,7 +142,7 @@ gen_config_file() {
     fi
 
     lua /usr/share/vssr/genconfig_${stype}.lua ${server_obj} ${re_type} ${port} ${hostip} ${mport} >${config_file}
-    sed -i $(TOPDIR)/feeds/packages//g' $config_file
+    sed -i 's/\\//g' $config_file
 }
 
 #获取arg输出
@@ -321,7 +321,7 @@ start_shunt() {
             local config_file=/var/etc/${NAME}_${shunt_type}.json
             local bin=$(find_bin $server_type)
             lua /usr/share/vssr/genconfig_${server_type}.lua ${server_index} ${re_type} ${server_port} ${server_ip} >${config_file}
-            sed -i $(TOPDIR)/feeds/packages//g' $config_file
+            sed -i 's/\\//g' $config_file
             case "$server_type" in
             ss | ssr)
                 bin=$(find_bin "ss-local")
@@ -549,7 +549,7 @@ start_local() {
     mkdir -p /var/run /var/etc
 
     lua /usr/share/vssr/genconfig_v2ray_s.lua >$CONFIG_SOCK5_FILE
-    sed -i $(TOPDIR)/feeds/packages//g' $config_file
+    sed -i 's/\\//g' $config_file
     socksbin=$(find_bin "v2ray")
     $socksbin -config $CONFIG_SOCK5_FILE >/dev/null 2>&1 &
     local_enable=1

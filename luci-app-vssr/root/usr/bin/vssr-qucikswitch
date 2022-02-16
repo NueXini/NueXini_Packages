@@ -68,7 +68,7 @@ gen_config_file() {
         fi
     fi
     lua /usr/share/vssr/genconfig_${stype}.lua ${server_obj} ${re_type} ${port} ${hostip} >${config_file}
-    sed -i $(TOPDIR)/feeds/packages//g' $config_file
+    sed -i 's/\\//g' $config_file
 
 }
 start_local() {
@@ -80,7 +80,7 @@ start_local() {
     mkdir -p /var/run /var/etc
 
     lua /usr/share/vssr/genconfig_v2ray_s.lua "socks" ${local_port} ${Socks_user} ${Socks_pass} >$CONFIG_SOCK5_FILE
-    sed -i $(TOPDIR)/feeds/packages//g' $config_file
+    sed -i 's/\\//g' $config_file
 
     /usr/bin/xray -config $CONFIG_SOCK5_FILE >/dev/null 2>&1 &
 }

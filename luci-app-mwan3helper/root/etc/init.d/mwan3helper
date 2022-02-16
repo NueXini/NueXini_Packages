@@ -150,8 +150,8 @@ start(){
     start_pdnsd
     mkdir -p /tmp/etc/dnsmasq-mwan3.d
     ipset -N gfwlist hash:net 2>/dev/null
-    awk $(TOPDIR)/feeds/packages/&$(TOPDIR)/feeds/packages/{printf("ipset=/.%s/'"gfwlist"'\n",$0)}' /etc/mwan3helper/gfw.txt > /tmp/etc/dnsmasq-mwan3.d/mwan3_gfwlist.conf
-    awk $(TOPDIR)/feeds/packages/&$(TOPDIR)/feeds/packages/{printf("server=/.%s/'"127.0.0.1#53000"'\n",$0)}' /etc/mwan3helper/gfw.txt >> /tmp/etc/dnsmasq-mwan3.d/mwan3_gfwlist.conf
+    awk '!/^$/&&!/^#/{printf("ipset=/.%s/'"gfwlist"'\n",$0)}' /etc/mwan3helper/gfw.txt > /tmp/etc/dnsmasq-mwan3.d/mwan3_gfwlist.conf
+    awk '!/^$/&&!/^#/{printf("server=/.%s/'"127.0.0.1#53000"'\n",$0)}' /etc/mwan3helper/gfw.txt >> /tmp/etc/dnsmasq-mwan3.d/mwan3_gfwlist.conf
     cat > /tmp/dnsmasq.d/dnsmasq-mwan3.conf <<EOF
 conf-dir=/var/etc/dnsmasq-mwan3.d
 EOF

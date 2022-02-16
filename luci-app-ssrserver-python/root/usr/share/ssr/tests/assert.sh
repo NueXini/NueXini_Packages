@@ -78,7 +78,7 @@ assert_end() {
     [[ -n "$DEBUG" ]] && echo
     [[ -z "$INVARIANT" ]] && report_time=" in $(bc \
         <<< "${tests_endtime%.N} - ${tests_starttime%.N}" \
-        | sed -e 's/\.\([0-9]\{0,3\}\)[0-9]*/.\1/' -e 's/^$(TOPDIR)/feeds/packages/')s" \
+        | sed -e 's/\.\([0-9]\{0,3\}\)[0-9]*/.\1/' -e 's/^\./0./')s" \
         || report_time=
 
     if [[ "$tests_failed" -eq 0 ]]; then
@@ -105,7 +105,7 @@ assert() {
         [[ -n "$DEBUG" ]] && echo -n . || true
         return
     fi
-    result="$(sed -e :a -e '$!N$(TOPDIR)/feeds/packages/\\n/;ta' <<< "$result")"
+    result="$(sed -e :a -e '$!N;s/\n/\\n/;ta' <<< "$result")"
     [[ -z "$result" ]] && result="nothing" || result="\"$result\""
     [[ -z "$2" ]] && expected="nothing" || expected="\"$2\""
     _assert_fail "expected $expected${_indent}got $result" "$1" "$3"

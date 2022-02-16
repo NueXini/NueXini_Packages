@@ -10,7 +10,7 @@ LOGFILE="/var/etc/frp/frpc.log"
 
 echo_date(){
 	local log=$1
-	echo $(date +$(TOPDIR)/feeds/packages/%d\ %X): "$log" >> $LOGFILE
+	echo $(date +%Y/%m/%d\ %X): "$log" >> $LOGFILE
 }
 
 Reduce_Log(){

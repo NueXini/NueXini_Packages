@@ -15,23 +15,23 @@ my %stringtable;
 sub dec_lua_str
 {
 	my $s = shift;
-	$s =~ s/\$(TOPDIR)/feeds/packages/g;
-	$s =~ s/\$(TOPDIR)/feeds/packages/g;
-	$s =~ s/\\($(TOPDIR)/feeds/packages/sg;
+	$s =~ s/\\n/\n/g;
+	$s =~ s/\\t/\t/g;
+	$s =~ s/\\(.)/$1/sg;
 	$s =~ s/[\s\n]+/ /g;
-	$s =~$(TOPDIR)/feeds/packages//;
-	$s =~$(TOPDIR)/feeds/packages//;
+	$s =~ s/^ //;
+	$s =~ s/ $//;
 	return $s;
 }
 
 sub dec_tpl_str
 {
 	my $s = shift;
-	$s =~$(TOPDIR)/feeds/packages//;
+	$s =~ s/-$//;
 	$s =~ s/[\s\n]+/ /g;
-	$s =~$(TOPDIR)/feeds/packages//;
-	$s =~$(TOPDIR)/feeds/packages//;
-	$s =~$(TOPDIR)/feeds/packages/\\\\/g;
+	$s =~ s/^ //;
+	$s =~ s/ $//;
+	$s =~ s/\\/\\\\/g;
 	return $s;
 }
 
@@ -57,11 +57,11 @@ if( open F, "find @ARGV -type f '(' -name '*.htm' -o -name '*.lua' -o -name '*.j
 				my $res = "";
 				my $sub = "";
 
-				$line += () = $prefix =$(TOPDIR)/feeds/packages/g;
+				$line += () = $prefix =~ /\n/g;
 
 				my $position = "$file:$line";
 
-				$line += () = $suffix =$(TOPDIR)/feeds/packages/g;
+				$line += () = $suffix =~ /\n/g;
 
 				while (defined $sub)
 				{
@@ -75,10 +75,10 @@ if( open F, "find @ARGV -type f '(' -name '*.htm' -o -name '*.lua' -o -name '*.j
 
 						($sub, $text) = extract_tagged($text, $stag, $etag, q{\s*(?:\.\.\s*)?});
 
-						$line += () = $ws =$(TOPDIR)/feeds/packages/g;
+						$line += () = $ws =~ /\n/g;
 
 						if (defined($sub) && length($sub)) {
-							$line += () = $sub =$(TOPDIR)/feeds/packages/g;
+							$line += () = $sub =~ /\n/g;
 
 							$sub =~ s/^$stag//;
 							$sub =~ s/$etag$//;
@@ -97,10 +97,10 @@ if( open F, "find @ARGV -type f '(' -name '*.htm' -o -name '*.lua' -o -name '*.j
 							$text = substr $text, pos $text;
 						}
 
-						$line += () = $ws =$(TOPDIR)/feeds/packages/g;
+						$line += () = $ws =~ /\n/g;
 
 						if (defined($sub) && length($sub)) {
-							$line += () = $sub =$(TOPDIR)/feeds/packages/g;
+							$line += () = $sub =~ /\n/g;
 
 							$sub =~ s/^$quote//;
 							$sub =~ s/$quote$//;
@@ -124,9 +124,9 @@ if( open F, "find @ARGV -type f '(' -name '*.htm' -o -name '*.lua' -o -name '*.j
 			$text = $raw;
 			$line = 1;
 
-			while( $text =~ s/ ^ (.*?) <% -? [:_$(TOPDIR)/feeds/packages/sgx )
+			while( $text =~ s/ ^ (.*?) <% -? [:_] /<%/sgx )
 			{
-				$line += () = $1 =$(TOPDIR)/feeds/packages/g;
+				$line += () = $1 =~ /\n/g;
 
 				( my $code, $text ) = extract_tagged($text, '<%', '%>');
 
@@ -134,7 +134,7 @@ if( open F, "find @ARGV -type f '(' -name '*.htm' -o -name '*.lua' -o -name '*.j
 				{
 					my $position = "$file:$line";
 
-					$line += () = $code =$(TOPDIR)/feeds/packages/g;
+					$line += () = $code =~ /\n/g;
 
 					$code = dec_tpl_str(substr $code, 2, length($code) - 4);
 
@@ -159,9 +159,9 @@ if( open C, "| msgcat -" )
 		{
 			my @positions = @{$stringtable{$key}};
 
-			$key =~$(TOPDIR)/feeds/packages/\\\\/g;
-			$key =~$(TOPDIR)/feeds/packages/\\n/g;
-			$key =~$(TOPDIR)/feeds/packages/\\t/g;
+			$key =~ s/\\/\\\\/g;
+			$key =~ s/\n/\\n/g;
+			$key =~ s/\t/\\t/g;
 			$key =~ s/"/\\"/g;
 
 			printf C "#: %s\nmsgid \"%s\"\nmsgstr \"\"\n\n",

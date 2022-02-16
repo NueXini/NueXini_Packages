@@ -16,7 +16,7 @@ local has_xray = api.is_finded("xray")
 	}
 	
 	function b64encutf8safe(str) {
-		return b64EncodeUnicode(str).replac$(TOPDIR)/feeds/packages/g, "-").replac$(TOPDIR)/feeds/packages/g, "_").replace(/=+$/g, '');
+		return b64EncodeUnicode(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, '');
 	}
 	
 	function b64DecodeUnicode(str) {
@@ -36,7 +36,7 @@ local has_xray = api.is_finded("xray")
 	}
 	
 	function b64encsafe(str) {
-		return btoa(str).replac$(TOPDIR)/feeds/packages/g, "-").replac$(TOPDIR)/feeds/packages/g, "_").replace(/=+$/g, '')
+		return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, '')
 	}
 	
 	function b64decsafe(str) {
@@ -63,7 +63,7 @@ local has_xray = api.is_finded("xray")
 				hostname: m[6] || "", // localhost
 				href: m[0] || "", // http://username:password@localhost:257/deploy/?asd=asd#asd
 				origin: m[1] || "", // http://username:password@localhost:257
-				pathname: m[8] || (m[1] ? "/" : "")$(TOPDIR)/feeds/packages/deploy/
+				pathname: m[8] || (m[1] ? "/" : ""), // /deploy/
 				port: m[7] || "", // 257
 				protocol: m[2] || "", // http:
 				search: m[9] || "", // ?asd=asd

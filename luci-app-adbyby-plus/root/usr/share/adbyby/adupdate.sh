@@ -7,8 +7,8 @@ touch /tmp/md5.json && uclient-fetch --no-check-certificate -T 10 -O /tmp/md5.js
 
 lazy_local=$(grep 'lazy' /tmp/local-md5.json | awk -F' ' '{print $1}')
 video_local=$(grep 'video' /tmp/local-md5.json | awk -F' ' '{print $1}')  
-lazy_online=$(sed  's/"$(TOPDIR)/feeds/packages/g' /tmp/md5.json  |  sed  's/"$(TOPDIR)/feeds/packages/g' | sed -n '2p')
-video_online=$(sed  's/"$(TOPDIR)/feeds/packages/g' /tmp/md5.json  |  sed  's/"$(TOPDIR)/feeds/packages/g' | sed -n '4p')
+lazy_online=$(sed  's/":"/\n/g' /tmp/md5.json  |  sed  's/","/\n/g' | sed -n '2p')
+video_online=$(sed  's/":"/\n/g' /tmp/md5.json  |  sed  's/","/\n/g' | sed -n '4p')
 
 if [ "$lazy_online"x != "$lazy_local"x -o "$video_online"x != "$video_local"x ]; then
     echo "MD5 not match! Need update!"

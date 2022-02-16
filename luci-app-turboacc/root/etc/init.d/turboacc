@@ -194,7 +194,7 @@ EOF
 
 start_dnsproxy() {
 	[ -d "/var/run/dnscache" ] || mkdir -p "/var/run/dnscache"
-	echo -e "${dns_caching_d$(TOPDIR)/feeds/packages/\\n}" > "/var/run/dnscache/dnscache.conf"
+	echo -e "${dns_caching_dns//,/\\n}" > "/var/run/dnscache/dnscache.conf"
 
 	[ -d "/var/sbin" ] || mkdir -p "/var/sbin"
 	cp -a "/usr/bin/dnsproxy" "/var/sbin/dnscache"

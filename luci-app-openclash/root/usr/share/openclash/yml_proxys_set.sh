@@ -109,7 +109,7 @@ yml_proxy_provider_set()
       if [ -n "$(grep -w "path: $path" "$PROXY_PROVIDER_FILE" 2>/dev/null)" ]; then
          return
       elif [ "$(grep -w "^$name$" "$proxy_provider_name" |wc -l 2>/dev/null)" -ge 2 ] && [ -z "$(grep -w "path: $path" "$PROXY_PROVIDER_FILE" 2>/dev/null)" ]; then
-      	 sed -i "1,/^${name$(TOPDIR)/feeds/packages/d}" "$proxy_provider_name" 2>/dev/null
+      	 sed -i "1,/^${name}$/{//d}" "$proxy_provider_name" 2>/dev/null
          return
       fi
    fi
@@ -280,7 +280,7 @@ yml_servers_set()
       if [ -n "$(grep -w "name: \"$name\"" "$SERVER_FILE" 2>/dev/null)" ]; then
          return
       elif [ "$(grep -w "^$name$" "$servers_name" |wc -l 2>/dev/null)" -ge 2 ] && [ -z "$(grep -w "name: \"$name\"" "$SERVER_FILE" 2>/dev/null)" ]; then
-      	 sed -i "1,/^${name$(TOPDIR)/feeds/packages/d}" "$servers_name" 2>/dev/null
+      	 sed -i "1,/^${name}$/{//d}" "$servers_name" 2>/dev/null
          return
       fi
    fi
@@ -741,7 +741,7 @@ LOG_OUT "Start Writing【$CONFIG_NAME】Proxy-providers Setting..."
 echo "proxy-providers:" >$PROXY_PROVIDER_FILE
 rm -rf /tmp/Proxy_Provider
 config_foreach yml_proxy_provider_set "proxy-provider"
-sed -i "s/^ \{0,\}/      $(TOPDIR)/feeds/packages/tmp/Proxy_Provider 2>/dev/null #添加参数
+sed -i "s/^ \{0,\}/      - /" /tmp/Proxy_Provider 2>/dev/null #添加参数
 if [ "$(grep "-" /tmp/Proxy_Provider 2>/dev/null |wc -l)" -eq 0 ]; then
    rm -rf $PROXY_PROVIDER_FILE
    rm -rf /tmp/Proxy_Provider
@@ -756,7 +756,7 @@ echo "proxies:" >$SERVER_FILE
 config_foreach yml_servers_set "servers"
 egrep '^ {0,}-' $SERVER_FILE |grep name: |awk -F 'name: ' '{print $2}' |sed 's/,.*//' 2>/dev/null >/tmp/Proxy_Server 2>&1
 if [ -s "/tmp/Proxy_Server" ]; then
-   sed -i "s/^ \{0,\}/      $(TOPDIR)/feeds/packages/tmp/Proxy_Server 2>/dev/null #添加参数
+   sed -i "s/^ \{0,\}/      - /" /tmp/Proxy_Server 2>/dev/null #添加参数
 else
    rm -rf $SERVER_FILE
    rm -rf /tmp/Proxy_Server

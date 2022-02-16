@@ -1,5 +1,5 @@
 mp = Map("unblockneteasemusic", translate("解除网易云音乐播放限制"))
-mp.description = translate("原理：采用 [Bilibili/JO$(TOPDIR)/feeds/packages/$(TOPDIR)/feeds/packages/pync$(TOPDIR)/feeds/packages/Youtube] 等音源，替换网易云音乐 无版权/收费 歌曲链接<br/>具体使用方法参见：<a href=\"https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic\" target=\"_blank\">GitHub @UnblockNeteaseMusic/luci-app-unblockneteasemusic</a>")
+mp.description = translate("原理：采用 [Bilibili/JOOX/酷狗/酷我/咪咕/pyncmd/QQ/Youtube] 等音源，替换网易云音乐 无版权/收费 歌曲链接<br/>具体使用方法参见：<a href=\"https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic\" target=\"_blank\">GitHub @UnblockNeteaseMusic/luci-app-unblockneteasemusic</a>")
 
 mp:section(SimpleSection).template = "unblockneteasemusic/unblockneteasemusic_status"
 
@@ -72,7 +72,7 @@ qq_cookie.datatype = "string"
 qq_cookie:depends("use_custom_cookie", 1)
 
 youtube_key = s:option(Value, "youtube_key", translate("Youtube API Key"))
-youtube_key.description = translate("API Key 申请地址：https://developers.google.com/youtu$(TOPDIR)/feeds/packages/getting-started#before-you-start")
+youtube_key.description = translate("API Key 申请地址：https://developers.google.com/youtube/v3/getting-started#before-you-start")
 youtube_key.datatype = "string"
 youtube_key:depends("use_custom_cookie", 1)
 

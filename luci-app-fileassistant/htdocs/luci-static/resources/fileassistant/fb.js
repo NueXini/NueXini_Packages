@@ -132,7 +132,7 @@ String.prototype.replaceAll = function(search, replacement) {
     }
     else if (targetElem = getFileElem(targetElem)) {
       if (targetElem.className.indexOf('parent-icon') > -1) {
-        update_list(currentPath.replace($(TOPDIR)/feeds/packages/]+($$(TOPDIR)/feeds/packages/, ''));
+        update_list(currentPath.replace(/\/[^/]+($|\/$)/, ''));
       }
       else if (targetElem.className.indexOf('file-icon') > -1) {
         openpath(targetElem.parentNode.dataset['filename']);

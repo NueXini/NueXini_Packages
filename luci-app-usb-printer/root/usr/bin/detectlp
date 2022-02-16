@@ -12,9 +12,9 @@ for lps in `ls`; do
         desc_file=$lp_path/$lps/device/ieee1284_id
         uevent_file=$lp_path/$lps/device/uevent
 
-        name=`cat $desc_file | sed 's/.*DES:\(.*\);$(TOPDIR)/feeds/packages/' | cut -d ';' -f 1`
-        model=`cat $desc_file | sed 's/.*MDL:\(.*\);$(TOPDIR)/feeds/packages/' | cut -d ';' -f 1`
-        product=`cat $uevent_file | grep PRODUCT= | sed 's/PRODUCT=\(.*$(TOPDIR)/feeds/packages/'`
+        name=`cat $desc_file | sed 's/.*DES:\(.*\);.*/\1/' | cut -d ';' -f 1`
+        model=`cat $desc_file | sed 's/.*MDL:\(.*\);.*/\1/' | cut -d ';' -f 1`
+        product=`cat $uevent_file | grep PRODUCT= | sed 's/PRODUCT=\(.*\)/\1/'`
 
         echo $lps,$product,$model,$name;
 done

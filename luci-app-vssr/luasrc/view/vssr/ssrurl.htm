@@ -23,7 +23,7 @@
             }));
         }
         function b64encutf8safe(str) {
-            return b64EncodeUnicode(str).replac$(TOPDIR)/feeds/packages/g, "-").replac$(TOPDIR)/feeds/packages/g, "_").replace(/=+$/g, '');
+            return b64EncodeUnicode(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, '');
         }
         function b64DecodeUnicode(str) {
             return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
@@ -40,7 +40,7 @@
             return b64DecodeUnicode(str);
         }
         function b64encsafe(str) {
-            return btoa(str).replac$(TOPDIR)/feeds/packages/g, "-").replac$(TOPDIR)/feeds/packages/g, "_").replace(/=+$/g, '')
+            return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, '')
         }
         function b64decsafe(str) {
             var l;

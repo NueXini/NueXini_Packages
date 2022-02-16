@@ -34,7 +34,7 @@ start()
 	mkdir -p /tmp/sysinfo
 	echo $h > /tmp/sysinfo/model
 
-	a=$(ip address | grep ^[0-9] | awk -F: '{print $2}' | sed $(TOPDIR)/feeds/packages/g" | grep '^[e]' | grep -v "@" | grep -v "\.")
+	a=$(ip address | grep ^[0-9] | awk -F: '{print $2}' | sed "s/ //g" | grep '^[e]' | grep -v "@" | grep -v "\.")
 	b=$(echo "$a" | wc -l)
 	for i in $(seq 1 $b)
 	do

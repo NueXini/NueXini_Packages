@@ -45,7 +45,7 @@
       LOG_OUT "Chnroute Cidr List Download Success, Check Updated..."
       #预处理
       echo "create china_ip_route hash:net family inet hashsize 1024 maxelem 1000000" >/tmp/china_ip_route.list
-      awk $(TOPDIR)/feeds/packages/&$(TOPDIR)/feeds/packages/{printf("add china_ip_route %s'" "'\n",$0)}' /tmp/china_ip_route.txt >>/tmp/china_ip_route.list
+      awk '!/^$/&&!/^#/{printf("add china_ip_route %s'" "'\n",$0)}' /tmp/china_ip_route.txt >>/tmp/china_ip_route.list
       cmp -s /tmp/china_ip_route.list "$chnr_path"
       if [ "$?" -ne "0" ]; then
          LOG_OUT "Chnroute Cidr List Has Been Updated, Starting To Replace The Old Version..."
@@ -75,7 +75,7 @@
       LOG_OUT "Chnroute6 Cidr List Download Success, Check Updated..."
       #预处理
       echo "create china_ip6_route hash:net family inet6 hashsize 1024 maxelem 1000000" >/tmp/china_ip6_route.list
-      awk $(TOPDIR)/feeds/packages/&$(TOPDIR)/feeds/packages/{printf("add china_ip6_route %s'" "'\n",$0)}' /tmp/china_ip6_route.txt >>/tmp/china_ip6_route.list
+      awk '!/^$/&&!/^#/{printf("add china_ip6_route %s'" "'\n",$0)}' /tmp/china_ip6_route.txt >>/tmp/china_ip6_route.list
       cmp -s /tmp/china_ip6_route.list "$chnr6_path"
       if [ "$?" -ne "0" ]; then
          LOG_OUT "Chnroute6 Cidr List Has Been Updated, Starting To Replace The Old Version..."

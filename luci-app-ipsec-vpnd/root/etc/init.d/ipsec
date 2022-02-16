@@ -287,7 +287,7 @@ config_ipsec() {
 		if [ "$routing_table" -ge 0 ] 2>/dev/null; then
 			routing_table_id=$routing_table
 		else
-			routing_table_id=$(sed -n '/[ \t]*[0-9]\+[ \t]\+'$routing_table'[ \t]*$/s/[ \t]*\([0-9]\+\)$(TOPDIR)/feeds/packages/p' /etc/iproute2/rt_tables)
+			routing_table_id=$(sed -n '/[ \t]*[0-9]\+[ \t]\+'$routing_table'[ \t]*$/s/[ \t]*\([0-9]\+\).*/\1/p' /etc/iproute2/rt_tables)
 		fi
 
 		[ -n "$routing_table_id" ] && append routing_tables_ignored "$routing_table_id"

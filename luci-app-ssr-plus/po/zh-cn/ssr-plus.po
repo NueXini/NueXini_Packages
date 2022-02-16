@@ -440,7 +440,7 @@ msgid "Auto Update Server subscription, GFW list and CHN route"
 msgstr "自动更新服务器订阅、GFW列表和 CHN路由表"
 
 msgid "Subscribe URL"
-msgstr "SS/S$(TOPDIR)/feeds/packages/TROJAN订阅URL"
+msgstr "SS/SSR/V2/TROJAN订阅URL"
 
 msgid "Subscribe Filter Words"
 msgstr "订阅节点关键字过滤"

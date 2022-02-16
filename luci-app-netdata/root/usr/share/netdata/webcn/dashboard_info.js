@@ -660,7 +660,7 @@ netdataDashboard.submenu = {
 
     'mem.ksm': {
         title: 'deduper (ksm)',
-        info: 'Kernel Same-page Merging (KSM) 效能监视，经由读取 <code>/sys/kern$(TOPDIR)/feeds/packages/ksm/</code> 下的档案而来。KSM 是在 Linux 核心 (自 2.6.32 版起) 内含的一种节省记忆体使用率重复资料删除功能。)。 KSM 服务程序 ksmd 会定期扫描记忆体区域，寻找正有资料要更新进来且相同资料存在的分页。KSM 最初是从 KVM 专案开发中而来，利用这种共用相同资料的机制，即可以让更多的虚拟机器放到记忆体中。另外，对许多会产生同样内容的应用程序来说，这个功能是相当有效益的。'
+        info: 'Kernel Same-page Merging (KSM) 效能监视，经由读取 <code>/sys/kernel/mm/ksm/</code> 下的档案而来。KSM 是在 Linux 核心 (自 2.6.32 版起) 内含的一种节省记忆体使用率重复资料删除功能。)。 KSM 服务程序 ksmd 会定期扫描记忆体区域，寻找正有资料要更新进来且相同资料存在的分页。KSM 最初是从 KVM 专案开发中而来，利用这种共用相同资料的机制，即可以让更多的虚拟机器放到记忆体中。另外，对许多会产生同样内容的应用程序来说，这个功能是相当有效益的。'
     },
 
     'mem.hugepages': {
@@ -736,7 +736,7 @@ netdataDashboard.submenu = {
 
     'couchdb.perdbstats': {
         title: 'per db statistics',
-        info: 'Statistics per database. This includes <a href="http://docs.couchdb.o$(TOPDIR)/feeds/packages/latest/api/database/common.html#get--db">3 size graphs per database</a>: active (the size of live data in the database), external (the uncompressed size of the database contents), and file (the size of the file on disk, exclusive of any views and indexes). It also includes the number of documents and number of deleted documents per database.'
+        info: 'Statistics per database. This includes <a href="http://docs.couchdb.org/en/latest/api/database/common.html#get--db">3 size graphs per database</a>: active (the size of live data in the database), external (the uncompressed size of the database contents), and file (the size of the file on disk, exclusive of any views and indexes). It also includes the number of documents and number of deleted documents per database.'
     },
 
     'couchdb.erlang': {
@@ -1053,7 +1053,7 @@ netdataDashboard.context = {
     // network interfaces
 
     'net.drops': {
-        info: 'Packets that have been dropped at the network interface level. These are the same counters reported by <code>ifconfig</code> as <code>RX dropped</code> (inbound) and <code>TX dropped</code> (outbound). <b>inbound</b> packets can be dropped at the network interface level due to <a href="#menu_system_submenu_softnet_stat">softnet backlog</a> overflow, bad / unintented VLAN tags, unknown or unregistered protocols, IPv6 frames when the server is not configured for IPv6. Check <a href="https://www.novell.com/suppo$(TOPDIR)/feeds/packages/doc.php?id=7007165" target="_blank">this document</a> for more information.'
+        info: 'Packets that have been dropped at the network interface level. These are the same counters reported by <code>ifconfig</code> as <code>RX dropped</code> (inbound) and <code>TX dropped</code> (outbound). <b>inbound</b> packets can be dropped at the network interface level due to <a href="#menu_system_submenu_softnet_stat">softnet backlog</a> overflow, bad / unintented VLAN tags, unknown or unregistered protocols, IPv6 frames when the server is not configured for IPv6. Check <a href="https://www.novell.com/support/kb/doc.php?id=7007165" target="_blank">this document</a> for more information.'
     },
 
     'net.duplex': {
@@ -1170,12 +1170,12 @@ netdataDashboard.context = {
     },
 
     'apps.file_closed': {
-        info: 'Calls to the internal function <a href="https://elixir.bootlin.com/linux/v5.10/sour$(TOPDIR)/feeds/packages/file.c#L665" target="_blank">__close_fd</a> or <a href="https://elixir.bootlin.com/linux/v5.11/sour$(TOPDIR)/feeds/packages/file.c#L617" target="_blank">close_fd</a> according to your kernel version, which is called from' +
+        info: 'Calls to the internal function <a href="https://elixir.bootlin.com/linux/v5.10/source/fs/file.c#L665" target="_blank">__close_fd</a> or <a href="https://elixir.bootlin.com/linux/v5.11/source/fs/file.c#L617" target="_blank">close_fd</a> according to your kernel version, which is called from' +
             ' <a href="https://www.man7.org/linux/man-pages/man2/close.2.html" target="_blank">close(2)</a>. '
     },
 
     'apps.file_close_error': {
-        info: 'Failed calls to the internal function <a href="https://elixir.bootlin.com/linux/v5.10/sour$(TOPDIR)/feeds/packages/file.c#L665" target="_blank">__close_fd</a> or <a href="https://elixir.bootlin.com/linux/v5.11/sour$(TOPDIR)/feeds/packages/file.c#L617" target="_blank">close_fd</a> according to your kernel version.'
+        info: 'Failed calls to the internal function <a href="https://elixir.bootlin.com/linux/v5.10/source/fs/file.c#L665" target="_blank">__close_fd</a> or <a href="https://elixir.bootlin.com/linux/v5.11/source/fs/file.c#L617" target="_blank">close_fd</a> according to your kernel version.'
     },
 
     'apps.file_deleted': {
@@ -1458,15 +1458,15 @@ netdataDashboard.context = {
         info: 'The number of statements executed by the server.<ul>' +
             '<li><strong>queries</strong> counts the statements executed within stored SQL programs.</li>' +
             '<li><strong>questions</strong> counts the statements sent to the mysql server by mysql clients.</li>' +
-            '<li><strong>slow queries</strong> counts the number of statements that took more than <a href="http://dev.mysql.com/doc/refman/5$(TOPDIR)/feeds/packages/server-system-variables.html#sysvar_long_query_time" target="_blank">long_query_time</a> seconds to be executed.' +
-            ' For more information about slow queries check the mysql <a href="http://dev.mysql.com/doc/refman/5$(TOPDIR)/feeds/packages/slow-query-log.html" target="_blank">slow query log</a>.</li>' +
+            '<li><strong>slow queries</strong> counts the number of statements that took more than <a href="http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_long_query_time" target="_blank">long_query_time</a> seconds to be executed.' +
+            ' For more information about slow queries check the mysql <a href="http://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html" target="_blank">slow query log</a>.</li>' +
             '</ul>'
     },
 
     'mysql.handlers': {
         info: 'Usage of the internal handlers of mysql. This chart provides very good insights of what the mysql server is actually doing.' +
             ' (if the chart is not showing all these dimensions it is because they are zero - set <strong>Which dimensions to show?</strong> to <strong>All</strong> from the dashboard settings, to render even the zero values)<ul>' +
-            '<li><strong>commit</strong>, the number of internal <a href="http://dev.mysql.com/doc/refman/5$(TOPDIR)/feeds/packages/commit.html" target="_blank">COMMIT</a> statements.</li>' +
+            '<li><strong>commit</strong>, the number of internal <a href="http://dev.mysql.com/doc/refman/5.7/en/commit.html" target="_blank">COMMIT</a> statements.</li>' +
             '<li><strong>delete</strong>, the number of times that rows have been deleted from tables.</li>' +
             '<li><strong>prepare</strong>, a counter for the prepare phase of two-phase commit operations.</li>' +
             '<li><strong>read first</strong>, the number of times the first entry in an index was read. A high value suggests that the server is doing a lot of full index scans; e.g. <strong>SELECT col1 FROM foo</strong>, with col1 indexed.</li>' +
@@ -1491,7 +1491,7 @@ netdataDashboard.context = {
     },
 
     'mysql.innodb_deadlocks': {
-        info: 'A deadlock happens when two or more transactions mutually hold and request for locks, creating a cycle of dependencies. For more information about <a href="https://dev.mysql.com/doc/refman/5$(TOPDIR)/feeds/packages/innodb-deadlocks-handling.html" target="_blank">how to minimize and handle deadlocks</a>.'
+        info: 'A deadlock happens when two or more transactions mutually hold and request for locks, creating a cycle of dependencies. For more information about <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-deadlocks-handling.html" target="_blank">how to minimize and handle deadlocks</a>.'
     },
 
     'mysql.galera_cluster_status': {
@@ -1539,7 +1539,7 @@ netdataDashboard.context = {
     },
     'postgres.db_stat_tuple_write': {
         info: '<ul><li>Number of rows inserted/updated/deleted.</li>' +
-            '<li><strong>conflicts:</strong> number of queries canceled due to conflicts with recovery in this database. (Conflicts occur only on standby servers; see <a href="https://www.postgresql.org/do$(TOPDIR)/feeds/packages/static/monitoring-stats.html#PG-STAT-DATABASE-CONFLICTS-VIEW" target="_blank">pg_stat_database_conflicts</a> for details.)</li>' +
+            '<li><strong>conflicts:</strong> number of queries canceled due to conflicts with recovery in this database. (Conflicts occur only on standby servers; see <a href="https://www.postgresql.org/docs/10/static/monitoring-stats.html#PG-STAT-DATABASE-CONFLICTS-VIEW" target="_blank">pg_stat_database_conflicts</a> for details.)</li>' +
             '</ul>'
     },
     'postgres.db_stat_temp_bytes': {
@@ -2563,11 +2563,11 @@ netdataDashboard.context = {
     },
 
     'couchdb.replicator_jobs': {
-        info: 'Detailed breakdown of any replication jobs in progress on this node. For more information, see the <a href="http://docs.couchdb.o$(TOPDIR)/feeds/packages/latest/replication/replicator.html">replicator documentation</a>.'
+        info: 'Detailed breakdown of any replication jobs in progress on this node. For more information, see the <a href="http://docs.couchdb.org/en/latest/replication/replicator.html">replicator documentation</a>.'
     },
 
     'couchdb.open_files': {
-        info: 'Count of all files held open by CouchDB. If this value seems pegged at 1024 or 4096, your server process is probably hitting the open file handle limit and <a href="http://docs.couchdb.o$(TOPDIR)/feeds/packages/latest/maintenance/performance.html#pam-and-ulimit">needs to be increased.</a>'
+        info: 'Count of all files held open by CouchDB. If this value seems pegged at 1024 or 4096, your server process is probably hitting the open file handle limit and <a href="http://docs.couchdb.org/en/latest/maintenance/performance.html#pam-and-ulimit">needs to be increased.</a>'
     },
 
     'btrfs.disk': {
@@ -2886,7 +2886,7 @@ netdataDashboard.context = {
             '<code>shared</code> is sum of all shared metrics for all powered-on virtual machines, plus amount for vSphere services on the host. ' +
             '<code>sharedcommon</code> is amount of machine memory that is shared by all powered-on virtual machines and vSphere services on the host. ' +
             '<code>shared</code> - <code>sharedcommon</code> = machine memory (host memory) savings (KB). ' +
-            'For details see <a href="https://docs.vmware.c$(TOPDIR)/feeds/packages/VMware-vSphere/6.5/com.vmware.vsphere.resmgmt.doc/GUID-BFDC988B-F53D-4E97-9793-A002445AFAE1.html">Measuring and Differentiating Types of Memory Usage</a> and ' +
+            'For details see <a href="https://docs.vmware.com/en/VMware-vSphere/6.5/com.vmware.vsphere.resmgmt.doc/GUID-BFDC988B-F53D-4E97-9793-A002445AFAE1.html">Measuring and Differentiating Types of Memory Usage</a> and ' +
             '<a href="https://www.vmware.com/support/developer/converter-sdk/conv51_apireference/memory_counters.html">Memory Counters</a> articles.'
     },
 
@@ -2911,7 +2911,7 @@ netdataDashboard.context = {
             '<code>consumed</code> = <code>granted</code> - <code>memory saved due to memory sharing</code>. ' +
             '<code>active</code> is amount of memory that is actively used, as estimated by VMkernel based on recently touched memory pages. ' +
             '<code>shared</code> is amount of guest “physical” memory shared with other virtual machines (through the VMkernel’s transparent page-sharing mechanism, a RAM de-duplication technique). ' +
-            'For details see <a href="https://docs.vmware.c$(TOPDIR)/feeds/packages/VMware-vSphere/6.5/com.vmware.vsphere.resmgmt.doc/GUID-BFDC988B-F53D-4E97-9793-A002445AFAE1.html">Measuring and Differentiating Types of Memory Usage</a> and ' +
+            'For details see <a href="https://docs.vmware.com/en/VMware-vSphere/6.5/com.vmware.vsphere.resmgmt.doc/GUID-BFDC988B-F53D-4E97-9793-A002445AFAE1.html">Measuring and Differentiating Types of Memory Usage</a> and ' +
             '<a href="https://www.vmware.com/support/developer/converter-sdk/conv51_apireference/memory_counters.html">Memory Counters</a> articles.'
 
     },

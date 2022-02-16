@@ -37,7 +37,7 @@ down(){
 		done
 		X=`md5sum $G/3rd.conf 2>/dev/null | awk '{print$1}'`
 		Y=`md5sum $G/host 2>/dev/null | awk '{print$1}'`
-		sed -i $(TOPDIR)/feeds/packages/\n/g' $F;sed -i -e '/127.0.0.1 #/d' -e '/127.0.0.1 !/d' -e 's:#.*::' -e 's:!.*::' -e 's/\$.*//g' -e 's/[ \t]*$//g' -e 's/^[ \t]*//g' -e$(TOPDIR)/feeds/packages/d' -e$(TOPDIR)/feeds/packages/d' $F
+		sed -i 's/\r/\n/g' $F;sed -i -e '/127.0.0.1 #/d' -e '/127.0.0.1 !/d' -e 's:#.*::' -e 's:!.*::' -e 's/\$.*//g' -e 's/[ \t]*$//g' -e 's/^[ \t]*//g' -e '/\*/d' -e '/^$/d' $F
 		if grep -q "^address=" $F;then
 			cat $F >> $G/3rd.conf
 		elif grep -q -e "^0.0.0.0 " -e "^127.0.0.1 " $F;then
@@ -93,7 +93,7 @@ case $1 in
 esac
 
 if [ `uci -q get adblock.@adblock[0].enable` = 1 ];then
-	G=`curl -LSfso /tmp/adnew.conf https://cdn.jsdelivr.n$(TOPDIR)/feeds/packages/small-5/ad-rules/easylistchina+easylist.txt 2>&1 || curl -LSfso /tmp/adnew.conf https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt 2>&1`
+	G=`curl -LSfso /tmp/adnew.conf https://cdn.jsdelivr.net/gh/small-5/ad-rules/easylistchina+easylist.txt 2>&1 || curl -LSfso /tmp/adnew.conf https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt 2>&1`
 	if [ $? = 0 ];then
 		echo "`eval $E` [$A Successful]"
 		gen

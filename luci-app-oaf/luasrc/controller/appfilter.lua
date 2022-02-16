@@ -114,8 +114,8 @@ function user_status()
 				total_num=0,
 				drop_num=0,
 				latest_action=visit_array[j].latest_action,
-				latest_time=os.date("$(TOPDIR)/feeds/packages/%d %H:%M:%S", visit_array[j].latest_time),
-				first_time=os.date("$(TOPDIR)/feeds/packages/%d %H:%M:%S", visit_array[j].first_time),
+				latest_time=os.date("%Y/%m/%d %H:%M:%S", visit_array[j].latest_time),
+				first_time=os.date("%Y/%m/%d %H:%M:%S", visit_array[j].first_time),
 				total_time=total_time
 			}
 		end
@@ -181,8 +181,8 @@ function get_dev_visit_list(mac)
 				total_num=0,
 				drop_num=0,
 				latest_action=visit_array[j].latest_action,
-				latest_time=os.date("$(TOPDIR)/feeds/packages/%d %H:%M:%S", visit_array[j].latest_time),
-				first_time=os.date("$(TOPDIR)/feeds/packages/%d %H:%M:%S", visit_array[j].first_time),
+				latest_time=os.date("%Y/%m/%d %H:%M:%S", visit_array[j].latest_time),
+				first_time=os.date("%Y/%m/%d %H:%M:%S", visit_array[j].first_time),
 				total_time=total_time
 			}
 		end

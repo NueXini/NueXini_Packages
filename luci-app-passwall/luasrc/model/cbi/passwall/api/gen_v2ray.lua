@@ -42,9 +42,9 @@ local routing = nil
 
 local function get_new_port()
     if new_port then
-        new_port = tonumber(sys.exec(string.format("echo -n $(/usr/sha$(TOPDIR)/feeds/packages/app.sh get_new_port %s tcp)", appname, new_port + 1)))
+        new_port = tonumber(sys.exec(string.format("echo -n $(/usr/share/%s/app.sh get_new_port %s tcp)", appname, new_port + 1)))
     else
-        new_port = tonumber(sys.exec(string.format("echo -n $(/usr/sha$(TOPDIR)/feeds/packages/app.sh get_new_port auto tcp)", appname)))
+        new_port = tonumber(sys.exec(string.format("echo -n $(/usr/share/%s/app.sh get_new_port auto tcp)", appname)))
     end
     return new_port
 end
@@ -82,14 +82,14 @@ function gen_outbound(node, tag, proxy_table)
                 local relay_port = node.port
                 new_port = get_new_port()
                 node.port = new_port
-                sys.call(string.format('/usr/sha$(TOPDIR)/feeds/packages/app.sh run_socks "%s"> /dev/null',
+                sys.call(string.format('/usr/share/%s/app.sh run_socks "%s"> /dev/null',
                     appname,
                     string.format("flag=%s node=%s bind=%s socks_port=%s config_file=%s relay_port=%s",
                         new_port, --flag
                         node_id, --node
                         "127.0.0.1", --bind
                         new_port, --socks port
-                        string.format("/tmp/e$(TOPDIR)/feeds/packages/v2_%s_%s_%s.json", appname, node_type, node_id, new_port), --config file
+                        string.format("/tmp/etc/%s/v2_%s_%s_%s.json", appname, node_type, node_id, new_port), --config file
                         (proxy == 1 and proxy_tag ~= "nil" and relay_port) and tostring(relay_port) or "" --relay port
                         )
                     )
@@ -291,7 +291,7 @@ if node_section then
             table.insert(t, w)
         end)
         if #t > 1 then
-            local host = sys.exec("echo -n $(echo " .. t[1] .. " | sed 's/https:$(TOPDIR)/feeds/packages///g' | awk -F ':' '{print $1}' | awk -F '/' '{print $1}')")
+            local host = sys.exec("echo -n $(echo " .. t[1] .. " | sed 's/https:\\/\\///g' | awk -F ':' '{print $1}' | awk -F '/' '{print $1}')")
             dns = {
                 hosts = {
                     [host] = t[2]
@@ -644,7 +644,7 @@ end
 if inbounds or outbounds then
     local config = {
         log = {
-            -- error = string.format("/tmp/e$(TOPDIR)/feeds/packages/%s.log", appname, node[".name"]),
+            -- error = string.format("/tmp/etc/%s/%s.log", appname, node[".name"]),
             loglevel = loglevel
         },
         -- DNS

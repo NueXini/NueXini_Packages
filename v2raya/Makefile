@@ -79,7 +79,7 @@ endef
 
 define Build/Compile
 	( \
-		pushd $(PKG_BUILD_DI$(TOPDIR)/feeds/packages/gui ; \
+		pushd $(PKG_BUILD_DIR)/../gui ; \
 		yarn ; \
 		OUTPUT_DIR=../service/server/router/web yarn build ; \
 		popd ; \

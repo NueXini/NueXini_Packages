@@ -3,7 +3,7 @@ msgstr ""
 "PO-Revision-Date: 2020-01-04 12:27+0000\n"
 "Last-Translator: Miloš Leškanič <leskanic@gmail.com>\n"
 "Language-Team: Slovak <https://hosted.weblate.org/projects/openwrt/"
-"luciapplicationsdd$(TOPDIR)/feeds/packages/>\n"
+"luciapplicationsddns/sk/>\n"
 "Language: sk\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -957,7 +957,7 @@ msgid "no data"
 msgstr ""
 
 #: applications/luci-app-ddns/luasrc/model/cbi/ddns/detail.lua:996
-msgid "not found or not executable - Sample: '/pa$(TOPDIR)/feeds/packages/script.sh'"
+msgid "not found or not executable - Sample: '/path/to/script.sh'"
 msgstr ""
 
 #: applications/luci-app-ddns/luasrc/model/cbi/ddns/detail.lua:1187

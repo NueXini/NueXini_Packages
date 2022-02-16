@@ -28,9 +28,9 @@ function escapeUserInputHTML(s) {
         .replace(/"/g, '&quot;')
         .replace(/#/g, '&#35;')
         .replace(/'/g, '&#39;')
-        .replac$(TOPDIR)/feeds/packages/g, '&#40;')
-        .replac$(TOPDIR)/feeds/packages/g, '&#41;')
-        .replac$(TOPDIR)/feeds/packages/g, '&#47;');
+        .replace(/\(/g, '&#40;')
+        .replace(/\)/g, '&#41;')
+        .replace(/\//g, '&#47;');
 }
 
 function verifyURL(s) {
@@ -38,8 +38,8 @@ function verifyURL(s) {
         return s
             .replace(/'/g, '%22')
             .replace(/"/g, '%27')
-            .replac$(TOPDIR)/feeds/packages/g, '%28')
-            .replac$(TOPDIR)/feeds/packages/g, '%29');
+            .replace(/\)/g, '%28')
+            .replace(/\(/g, '%29');
     }
 
     console.log('invalid URL detected:');
@@ -156,7 +156,7 @@ var urlOptions = {
 
         if (urlOptions.alarm_when) {
             // if alarm_when exists, create after/before params
-           $(TOPDIR)/feeds/packages/+ 2 minutes from the alarm, and reload the page
+            // -/+ 2 minutes from the alarm, and reload the page
             const alarmTime = new Date(urlOptions.alarm_when * 1000).valueOf();
             const timeMarginMs = 120000; // 2 mins
 
@@ -2112,7 +2112,7 @@ function alarmsUpdateModal() {
             }
 
             var has_alarm = (typeof alarm.warn !== 'undefined' || typeof alarm.crit !== 'undefined');
-            var badge_url = NETDATA.alarms.server + '/a$(TOPDIR)/feeds/packages/badge.svg?chart=' + alarm.chart + '&alarm=' + alarm.name + '&refresh=auto';
+            var badge_url = NETDATA.alarms.server + '/api/v1/badge.svg?chart=' + alarm.chart + '&alarm=' + alarm.name + '&refresh=auto';
 
             var action_buttons = '<br/>&nbsp;<br/>role: <b>' + alarm.recipient + '</b><br/>&nbsp;<br/>'
                 + '<div class="action-button ripple" title="click to scroll the dashboard to the chart of this alarm" data-toggle="tooltip" data-placement="bottom" onClick="scrollToChartAfterHidingModal(\'' + alarm.chart + '\', ' + alarm.last_status_change * 1000 + ', \'' + alarm.status + '\'); $(\'#alarmsModal\').modal(\'hide\'); return false;"><i class="fab fa-periscope"></i></div>'
@@ -2342,7 +2342,7 @@ function alarmsUpdateModal() {
 
         loadBootstrapTable(function () {
             $('#alarms_log_table').bootstrapTable({
-                url: NETDATA.alarms.server + '/a$(TOPDIR)/feeds/packages/alarm_log?all',
+                url: NETDATA.alarms.server + '/api/v1/alarm_log?all',
                 cache: false,
                 pagination: true,
                 pageSize: 10,
@@ -2972,7 +2972,7 @@ function getGithubLatestVersion(callback) {
 function getGCSLatestVersion(callback) {
     versionLog('Downloading latest version id from GCS...');
     $.ajax({
-        url: "https://www.googleapis.com/stora$(TOPDIR)/feeds/packages/b/netdata-nightlies/o/latest-version.txt",
+        url: "https://www.googleapis.com/storage/v1/b/netdata-nightlies/o/latest-version.txt",
         async: true,
         cache: false
     })
@@ -4651,7 +4651,7 @@ function getCloudAccountAgents() {
     }
     
     return fetch(
-        `${NETDATA.registry.cloudBaseURL}/a$(TOPDIR)/feeds/packages/accounts/${cloudAccountID}/agents`,
+        `${NETDATA.registry.cloudBaseURL}/api/v1/accounts/${cloudAccountID}/agents`,
         {
             method: "GET",
             mode: "cors",
@@ -4691,7 +4691,7 @@ function touchAgent() {
         return [];
     }
 
-    const touchUrl = `${NETDATA.registry.cloudBaseURL}/a$(TOPDIR)/feeds/packages/agents/${NETDATA.registry.machine_guid}/touch?account_id=${cloudAccountID}`;
+    const touchUrl = `${NETDATA.registry.cloudBaseURL}/api/v1/agents/${NETDATA.registry.machine_guid}/touch?account_id=${cloudAccountID}`;
     return fetch(
         touchUrl,
         {
@@ -4740,7 +4740,7 @@ function postCloudAccountAgents(agentsToSync) {
     };
     
     return fetch(
-        `${NETDATA.registry.cloudBaseURL}/a$(TOPDIR)/feeds/packages/accounts/${cloudAccountID}/agents`,
+        `${NETDATA.registry.cloudBaseURL}/api/v1/accounts/${cloudAccountID}/agents`,
         {
             method: "POST",
             mode: "cors",
@@ -4776,7 +4776,7 @@ function deleteCloudAgentURL(agentID, url) {
     }
 
     return fetch(
-        `${NETDATA.registry.cloudBaseURL}/a$(TOPDIR)/feeds/packages/accounts/${cloudAccountID}/agents/${agentID}/url?value=${encodeURIComponent(url)}`,
+        `${NETDATA.registry.cloudBaseURL}/api/v1/accounts/${cloudAccountID}/agents/${agentID}/url?value=${encodeURIComponent(url)}`,
         {
             method: "DELETE",
             mode: "cors",

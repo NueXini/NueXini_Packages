@@ -11,7 +11,7 @@ LUCI_DEPENDS:=+dynapoint
 
 PKG_LICENSE:=GPL-3.0+
 PKG_MAINTAINER:=Tobias Ilte <tobias.ilte@campus.tu-berlin.de>
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
 

@@ -50,7 +50,7 @@
         // thanks for Jo-Philipp Wich <jow@openwrt.org>
         var luciLocation = <%= luci.http.write_json(luci.dispatcher.context.path) %>;
     </script>
-    <script src="<%=media$(TOPDIR)/feeds/packages/jquery.min.js?v=<%= ver.luciversion %>"></script>
-    <script src="<%=media$(TOPDIR)/feeds/packages/script.js?v=<%= ver.luciversion %>"></script>
+    <script src="<%=media%>/js/jquery.min.js?v=<%= ver.luciversion %>"></script>
+    <script src="<%=media%>/js/script.js?v=<%= ver.luciversion %>"></script>
 </body>
 </html>

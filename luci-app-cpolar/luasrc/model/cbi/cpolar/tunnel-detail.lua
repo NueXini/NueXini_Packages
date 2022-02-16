@@ -17,7 +17,7 @@ local m, s, o
 local sid = arg[1]
 
 m = Map("cpolar", "%s - %s" % { translate("Cpolar"), translate("Edit Tunnel") },
-	translatef("Details: %s", "<a href=\"https://www.cpolar.c$(TOPDIR)/feeds/packages/configuration/overview.html#tunnel\" target=\"_blank\">TunnelObject</a>"))
+	translatef("Details: %s", "<a href=\"https://www.cpolar.com/en/configuration/overview.html#tunnel\" target=\"_blank\">TunnelObject</a>"))
 m.redirect = dsp.build_url("admin/services/cpolar/tunnels")
 
 if m.uci:get("cpolar", sid) ~= "tunnel" then

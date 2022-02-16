@@ -118,7 +118,7 @@ detectLAN() {
 detectWAN() {
 	local wan=$(detectIF wan)
 	[ -n "$wan" ] && echo $wan && return
-	wan=$(ip route show 2>/dev/null | grep default | sed -re '/^defau$(TOPDIR)/feeds/packages/default.*dev +([^ ]+)$(TOPDIR)/feeds/packages/')
+	wan=$(ip route show 2>/dev/null | grep default | sed -re '/^default/ s/default.*dev +([^ ]+).*/\1/')
 	[ -n "$wan" ] && echo $wan && return
 	[ -f "$networkFuncs" ] && wan=$(. $networkFuncs; network_find_wan wan; echo $wan)
 	[ -n "$wan" ] && echo $wan && return

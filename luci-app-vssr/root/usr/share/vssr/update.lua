@@ -16,7 +16,7 @@ local log = function(...)
 end
 
 log('正在更新【GFW列表】数据库')
-refresh_cmd = 'wget-ssl --no-check-certificate https://cdn.jsdelivr.n$(TOPDIR)/feeds/packages/gfwlist/gfwlist/gfwlist.txt -O /tmp/gfw.b64'
+refresh_cmd = 'wget-ssl --no-check-certificate https://cdn.jsdelivr.net/gh/gfwlist/gfwlist/gfwlist.txt -O /tmp/gfw.b64'
 sret = luci.sys.call(refresh_cmd .. ' 2>/dev/null')
 if sret == 0 then
     luci.sys.call('/usr/bin/vssr-gfw')

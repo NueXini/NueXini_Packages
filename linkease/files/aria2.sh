@@ -109,7 +109,7 @@ read_config() {
 query(){
 	aria2Query=${QUERY_STRING}
 	parse(){
-	 	echo $1 | sed 's/.*'$2'=\([[:alnum:]]*\)$(TOPDIR)/feeds/packages/'
+	 	echo $1 | sed 's/.*'$2'=\([[:alnum:]]*\).*/\1/'
 	}
 	value=$(parse $aria2Query "action")
 			

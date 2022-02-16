@@ -103,7 +103,7 @@ fasremoteip :depends({temp_type="fasport"})
 faspath= s:taboption("advanced", Value, "faspath", "验证页面地址")
 faspath.rmempty = false 
 faspath.optional = true
-faspath.description = translate("The path of login page under Web root directory,<$(TOPDIR)/feeds/packages/nodog/fas.php'<br/>If it is a user name login authentication method.<$(TOPDIR)/feeds/packages/nodogsplash_preauth/'")
+faspath.description = translate("The path of login page under Web root directory,<br/>'/nodog/fas.php'<br/>If it is a user name login authentication method.<br/>'/nodogsplash_preauth/'")
 faspath:depends({temp_type="fasport"})
 
 mailport= s:taboption("advanced", Value, "fasport", "使用的端口号")

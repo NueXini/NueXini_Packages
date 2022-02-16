@@ -183,7 +183,7 @@ msgstr ""
 
 msgid ""
 "The value for this property is the blocklist type and path to the file, e."
-"g.'domains:/pa$(TOPDIR)/feeds/packages/dbl.txt' or 'ips:/pa$(TOPDIR)/feeds/packages/ipbl.txt'."
+"g.'domains:/path/to/dbl.txt' or 'ips:/path/to/ipbl.txt'."
 msgstr ""
 
 msgid ""

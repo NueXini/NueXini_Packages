@@ -5,7 +5,7 @@ var crypto = require('crypto')
 function randomString (size) {
   var bits = (size + 1) * 6
   var buffer = crypto.randomBytes(Math.ceil(bits / 8))
-  var string = buffer.toString('base64').replac$(TOPDIR)/feeds/packages/g, '-').replac$(TOPDIR)/feeds/packages/g, '_').replace(/=/g, '')
+  var string = buffer.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
   return string.slice(0, size)
 }
 
@@ -78,7 +78,7 @@ exports.header = function (uri, method, opts) {
     '", ts="' + artifacts.ts +
     '", nonce="' + artifacts.nonce +
     (artifacts.hash ? '", hash="' + artifacts.hash : '') +
-    (hasExt ? '", ext="' + artifacts.ext.replac$(TOPDIR)/feeds/packages/g, '\\\\').replace(/"/g, '\\"') : '') +
+    (hasExt ? '", ext="' + artifacts.ext.replace(/\\/g, '\\\\').replace(/"/g, '\\"') : '') +
     '", mac="' + mac + '"'
 
   if (artifacts.app) {

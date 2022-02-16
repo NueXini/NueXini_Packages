@@ -13,6 +13,6 @@ PKG_NAME:=luci-app-pptp-server
 PKG_VERSION:=1.0
 PKG_RELEASE:=13
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

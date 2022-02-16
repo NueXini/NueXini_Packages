@@ -18,7 +18,7 @@
   var userAgent = navigator.userAgent;
   var platform = navigator.platform;
 
-  var gecko = /geck$(TOPDIR)/feeds/packages/i.test(userAgent);
+  var gecko = /gecko\/\d/i.test(userAgent);
   var ie_upto10 = /MSIE \d/.test(userAgent);
   var ie_11up = /Trident\/(?:[7-9]|\d{2,})\..*rv:(\d+)/.exec(userAgent);
   var edge = /Edge\/(\d+)/.exec(userAgent);
@@ -266,7 +266,7 @@
 
   var nonASCIISingleCaseWordChar = /[\u00df\u0587\u0590-\u05f4\u0600-\u06ff\u3040-\u309f\u30a0-\u30ff\u3400-\u4db5\u4e00-\u9fcc\uac00-\ud7af]/;
   function isWordCharBasic(ch) {
-    retur$(TOPDIR)/feeds/packages/.test(ch) || ch > "\x80" &&
+    return /\w/.test(ch) || ch > "\x80" &&
       (ch.toUpperCase() != ch.toLowerCase() || nonASCIISingleCaseWordChar.test(ch))
   }
   function isWordChar(ch, helper) {
@@ -662,7 +662,7 @@
 
   // See if "".split is the broken IE version, if so, provide an
   // alternative way to split lines.
-  var splitLinesAuto = "\n\nb".spli$(TOPDIR)/feeds/packages/).length != 3 ? function (string) {
+  var splitLinesAuto = "\n\nb".split(/\n/).length != 3 ? function (string) {
     var pos = 0, result = [], l = string.length;
     while (pos <= l) {
       var nl = string.indexOf("\n", pos);
@@ -1866,7 +1866,7 @@
   // Change some spaces to NBSP to prevent the browser from collapsing
   // trailing spaces at the end of a line when rendering text (issue #1362).
   function splitSpaces(text, trailingBefore) {
-    if (text.length > 1 &&$(TOPDIR)/feeds/packages/.test(text)) { return text }
+    if (text.length > 1 && !/  /.test(text)) { return text }
     var spaceBefore = trailingBefore, result = "";
     for (var i = 0; i < text.length; i++) {
       var ch = text.charAt(i);
@@ -2850,7 +2850,7 @@
     var ref = wrappedLineExtent(cm, lineObj, preparedMeasure, y);
     var begin = ref.begin;
     var end = ref.end;
-    if$(TOPDIR)/feeds/packages/.test(lineObj.text.charAt(end - 1))) { end--; }
+    if (/\s/.test(lineObj.text.charAt(end - 1))) { end--; }
     var part = null, closestDist = null;
     for (var i = 0; i < order.length; i++) {
       var p = order[i];
@@ -3217,7 +3217,7 @@
       function wrapX(pos, dir, side) {
         var extent = wrappedLineExtentChar(cm, lineObj, null, pos);
         var prop = (dir == "ltr") == (side == "after") ? "left" : "right";
-        var ch = side == "after" ? extent.begin : extent.end -$(TOPDIR)/feeds/packages/.test(lineObj.text.charAt(extent.end - 1)) ? 2 : 1);
+        var ch = side == "after" ? extent.begin : extent.end - (/\s/.test(lineObj.text.charAt(extent.end - 1)) ? 2 : 1);
         return coords(ch, prop)[prop]
       }
 
@@ -7029,7 +7029,7 @@
     goLineLeftSmart: function (cm) { return cm.extendSelectionsBy(function (range) {
       var top = cm.cursorCoords(range.head, "div").top + 5;
       var pos = cm.coordsChar({left: 0, top: top}, "div");
-      if (pos.ch < cm.getLine(pos.line).searc$(TOPDIR)/feeds/packages/)) { return lineStartSmart(cm, range.head) }
+      if (pos.ch < cm.getLine(pos.line).search(/\S/)) { return lineStartSmart(cm, range.head) }
       return pos
     }, sel_move); },
     goLineUp: function (cm) { return cm.moveV(-1, "line"); },
@@ -7130,7 +7130,7 @@
     var line = getLine(cm.doc, start.line);
     var order = getOrder(line, cm.doc.direction);
     if (!order || order[0].level == 0) {
-      var firstNonWS = Math.max(start.ch, line.text.searc$(TOPDIR)/feeds/packages/));
+      var firstNonWS = Math.max(start.ch, line.text.search(/\S/));
       var inWS = pos.line == start.line && pos.ch <= firstNonWS && pos.ch;
       return Pos(start.line, inWS ? 0 : firstNonWS, start.sticky)
     }
@@ -8081,7 +8081,7 @@
     var line = getLine(doc, n), curSpace = countColumn(line.text, null, tabSize);
     if (line.stateAfter) { line.stateAfter = null; }
     var curSpaceString = line.text.match(/^\s*/)[0], indentation;
-    if (!aggressive &&$(TOPDIR)/feeds/packages/.test(line.text)) {
+    if (!aggressive && !/\S/.test(line.text)) {
       indentation = 0;
       how = "not";
     } else if (how == "smart") {
@@ -8571,8 +8571,8 @@
           var startChar = line.charAt(start);
           var check = isWordChar(startChar, helper)
             ? function (ch) { return isWordChar(ch, helper); }
-            $(TOPDIR)/feeds/packages/.test(startChar) ? function (ch) { retur$(TOPDIR)/feeds/packages/.test(ch); }
-            : function (ch) { return $(TOPDIR)/feeds/packages/.test(ch) && !isWordChar(ch)); };
+            : /\s/.test(startChar) ? function (ch) { return /\s/.test(ch); }
+            : function (ch) { return (!/\s/.test(ch) && !isWordChar(ch)); };
           while (start > 0 && check(line.charAt(start - 1))) { --start; }
           while (end < line.length && check(line.charAt(end))) { ++end; }
         }
@@ -8746,7 +8746,7 @@
         var cur = lineObj.text.charAt(pos.ch) || "\n";
         var type = isWordChar(cur, helper) ? "w"
           : group && cur == "\n" ? "n"
-          : !group |$(TOPDIR)/feeds/packages/.test(cur) ? null
+          : !group || /\s/.test(cur) ? null
           : "p";
         if (group && !first && !type) { type = "s"; }
         if (sawType && sawType != type) {

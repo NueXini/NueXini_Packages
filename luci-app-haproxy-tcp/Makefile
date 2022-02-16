@@ -24,6 +24,6 @@ echo stopping haproxy
 echo haproxy disabled
 endef
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

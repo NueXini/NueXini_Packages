@@ -563,7 +563,7 @@ function urlencode(data)
 end
 
 function datamatch(data, regex)
-	local result = luci.sys.exec(string.format('ruby -E UTF-8 -e "x=\'%s\'; if x =$(TOPDIR)/feeds/packages/i then print \'true\' else print \'false\' end"', data, regex))
+	local result = luci.sys.exec(string.format('ruby -E UTF-8 -e "x=\'%s\'; if x =~ /%s/i then print \'true\' else print \'false\' end"', data, regex))
 	if result == "true" then return true else return false end
 end
 
@@ -601,7 +601,7 @@ function disney_unlock_test()
 	status = 0
 	local url = "https://global.edge.bamgrid.com/devices"
 	local url2 = "https://global.edge.bamgrid.com/token"
-	local url3 = "https://disney.api.edge.bamgrid.com/gra$(TOPDIR)/feeds/packages/device/graphql"
+	local url3 = "https://disney.api.edge.bamgrid.com/graph/v1/device/graphql"
 	local headers = '-H "Accept-Language: en" -H "Content-Type: application/json" -H "authorization: ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84"'
 	local auth = '-H "authorization: Bearer ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84"'
 	local body = '{"query":"mutation registerDevice($input: RegisterDeviceInput!) { registerDevice(registerDevice: $input) { grant { grantType assertion } } }","variables":{"input":{"deviceFamily":"browser","applicationRuntime":"chrome","deviceProfile":"windows","deviceLanguage":"en","attributes":{"osDeviceIds":[],"manufacturer":"microsoft","model":null,"operatingSystem":"windows","operatingSystemVersion":"10.0","browserName":"chrome","browserVersion":"96.0.4606"}}}}'
@@ -702,7 +702,7 @@ end
 
 function hbo_go_asia_unlock_test()
 	status = 0
-	local url = "https://api2.hbogoasia.c$(TOPDIR)/feeds/packages/geog?lang=undefined&version=0&bundleId=www.hbogoasia.com"
+	local url = "https://api2.hbogoasia.com/v1/geog?lang=undefined&version=0&bundleId=www.hbogoasia.com"
 	local httpcode = luci.sys.exec(string.format("curl -sL -m 3 --retry 2 -o /dev/null -w %%{http_code} -H 'Content-Type: application/json' -H 'User-Agent: %s' %s", UA, url))
 	local regex = uci:get("openclash", "config", "stream_auto_select_region_key_hbo_go_asia") or ""
 	local region = ""

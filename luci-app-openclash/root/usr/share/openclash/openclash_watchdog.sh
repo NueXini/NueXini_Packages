@@ -44,7 +44,7 @@ do
    enable=$(uci -q get openclash.config.enable)
 
 if [ "$enable" -eq 1 ]; then
-	clash_pids=$(pidof clash |sed $(TOPDIR)/feeds/packages/g' |wc -l)
+	clash_pids=$(pidof clash |sed 's/$//g' |wc -l)
 	if [ "$clash_pids" -gt 1 ]; then
 		 LOG_OUT "Watchdog: Multiple Clash Processes, Kill All..."
 		 for clash_pid in $clash_pids; do

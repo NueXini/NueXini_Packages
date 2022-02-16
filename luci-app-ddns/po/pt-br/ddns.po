@@ -1034,7 +1034,7 @@ msgid "no data"
 msgstr "sem dados"
 
 #: applications/luci-app-ddns/luasrc/model/cbi/ddns/detail.lua:996
-msgid "not found or not executable - Sample: '/pa$(TOPDIR)/feeds/packages/script.sh'"
+msgid "not found or not executable - Sample: '/path/to/script.sh'"
 msgstr "não encontrado ou não executável - Exemplo: ‘/caminho/para/script.sh'"
 
 #: applications/luci-app-ddns/luasrc/model/cbi/ddns/detail.lua:1187

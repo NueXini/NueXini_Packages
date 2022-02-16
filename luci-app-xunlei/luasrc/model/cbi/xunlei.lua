@@ -55,9 +55,9 @@ enable.rmempty = false
 vod = s:taboption("basic", Flag, "vod", "删除迅雷VOD服务器", "删除迅雷VOD服务器，减少上传流量。")
 vod.rmempty = false
 
-s:taboption("basic", DummyValue,"opennewwindow" ,"<br /><p align=\"justify\"><script type=\"text/javascript\"></script><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"获取启动信息\" onclick=\"window.open('http://'+window.location.host+':9000/getsysinfo')\$(TOPDIR)/feeds/packages/p>", detailInfo)
+s:taboption("basic", DummyValue,"opennewwindow" ,"<br /><p align=\"justify\"><script type=\"text/javascript\"></script><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"获取启动信息\" onclick=\"window.open('http://'+window.location.host+':9000/getsysinfo')\" /></p>", detailInfo)
 
-s:taboption("basic", DummyValue,"opennewwindow" ,"<br /><p align=\"justify\"><script type=\"text/javascript\"></script><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"迅雷远程下载页面\" onclick=\"window.open('http://yuancheng.xunlei.com')\$(TOPDIR)/feeds/packages/p>", "<br />打开迅雷远程下载页面。首次运行将激活码填进网页即可绑定。")
+s:taboption("basic", DummyValue,"opennewwindow" ,"<br /><p align=\"justify\"><script type=\"text/javascript\"></script><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\"迅雷远程下载页面\" onclick=\"window.open('http://yuancheng.xunlei.com')\" /></p>", "<br />打开迅雷远程下载页面。首次运行将激活码填进网页即可绑定。")
 
 
 s:tab("editconf_etm", translate("Xware 配置"))

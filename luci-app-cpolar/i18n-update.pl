@@ -52,7 +52,7 @@ my @dirs;
 
 if( ! $source )
 {
-	@dirs = glob("./*$(TOPDIR)/feeds/packages/");
+	@dirs = glob("./*/*/po/");
 }
 else
 {

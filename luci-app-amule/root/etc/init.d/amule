@@ -65,7 +65,7 @@ section_enabled() {
 }
 
 set_owner() {
-	case $(echo "$1"|grep -oE $(TOPDIR)/feeds/packages/]+") in
+	case $(echo "$1"|grep -oE "^/[^/]+") in
 	"/var"|"/tmp"|"/mnt"|"root")
 		cur_user=$(ls -w50 -ld "$1"|awk '{print $3}')
 		cur_group=$(ls -w50 -ld "$1"|awk '{print $4}')
@@ -100,7 +100,7 @@ amule() {
 	config_get ionice_flags "$cfg" ionice_flags ''
 	group=$(id -Gn $runasuser)
 	
-	case $(echo "$config_dir"|grep -oE $(TOPDIR)/feeds/packages/]+") in
+	case $(echo "$config_dir"|grep -oE "^/[^/]+") in
 	"/var"|"/tmp"|"/mnt"|"/root"|"/home")
 		true
 	;;

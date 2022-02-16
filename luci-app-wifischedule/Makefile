@@ -17,6 +17,6 @@ include $(TOPDIR)/rules.mk
 LUCI_TITLE:=Turns WiFi on and off according to a schedule
 LUCI_DEPENDS:=+wifischedule +iwinfo
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
