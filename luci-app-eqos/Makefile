@@ -92,7 +92,7 @@ endef
 
 define Package/luci-i18n-eqos-zh-cn/install
 	$(INSTALL_DIR) $(1)$(LUCI_DIR)/i18n
-	po2lmo ./fil$(TOPDIR)/feeds/packages/zh-cn/eqos.po $(1)$(LUCI_DIR)/i18n/eqos.zh-cn.lmo
+	po2lmo ./files/po/zh-cn/eqos.po $(1)$(LUCI_DIR)/i18n/eqos.zh-cn.lmo
 endef
 
 $(eval $(call BuildPackage,eqos))
