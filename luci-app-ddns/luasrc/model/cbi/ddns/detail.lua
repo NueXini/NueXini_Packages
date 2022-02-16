@@ -982,7 +982,7 @@ ips = ns:taboption("advanced", Value, "ip_script",
 	translate("User defined script to read systems IP-Address") )
 ips:depends("ipv4_source", "script")	-- IPv4
 ips:depends("ipv6_source", "script")	-- or IPv6
-ips.placeholder = "/path/to/script.sh"
+ips.placeholder = "/pa$(TOPDIR)/feeds/packages/script.sh"
 function ips.validate(self, value)
 	local fusev6 = usev6:formvalue(section)
 	local split
@@ -993,7 +993,7 @@ function ips.validate(self, value)
 		return ""
 	elseif not value or not (#value > 0) or not NXFS.access(split[1], "x") then
 		return nil, err_tab_adv(self) ..
-			translate("not found or not executable - Sample: '/path/to/script.sh'")
+			translate("not found or not executable - Sample: '/pa$(TOPDIR)/feeds/packages/script.sh'")
 	else
 		return value
 	end

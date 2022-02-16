@@ -2,7 +2,7 @@ local api = require "luci.model.cbi.passwall.api.api"
 local appname = api.appname
 local fs = api.fs
 local datatypes = api.datatypes
-local path = string.format("/usr/share/%s/rules/", appname)
+local path = string.format("/usr/sha$(TOPDIR)/feeds/packages/rules/", appname)
 local route_hosts_path = "/etc/"
 
 m = Map(appname)

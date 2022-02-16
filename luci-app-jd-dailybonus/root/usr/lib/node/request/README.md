@@ -596,7 +596,7 @@ Here's some examples of valid `no_proxy` values:
 
 ```js
 /* Pattern */ 'http://unix:SOCKET:PATH'
-/* Example */ request.get('http://unix:/absolute/path/to/unix.socket:/request/path')
+/* Example */ request.get('http://unix:/absolute/pa$(TOPDIR)/feeds/packages/unix.socket:/request/path')
 ```
 
 Note: The `SOCKET` path is assumed to be absolute to the root of the host file system.

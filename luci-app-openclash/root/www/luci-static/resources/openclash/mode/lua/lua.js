@@ -7,9 +7,9 @@
 
 (function(mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("../../lib/codemirror"));
+    mod(require("$(TOPDIR)/feeds/packages/lib/codemirror"));
   else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
+    define(["$(TOPDIR)/feeds/packages/lib/codemirror"], mod);
   else // Plain browser env
     mod(CodeMirror);
 })(function(CodeMirror) {
@@ -91,7 +91,7 @@ CodeMirror.defineMode("lua", function(config, parserConfig) {
       return (state.cur = string(ch))(stream, state);
     if (ch == "[" && /[\[=]/.test(stream.peek()))
       return (state.cur = bracketed(readBracket(stream), "string"))(stream, state);
-    if (/\d/.test(ch)) {
+    if$(TOPDIR)/feeds/packages/.test(ch)) {
       stream.eatWhile(/[\w.%]/);
       return "number";
     }

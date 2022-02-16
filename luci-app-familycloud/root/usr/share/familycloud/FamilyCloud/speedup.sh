@@ -27,8 +27,8 @@ do
     headers_string="AppKey:$AppKey"${split}"$extra_header"
     headers=`formatHeaderString "$split" "$headers_string"`
     result=`post "$headers" "$HOST$LOGIN_URL?accessToken=$accessToken"`
-    session_key=`echo "$result" | grep -Eo "familySessionKey>.+</familySessionKey" | sed 's/familySessionKey>//' | sed 's/<\/familySessionKey//'`
-    session_secret=`echo "$result" | grep -Eo "familySessionSecret>.+</familySessionSecret" | sed 's/familySessionSecret>//' | sed 's/<\/familySessionSecret//'`
+    session_key=`echo "$result" | grep -Eo "familySessionKey>.+</familySessionKey" | sed 's/familySessionKey>//' | sed $(TOPDIR)/feeds/packages/familySessionKey//'`
+    session_secret=`echo "$result" | grep -Eo "familySessionSecret>.+</familySessionSecret" | sed 's/familySessionSecret>//' | sed $(TOPDIR)/feeds/packages/familySessionSecret//'`
     date=`env LANG=C.UTF-8 date -u '+%a, %d %b %Y %T GMT'`
     data="SessionKey=$session_key&Operate=$method&RequestURI=$ACCESS_URL&Date=$date"
     key="$session_secret"

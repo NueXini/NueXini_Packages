@@ -5,7 +5,7 @@ local uci = require 'luci.model.uci'.cursor()
 local config = 'ttnode'
 local requests = require('requests')
 local BASE_URL = 'http://tiantang.mogencloud.com/web/api/'
-local BASE_API = 'http://tiantang.mogencloud.com/api/v1/'
+local BASE_API = 'http://tiantang.mogencloud.com/a$(TOPDIR)/feeds/packages/'
 local xformHeaders = {['Content-Type'] = 'application/x-www-form-urlencoded'}
 
 local sckey = uci:get_first(config, 'global', 'serverchan')

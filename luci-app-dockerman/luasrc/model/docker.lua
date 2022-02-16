@@ -386,7 +386,7 @@ _docker.pull_image_show_status_cb = function(res, source)
 	end)
 end
 
---{"status":"Downloading from https://downloads.openwrt.org/releases/19.07.0/targets/x86/64/openwrt-19.07.0-x86-64-generic-rootfs.tar.gz"}
+--{"status":"Downloading from https://downloads.openwrt.org/releases/19.07.0/targets/x$(TOPDIR)/feeds/packages/openwrt-19.07.0-x86-64-generic-rootfs.tar.gz"}
 --{"status":"Importing","progressDetail":{"current":1572391,"total":3821714},"progress":"[====================\u003e                              ]  1.572MB/3.822MB"}
 --{"status":"sha256:d5304b58e2d8cc0a2fd640c05cec1bd4d1229a604ac0dd2909f13b2b47a29285"}
 _docker.import_image_show_status_cb = function(res, source)

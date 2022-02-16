@@ -101,7 +101,7 @@ wrapped_in_update() {
 
 new_upgrade() {
     check_mtime || return 1
-    local metapkg=`echo "$@" | sed 's/ /\n/g' | grep -F app-meta-`
+    local metapkg=`echo "$@" | sed 's$(TOPDIR)/feeds/packages/g' | grep -F app-meta-`
     if [ -z "$metapkg" ] || opkg_wrap info $metapkg | grep -qF not-installed ; then
         true
     else

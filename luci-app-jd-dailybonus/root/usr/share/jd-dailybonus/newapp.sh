@@ -128,7 +128,7 @@ download() {
 }
 
 get_ver() {
-    echo $(cat $1 | sed -n '/更新时间/p' | awk '{for (i=1;i<=NF;i++){if ($i ~/v/) {print $i}}}' | sed 's/v//')
+    echo $(cat $1 | sed -n '/更新时间/p' | awk '{for (i=1;i<=NF;i++){if ($i ~/v/) {print $i}}}' | sed $(TOPDIR)/feeds/packages/')
 }
 
 check_ver() {

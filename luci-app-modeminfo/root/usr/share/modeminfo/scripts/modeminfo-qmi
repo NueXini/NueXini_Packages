@@ -132,7 +132,7 @@ get_signal_info(){
         fi
         EARFCN=$BANDCH
 	DISTANCE=$($QMICTL --nas-get-cell-location-info | awk '/LTE Timing Advance:/{gsub("\047",""); printf "%.2f\n", (299792458*($4*10^-6)/1000)/2}')
-        REG=$(echo "$SERVING" | awk -F [:] '/Registration state:/{print $2}' | sed "s/'//g" | awk '{print $1}')
+        REG=$(echo "$SERVING" | awk -F [:] '/Registration state:/{print $2}' | sed $(TOPDIR)/feeds/packages/g" | awk '{print $1}')
         case $REG in
                 registered)
                         REGST=1

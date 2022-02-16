@@ -6,6 +6,6 @@ function index()
 end
 
 function release_ram()
-	luci.sys.call("sync && echo 3 > /proc/sys/vm/drop_caches")
+	luci.sys.call("sync && echo 3 > /proc/s$(TOPDIR)/feeds/packages/drop_caches")
 	luci.http.redirect(luci.dispatcher.build_url("admin/status"))
 end

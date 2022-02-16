@@ -25,8 +25,8 @@ if [ ! -f "/tmp/adbyby.updated" ];then
         
         lazy_local=$(grep 'lazy' /tmp/local-md5.json | awk -F' ' '{print $1}')
         video_local=$(grep 'video' /tmp/local-md5.json | awk -F' ' '{print $1}')  
-        lazy_online=$(sed  's/":"/\n/g' /tmp/md5.json  |  sed  's/","/\n/g' | sed -n '2p')
-        video_online=$(sed  's/":"/\n/g' /tmp/md5.json  |  sed  's/","/\n/g' | sed -n '4p')
+        lazy_online=$(sed  's/"$(TOPDIR)/feeds/packages/g' /tmp/md5.json  |  sed  's/"$(TOPDIR)/feeds/packages/g' | sed -n '2p')
+        video_online=$(sed  's/"$(TOPDIR)/feeds/packages/g' /tmp/md5.json  |  sed  's/"$(TOPDIR)/feeds/packages/g' | sed -n '4p')
         
         if [ "$lazy_online"x == "$lazy_local"x -a "$video_online"x == "$video_local"x ]; then
             echo "adbyby rules MD5 OK!"

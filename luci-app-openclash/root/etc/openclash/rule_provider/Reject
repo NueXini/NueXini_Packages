@@ -36,7 +36,7 @@ payload:
   - DOMAIN-SUFFIX,t7z.cupid.iqiyi.com
   - DOMAIN-SUFFIX,tracker.sns.iqiyi.com
   - DOMAIN-SUFFIX,yuedu.iqiyi.com
-  # - URL-REGEX,https?://.+/videos/other/.+
+  # - URL-REGEX,https?$(TOPDIR)/feeds/packages/videos/other/.+
   # - URL-REGEX,https?://paopao\w?.qiyipic.com
   - IP-CIDR,101.227.97.240/32
   - IP-CIDR,101.227.200.11/32
@@ -8209,16 +8209,16 @@ payload:
   - DOMAIN,ulog.imap.baidu.com
   - DOMAIN,newloc.map.n.shifen.com
   # - URL-REGEX,^http:\/\/[\s\S]*baidu\.com/.*ad[xs]\.php
-  # - URL-REGEX,^http:\/\/c\.tieba\.baidu\.com\/c\/s\/splashSchedule$
+  # - URL-REGEX,^http:\/\/c\.tieba\.baidu\.co$(TOPDIR)/feeds/packages/s\/splashSchedule$
 
   # > Bilibili
   - DOMAIN,miniapp.bilibili.com
   - DOMAIN,thirdparty.biliapi.com
-  # - URL-REGEX,https://app.bilibili.com/x/v2/param
+  # - URL-REGEX,https://app.bilibili.com$(TOPDIR)/feeds/packages/param
   # - URL-REGEX,https://app.bilibili.com/x/resource/abtest
-  # - URL-REGEX,http://app.bilibili.com/x/v2/dataflow/report-TINYGIF
-  # - URL-REGEX,https://app.bilibili.com/x/v2/search/(defaultword|hot|recommend|resource)
-  # - URL-REGEX,https://app.bilibili.com/x/v2/rank.*rid=(168|5)
+  # - URL-REGEX,http://app.bilibili.com$(TOPDIR)/feeds/packages/dataflow/report-TINYGIF
+  # - URL-REGEX,https://app.bilibili.com$(TOPDIR)/feeds/packages/search/(defaultword|hot|recommend|resource)
+  # - URL-REGEX,https://app.bilibili.com$(TOPDIR)/feeds/packages/rank.*rid=(168|5)
   # - URL-REGEX,https://api.bilibili.com/pgc/season/rank/cn
 
   # > Didi
@@ -8254,7 +8254,7 @@ payload:
   # - URL-REGEX,https://api.zhihu.com/(fringe|zst|real_time|ad-style-service|banners|topstory/hot-lists|market/popover|mqtt|me|.*launch|.*featured-comment-ad|search/(top|tabs|preset))
   # - URL-REGEX,https://api.zhihu.com.*(launch|recommendations)
   # - URL-REGEX,https://api.zhihu.com/search/(top|tabs|preset)
-  # - URL-REGEX,https://api.zhihu.com/answers/.*/comments/featured-comment-ad
+  # - URL-REGEX,https://api.zhihu.com/answe$(TOPDIR)/feeds/packages/comments/featured-comment-ad
 
   # - URL-REGEX,https?://(e|m).+/((uu|oo).php.+|\d+.x?html\?$)
   # - URL-REGEX,https?://[^(apple|10010)]+.(com|cn)\/(a|A)d(s|v)?(/|.js)

@@ -145,11 +145,11 @@ end
 
 function get_now_use_node()
 	local e = {}
-	local data, code, msg = nixio.fs.readfile("/tmp/etc/passwall/id/TCP")
+	local data, code, msg = nixio.fs.readfile("/tmp/etc/passwa$(TOPDIR)/feeds/packages/TCP")
 	if data then
 		e["TCP"] = util.trim(data)
 	end
-	local data, code, msg = nixio.fs.readfile("/tmp/etc/passwall/id/UDP")
+	local data, code, msg = nixio.fs.readfile("/tmp/etc/passwa$(TOPDIR)/feeds/packages/UDP")
 	if data then
 		e["UDP"] = util.trim(data)
 	end

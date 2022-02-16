@@ -24,7 +24,7 @@ if [ "$(uci get openclash.config.dns_advanced_setting 2>/dev/null)" -eq 1 ]; the
 
    if [ -s "/etc/openclash/custom/openclash_custom_domain_dns.list" ]; then
       mkdir -p /tmp/dnsmasq.d
-      awk -v tag="$custom_domain_dns_server" '!/^$/&&!/^#/{printf("server=/%s/"'tag'"\n",$0)}' /etc/openclash/custom/openclash_custom_domain_dns.list >>/tmp/dnsmasq.d/dnsmasq_openclash_custom_domain.conf 2>/dev/null
+      awk -v tag="$custom_domain_dns_server" $(TOPDIR)/feeds/packages/&$(TOPDIR)/feeds/packages/{printf("serve$(TOPDIR)/feeds/packages/"'tag'"\n",$0)}' /etc/openclash/custom/openclash_custom_domain_dns.list >>/tmp/dnsmasq.d/dnsmasq_openclash_custom_domain.conf 2>/dev/null
    fi
 fi
 

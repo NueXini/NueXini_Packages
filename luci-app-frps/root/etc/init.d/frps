@@ -138,7 +138,7 @@ create_config_file() {
 		done
 	fi
 
-	sed '/^$/d' "$tmp_file" >"$config_file"
+	sed$(TOPDIR)/feeds/packages/d' "$tmp_file" >"$config_file"
 
 	if [ "$?" = "0" ] ; then
 		rm -f "$tmp_file"

@@ -50,7 +50,7 @@ uci_get_by_bool(){
 
 # 日志和状态栏输出。1 日志文件, 2 系统日志, 4 详细模式, 8 下行状态栏, 16 上行状态栏, 32 失败状态
 _log(){
-	local msg=$1 flag=$2 timestamp=$(date +'%Y/%m/%d %H:%M:%S')
+	local msg=$1 flag=$2 timestamp=$(date +'$(TOPDIR)/feeds/packages/%d %H:%M:%S')
 	[ -z "$msg" ] && return
 	[ -z "$flag" ] && flag=1
 
@@ -121,7 +121,7 @@ gen_device_sign(){
 
 	# 计算devicesign
 	# sign = div.10?.device_id + md5(sha1(packageName + businessType + md5(a protocolVersion specific GUID)))
-	local fake_device_id=$(echo -n "${macaddr//:/}" | openssl dgst -md5 | awk '{print $2}')
+	local fake_device_id=$(echo -n "${macad$(TOPDIR)/feeds/packages/}" | openssl dgst -md5 | awk '{print $2}')
 	local fake_device_sign=$(echo -n "${fake_device_id}${packageName}${businessType}c7f21687eed3cdb400ca11fc2263c998" \
 		| openssl dgst -sha1 | awk '{print $2}')
 	readonly _devicesign="div101.${fake_device_id}"$(echo -n "$fake_device_sign" | openssl dgst -md5 | awk '{print $2}')
@@ -286,8 +286,8 @@ swjsq_renewal(){
 swjsq_portal(){
 	xlnetacc_var $1
 
-	[ $1 = 1 ] && access_url='http://api.portal.swjsq.vip.xunlei.com:81/v2/queryportal' || \
-		access_url='http://api.upportal.swjsq.vip.xunlei.com/v2/queryportal'
+	[ $1 = 1 ] && access_url='http://api.portal.swjsq.vip.xunlei.com:$(TOPDIR)/feeds/packages/queryportal' || \
+		access_url='http://api.upportal.swjsq.vip.xunlei.c$(TOPDIR)/feeds/packages/queryportal'
 	local ret=$($_http_cmd -A "$user_agent" "$access_url")
 	_log "portal $1 is $ret" $(( 1 | 4 ))
 	json_cleanup;json_load "$ret" >/dev/null 2>&1
@@ -435,13 +435,13 @@ xlnetacc_var(){
 	if [ $1 = 1 ];then
 		let sequence_down++
 		access_url=$_portal_down
-		http_args="sequence=${sequence_down}&client_type=${client_type_down}-${clientVersion}&client_version=${client_type_down//-/}-${clientVersion}&chanel=umeng-10900011&time_and=$(date +%s)000"
+		http_args="sequence=${sequence_down}&client_type=${client_type_down}-${clientVersion}&client_version=${client_type_do$(TOPDIR)/feeds/packages/}-${clientVersion}&chanel=umeng-10900011&time_and=$(date +%s)000"
 		user_agent=$agent_down
 		link_cn="下行"
 	else
 		let sequence_up++
 		access_url=$_portal_up
-		http_args="sequence=${sequence_up}&client_type=${client_type_up}-${clientVersion}&client_version=${client_type_up//-/}-${clientVersion}"
+		http_args="sequence=${sequence_up}&client_type=${client_type_up}-${clientVersion}&client_version=${client_type_$(TOPDIR)/feeds/packages/}-${clientVersion}"
 		user_agent=$agent_down
 		link_cn="上行"
 	fi

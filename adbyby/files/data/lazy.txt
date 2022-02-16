@@ -11,13 +11,13 @@
 /js/adtop.js|
 /js/guanggao_gg.js?d=
 /js/sss/ad.js
-/static/js/aall.js
+/stat$(TOPDIR)/feeds/packages/aall.js
 /unionjs/$script
 /variety.tc.qq.com/*.mp4^*fmt=hd
 /variety.tc.qq.com/*.mp4^*fmt=shd
 /video.dispatch.tc.qq.com/*.mp4^*sdtfrom=
 /view/image/QT_HY.jpg?t=
-/view/js/slade.js|$script
+/vi$(TOPDIR)/feeds/packages/slade.js|$script
 /vlive.qqvideo.tc.qq.com/*.mp4^*fmt=hd
 /vlive.qqvideo.tc.qq.com/*.mp4^*fmt=shd
 /vmind.qqvideo.tc.qq.com/*.mp4^*sdtfrom=

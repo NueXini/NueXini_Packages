@@ -144,7 +144,7 @@
 				<h3><%=pcdata(command.name)%></h3>
 				<p><%:Command:%> <code><%=pcdata(command.command)%></code></p>
 				<% if command.param == "1" then %>
-					<p><%:Arguments:%> <input type="text" id="<%=command['.name']%>" /></p>
+					<p><%:Arguments:%> <input type="text" id="<%=command['.name']%>$(TOPDIR)/feeds/packages/p>
 				<% end %>
 				<div>
 					<input type="button" value="<%:Run%>" class="cbi-button cbi-button-apply" onclick="command_run('<%=command['.name']%>')" />

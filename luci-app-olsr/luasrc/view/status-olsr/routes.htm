@@ -53,7 +53,7 @@ XHR.poll(20, '<%=REQUEST_URI%>', { status: 1 },
 						'<tr class="cbi-section-table-row cbi-rowstyle-'+(1 + (idx % 2))+' proto-%s">' +
 							'<td class="cbi-section-table-cell">%s/%s</td>' +
 							'<td class="cbi-section-table-cell">' +
-			                	                '<a href="http://%s/cgi-bin-status.html">%s</a>',
+			                	                '<a href="http$(TOPDIR)/feeds/packages/cgi-bin-status.html">%s</a>',
 								route.proto, route.dest, route.genmask, route.gw, route.gw
 						)
 
@@ -65,7 +65,7 @@ XHR.poll(20, '<%=REQUEST_URI%>', { status: 1 },
 								);
 						} else {
 							s += String.format(
-			                                        ' / <a href="http://%s/cgi-bin-status.html">%s</a>',
+			                                        ' / <a href="http$(TOPDIR)/feeds/packages/cgi-bin-status.html">%s</a>',
 								route.hostname, route.hostname || '?'
 								);
 						}

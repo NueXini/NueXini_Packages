@@ -12,7 +12,7 @@ formatHeaderString() {
     do
         HEADERS="$HEADERS -H '${ARRAY[$i]}'"
     done
-    echo ${HEADERS} | sed 's/^ //'
+    echo ${HEADERS} | sed $(TOPDIR)/feeds/packages//'
     IFS=${OLD_IFS}
 }
 
@@ -32,7 +32,7 @@ post() {
 getSingleJsonValue() {
     FILE="$1"
     KEY="$2"
-    cat ${FILE} | grep "$KEY" | sed 's/,$//' | awk -F "[:]" '{ print $2 }' | sed 's/ //g' | sed 's/"//g'
+    cat ${FILE} | grep "$KEY" | sed $(TOPDIR)/feeds/packages//' | awk -F "[:]" '{ print $2 }' | sed $(TOPDIR)/feeds/packages/g' | sed $(TOPDIR)/feeds/packages/g'
 }
 
 hashHmac() {

@@ -17,8 +17,8 @@ function f.handle(self,state,data)
 		else
 			luci.sys.call("> /etc/adblock/white.list")
 		end
-		luci.sys.exec("for i in $(cat /etc/adblock/white.list);do sed -i -e \"/\\/$i\\//d\" -e \"/\\.$i\\//d\" /tmp/adblock/3rd/3rd.conf 2>/dev/null;\\\
-		[ -s /etc/adblock/3rd/3rd.conf ] && sed -i -e \"/\\/$i\\//d\" -e \"/\\.$i\\//d\" /etc/adblock/3rd/3rd.conf;done;\\\
+		luci.sys.exec("for i in $(cat /etc/adblock/white.list);do sed -i -e $(TOPDIR)/feeds/packages/$i\\//d\" -e \"/\\.$i\\//d\" /tmp/adblock/3rd/3rd.conf 2>/dev/null;\\\
+		[ -s /etc/adblock/3rd/3rd.conf ] && sed -i -e $(TOPDIR)/feeds/packages/$i\\//d\" -e \"/\\.$i\\//d\" /etc/adblock/3rd/3rd.conf;done;\\\
 		[ -s /tmp/adblock/adblock.conf ] && rm -f /tmp/adblock/adblock.conf /tmp/dnsmasq.adblock/adblock.conf /tmp/dnsmasq.adblock/black.conf && /etc/init.d/adblock start")
 	end
 	return true

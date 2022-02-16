@@ -27,7 +27,7 @@ local set=luci.http.formvalue("set")
 local icount=0
 
 if set=="0" then
-	sret=luci.sys.call("curl -Lfso /tmp/adnew.conf https://cdn.jsdelivr.net/gh/small-5/ad-rules/easylistchina+easylist.txt || curl -Lfso /tmp/adnew.conf https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt")
+	sret=luci.sys.call("curl -Lfso /tmp/adnew.conf https://cdn.jsdelivr.n$(TOPDIR)/feeds/packages/small-5/ad-rules/easylistchina+easylist.txt || curl -Lfso /tmp/adnew.conf https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt")
 	if sret==0 then
 		luci.sys.call("/usr/share/adblock/adblock gen")
 		icount=luci.sys.exec("cat /tmp/ad.conf | wc -l")

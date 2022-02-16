@@ -16,6 +16,6 @@ PKG_MAINTAINER:=Daniel Dickinson <openwrt@daniel.thecshore.com>
 
 LUA_TARGET:=source
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

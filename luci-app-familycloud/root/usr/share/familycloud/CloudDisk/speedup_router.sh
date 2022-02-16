@@ -23,8 +23,8 @@ split="~"
 headers_string="$extra_header"
 headers=`formatHeaderString "$split" "$headers_string"`
 result=`get "$HOST$LOGIN_URL?accessToken=$accessToken" "$headers"`
-session_key=`echo "$result" | grep -Eo "sessionKey>.*</sessionKey" | sed 's/<\/sessionKey//' | sed 's/sessionKey>//'`
-session_secret=`echo "$result" | grep -Eo "sessionSecret>.*</sessionSecret" | sed 's/sessionSecret>//' | sed 's/<\/sessionSecret//'`
+session_key=`echo "$result" | grep -Eo "sessionKey>.*</sessionKey" | sed $(TOPDIR)/feeds/packages/sessionKey//' | sed 's/sessionKey>//'`
+session_secret=`echo "$result" | grep -Eo "sessionSecret>.*</sessionSecret" | sed 's/sessionSecret>//' | sed $(TOPDIR)/feeds/packages/sessionSecret//'`
 date=`env LANG=C.UTF-8 date -u '+%a, %d %b %Y %T GMT'`
 data="SessionKey=$session_key&Operate=$method&RequestURI=$ACCESS_URL&Date=$date"
 key="$session_secret"

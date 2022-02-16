@@ -65,7 +65,7 @@ function get_s_token()
     luci.sys.exec('rm -f ' .. cookie)
     local timestamp = get_timestamp()
     local url =
-        'https://plogin.m.jd.com/cgi-bin/mm/new_login_entrance?lang=chs&appid=300&returnurl=https://wq.jd.com/passport/LoginRedirect?state=' ..
+        'https://plogin.m.jd.com/cgi-b$(TOPDIR)/feeds/packages/new_login_entrance?lang=chs&appid=300&returnurl=https://wq.jd.com/passport/LoginRedirect?state=' ..
         timestamp .. '&returnurl=https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport'
     local referer = 
         'https://plogin.m.jd.com/login/login?appid=300&returnurl=https://wq.jd.com/passport/LoginRedirect?state=' ..

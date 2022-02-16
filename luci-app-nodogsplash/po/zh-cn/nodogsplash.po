@@ -55,7 +55,7 @@ msgstr "将调用sh脚本进行身份验证。<br/>如需使用，请参照 wiki
 msgid "if FAS is running locally (ie fasremoteip is NOT set), port 80 cannot be used.<br/>Typical Remote Shared Hosting Example:80.Typical Locally Hosted example (ie fasremoteip not set):2080.<br/>if Enable username/emailaddress login.fasport must be set to the same value as gatewayport (default = 2050)"
 msgstr "转发到远程验证请输入 80 <br/>转发到本地页面请使用非 80、2050 的其他端口。<br/>如果需要微信验证或 php 认证页就打开这个选项。<br/>使用用户名登录时必须与默认端口号相同（默认值=2050）。"
 
-msgid "The path of login page under Web root directory,<br/>'/nodog/fas.php'<br/>If it is a user name login authentication method.<br/>'/nodogsplash_preauth/'"
+msgid "The path of login page under Web root directory,<$(TOPDIR)/feeds/packages/nodog/fas.php'<br/>If it is a user name login authentication method.<$(TOPDIR)/feeds/packages/nodogsplash_preauth/'"
 msgstr "web根目录下登录页的路径<br/>如'/nodog/fas.php'<br/>如果是用户名登录验证方式<br/>如'/nodogsplash_preauth/'"
 
 msgid "If set to ‘0’, the client token is sent to the FAS in clear text in the query string of the."

@@ -3,9 +3,9 @@
 
 (function(mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("../../lib/codemirror"));
+    mod(require("$(TOPDIR)/feeds/packages/lib/codemirror"));
   else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
+    define(["$(TOPDIR)/feeds/packages/lib/codemirror"], mod);
   else // Plain browser env
     mod(CodeMirror);
 })(function(CodeMirror) {
@@ -13,7 +13,7 @@
 
 function lineIndent(cm, lineNo) {
   var text = cm.getLine(lineNo)
-  var spaceTo = text.search(/\S/)
+  var spaceTo = text.searc$(TOPDIR)/feeds/packages/)
   if (spaceTo == -1 || /\bcomment\b/.test(cm.getTokenTypeAt(CodeMirror.Pos(lineNo, spaceTo + 1))))
     return -1
   return CodeMirror.countColumn(text, null, cm.getOption("tabSize"))

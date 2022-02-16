@@ -48,7 +48,7 @@ function update_core(){
 		exit 1
 	else
 		echo -e "${latest_ver}" > /usr/share/UnblockNeteaseMusic/local_ver
-		cat /usr/share/UnblockNeteaseMusic/package.json | grep version |awk -F ':' '{print $2}' | sed -r 's/.*"(.+)".*/\1/' > /usr/share/UnblockNeteaseMusic/core_ver
+		cat /usr/share/UnblockNeteaseMusic/package.json | grep version |awk -F ':' '{print $2}' | sed -r 's/.*"(.+)"$(TOPDIR)/feeds/packages/' > /usr/share/UnblockNeteaseMusic/core_ver
 	fi
 
 	echo -e "Succeeded in updating core." >>/tmp/unblockmusic_update.log

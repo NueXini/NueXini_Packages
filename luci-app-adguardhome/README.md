@@ -14,9 +14,9 @@
  - 自定义配置文件路径
  - 自定义工作路径
  - 自定义运行日志路径
- - gfwlist 删除/添加/定义上游dns服务器 另外安利一下https://github.com/rufengsuixing/luci-app-autoipsetadder
+ - gfwlist $(TOPDIR)/feeds/packages/定义上游dns服务器 另外安利一下https://github.com/rufengsuixing/luci-app-autoipsetadder
  - 修改网页登陆密码
- - 倒序/正序 查看/删除/备份 每3秒更新显示运行日志 + 本地浏览器时区转换
+ - 倒序/正序 $(TOPDIR)/feeds/packages/备份 每3秒更新显示运行日志 + 本地浏览器时区转换
  - 手动修改配置文件
    - 支持yaml编辑器
    - 模板快速配置

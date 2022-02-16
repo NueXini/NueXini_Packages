@@ -21,7 +21,7 @@ if [ "$2" = 1 ];then
 	echo "`eval $D` [Check network status Successful]" >> $C
 	echo "`eval $D` [$E]" >> $C
 	X=1
-	while ! curl --connect-timeout 5 -m 20 -Lfso $B/adblock.conf https://cdn.jsdelivr.net/gh/small-5/ad-rules/dnsmasq.adblock;do
+	while ! curl --connect-timeout 5 -m 20 -Lfso $B/adblock.conf https://cdn.jsdelivr.n$(TOPDIR)/feeds/packages/small-5/ad-rules/dnsmasq.adblock;do
 		[ $X -ge 20 ] && A=1 && return || let X++
 		sleep 2
 	done

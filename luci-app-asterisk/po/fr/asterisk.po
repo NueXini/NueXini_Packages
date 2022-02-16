@@ -397,8 +397,8 @@ msgstr ""
 #~ msgid "G.723.1 Simple Timestamp File Format"
 #~ msgstr "Format de fichier G.723.1 à horodatage simple"
 
-#~ msgid "Raw G.726 (16/24/32/40kbps) data"
-#~ msgstr "Données brutes G.726 (16/24/32/40 kbit/s)"
+#~ msgid "Raw G.726 ($(TOPDIR)/feeds/packages/32/40kbps) data"
+#~ msgstr "Données brutes G.726 ($(TOPDIR)/feeds/packages/32/40 kbit/s)"
 
 #~ msgid "Raw G729 data"
 #~ msgstr "Données brutes G729"

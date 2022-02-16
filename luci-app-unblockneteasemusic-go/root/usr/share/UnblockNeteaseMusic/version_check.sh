@@ -9,8 +9,8 @@ if [ "$(uci get unblockneteasemusic.@unblockneteasemusic[0].auto_update)" == "1"
        exit 1
     fi
     currentTagCMD="$(UnblockNeteaseMusic -v | grep Version | awk '{print $2}')"
-    currentRuntimeCMD="$(UnblockNeteaseMusic -v | grep runtime | awk -F\( '{print $2}' | awk '{print $3,$4}' | sed -E 's/\)//g'| sed 's/[ \t]*$//g')"
-    latestTagCMD="$(cat ${json_file} | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\".*/\1/')"
+    currentRuntimeCMD="$(UnblockNeteaseMusic -v | grep runtime | awk -F\( '{print $2}' | awk '{print $3,$4}' | sed -E $(TOPDIR)/feeds/packages//g'| sed 's/[ \t]*$//g')"
+    latestTagCMD="$(cat ${json_file} | grep '\"tag_name\":' | sed -E 's/.*\"([^\"]+)\"$(TOPDIR)/feeds/packages/')"
     GOOSS="$(echo $currentRuntimeCMD | awk '{print $1}')"
     GOOS="linux"
     GOARCH="amd64"
@@ -27,7 +27,7 @@ if [ "$(uci get unblockneteasemusic.@unblockneteasemusic[0].auto_update)" == "1"
     if [ -n "$(echo $GOOSS | awk -F/ '{print $2}')" ]; then
         GOARCH="$(echo $GOOSS | awk -F/ '{print $2}')"
     fi
-    downloadUrl="$(cat ${json_file} | grep '\"browser_download_url\":' | grep ${GOOS} | grep ${GOARCH} | grep ${suffix} | sed -E 's/.*\"([^\"]+)\".*/\1/')"
+    downloadUrl="$(cat ${json_file} | grep '\"browser_download_url\":' | grep ${GOOS} | grep ${GOARCH} | grep ${suffix} | sed -E 's/.*\"([^\"]+)\"$(TOPDIR)/feeds/packages/')"
     if [ ! -n "${downloadUrl}" ]; then
        echo "$(date -R) not found ${currentRuntimeCMD} on GitHub,please go to https://github.com/cnsilvan/luci-app-unblockneteasemusic/issues to open a issue " >>"${log_file}"
        exit 1

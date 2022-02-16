@@ -19,7 +19,7 @@ format_g723:value("no", "Do Not Load")
 format_g723:value("auto", "Load as Required")
 format_g723.rmempty = true
 
-format_g726 = module:option(ListValue, "format_g726", "Raw G.726 (16/24/32/40kbps) data", "")
+format_g726 = module:option(ListValue, "format_g726", "Raw G.726 ($(TOPDIR)/feeds/packages/32/40kbps) data", "")
 format_g726:value("yes", "Load")
 format_g726:value("no", "Do Not Load")
 format_g726:value("auto", "Load as Required")

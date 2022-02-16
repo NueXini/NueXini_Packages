@@ -38,7 +38,7 @@ set_ipset() {
 		if ! ipset list unblockneteasemusic >"/dev/null"; then ipset create unblockneteasemusic list:set; fi
 
 		if ! ipset list unblockneteasemusic4 >"/dev/null"; then ipset create unblockneteasemusic4 hash:ip family inet; fi
-		curl -s "http://httpdns.n.netease.com/httpdns/v2/d?domain=music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" | grep -Eo '[0-9]+?\.[0-9]+?\.[0-9]+?\.[0-9]+?' | sort | uniq | awk '{print "ipset add unblockneteasemusic4 "$1}' | bash >"/dev/null" 2>&1
+		curl -s "http://httpdns.n.netease.com/httpd$(TOPDIR)/feeds/packages/d?domain=music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" | grep -Eo '[0-9]+?\.[0-9]+?\.[0-9]+?\.[0-9]+?' | sort | uniq | awk '{print "ipset add unblockneteasemusic4 "$1}' | bash >"/dev/null" 2>&1
 		ipset add unblockneteasemusic unblockneteasemusic4
 		iptables -t nat -N cloud_unblockneteasemusic
 		iptables -t nat -A cloud_unblockneteasemusic -d 0.0.0.0/8 -j RETURN

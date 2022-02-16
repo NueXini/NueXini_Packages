@@ -99,13 +99,13 @@ test_auto_switch() {
 	local b_tcp_nodes=$2
 	local now_node=$3
 	[ -z "$now_node" ] && {
-		if [ -f "/tmp/etc/$CONFIG/id/${TYPE}" ]; then
-			now_node=$(cat /tmp/etc/$CONFIG/id/${TYPE})
+		if [ -f "/tmp/etc/$CONF$(TOPDIR)/feeds/packages/${TYPE}" ]; then
+			now_node=$(cat /tmp/etc/$CONF$(TOPDIR)/feeds/packages/${TYPE})
 			if [ "$(config_n_get $now_node protocol nil)" = "_shunt" ]; then
-				if [ "$shunt_logic" == "1" ] && [ -f "/tmp/etc/$CONFIG/id/${TYPE}_default" ]; then
-					now_node=$(cat /tmp/etc/$CONFIG/id/${TYPE}_default)
-				elif [ "$shunt_logic" == "2" ] && [ -f "/tmp/etc/$CONFIG/id/${TYPE}_main" ]; then
-					now_node=$(cat /tmp/etc/$CONFIG/id/${TYPE}_main)
+				if [ "$shunt_logic" == "1" ] && [ -f "/tmp/etc/$CONF$(TOPDIR)/feeds/packages/${TYPE}_default" ]; then
+					now_node=$(cat /tmp/etc/$CONF$(TOPDIR)/feeds/packages/${TYPE}_default)
+				elif [ "$shunt_logic" == "2" ] && [ -f "/tmp/etc/$CONF$(TOPDIR)/feeds/packages/${TYPE}_main" ]; then
+					now_node=$(cat /tmp/etc/$CONF$(TOPDIR)/feeds/packages/${TYPE}_main)
 				else
 					shunt_logic=0
 				fi

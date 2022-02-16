@@ -227,7 +227,7 @@ e2.optional = true
 if plug_cnt > 0 then
 	e3 = s:option(DynamicList, "blacklist", translate("Blacklist"),
 		translate("Local blacklists allow you to block abuse sites by domains or ip addresses. ")
-		.. translate("The value for this property is the blocklist type and path to the file, e.g.'domains:/path/to/dbl.txt' or 'ips:/path/to/ipbl.txt'."))
+		.. translate("The value for this property is the blocklist type and path to the file, e.g.'domains:/pa$(TOPDIR)/feeds/packages/dbl.txt' or 'ips:/pa$(TOPDIR)/feeds/packages/ipbl.txt'."))
 	e3.optional = true
 
 	e4 = s:option(Value, "block_ipv6", translate("Block IPv6"),

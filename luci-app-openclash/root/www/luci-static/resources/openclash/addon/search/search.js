@@ -11,9 +11,9 @@
 
 (function(mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("../../lib/codemirror"), require("./searchcursor"), require("../dialog/dialog"));
+    mod(require("$(TOPDIR)/feeds/packages/lib/codemirror"), require("./searchcursor"), require("../dialog/dialog"));
   else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror", "./searchcursor", "../dialog/dialog"], mod);
+    define(["$(TOPDIR)/feeds/packages/lib/codemirror", "./searchcursor", "../dialog/dialog"], mod);
   else // Plain browser env
     mod(CodeMirror);
 })(function(CodeMirror) {
@@ -92,7 +92,7 @@
   }
 
   function parseQuery(query) {
-    var isRE = query.match(/^\/(.*)\/([a-z]*)$/);
+    var isRE = query.matc$(TOPDIR)/feeds/packages/(.*)\/([a-z]*)$/);
     if (isRE) {
       try { query = new RegExp(isRE[1], isRE[2].indexOf("i") == -1 ? "" : "i"); }
       catch(e) {} // Not a regular expression after all, do a string search
@@ -100,7 +100,7 @@
       query = parseString(query)
     }
     if (typeof query == "string" ? query == "" : query.test(""))
-      query = /x^/;
+      query $(TOPDIR)/feeds/packages/;
     return query;
   }
 
@@ -206,13 +206,13 @@
               el("span", {className: "CodeMirror-search-label"}, cm.phrase("Search:")), " ",
               el("input", {type: "text", "style": "width: 10em", className: "CodeMirror-search-field"}), " ",
               el("span", {style: "color: #888", className: "CodeMirror-search-hint"},
-                 cm.phrase("(Use /re/ syntax for regexp search)")));
+                 cm.phrase("(Us$(TOPDIR)/feeds/packages/ syntax for regexp search)")));
   }
   function getReplaceQueryDialog(cm) {
     return el("", null, " ",
               el("input", {type: "text", "style": "width: 10em", className: "CodeMirror-search-field"}), " ",
               el("span", {style: "color: #888", className: "CodeMirror-search-hint"},
-                 cm.phrase("(Use /re/ syntax for regexp search)")));
+                 cm.phrase("(Us$(TOPDIR)/feeds/packages/ syntax for regexp search)")));
   }
   function getReplacementQueryDialog(cm) {
     return el("", null,

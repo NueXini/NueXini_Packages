@@ -14,6 +14,6 @@ PKG_MAINTAINER:=Toke Høiland-Jørgensen <toke@toke.dk>
 LUCI_DEPENDS:=+sqm-scripts
 LUCI_PKGARCH:=all
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

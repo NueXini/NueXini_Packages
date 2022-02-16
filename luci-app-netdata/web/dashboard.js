@@ -88,10 +88,10 @@ NETDATA.name2id = function (s) {
     return s
         .replace(/ /g, '_')
         .replace(/:/g, '_')
-        .replace(/\(/g, '_')
-        .replace(/\)/g, '_')
-        .replace(/\./g, '_')
-        .replace(/\//g, '_');
+        .replac$(TOPDIR)/feeds/packages/g, '_')
+        .replac$(TOPDIR)/feeds/packages/g, '_')
+        .replac$(TOPDIR)/feeds/packages/g, '_')
+        .replac$(TOPDIR)/feeds/packages/g, '_');
 };
 
 NETDATA.encodeURIComponent = function (s) {
@@ -1874,7 +1874,7 @@ NETDATA.colors = NETDATA.themes.current.colors;
 
 // these are the colors Google Charts are using
 // we have them here to attempt emulate their look and feel on the other chart libraries
-// http://there4.io/2012/05/02/google-chart-color-list/
+// http://there4.io/20$(TOPDIR)/feeds/packages/02/google-chart-color-list/
 //NETDATA.colors        = [ '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099', '#3B3EAC', '#0099C6',
 //                      '#DD4477', '#66AA00', '#B82E2E', '#316395', '#994499', '#22AA99', '#AAAA11',
 //                      '#6633CC', '#E67300', '#8B0707', '#329262', '#5574A6', '#3B3EAC' ];
@@ -4404,7 +4404,7 @@ NETDATA.chartLibraries = {
         toolboxPanAndZoom: NETDATA.dygraphToolboxPanAndZoom,
         initialized: false,
         enabled: true,
-        xssRegexIgnore: new RegExp('^/api/v1/data\.result.data$'),
+        xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result.data$'),
         format: function (state) {
             void(state);
             return 'json';
@@ -4465,7 +4465,7 @@ NETDATA.chartLibraries = {
         toolboxPanAndZoom: null,
         initialized: false,
         enabled: true,
-        xssRegexIgnore: new RegExp('^/api/v1/data\.result$'),
+        xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result$'),
         format: function (state) {
             void(state);
             return 'array';
@@ -4509,7 +4509,7 @@ NETDATA.chartLibraries = {
         toolboxPanAndZoom: null,
         initialized: false,
         enabled: true,
-        xssRegexIgnore: new RegExp('^/api/v1/data\.result$'),
+        xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result$'),
         format: function (state) {
             void(state);
             return 'ssvcomma';
@@ -4553,7 +4553,7 @@ NETDATA.chartLibraries = {
     //     toolboxPanAndZoom: null,
     //     initialized: false,
     //     enabled: true,
-    //     xssRegexIgnore: new RegExp('^/api/v1/data\.result.data$'),
+    //     xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result.data$'),
     //     format: function(state) { void(state); return 'json'; },
     //     options: function(state) { void(state); return 'objectrows' + '%7C' + 'ms'; },
     //     legend: function(state) { void(state); return null; },
@@ -4573,7 +4573,7 @@ NETDATA.chartLibraries = {
         toolboxPanAndZoom: null,
         initialized: false,
         enabled: true,
-        xssRegexIgnore: new RegExp('^/api/v1/data\.result.rows$'),
+        xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result.rows$'),
         format: function (state) {
             void(state);
             return 'datatable';
@@ -4617,7 +4617,7 @@ NETDATA.chartLibraries = {
     //     toolboxPanAndZoom: null,
     //     initialized: false,
     //     enabled: true,
-    //     xssRegexIgnore: new RegExp('^/api/v1/data\.result.data$'),
+    //     xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result.data$'),
     //     format: function(state) { void(state); return 'json'; },
     //     options: function(state) { void(state); return ''; },
     //     legend: function(state) { void(state); return null; },
@@ -4637,7 +4637,7 @@ NETDATA.chartLibraries = {
     //     toolboxPanAndZoom: null,
     //     initialized: false,
     //     enabled: true,
-    //     xssRegexIgnore: new RegExp('^/api/v1/data\.result$'),
+    //     xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result$'),
     //     format: function(state) { void(state); return 'csvjsonarray'; },
     //     options: function(state) { void(state); return 'milliseconds'; },
     //     legend: function(state) { void(state); return null; },
@@ -4657,7 +4657,7 @@ NETDATA.chartLibraries = {
         toolboxPanAndZoom: null,
         initialized: false,
         enabled: true,
-        xssRegexIgnore: new RegExp('^/api/v1/data\.result.data$'),
+        xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result.data$'),
         format: function (state) {
             void(state);
             return 'json';
@@ -4701,7 +4701,7 @@ NETDATA.chartLibraries = {
         toolboxPanAndZoom: null,
         initialized: false,
         enabled: true,
-        xssRegexIgnore: new RegExp('^/api/v1/data\.result.data$'),
+        xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result.data$'),
         format: function (state) {
             void(state);
             return 'json';
@@ -4745,7 +4745,7 @@ NETDATA.chartLibraries = {
         toolboxPanAndZoom: null,
         initialized: false,
         enabled: true,
-        xssRegexIgnore: new RegExp('^/api/v1/data\.result$'),
+        xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result$'),
         format: function (state) {
             void(state);
             return 'array';
@@ -4790,7 +4790,7 @@ NETDATA.chartLibraries = {
         toolboxPanAndZoom: null,
         initialized: false,
         enabled: true,
-        xssRegexIgnore: new RegExp('^/api/v1/data\.result$'),
+        xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result$'),
         format: function (state) {
             void(state);
             return 'array';
@@ -4865,7 +4865,7 @@ NETDATA.chartLibraries = {
             return false;
         },
         update: NETDATA.textOnlyUpdate,
-        xssRegexIgnore: new RegExp('^/api/v1/data\.result$'),
+        xssRegexIgnore: new RegExp('^/a$(TOPDIR)/feeds/packages/data\.result$'),
     }
 };
 
@@ -4941,7 +4941,7 @@ NETDATA.chartRegistry = {
                     NETDATA.options.server_timezone = data.timezone;
                 }
             } else {
-                NETDATA.error(406, h + '/api/v1/charts');
+                NETDATA.error(406, h + '/a$(TOPDIR)/feeds/packages/charts');
             }
 
             if (typeof callback === 'function') {
@@ -4953,17 +4953,17 @@ NETDATA.chartRegistry = {
             got_data(host, netdataSnapshotData.charts, callback);
         } else {
             $.ajax({
-                url: host + '/api/v1/charts',
+                url: host + '/a$(TOPDIR)/feeds/packages/charts',
                 async: true,
                 cache: false,
                 xhrFields: {withCredentials: true} // required for the cookie
             })
                 .done(function (data) {
-                    data = NETDATA.xss.checkOptional('/api/v1/charts', data);
+                    data = NETDATA.xss.checkOptional('/a$(TOPDIR)/feeds/packages/charts', data);
                     got_data(host, data, callback);
                 })
                 .fail(function () {
-                    NETDATA.error(405, host + '/api/v1/charts');
+                    NETDATA.error(405, host + '/a$(TOPDIR)/feeds/packages/charts');
 
                     if (typeof callback === 'function') {
                         callback(null);
@@ -8707,7 +8707,7 @@ let chartState = function (element) {
             let data = this.getSnapshotData(key);
             if (data !== null) {
                 ok = true;
-                data = NETDATA.xss.checkData('/api/v1/data', data, this.library.xssRegexIgnore);
+                data = NETDATA.xss.checkData('/a$(TOPDIR)/feeds/packages/data', data, this.library.xssRegexIgnore);
                 this.updateChartWithData(data);
             } else {
                 ok = false;
@@ -8740,7 +8740,7 @@ let chartState = function (element) {
             xhrFields: {withCredentials: true} // required for the cookie
         })
             .done(function (data) {
-                data = NETDATA.xss.checkData('/api/v1/data', data, that.library.xssRegexIgnore);
+                data = NETDATA.xss.checkData('/a$(TOPDIR)/feeds/packages/data', data, that.library.xssRegexIgnore);
 
                 that.xhr = undefined;
                 that.retries_on_data_failures = 0;
@@ -9018,7 +9018,7 @@ let chartState = function (element) {
                 return callback();
             }
         } else {
-            this.chart_url = "/api/v1/chart?chart=" + this.id;
+            this.chart_url = "/a$(TOPDIR)/feeds/packages/chart?chart=" + this.id;
 
             if (this.debug) {
                 this.log('downloading ' + this.chart_url);
@@ -9031,7 +9031,7 @@ let chartState = function (element) {
                 xhrFields: {withCredentials: true} // required for the cookie
             })
                 .done(function (chart) {
-                    chart = NETDATA.xss.checkOptional('/api/v1/chart', chart);
+                    chart = NETDATA.xss.checkOptional('/a$(TOPDIR)/feeds/packages/chart', chart);
 
                     chart.url = that.chart_url;
                     that.__defaultsFromDownloadedChart(chart);
@@ -9808,7 +9808,7 @@ NETDATA.alarms = {
 
     get: function (what, callback) {
         $.ajax({
-            url: NETDATA.alarms.server + '/api/v1/alarms?' + what.toString(),
+            url: NETDATA.alarms.server + '/a$(TOPDIR)/feeds/packages/alarms?' + what.toString(),
             async: true,
             cache: false,
             headers: {
@@ -9818,7 +9818,7 @@ NETDATA.alarms = {
             xhrFields: {withCredentials: true} // required for the cookie
         })
             .done(function (data) {
-                data = NETDATA.xss.checkOptional('/api/v1/alarms', data /*, '.*\.(calc|calc_parsed|warn|warn_parsed|crit|crit_parsed)$' */);
+                data = NETDATA.xss.checkOptional('/a$(TOPDIR)/feeds/packages/alarms', data /*, '.*\.(calc|calc_parsed|warn|warn_parsed|crit|crit_parsed)$' */);
 
                 if (NETDATA.alarms.first_notification_id === 0 && typeof data.latest_alarm_log_unique_id === 'number') {
                     NETDATA.alarms.first_notification_id = data.latest_alarm_log_unique_id;
@@ -9867,7 +9867,7 @@ NETDATA.alarms = {
     get_log: function (last_id, callback) {
         // console.log('fetching all log after ' + last_id.toString());
         $.ajax({
-            url: NETDATA.alarms.server + '/api/v1/alarm_log?after=' + last_id.toString(),
+            url: NETDATA.alarms.server + '/a$(TOPDIR)/feeds/packages/alarm_log?after=' + last_id.toString(),
             async: true,
             cache: false,
             headers: {
@@ -9877,7 +9877,7 @@ NETDATA.alarms = {
             xhrFields: {withCredentials: true} // required for the cookie
         })
             .done(function (data) {
-                data = NETDATA.xss.checkOptional('/api/v1/alarm_log', data);
+                data = NETDATA.xss.checkOptional('/a$(TOPDIR)/feeds/packages/alarm_log', data);
 
                 if (typeof callback === 'function') {
                     return callback(data);
@@ -10033,7 +10033,7 @@ NETDATA.registry = {
         // 1. verifies the server is reachable
         // 2. responds with the registry URL, the machine GUID of this netdata server and its hostname
         $.ajax({
-            url: host + '/api/v1/registry?action=hello',
+            url: host + '/a$(TOPDIR)/feeds/packages/registry?action=hello',
             async: true,
             cache: false,
             headers: {
@@ -10043,7 +10043,7 @@ NETDATA.registry = {
             xhrFields: {withCredentials: true} // required for the cookie
         })
             .done(function (data) {
-                data = NETDATA.xss.checkOptional('/api/v1/registry?action=hello', data);
+                data = NETDATA.xss.checkOptional('/a$(TOPDIR)/feeds/packages/registry?action=hello', data);
 
                 if (typeof data.status !== 'string' || data.status !== 'ok') {
                     NETDATA.error(408, host + ' response: ' + JSON.stringify(data));
@@ -10082,7 +10082,7 @@ NETDATA.registry = {
         // the registry identifies us using a cookie it sets the first time we access it
         // the registry may respond with a redirect URL to send us to another registry
         $.ajax({
-            url: NETDATA.registry.server + '/api/v1/registry?action=access&machine=' + NETDATA.registry.machine_guid + '&name=' + encodeURIComponent(name) + '&url=' + encodeURIComponent(url), // + '&visible_url=' + encodeURIComponent(document.location),
+            url: NETDATA.registry.server + '/a$(TOPDIR)/feeds/packages/registry?action=access&machine=' + NETDATA.registry.machine_guid + '&name=' + encodeURIComponent(name) + '&url=' + encodeURIComponent(url), // + '&visible_url=' + encodeURIComponent(document.location),
             async: true,
             cache: false,
             headers: {
@@ -10092,7 +10092,7 @@ NETDATA.registry = {
             xhrFields: {withCredentials: true} // required for the cookie
         })
             .done(function (data) {
-                data = NETDATA.xss.checkAlways('/api/v1/registry?action=access', data);
+                data = NETDATA.xss.checkAlways('/a$(TOPDIR)/feeds/packages/registry?action=access', data);
 
                 let redirect = null;
                 if (typeof data.registry === 'string') {
@@ -10137,7 +10137,7 @@ NETDATA.registry = {
     delete: function (delete_url, callback) {
         // send DELETE to a netdata registry:
         $.ajax({
-            url: NETDATA.registry.server + '/api/v1/registry?action=delete&machine=' + NETDATA.registry.machine_guid + '&name=' + encodeURIComponent(NETDATA.registry.hostname) + '&url=' + encodeURIComponent(NETDATA.serverDefault) + '&delete_url=' + encodeURIComponent(delete_url),
+            url: NETDATA.registry.server + '/a$(TOPDIR)/feeds/packages/registry?action=delete&machine=' + NETDATA.registry.machine_guid + '&name=' + encodeURIComponent(NETDATA.registry.hostname) + '&url=' + encodeURIComponent(NETDATA.serverDefault) + '&delete_url=' + encodeURIComponent(delete_url),
             async: true,
             cache: false,
             headers: {
@@ -10147,7 +10147,7 @@ NETDATA.registry = {
             xhrFields: {withCredentials: true} // required for the cookie
         })
             .done(function (data) {
-                data = NETDATA.xss.checkAlways('/api/v1/registry?action=delete', data);
+                data = NETDATA.xss.checkAlways('/a$(TOPDIR)/feeds/packages/registry?action=delete', data);
 
                 if (typeof data.status !== 'string' || data.status !== 'ok') {
                     NETDATA.error(411, NETDATA.registry.server + ' responded with: ' + JSON.stringify(data));
@@ -10170,7 +10170,7 @@ NETDATA.registry = {
     search: function (machine_guid, callback) {
         // SEARCH for the URLs of a machine:
         $.ajax({
-            url: NETDATA.registry.server + '/api/v1/registry?action=search&machine=' + NETDATA.registry.machine_guid + '&name=' + encodeURIComponent(NETDATA.registry.hostname) + '&url=' + encodeURIComponent(NETDATA.serverDefault) + '&for=' + machine_guid,
+            url: NETDATA.registry.server + '/a$(TOPDIR)/feeds/packages/registry?action=search&machine=' + NETDATA.registry.machine_guid + '&name=' + encodeURIComponent(NETDATA.registry.hostname) + '&url=' + encodeURIComponent(NETDATA.serverDefault) + '&for=' + machine_guid,
             async: true,
             cache: false,
             headers: {
@@ -10180,7 +10180,7 @@ NETDATA.registry = {
             xhrFields: {withCredentials: true} // required for the cookie
         })
             .done(function (data) {
-                data = NETDATA.xss.checkAlways('/api/v1/registry?action=search', data);
+                data = NETDATA.xss.checkAlways('/a$(TOPDIR)/feeds/packages/registry?action=search', data);
 
                 if (typeof data.status !== 'string' || data.status !== 'ok') {
                     NETDATA.error(417, NETDATA.registry.server + ' responded with: ' + JSON.stringify(data));
@@ -10203,7 +10203,7 @@ NETDATA.registry = {
     switch: function (new_person_guid, callback) {
         // impersonate
         $.ajax({
-            url: NETDATA.registry.server + '/api/v1/registry?action=switch&machine=' + NETDATA.registry.machine_guid + '&name=' + encodeURIComponent(NETDATA.registry.hostname) + '&url=' + encodeURIComponent(NETDATA.serverDefault) + '&to=' + new_person_guid,
+            url: NETDATA.registry.server + '/a$(TOPDIR)/feeds/packages/registry?action=switch&machine=' + NETDATA.registry.machine_guid + '&name=' + encodeURIComponent(NETDATA.registry.hostname) + '&url=' + encodeURIComponent(NETDATA.serverDefault) + '&to=' + new_person_guid,
             async: true,
             cache: false,
             headers: {
@@ -10213,7 +10213,7 @@ NETDATA.registry = {
             xhrFields: {withCredentials: true} // required for the cookie
         })
             .done(function (data) {
-                data = NETDATA.xss.checkAlways('/api/v1/registry?action=switch', data);
+                data = NETDATA.xss.checkAlways('/a$(TOPDIR)/feeds/packages/registry?action=switch', data);
 
                 if (typeof data.status !== 'string' || data.status !== 'ok') {
                     NETDATA.error(413, NETDATA.registry.server + ' responded with: ' + JSON.stringify(data));

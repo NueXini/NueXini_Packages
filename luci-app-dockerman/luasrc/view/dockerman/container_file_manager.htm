@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/luci-static/resources/dockerman/file-manager.css?v=@ver">
 <fieldset class="cbi-section fb-container">
-	<input id="current-path" type="text" class="current-path cbi-input-text" value="/" />
+	<input id="current-path" type="text" class="current-path cbi-input-text" value$(TOPDIR)/feeds/packages/>
 	<div class="panel-container">
 		<input type="file" name="upload_archive" accept="*/*"
 			style="visibility:hidden; position: absolute;top: 0px; left: 0px;" multiple="multiple" id="upload_archive" />
@@ -113,7 +113,7 @@
 			}
 			else if (targetElem = getFileElem(targetElem)) {
 				if (targetElem.className.indexOf('parent-icon') > -1) {
-					update_list(currentPath.replace(/\/[^/]+($|\/$)/, ''));
+					update_list(currentPath.replace($(TOPDIR)/feeds/packages/]+($$(TOPDIR)/feeds/packages/, ''));
 				}
 				else if (targetElem.className.indexOf('file-icon') > -1) {
 					openpath(targetElem.parentNode.dataset['filename']);

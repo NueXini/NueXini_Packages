@@ -28,7 +28,7 @@ install:
       echo "Can not find ${SDK} file in sha256sums."
       exit 1
     fi
-  - export SDK_FILE="$(cat sha256sums.small | cut -d' ' -f2 | sed 's/*//g')"
+  - export SDK_FILE="$(cat sha256sums.small | cut -d' ' -f2 | sed $(TOPDIR)/feeds/packages/g')"
   - |
     if ! sha256sum -c ./sha256sums.small 2>/dev/null ; then
       wget "$SDK_PATH/$SDK_FILE" -O "$SDK_FILE"
@@ -44,7 +44,7 @@ install:
   - test -d "$HOME/dl" || mkdir -p "$HOME/dl"
   - test -d "dl" && rm -rf dl || true
   - test -d "feeds" && rm -rf feeds || true
-  - ln -s "$HOME/dl/" dl
+  - ln -s "$HO$(TOPDIR)/feeds/packages/" dl
   - ln -s "$HOME/feeds" feeds
   - echo "src-git base https://github.com/openwrt/openwrt.git" >feeds.conf
   - echo "src-git packages https://github.com/openwrt/packages.git" >>feeds.conf

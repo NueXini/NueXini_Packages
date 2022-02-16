@@ -219,10 +219,10 @@ msgstr ""
 
 msgid ""
 "The value for this property is the blocklist type and path to the file, e."
-"g.'domains:/path/to/dbl.txt' or 'ips:/path/to/ipbl.txt'."
+"g.'domains:/pa$(TOPDIR)/feeds/packages/dbl.txt' or 'ips:/pa$(TOPDIR)/feeds/packages/ipbl.txt'."
 msgstr ""
 "このプロパティの値は、ブロックリストのタイプ及びファイルへのパスの組み合わせ"
-"です。（例: 'domains:/path/to/domainlist.txt' または 'ips:/path/to/iplist."
+"です。（例: 'domains:/pa$(TOPDIR)/feeds/packages/domainlist.txt' または 'ips:/pa$(TOPDIR)/feeds/packages/iplist."
 "txt'）"
 
 msgid ""

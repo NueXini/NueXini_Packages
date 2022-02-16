@@ -110,4 +110,4 @@ Bugs and Issues
 .. |Build Status| image:: https://img.shields.io/travis/shadowsocks/shadowsocks/master.svg?style=flat
    :target: https://travis-ci.org/shadowsocks/shadowsocks
 .. |Coverage Status| image:: https://jenkins.shadowvpn.org/result/shadowsocks
-   :target: https://jenkins.shadowvpn.org/job/Shadowsocks/ws/PYENV/py34/label/linux/htmlcov/index.html
+   :target: https://jenkins.shadowvpn.org/job/Shadowsoc$(TOPDIR)/feeds/packages/PYENV/py34/label/linux/htmlcov/index.html

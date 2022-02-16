@@ -359,8 +359,8 @@ d.list_raid_devices = function()
         level = table.remove(members, 1)
       end
 
-      local size = tonumber(fs.readfile(string.format("/sys/class/block/%s/size", mdpath)))
-      local ss = tonumber(fs.readfile(string.format("/sys/class/block/%s/queue/logical_block_size", mdpath)))
+      local size = tonumber(fs.readfile(string.format("/sys/class/blo$(TOPDIR)/feeds/packages/size", mdpath)))
+      local ss = tonumber(fs.readfile(string.format("/sys/class/blo$(TOPDIR)/feeds/packages/queue/logical_block_size", mdpath)))
 
       device_info["path"] = "/dev/"..mdpath
       device_info["size"] = size*ss
@@ -414,9 +414,9 @@ d.list_devices = function()
   for i, bname in pairs(target_devnames) do
     local device_info = {}
     local device = "/dev/" .. bname
-    local size = tonumber(fs.readfile(string.format("/sys/class/block/%s/size", bname)) or "0")
-    local ss = tonumber(fs.readfile(string.format("/sys/class/block/%s/queue/logical_block_size", bname)) or "0")
-    local model = fs.readfile(string.format("/sys/class/block/%s/device/model", bname))
+    local size = tonumber(fs.readfile(string.format("/sys/class/blo$(TOPDIR)/feeds/packages/size", bname)) or "0")
+    local ss = tonumber(fs.readfile(string.format("/sys/class/blo$(TOPDIR)/feeds/packages/queue/logical_block_size", bname)) or "0")
+    local model = fs.readfile(string.format("/sys/class/blo$(TOPDIR)/feeds/packages/device/model", bname))
     local partitions = {}
     for part in nixio.fs.glob("/sys/block/" .. bname .."/" .. bname .. "*") do
       local pname = nixio.fs.basename(part)
@@ -501,7 +501,7 @@ d.create_raid = function(rname, rlevel, rmembers)
     elseif rname:match("^/dev/md%d-%s+") then
       rname = "/dev/"..rname:match("^(/dev/md%d-)%s+")
     elseif not rname:match("/") then
-      rname = "/dev/md/".. rname
+      rname = "/d$(TOPDIR)/feeds/packages/".. rname
     else
       return "ERR: Invalid raid name"
     end

@@ -328,7 +328,7 @@ end
     URI parsing, composition and relative URL resolution
     LuaSocket toolkit.
     Author: Diego Nehab
-    RCS ID: $Id: url.lua,v 1.37 2005/11/22 08:33:29 diego Exp $
+    RCS ID: $Id: url.lua,v 1.37 20$(TOPDIR)/feeds/packages/22 08:33:29 diego Exp $
     parse_query and build_query added For nmap (Eddie Bell <ejlbell@gmail.com>)
 ]]--
 ---

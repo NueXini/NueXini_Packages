@@ -71,13 +71,13 @@ end
 					} else {
 						s += String.format(
 							'<tr class="cbi-section-table-row cbi-rowstyle-'+(1 + (idx % 2))+' proto-%s">' +
-							'<td class="cbi-section-table-titles" style="background-color:%s"><a href="http://%s/cgi-bin-status.html">%s</a></td>',
+							'<td class="cbi-section-table-titles" style="background-color:%s"><a href="http$(TOPDIR)/feeds/packages/cgi-bin-status.html">%s</a></td>',
 							neigh.proto, neigh.dfgcolor, neigh.rip, neigh.rip
 						);
 					}
 					if (neigh.hn) {
 						s += String.format(
-							'<td class="cbi-section-table-titles" style="background-color:%s"><a href="http://%s/cgi-bin-status.html">%s</a></td>',
+							'<td class="cbi-section-table-titles" style="background-color:%s"><a href="http$(TOPDIR)/feeds/packages/cgi-bin-status.html">%s</a></td>',
 							neigh.dfgcolor, neigh.hn, neigh.hn
 						);
 					} else {

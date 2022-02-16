@@ -18,6 +18,6 @@ wan_mode.default = 0
 wan_mode.rmempty = false
 
 o = s:option(DummyValue,"readme",translate(" "))
-o.description = translate("<a href=\"../../../../DockerReadme.pdf\" target=\"_blank\" />"..translate("Download DockerReadme.pdf").."</a>")
+o.description = translate("<a href=\"$(TOPDIR)/feeds/packages/$(TOPDIR)/feeds/packages/DockerReadme.pdf\" target=\"_blank\" />"..translate("Download DockerReadme.pdf").."</a>")
 
 return m

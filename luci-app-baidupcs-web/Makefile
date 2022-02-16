@@ -19,6 +19,6 @@ PKG_RELEASE:=5
 
 PKG_MAINTAINER:=<https://github.com/KFERMercer/luci-app-baidupcs-web>
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

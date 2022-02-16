@@ -251,7 +251,7 @@
 	<% end -%>
 	<script src="<%=resource%>/cbi.js"></script>
 	<script src="<%=resource%>/xhr.js"></script>
-	<script src="<%=media%>/js/ScrollY.js"></script>
+	<script src="<%=media$(TOPDIR)/feeds/packages/ScrollY.js"></script>
 </head>
 
 <body class="lang_<%=luci.i18n.context.lang%> <%- if node then %><%= striptags( node.title ) %><%- end %> <%- if auth_level() == "auth" then %> logged-in<%- end %> <%- if auth_level() == "noauth" then %> login-info<%- end %> <%- if auth_level() == "login" then %> login<%- end %>">

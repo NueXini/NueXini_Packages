@@ -339,7 +339,7 @@ function action_restore_config()
 	uci:commit("openclash")
 	luci.sys.call("/etc/init.d/openclash stop >/dev/null 2>&1")
 	luci.sys.call("cp '/usr/share/openclash/backup/openclash' '/etc/config/openclash' >/dev/null 2>&1 &")
-	luci.sys.call("cp /usr/share/openclash/backup/openclash_custom* /etc/openclash/custom/ >/dev/null 2>&1 &")
+	luci.sys.call("cp /usr/share/openclash/backup/openclash_custom* /etc/openclash/cust$(TOPDIR)/feeds/packages/dev/null 2>&1 &")
 	luci.http.redirect(luci.dispatcher.build_url('admin/services/openclash/settings'))
 end
 
@@ -373,7 +373,7 @@ local function dler_login()
 	local email = uci:get("openclash", "config", "dler_email")
 	local passwd = uci:get("openclash", "config", "dler_passwd")
 	if email and passwd then
-		info = luci.sys.exec(string.format("curl -sL -H 'Content-Type: application/json' -d '{\"email\":\"%s\", \"passwd\":\"%s\"}' -X POST https://dler.cloud/api/v1/login", email, passwd))
+		info = luci.sys.exec(string.format("curl -sL -H 'Content-Type: application/json' -d '{\"email\":\"%s\", \"passwd\":\"%s\"}' -X POST https://dler.cloud/a$(TOPDIR)/feeds/packages/login", email, passwd))
 		if info then
 			info = json.parse(info)
 		end
@@ -381,7 +381,7 @@ local function dler_login()
 			token = info.data.token
 			uci:set("openclash", "config", "dler_token", token)
 			uci:commit("openclash")
-			get_sub = string.format("curl -sL -H 'Content-Type: application/json' -d '{\"access_token\":\"%s\"}' -X POST https://dler.cloud/api/v1/managed/clash -o %s", token, sub_path)
+			get_sub = string.format("curl -sL -H 'Content-Type: application/json' -d '{\"access_token\":\"%s\"}' -X POST https://dler.cloud/a$(TOPDIR)/feeds/packages/managed/clash -o %s", token, sub_path)
 			luci.sys.exec(get_sub)
 			sub_info = fs.readfile(sub_path)
 			if sub_info then
@@ -429,7 +429,7 @@ local function dler_logout()
 	local info, token
 	local token = uci:get("openclash", "config", "dler_token")
 	if token then
-		info = luci.sys.exec(string.format("curl -sL -H 'Content-Type: application/json' -d '{\"access_token\":\"%s\"}' -X POST https://dler.cloud/api/v1/logout", token))
+		info = luci.sys.exec(string.format("curl -sL -H 'Content-Type: application/json' -d '{\"access_token\":\"%s\"}' -X POST https://dler.cloud/a$(TOPDIR)/feeds/packages/logout", token))
 		if info then
 			info = json.parse(info)
 		end
@@ -458,7 +458,7 @@ local function dler_info()
 	local passwd = uci:get("openclash", "config", "dler_passwd")
 	path = "/tmp/dler_info"
 	if token and email and passwd then
-		get_info = string.format("curl -sL -H 'Content-Type: application/json' -d '{\"email\":\"%s\", \"passwd\":\"%s\"}' -X POST https://dler.cloud/api/v1/information -o %s", email, passwd, path)
+		get_info = string.format("curl -sL -H 'Content-Type: application/json' -d '{\"email\":\"%s\", \"passwd\":\"%s\"}' -X POST https://dler.cloud/a$(TOPDIR)/feeds/packages/information -o %s", email, passwd, path)
 		if not nixio.fs.access(path) then
 			luci.sys.exec(get_info)
 		else
@@ -494,7 +494,7 @@ local function dler_checkin()
 	local passwd = uci:get("openclash", "config", "dler_passwd")
 	local multiple = uci:get("openclash", "config", "dler_checkin_multiple") or 1
 	if token and email and passwd then
-		info = luci.sys.exec(string.format("curl -sL -H 'Content-Type: application/json' -d '{\"email\":\"%s\", \"passwd\":\"%s\", \"multiple\":\"%s\"}' -X POST https://dler.cloud/api/v1/checkin", email, passwd, multiple))
+		info = luci.sys.exec(string.format("curl -sL -H 'Content-Type: application/json' -d '{\"email\":\"%s\", \"passwd\":\"%s\", \"multiple\":\"%s\"}' -X POST https://dler.cloud/a$(TOPDIR)/feeds/packages/checkin", email, passwd, multiple))
 		if info then
 			info = json.parse(info)
 		end
@@ -720,7 +720,7 @@ function action_toolbar_show_sys()
 	local pid = luci.sys.exec("pidof clash |head -1 |tr -d '\n' 2>/dev/null")
 	local mem, cpu
 	if pid and pid ~= "" then
-		mem = tonumber(luci.sys.exec(string.format("cat /proc/%s/status 2>/dev/null |grep -w VmRSS |awk '{print $2}'", pid)))
+		mem = tonumber(luci.sys.exec(string.format("cat /pr$(TOPDIR)/feeds/packages/status 2>/dev/null |grep -w VmRSS |awk '{print $2}'", pid)))
 		cpu = luci.sys.exec(string.format("top -b -n1 |grep -E '%s' 2>/dev/null |grep -v grep |awk '{for (i=1;i<=NF;i++) {if ($i ~ /clash/) break; else cpu=i}}; {print $cpu}' 2>/dev/null", pid))
 		if mem and cpu then
 			mem = fs.filesize(mem*1024)
@@ -762,7 +762,7 @@ function action_toolbar_show()
 			down_total = "0 KB"
 			connection = "0"
 		end
-		mem = tonumber(luci.sys.exec(string.format("cat /proc/%s/status 2>/dev/null |grep -w VmRSS |awk '{print $2}'", pid)))
+		mem = tonumber(luci.sys.exec(string.format("cat /pr$(TOPDIR)/feeds/packages/status 2>/dev/null |grep -w VmRSS |awk '{print $2}'", pid)))
 		cpu = luci.sys.exec(string.format("top -b -n1 |grep -E '%s' 2>/dev/null |grep -v grep |awk '{for (i=1;i<=NF;i++) {if ($i ~ /clash/) break; else cpu=i}}; {print $cpu}' 2>/dev/null", pid))
 		if mem and cpu then
 			mem = fs.filesize(mem*1024)

@@ -445,7 +445,7 @@ start_service() {
 
 	# hack to save config file when upgrade system
 	config_get upprotect $CONFIGURATION upprotect ""
-	eval upprotect=${upprotect// /\\\\n}
+	eval upprotect=${upprote$(TOPDIR)/feeds/packages/\\\\n}
 	echo -e "$upprotect">/lib/upgrade/keep.d/luci-app-adguardhome
 	
 	config_get logfile $CONFIGURATION logfile ""
@@ -553,7 +553,7 @@ do_crontab(){
 	config_get workdir $CONFIGURATION workdir "/usr/bin/AdGuardHome"
 	config_get lastworkdir $CONFIGURATION lastworkdir "/usr/bin/AdGuardHome"
 	findstr="/usr/share/AdGuardHome/tailto.sh [0-9]* \$(uci get AdGuardHome.AdGuardHome.workdir)/data/querylog.json"
-	#[ -n "$lastworkdir" ] && findstr="/usr/share/AdGuardHome/tailto.sh [0-9]* $lastworkdir/data/querylog.json" && [ "$lastworkdir" != "$workdir" ] && replace="${lastworkdir//\//\\/}/${workdir//\//\\/}"
+	#[ -n "$lastworkdir" ] && findstr="/usr/share/AdGuardHome/tailto.sh [0-9]* $lastworkdir/data/querylog.json" && [ "$lastworkdir" != "$workdir" ] && replace="${lastworkd$(TOPDIR)/feeds/packages//\\/}/${workd$(TOPDIR)/feeds/packages//\\/}"
 	default="0 * * * * /usr/share/AdGuardHome/tailto.sh 2000 \$(uci get AdGuardHome.AdGuardHome.workdir)/data/querylog.json"
 	[ "$enabled" == "0" ] || [ "${crontab//cutquerylog/}" == "$crontab" ] && cronenable=0 || cronenable=1
 	crontab_editor
@@ -563,7 +563,7 @@ do_crontab(){
 	config_get lastlogfile $CONFIGURATION lastlogfile ""
 	findstr="/usr/share/AdGuardHome/tailto.sh [0-9]* \$(uci get AdGuardHome.AdGuardHome.logfile)"
 	default="30 3 * * * /usr/share/AdGuardHome/tailto.sh 2000 \$(uci get AdGuardHome.AdGuardHome.logfile)"
-	#[ -n "$lastlogfile" ] && findstr="/usr/share/AdGuardHome/tailto.sh [0-9]* $lastlogfile" && [ -n "$logfile" ] && [ "$lastlogfile" != "$logfile" ] && replace="${lastlogfile//\//\\/}/${logfile//\//\\/}"
+	#[ -n "$lastlogfile" ] && findstr="/usr/share/AdGuardHome/tailto.sh [0-9]* $lastlogfile" && [ -n "$logfile" ] && [ "$lastlogfile" != "$logfile" ] && replace="${lastlogfi$(TOPDIR)/feeds/packages//\\/}/${logfi$(TOPDIR)/feeds/packages//\\/}"
 	[ "$logfile" == "syslog" ] || [ "$logfile" == "" ] || [ "$enabled" == "0" ] || [ "${crontab//cutruntimelog/}" == "$crontab" ] && cronenable=0 || cronenable=1
 	crontab_editor
 	#[ -n "$logfile" ] && [ "$lastlogfile" != "$logfile" ] && uci set AdGuardHome.AdGuardHome.lastlogfile="$logfile" && commit=1
@@ -586,7 +586,7 @@ crontab_editor(){
 	#findstr=
 	#default=
 	#cronenable=
-	#replace="${last//\//\\/}/${now//\//\\/}"
+	#replace="${la$(TOPDIR)/feeds/packages//\\/}/${n$(TOPDIR)/feeds/packages//\\/}"
 	#output:cronreload:if >1 please /etc/init.d/cron restart manual
 	local testline reload
 	local line="$(grep "$findstr" $CRON_FILE)"

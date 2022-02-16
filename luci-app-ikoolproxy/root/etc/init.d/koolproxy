@@ -31,7 +31,7 @@ config_t_get() {
 add_ipset_conf() {
 	if [ -s /etc/adblocklist/adbypass ]; then
 		echo_date 添加白名单软连接...
-		cat /etc/adblocklist/adbypass | sed "s/,/\n/g" | sed "s/^/ipset=&\/./g" | sed "s/$/\/white_kp_list/g"  >> /tmp/adbypass.conf
+		cat /etc/adblocklist/adbypass | sed "s$(TOPDIR)/feeds/packages/g" | sed "s/^/ipset=&\/./g" | sed "s/$/\/white_kp_list/g"  >> /tmp/adbypass.conf
 		rm -rf /tmp/dnsmasq.d/adbypass.conf
 		ln -sf /tmp/adbypass.conf /tmp/dnsmasq.d/adbypass.conf
 
@@ -50,7 +50,7 @@ add_ipset_conf() {
 
 		echo_date 添加自定义黑名单软连接...
 		if [ -s /etc/adblocklist/adblock ]; then
-			cat /etc/adblocklist/adblock | sed "s/,/\n/g" | sed "s/^/ipset=&\/./g" | sed "s/$/\/black_koolproxy/g"  >> /tmp/adblock.conf
+			cat /etc/adblocklist/adblock | sed "s$(TOPDIR)/feeds/packages/g" | sed "s/^/ipset=&\/./g" | sed "s/$/\/black_koolproxy/g"  >> /tmp/adblock.conf
 			rm -rf /tmp/dnsmasq.d/adblock.conf
 			ln -sf /tmp/adblock.conf /tmp/dnsmasq.d/adblock.conf
 		fi
@@ -355,7 +355,7 @@ detect_cert(){
 flush_nat() {
 	echo_date 移除nat规则...
 	cd $TMP_DIR
-	iptables -t nat -S | grep -E "KOOLPROXY|KP_HTTP|KP_HTTPS|KP_ALL_PORT" | sed 's/-A/iptables -t nat -D/g'|sed 1,4d > clean.sh && chmod 777 clean.sh && ./clean.sh
+	iptables -t nat -S | grep -E "KOOLPROXY|KP_HTTP|KP_HTTPS|KP_ALL_PORT" | sed $(TOPDIR)/feeds/packages/iptables -t nat -D/g'|sed 1,4d > clean.sh && chmod 777 clean.sh && ./clean.sh
 	[ -f $TMP_DIR/clean.sh ] && rm -f $TMP_DIR/clean.sh
 	iptables -t nat -X KOOLPROXY > /dev/null 2>&1
 	iptables -t nat -X KP_HTTP > /dev/null 2>&1

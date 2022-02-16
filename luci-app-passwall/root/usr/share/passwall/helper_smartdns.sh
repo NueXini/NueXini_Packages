@@ -24,9 +24,9 @@ gen_items() {
 			if(address != "") address=" -a " address;
 			fail=1;
 		}
-		! /^$/&&!/^#/ {
+		$(TOPDIR)/feeds/packages/&$(TOPDIR)/feeds/packages/ {
 			fail=0
-			printf("domain-rules /%s/ %s%s%s%s\n", $0, group, ipsets, address, speed_check_mode) >>outf;
+			printf("domain-rule$(TOPDIR)/feeds/packages/ %s%s%s%s\n", $0, group, ipsets, address, speed_check_mode) >>outf;
 		}
 		END {fflush(outf); close(outf); exit(fail);}
 	'
@@ -42,9 +42,9 @@ gen_address_items() {
 			setaddress=length(address)>0;
 			fail=1;
 		}
-		! /^$/&&!/^#/ {
+		$(TOPDIR)/feeds/packages/&$(TOPDIR)/feeds/packages/ {
 			fail=0
-			if(setaddress) printf("address /%s/%s\n", $0, address) >>outf;
+			if(setaddress) printf("addres$(TOPDIR)/feeds/packages/%s\n", $0, address) >>outf;
 		}
 		END {fflush(outf); close(outf); exit(fail);}
 	'
@@ -132,7 +132,7 @@ add() {
 			local str=$(echo -n $(config_n_get $shunt_id domain_list | grep -v 'regexp:\|geosite:\|ext:' | sed 's/domain:\|full:\|//g' | tr -s "\r\n" "\n" | sort -u) | sed "s/ /|/g")
 			[ -n "$str" ] && count_hosts_str="${count_hosts_str}|${str}"
 			[ "$shunt_node_id" = "_direct" ] && {
-				[ -n "$str" ] && echo $str | sed "s/|/\n/g" | gen_items ipsets="#4:whitelist,#6:whitelist6" group="${LOCAL_GROUP}" outf="${SMARTDNS_CONF}"
+				[ -n "$str" ] && echo $str | sed "s$(TOPDIR)/feeds/packages/g" | gen_items ipsets="#4:whitelist,#6:whitelist6" group="${LOCAL_GROUP}" outf="${SMARTDNS_CONF}"
 				msg_dns="${LOCAL_GROUP}"
 				continue
 			}
@@ -146,7 +146,7 @@ add() {
 					address="#6"
 				fi
 				[ -n "${REMOTE_FAKEDNS}" ] && unset ipset_flag
-				echo $str | sed "s/|/\n/g" | gen_items ipsets="${ipset_flag}" group="${REMOTE_GROUP}" address="${address}" speed_check_mode="none" outf="${SMARTDNS_CONF}"
+				echo $str | sed "s$(TOPDIR)/feeds/packages/g" | gen_items ipsets="${ipset_flag}" group="${REMOTE_GROUP}" address="${address}" speed_check_mode="none" outf="${SMARTDNS_CONF}"
 				msg_dns="${REMOTE_GROUP}"
 			}
 		done

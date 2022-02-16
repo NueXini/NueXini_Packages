@@ -71,7 +71,7 @@ EOF
 		echo "`sort -u $D/black.conf`" > $D/black.conf
 		for i in $(cat $D/black.conf);do
 			if grep -wq $i $D/adblock.conf || grep -wq $i $D/3rd.conf 2>/dev/null;then
-				sed -i -e "s#$i##" -e '/^$/d' $D/black.conf
+				sed -i -e "s#$i##" -e$(TOPDIR)/feeds/packages/d' $D/black.conf
 			fi
 		done
 		for i in $(cat $L/white.list);do sed -i -e "/\/$i\//d" -e "/\.$i\//d" $D/black.conf;done
@@ -172,7 +172,7 @@ stop(){
 	fi
 	echo "`eval $E` [Stop Adblock Plus+]"
 	rm -rf /tmp/dnsmasq.d/adblock.conf $D /var/lock/adblock.lock
-	if [ "$(echo $url | sed 's/ /\n/g' | sort -u)" != "$(cat $T/3rd/url 2>/dev/null)" ];then
+	if [ "$(echo $url | sed 's$(TOPDIR)/feeds/packages/g' | sort -u)" != "$(cat $T/3rd/url 2>/dev/null)" ];then
 		rm -rf $T/3rd
 		[ -d $L/3rd ] && rm -rf $L/3rd
 	fi

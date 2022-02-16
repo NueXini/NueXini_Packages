@@ -98,7 +98,7 @@ a=s:taboption("basic", Value,"pushdeer_srv",translate('PushDeer Server'), transl
 a.rmempty = true
 a:depends("pushdeer_srv_enable","1")
 
-a=s:taboption("basic", Value,"fs_webhook",translate('WebHook'), translate("飞书 WebHook").."<br>调用代码获取<a href='https://www.feishu.cn/hc/zh-CN/articles/360024984973' target='_blank'>点击这里</a><br><br>")
+a=s:taboption("basic", Value,"fs_webhook",translate('WebHook'), translate("飞书 WebHook").."<br>调用代码获取<a href='https://www.feishu.$(TOPDIR)/feeds/packages/zh-CN/articles/360024984973' target='_blank'>点击这里</a><br><br>")
 a.rmempty = true
 a:depends("jsonpath","/usr/bin/pushbot/api/feishu.json")
 

@@ -1,5 +1,5 @@
 {
-  "_from": "file:/openwrt/lede3/dl/request-2.88.2.tgz",
+  "_from": "file:/openwrt/led$(TOPDIR)/feeds/packages/request-2.88.2.tgz",
   "_id": "request@2.88.2",
   "_inBundle": false,
   "_integrity": "sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==",
@@ -8,17 +8,17 @@
   "_requested": {
     "type": "file",
     "where": "/openwrt/lede3/package/lean/node-request",
-    "raw": "/openwrt/lede3/dl/request-2.88.2.tgz",
-    "rawSpec": "/openwrt/lede3/dl/request-2.88.2.tgz",
-    "saveSpec": "file:/openwrt/lede3/dl/request-2.88.2.tgz",
-    "fetchSpec": "/openwrt/lede3/dl/request-2.88.2.tgz"
+    "raw": "/openwrt/led$(TOPDIR)/feeds/packages/request-2.88.2.tgz",
+    "rawSpec": "/openwrt/led$(TOPDIR)/feeds/packages/request-2.88.2.tgz",
+    "saveSpec": "file:/openwrt/led$(TOPDIR)/feeds/packages/request-2.88.2.tgz",
+    "fetchSpec": "/openwrt/led$(TOPDIR)/feeds/packages/request-2.88.2.tgz"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "/openwrt/lede3/dl/request-2.88.2.tgz",
+  "_resolved": "/openwrt/led$(TOPDIR)/feeds/packages/request-2.88.2.tgz",
   "_shasum": "d73c918731cb5a87da047e207234146f664d12b3",
-  "_spec": "/openwrt/lede3/dl/request-2.88.2.tgz",
+  "_spec": "/openwrt/led$(TOPDIR)/feeds/packages/request-2.88.2.tgz",
   "_where": "/openwrt/lede3/package/lean/node-request",
   "author": {
     "name": "Mikeal Rogers",

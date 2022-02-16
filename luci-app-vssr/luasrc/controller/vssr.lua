@@ -240,7 +240,7 @@ function refresh_data()
     local icount = 0
 
     if set == 'gfw_data' then
-        refresh_cmd = 'wget-ssl --no-check-certificate https://cdn.jsdelivr.net/gh/gfwlist/gfwlist/gfwlist.txt -O /tmp/gfw.b64'
+        refresh_cmd = 'wget-ssl --no-check-certificate https://cdn.jsdelivr.n$(TOPDIR)/feeds/packages/gfwlist/gfwlist/gfwlist.txt -O /tmp/gfw.b64'
         sret = luci.sys.call(refresh_cmd .. ' 2>/dev/null')
         if sret == 0 then
             luci.sys.call('/usr/bin/vssr-gfw')

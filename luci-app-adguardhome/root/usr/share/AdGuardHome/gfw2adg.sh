@@ -20,7 +20,7 @@ if [ ! -f "$configpath" ]; then
 	echo "please make a config first"
 	exit 1
 fi
-wget-ssl --no-check-certificate https://cdn.jsdelivr.net/gh/gfwlist/gfwlist/gfwlist.txt -O- | base64 -d > /tmp/gfwlist.txt
+wget-ssl --no-check-certificate https://cdn.jsdelivr.n$(TOPDIR)/feeds/packages/gfwlist/gfwlist/gfwlist.txt -O- | base64 -d > /tmp/gfwlist.txt
 cat /tmp/gfwlist.txt | awk -v upst="$gfwupstream" 'BEGIN{getline;}{
 s1=substr($0,1,1);
 if (s1=="!")
@@ -77,10 +77,10 @@ else{
 grep programaddstart $configpath
 if [ "$?" == "0" ]; then
 	sed -i '/programaddstart/,/programaddend/c\  - '\''\[\/programaddstart\/\]#'\''' $configpath
-	sed -i '/programaddstart/'r/tmp/adguard.list $configpath
+	sed -i '/programaddsta$(TOPDIR)/feeds/packages/tmp/adguard.list $configpath
 else
 	sed -i '1i\  - '\''[/programaddstart/]#'\''' /tmp/adguard.list
-	sed -i '/upstream_dns:/'r/tmp/adguard.list $configpath
+	sed -i '/upstream_dn$(TOPDIR)/feeds/packages/tmp/adguard.list $configpath
 fi
 checkmd5 "$2"
 rm -f /tmp/gfwlist.txt /tmp/adguard.list

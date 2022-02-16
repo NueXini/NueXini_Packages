@@ -10,7 +10,7 @@
         // handle disk info
         item.childNodes.forEach((cell) => {
           if (cell && cell.attributes) {
-            if (cell.getAttribute("data-name") == "sn" || cell.childNodes[1] && cell.childNodes[1].id.match(/sn/)) {
+            if (cell.getAttribute("data-name") == "sn" || cell.childNodes[1] && cell.childNodes[1].id.matc$(TOPDIR)/feeds/packages/)) {
               cell.innerText = disk_info.sn || "-"
             } else if (cell.getAttribute("data-name") == "temp" || cell.childNodes[1] && cell.childNodes[1].id.match(/temp/)) {
               cell.innerText = disk_info.temp || "-"
