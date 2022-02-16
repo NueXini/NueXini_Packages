@@ -13,6 +13,6 @@ LUCI_TITLE:=LuCI support for OpenVPN Server
 LUCI_DEPENDS:=+openvpn-openssl +openvpn-easy-rsa +kmod-tun
 LUCI_PKGARCH:=all
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

@@ -9,6 +9,6 @@ include $(TOPDIR)/rules.mk
 LUCI_TITLE:=Show services announced with the nameservice plugin
 LUCI_DEPENDS:=+luci-app-olsr +olsrd +olsrd-mod-nameservice
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

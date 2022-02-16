@@ -14,6 +14,6 @@ PKG_LICENSE:=GPLv2
 PKG_MAINTAINER:=Aedan Renner <chipdankly@gmail.com> \
 		Florian Eckert <fe@dev.tdt.de>
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

@@ -13,6 +13,6 @@ PKG_NAME:=luci-app-kodexplorer
 PKG_VERSION:=20220109
 PKG_RELEASE:=1
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

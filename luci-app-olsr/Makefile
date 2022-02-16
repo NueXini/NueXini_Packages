@@ -9,6 +9,6 @@ include $(TOPDIR)/rules.mk
 LUCI_TITLE:=OLSR configuration and status module
 LUCI_DEPENDS:=+olsrd +olsrd-mod-jsoninfo +luci-lib-luaneightbl +luci-lib-json
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
