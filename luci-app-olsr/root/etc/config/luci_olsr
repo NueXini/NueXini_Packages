@@ -1,2 +1,0 @@
-config 'olsr' 'general'
-	option 'resolve' '1'
