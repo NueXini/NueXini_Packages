@@ -1,0 +1,27 @@
+_DEVICE=/dev/ttyACM0
+_DEFAULT_LTE_BANDS="1 3 7 8 20 38"
+
+getinfo() {
+	echo "ZTE MF286R"
+}
+
+getsupportedbands() {
+	echo "$_DEFAULT_LTE_BANDS"
+}
+
+getbands() {
+# +ZNLOCKBAND: 80800c5,2000000680380
+
+	O=$(sms_tool -d $_DEVICE at "at+znlockband?")
+	HEX="0x"$(echo "$O" | awk -F[:,] '{print $2}' | xargs)
+	hextobands "$HEX"
+}
+
+setbands() {
+	BANDS="$1"
+	[ "x$BANDS" = "xdefault" ] && BANDS="$_DEFAULT_LTE_BANDS"
+	[ -z "$BANDS" ] && return
+
+	HEX=$(bandstohex "$BANDS")
+	[ "$HEX" != "0" ] && sms_tool -d $_DEVICE at "at+znlockband=1,0,$HEX,0"
+}

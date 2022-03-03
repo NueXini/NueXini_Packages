@@ -1,0 +1,3 @@
+
+config 3ginfo
+	option device ''
