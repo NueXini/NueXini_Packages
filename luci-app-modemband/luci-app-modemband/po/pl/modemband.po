@@ -123,3 +123,33 @@ msgstr "Nie znaleziono obsługiwanego modemu, kończymy pracę..."
 
 msgid "Port not found, quitting..."
 msgstr "Port nie został znaleziony, kończymy pracę..."
+
+msgid "Additional options useful for modem configuration."
+msgstr "Dodatkowe opcje przydatne przy konfiguracji modemu."
+
+msgid "Connection / router restart"
+msgstr "Restart połączenia / routera"
+
+msgid "Hint: The name of the WAN section can be changed in the package settings panel."
+msgstr "Podpowiedź: Nazwę sekcji WAN można zmienić w panelu ustawień pakietu."
+
+msgid "LTE band aggregation at UL (upload)"
+msgstr "Agregacja pasm LTE w UL (upload)"
+
+msgid "No supported modem / router was found..."
+msgstr "Nie znaleziono obsługiwanego modemu / routera..."
+
+msgid "Hint: Option dedicated to the ZTE MF286D router."
+msgstr "Podpowiedź: Opcja dedykowana dla routera ZTE MF286D."
+
+msgid "Enable aggregation"
+msgstr "Włącz agregację"
+
+msgid "Disable aggregation"
+msgstr "Wyłącz agregację"
+
+msgid "Disable"
+msgstr "Wyłącz"
+
+msgid "Enable"
+msgstr "Włącz"

@@ -184,6 +184,11 @@ if [ -z "$_DEVICE" ]; then
 		echo "No supported modem was found, quitting..."
 	fi
 	exit 0
+else
+	_DEVICE1=$(uci -q get modemband.@modemband[0].set_port)
+	if [ -n "$_DEVICE1" ]; then
+		_DEVICE=$_DEVICE1
+	fi
 fi
 if [ ! -e "$_DEVICE" ]; then
 	if [ "x$1" = "xjson" ]; then

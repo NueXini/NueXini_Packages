@@ -114,6 +114,57 @@ var SYSTmagic = form.DummyValue.extend({
 	}
 });
 
+var UPboost = form.DummyValue.extend({
+
+	load: function() {
+		var onuploadbtn = E('button', {
+				'class': 'btn cbi-button cbi-button-neutral',
+				'click': ui.createHandlerFn(this, function() {
+							return handleAction('onupload');
+						}),
+			}, _('Enable'));
+
+		var offuploadbtn = E('button', {
+				'class': 'btn cbi-button cbi-button-neutral',
+				'click': ui.createHandlerFn(this, function() {
+							return handleAction('offupload');
+						}),
+
+			}, _('Disable'));
+
+		return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh'), 'null').then(L.bind(function(html) {
+				if (html == null) {
+					this.default = E('em', {}, [ _('The modemband error.') ]);
+				}
+				else {
+					this.default = E([
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title' },
+							_('Enable aggregation')
+						),
+						E('div', { 'class': 'cbi-value-field', 'style': 'width:25vw' },
+								E('div', { 'class': 'cbi-section-node' }, [
+									onuploadbtn,
+								]),
+						),
+					]),
+					E('div', { 'class': 'cbi-value' }, [
+						E('label', { 'class': 'cbi-value-title' },
+							_('Disable aggregation')
+						),
+						E('div', { 'class': 'cbi-value-field', 'style': 'width:25vw' },
+								E('div', { 'class': 'cbi-section-node' }, [
+									offuploadbtn,
+								]),
+						),
+					]),
+
+				]);
+					}
+			}, this));
+	}
+});
+
 var cbiRichListValue = form.ListValue.extend({
 	renderWidget: function(section_id, option_index, cfgvalue) {
 		var choices = this.transformChoices();
@@ -174,6 +225,19 @@ function handleAction(ev) {
 			fs.exec('/sbin/ifdown', [ wname ]);
 			fs.exec('sleep 3');
 			fs.exec('/sbin/ifup', [ wname ]);
+    		});
+	}
+	if (ev === 'onupload') {
+		return uci.load('modemband').then(function() {
+		var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
+		fs.exec_direct('/usr/bin/sms_tool', [ '-d' , sport , 'at' , 'AT+ZULCA=1' ]);
+    		});
+ 
+	}
+	if (ev === 'offupload') {
+		return uci.load('modemband').then(function() {
+		var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
+		fs.exec_direct('/usr/bin/sms_tool', [ '-d' , sport , 'at' , 'AT+ZULCA=0' ]);
     		});
 	}
 }
@@ -285,7 +349,6 @@ return view.extend({
 
 		if(!("error" in json)) {
 		s.tab('bandset', _('Preferred bands settings'));
-		s.tab('aoptions', _('Additional options'));
  
 		o = s.taboption('bandset', cbiRichListValue, 'set_bands',
 		_('Modification of the bands:'), 
@@ -307,11 +370,43 @@ return view.extend({
 		s.anonymous = true;
 		o = s.option(BANDmagic);
 
-		s = m.section(form.TypedSection);
-		s.tab('aoptions', _('Additional options'));
+		s = m.section(form.TypedSection, 'modemband',
+			_('Additional options'),
+			_('Additional options useful for modem configuration.'));
 
+		s.tab('opt1', _('Connection / router restart'));
 		s.anonymous = true;
-		o = s.taboption('aoptions', SYSTmagic);
+
+		o = s.taboption('opt1', form.DummyValue, '_dummy');
+			o.rawhtml = true;
+			o.default = '<div class="cbi-section-descr">' +
+				_('Hint: The name of the WAN section can be changed in the package settings panel.') +
+				'</div>';
+
+		o = s.taboption('opt1', SYSTmagic);
+
+
+		s.tab('opt2', _('LTE band aggregation at UL (upload)'));
+		s.anonymous = true;
+
+		o = s.taboption('opt2', form.DummyValue, '_dummy');
+			o.rawhtml = true;
+			o.default = '<div class="cbi-section-descr">' +
+				_('Hint: Option dedicated to the ZTE MF286D router.') +
+				'</div>';
+
+		if (modem.includes('MF286D')) {
+		o = s.taboption('opt2', UPboost);
+
+		} else {
+			o = s.taboption('opt2', form.DummyValue, '_dummy');
+			o.rawhtml = true;
+			o.default = '<div class="cbi-value-field"><em>' +
+				_('No supported modem / router was found...') +
+				'</em></div>';
+		};
+
+
 		}
 
 		return m.render();

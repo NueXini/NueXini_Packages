@@ -14,7 +14,7 @@ return view.extend({
 	load: function() {
 		return fs.list('/dev').then(function(devs) {
 			return devs.filter(function(dev) {
-				return dev.name.match(/^ttyUSB/);
+				return dev.name.match(/^ttyUSB/) || dev.name.match(/^cdc-wdm/) || dev.name.match(/^ttyACM/);
 			});
 		});
 	},
@@ -32,6 +32,14 @@ return view.extend({
 		o.noaliases  = true;
 		o.default = 'wan';
 
+		o = s.option(form.Value, 'set_port', _('Port for communication with the modem'), 
+			_("Select one of the available ttyUSBX ports."));
+		devs.forEach(function(dev) {
+			o.value('/dev/' + dev.name);
+		});
+		o.placeholder = _('Please select a port');
+		o.rmempty = false;
+
 		o = s.option(form.Flag, 'wanrestart',	_('Restart WAN'),
 		_('WAN restart after making changes to bands.')
 		);
@@ -40,15 +48,6 @@ return view.extend({
 		o = s.option(form.Flag, 'modemrestart', _('Modem restart'),
 		_('Modem restart after making changes to bands.')
 		);
-		o.rmempty = false;
-		
-		o = s.option(form.Value, 'set_port', _('Port for communication with the modem'), 
-			_("Select one of the available ttyUSBX ports."));
-		devs.forEach(function(dev) {
-			o.value('/dev/' + dev.name);
-		});
-		o.depends("modemrestart", "1");
-		o.placeholder = _('Please select a port');
 		o.rmempty = false;
 
 		o = s.option(form.Value, 'restartcmd', _('Restart with AT command'),

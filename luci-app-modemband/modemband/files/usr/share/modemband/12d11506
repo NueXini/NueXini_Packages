@@ -23,5 +23,9 @@ setbands() {
 	else
 		HEX=$(bandstohex "$BANDS")
 	fi
-	[ "$HEX" != "0" ] && sms_tool -d $_DEVICE at "at^syscfgex=\"030201\",3FFFFFFF,2,4,$HEX,,"
+	if [ "$HEX" != "0" ]; then
+		O=$(sms_tool -d $_DEVICE at "at^syscfgex?")
+		MODE=$(echo "$O" | awk -F[:,] '{print $2}' | xargs)
+		sms_tool -d $_DEVICE at "at^syscfgex=\"${MODE:-030201}\",3FFFFFFF,2,4,$HEX,,"
+	fi
 }

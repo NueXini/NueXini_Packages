@@ -8,17 +8,17 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=qtbase
 PKG_BASE:=5.15
-PKG_BUGFIX:=2
+PKG_BUGFIX:=3
 PKG_VERSION:=$(PKG_BASE).$(PKG_BUGFIX)
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-everywhere-src-$(PKG_VERSION).tar.xz
+PKG_SOURCE:=$(PKG_NAME)-everywhere-opensource-src-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:= \
 		http://download.qt.io/official_releases/qt/$(PKG_BASE)/$(PKG_VERSION)/submodules \
 		http://master.qt.io/archive/qt/$(PKG_BASE)/$(PKG_VERSION)/submodules \
 		http://mirrors.tuna.tsinghua.edu.cn/qt/archive/qt/$(PKG_BASE)/$(PKG_VERSION)/submodules \
 		http://qt.mirror.constant.com/archive/qt/$(PKG_BASE)/$(PKG_VERSION)/submodules
-PKG_HASH:=909fad2591ee367993a75d7e2ea50ad4db332f05e1c38dd7a5a274e156a4e0f8
+PKG_HASH:=26394ec9375d52c1592bd7b689b1619c6b8dbe9b6f91fdd5c355589787f3a0b6
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-everywhere-src-$(PKG_VERSION)
 
