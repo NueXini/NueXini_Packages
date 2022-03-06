@@ -229,15 +229,15 @@ function handleAction(ev) {
 	}
 	if (ev === 'onupload') {
 		return uci.load('modemband').then(function() {
-		var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
-		fs.exec_direct('/usr/bin/sms_tool', [ '-d' , sport , 'at' , 'AT+ZULCA=1' ]);
+		//var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
+		fs.exec_direct('/usr/bin/sms_tool', [ '-d' , '/dev/ttyUSB1' , 'at' , 'AT+ZULCA=1' ]);
     		});
  
 	}
 	if (ev === 'offupload') {
 		return uci.load('modemband').then(function() {
-		var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
-		fs.exec_direct('/usr/bin/sms_tool', [ '-d' , sport , 'at' , 'AT+ZULCA=0' ]);
+		//var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
+		fs.exec_direct('/usr/bin/sms_tool', [ '-d' , '/dev/ttyUSB1' , 'at' , 'AT+ZULCA=0' ]);
     		});
 	}
 }

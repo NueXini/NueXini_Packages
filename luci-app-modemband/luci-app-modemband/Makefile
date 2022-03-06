@@ -7,7 +7,7 @@ PKG_NAME:=luci-app-modemband
 LUCI_TITLE:=LuCI panel for modemband
 LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+sms-tool +modemband
-PKG_VERSION:=1.0.12-20220305
+PKG_VERSION:=1.0.12-20220306
 PKG_RELEASE:=1
 
 include $(TOPDIR)/feeds/luci/luci.mk
