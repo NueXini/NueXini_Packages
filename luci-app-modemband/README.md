@@ -22,13 +22,22 @@ Supported devices:
 - ZTE MF286D (router)
 - ZTE MF286R (router)
 
+
+Do you have another type of modem? Would you like to add support for it?
+Send PR/mail with description:
+- exact name of modem and ew version number
+- VID and PID identifier on the USB bus
+- serial port used for communication with the modem ("diagnostic")
+- AT command to read the set bands together with an example result
+- an AT command to set specific bands
+- a list of all bands that can be set on the modem
+
 ``` bash
 #Modem drivers are required for proper operation.
 kmod-usb-serial kmod-usb-serial-option
 
 #+DEPENDS:
 sms-tool_2021-12-03-d38898f4-1 modemband_20220220
-
 ```
 
 ### <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_United_Kingdom.png" height="32"> Preview / <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_Poland.png" height="32"> Podgląd
