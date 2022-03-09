@@ -10,10 +10,13 @@ uci_get_by_type() {
 
 start()
 {
+	local min=$(cat /sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies | awk -F ' ' '{print $1 }')
+	local max=$(cat /sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies | awk -F ' ' '{print $NF }')
+	
 	config_load cpufreq
-	local governor=$(uci_get_by_type settings governor ondemand)
-	local minifreq=$(uci_get_by_type settings minifreq 48000)
-	local maxfreq=$(uci_get_by_type settings maxfreq 716000)
+	local governor=$(uci_get_by_type settings governor schedutil)
+	local minifreq=$(uci_get_by_type settings minifreq $min)
+	local maxfreq=$(uci_get_by_type settings maxfreq $max)
 	local upthreshold=$(uci_get_by_type settings upthreshold 50)
 	local factor=$(uci_get_by_type settings factor 10)
 

@@ -2,6 +2,9 @@ Setting LTE bands for selected modems.
 
 Supported devices:
 - BroadMobi BM806U
+- Fibocom L850-GL
+- Fibocom L850-GL in mbim mode
+- Fibocom L860-GL
 - Huawei E3272/E3276/E3372 in serial mode
 - Quectel EC20
 - Quectel EC25
