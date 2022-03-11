@@ -7,12 +7,14 @@
 
 Luci-app-modemband is a My GUI for https://eko.one.pl/?p=openwrt-modemband. A program to set LTE bands for selected 4G modems.
 
+``` bash
 Supported devices:
 - BroadMobi BM806U
+- Dell DW5821e Snapdragon X20 LTE
 - Fibocom L850-GL
 - Fibocom L850-GL in mbim mode
 - Fibocom L860-GL
-- Huawei E3272/E3276/E3372 in serial mode
+- Huawei (various models) in serial mode
 - Quectel EC20
 - Quectel EC25
 - Quectel EG06-E
@@ -20,11 +22,12 @@ Supported devices:
 - Quectel EM160R-GL
 - Quectel EP06-E
 - Quectel RG502Q-EA
+- Telit LN960
 - ZTE MF286 (router)
 - ZTE MF286A (router)
 - ZTE MF286D (router)
 - ZTE MF286R (router)
-
+```
 
 Do you have another type of modem? Would you like to add support for it?
 Send PR/mail with description:
@@ -40,7 +43,7 @@ Send PR/mail with description:
 kmod-usb-serial kmod-usb-serial-option
 
 #+DEPENDS:
-sms-tool_2021-12-03-d38898f4-1 modemband_20220220
+sms-tool_2021-12-03-d38898f4-1 modemband_20220311
 ```
 
 ### <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_United_Kingdom.png" height="32"> Preview / <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_Poland.png" height="32"> Podgląd

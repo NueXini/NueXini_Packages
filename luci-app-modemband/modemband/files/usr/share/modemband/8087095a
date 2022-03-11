@@ -1,20 +1,24 @@
 _DEVICE=/dev/ttyACM2
 
-O=$(sms_tool -d $_DEVICE at "at+gmm")
-if echo "$O" | grep -q "L850"; then
-	_DEFAULT_LTE_BANDS="1 2 3 4 5 7 8 11 12 13 17 18 19 20 21 26 28 29 30 38 39 40 41 66"
-	_NAME="Fibocom L850-GL"
-fi
-if echo "$O" | grep -q "L860"; then
-	_DEFAULT_LTE_BANDS="1 2 3 4 5 7 8 12 13 14 17 18 19 20 25 26 28 29 30 32 38 39 40 41 42 46 66"
-	_NAME="Fibocom L860-GL"
-fi
-
 getinfo() {
+	O=$(sms_tool -d $_DEVICE at "at+gmm")
+	if echo "$O" | grep -q "L850"; then
+		_NAME="Fibocom L850-GL"
+	fi
+	if echo "$O" | grep -q "L860"; then
+		_NAME="Fibocom L860-GL"
+	fi
 	echo "$_NAME"
 }
 
 getsupportedbands() {
+	O=$(sms_tool -d $_DEVICE at "at+gmm")
+	if echo "$O" | grep -q "L850"; then
+		_DEFAULT_LTE_BANDS="1 2 3 4 5 7 8 11 12 13 17 18 19 20 21 26 28 29 30 38 39 40 41 66"
+	fi
+	if echo "$O" | grep -q "L860"; then
+		_DEFAULT_LTE_BANDS="1 2 3 4 5 7 8 12 13 14 17 18 19 20 25 26 28 29 30 32 38 39 40 41 42 46 66"
+	fi
 	echo "$_DEFAULT_LTE_BANDS"
 }
 
@@ -33,7 +37,6 @@ getbands() {
 
 setbands() {
 	BANDS="$1"
-	[ -z "$BANDS" ] && return
 
 	T=""
 	if [ "$BANDS" = "default" ]; then

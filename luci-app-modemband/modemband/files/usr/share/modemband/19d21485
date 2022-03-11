@@ -19,8 +19,7 @@ getbands() {
 
 setbands() {
 	BANDS="$1"
-	[ "x$BANDS" = "xdefault" ] && BANDS="$_DEFAULT_LTE_BANDS"
-	[ -z "$BANDS" ] && return
+	[ "$BANDS" = "default" ] && BANDS="$_DEFAULT_LTE_BANDS"
 
 	HEX=$(bandstohex "$BANDS")
 	[ "$HEX" != "0" ] && sms_tool -d $_DEVICE at "at+znlockband=1,0,$HEX,0"

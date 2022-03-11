@@ -216,7 +216,7 @@ case $1 in
 		getbandsext
 		;;
 	"setbands")
-		setbands "$2"
+		[ -n "$2" ] && setbands "$2"
 		;;
 	"json")
 		. /usr/share/libubox/jshn.sh
