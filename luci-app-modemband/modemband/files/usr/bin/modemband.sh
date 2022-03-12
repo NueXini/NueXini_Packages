@@ -91,11 +91,11 @@ bandtxt() {
 	"38") echo "$BAND: TDD 2600 MHz";;
 	"39") echo "$BAND: TDD 1900 MHz";;
 	"40") echo "$BAND: TDD 2300 MHz";;
-	"41") echo "$BAND: TDD 2300 MHz";;
-	"42") echo "$BAND: TDD 2500 MHz";;
-	"43") echo "$BAND: TDD 3500 MHz";;
-	"44") echo "$BAND: TDD 3700 MHz";;
-	"45") echo "$BAND: TDD  700 MHz";;
+	"41") echo "$BAND: TDD 2500 MHz";;
+	"42") echo "$BAND: TDD 3500 MHz";;
+	"43") echo "$BAND: TDD 3700 MHz";;
+	"44") echo "$BAND: TDD  700 MHz";;
+	"45") echo "$BAND: TDD 1500 MHz";;
 	"46") echo "$BAND: TDD 5200 MHz";;
 	"47") echo "$BAND: TDD 5900 MHz";;
 	"48") echo "$BAND: TDD 3500 MHz";;
