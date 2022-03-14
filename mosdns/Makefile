@@ -56,7 +56,7 @@ endef
 
 ifeq ($(CONFIG_MOSDNS_COMPRESS_GOPROXY),y)
 	export GO111MODULE=on
-	export GOPROXY=https://goproxy.baidu.com
+	export GOPROXY=https://mirrors.aliyun.com/goproxy/
 endif
 
 define Build/Prepare
