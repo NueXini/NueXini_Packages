@@ -2,16 +2,19 @@
 'require form';
 'require fs';
 'require view';
+'require uci';
+'require ui';
+'require tools.widgets as widgets'
 
 /*
-	Copyright 2021 Rafał Wabik - IceG - From eko.one.pl forum
+	Copyright 2021-2022 Rafał Wabik - IceG - From eko.one.pl forum
 */
 
 return view.extend({
 	load: function() {
 		return fs.list('/dev').then(function(devs) {
 			return devs.filter(function(dev) {
-				return dev.name.match(/^ttyUSB/);
+				return dev.name.match(/^ttyUSB/) || dev.name.match(/^cdc-wdm/) || dev.name.match(/^ttyACM/);
 			});
 		});
 	},
@@ -22,8 +25,11 @@ return view.extend({
 
 		s = m.section(form.TypedSection, '3ginfo', '', _(''));
 		s.anonymous = true;
-
-		o = s.option(form.Value, 'network', _('Network'));
+		
+		o = s.option(widgets.DeviceSelect, 'network', _('Interface'),
+		_('Network interface for Internet access.')
+		);
+		o.noaliases  = true;
 		o.default = 'wan';
 		o.rmempty = false;
 
@@ -37,6 +43,8 @@ return view.extend({
 		devs.forEach(function(dev) {
 			o.value('/dev/' + dev.name);
 		});
+		o.placeholder = _('Please select a port');
+		o.rmempty = false;
 
 		return m.render();
 	}

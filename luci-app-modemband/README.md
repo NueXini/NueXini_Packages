@@ -15,6 +15,12 @@ Supported devices:
 - Fibocom L850-GL in mbim mode
 - Fibocom L860-GL
 - Huawei (various models) in serial mode
+  - Huawei E3372/E3276
+  - Huawei ME906s
+  - Huawei ME909s-120
+  - Huawei ME909s-821
+  - Huawei ME909s-821a
+  - Huawei ME909u-521
 - Quectel EC20
 - Quectel EC25
 - Quectel EG06-E
@@ -43,7 +49,7 @@ Send PR/mail with description:
 kmod-usb-serial kmod-usb-serial-option
 
 #+DEPENDS:
-sms-tool_2021-12-03-d38898f4-1 modemband_20220311
+sms-tool_2021-12-03-d38898f4-1 modemband_20220313
 ```
 
 ### <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_United_Kingdom.png" height="32"> Preview / <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_Poland.png" height="32"> Podgląd

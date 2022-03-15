@@ -4,7 +4,7 @@
 'require ui';
 
 /*
-	Copyright 2021 Rafał Wabik - IceG - From eko.one.pl forum
+	Copyright 2021-2022 Rafał Wabik - IceG - From eko.one.pl forum
 */
 
 return view.extend({

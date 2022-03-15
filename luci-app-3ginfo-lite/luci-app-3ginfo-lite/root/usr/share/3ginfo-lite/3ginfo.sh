@@ -2,6 +2,7 @@
 
 #
 # (c) 2010-2022 Cezary Jackiewicz <cezary@eko.one.pl>
+#
 # (c) 2021-2022 modified by Rafał Wabik - IceG - From eko.one.pl forum
 #
 
@@ -120,6 +121,9 @@ if [ -z "$FORCE_PLMN" ]; then
 	[ "x$T" != "x" ] && COPS="$T"
 fi
 
+COPZ=$(echo $COPS | sed ':s;s/\(\<\S*\>\)\(.*\)\<\1\>/\1\2/g;ts')
+COPS=$(echo $COPZ | awk '{for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) }}1')
+
 # CREG
 eval $(echo "$O" | awk -F[,] '/^\+CREG/ {gsub(/[[:space:]"]+/,"");printf "T=\"%d\";LAC_HEX=\"%X\";CID_HEX=\"%X\";LAC_DEC=\"%d\";CID_DEC=\"%d\";MODE_NUM=\"%d\"", $2, "0x"$3, "0x"$4, "0x"$3, "0x"$4, $5}')
 case "$T" in
@@ -164,6 +168,16 @@ case "$MODE_NUM" in
 	7*) MODE="LTE";;
 	 *) MODE="-";;
 esac
+
+# TAC
+TO=$(sms_tool -d $DEVICE at "at+cereg")
+TAC=$(echo "$TO" | awk -F[,] '/^\+CEREG/ {printf "%s", toupper($3)}' | sed 's/[^A-F0-9]//g')
+if [ "x$TAC" != "x" ]; then
+	TAC_HEX=$(printf %d 0x$TAC)
+else
+	TAC_DEC="-"
+	TAC_HEX="-"
+fi
 
 T=$(echo "$O" | awk -F[,\ ] '/^\+CME ERROR:/ {print $0;exit}')
 if [ -n "$T" ]; then
@@ -225,8 +239,16 @@ cat <<EOF
 "registration":"$REG",
 "lac_dec":"$LAC_DEC",
 "lac_hex":"$LAC_HEX",
+"tac_dec":"$TAC_DEC",
+"tac_hex":"$TAC_HEX",
 "cid_dec":"$CID_DEC",
 "cid_hex":"$CID_HEX",
+"pci":"$PCI",
+"earfcn":"$EARFCN",
+"pband":"$PBAND",
+"sband":"$SBAND",
+"spci":"$SPCI",
+"searfcn":"$SEARFCN",
 "rsrp":"$RSRP",
 "rsrq":"$RSRQ",
 "rssi":"$RSSI",

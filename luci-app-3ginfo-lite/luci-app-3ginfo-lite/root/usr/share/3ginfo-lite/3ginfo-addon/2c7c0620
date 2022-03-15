@@ -8,6 +8,21 @@ if [ "x$T" = "xLTE" ]; then
 	RSRQ=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $16}' | xargs)
 	RSSI=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $17}' | xargs)
 	SINR=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | xargs)
+	
+	TAC_HEX=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}' | xargs)
+	EARFCN=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $10}' | xargs)
+	PCI=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $9}' | xargs)
+
+	PDLBW=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $13}' | xargs)
+	case "$PDLBW" in
+  		"0") PDLBW="1,4 MHz" ;;
+  		"1") PDLBW="3 MHz" ;;
+  		"2") PDLBW="5 MHz" ;;
+  		"3") PDLBW="10 MHz" ;;
+  		"4") PDLBW="15 MHz" ;;
+  		"5") PDLBW="20 MHz" ;;
+  		*) PDLBW="-"
+	esac
 
 #	[ -n "$ADDON" ] && ADDON="$ADDON,"
 #	ADDON="$ADDON"'{"RSRP":"'$RSRP' dBm"}'
@@ -40,6 +55,11 @@ O=$(sms_tool -d $DEVICE at "AT+QCAINFO")
 T=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "pss"/{print $4}')
 [ -z "$T" ] && T=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "pcc"/{print $4}')
 if [ -n "$T" ]; then
+
+	PB=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "pcc"/{gsub("LTE BAND ","");print $4}' | xargs)
+	PBT=$(echo ${PB%% *})
+	PBAND="$(band $PBT "") @$PDLBW"
+
 	case $T in
 		*"LTE BAND 1") MODE=$(band 1 "LTE ");;
 		*"LTE BAND 2") MODE=$(band 2 "LTE ");;
@@ -74,6 +94,29 @@ if [ -n "$T" ]; then
 	T=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "sss"/{print $4}')
 	[ -z "$T" ] && T=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{print $4}')
 	if [ -n "$T" ]; then
+
+	SX=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{print $3}' | xargs)
+	SDLBW=$(echo ${SX%% *})
+	case "$SDLBW" in
+  		"6") SDLBW="1,4 MHz" ;;
+  		"15") SDLBW"3 MHz" ;;
+  		"25") SDLBW="5 MHz" ;;
+  		"50") SDLBW="10 MHz" ;;
+  		"75") SDLBW="15 MHz" ;;
+  		"100") SDLBW="20 MHz" ;;
+  		*) SDLBW="-"
+	esac
+
+	SB=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{gsub("LTE BAND ","");print $4};' | xargs)
+	SBT=$(echo ${SB%% *})
+
+	SBAND="$(band $SBT "") @$SDLBW"
+
+	SE=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{print $2}' | xargs)
+	SEARFCN=$(echo ${SE%% *})
+	SP=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{print $6}' | xargs)
+	SPCI=$(echo ${SP%% *})
+
 		case $T in
 		*"LTE BAND 1") MODE=$(band 1 "LTE ");;
 		*"LTE BAND 2") MODE=$(band 2 "LTE ");;
@@ -122,8 +165,6 @@ DEVV=$(echo $OF | tr -s "\n"  | xargs)
 FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n"  | xargs)
 FW=$(echo $FWA | cut -c 8-)
 
-COPS=$(echo $COPS | sed ':s;s/\(\<\S*\>\)\(.*\)\<\1\>/\1\2/g;ts')
-
 MODELA=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n"  | xargs)
 MODELB=$(sms_tool -d $DEVICE at "AT+CGMI" | tr -s "\n"  | xargs)
 MODELACUT=$(echo $MODELA | cut -c 9-)
@@ -140,12 +181,11 @@ PV=$(cat /sys/kernel/debug/usb/devices)
 PVCUT=$(echo $PV | awk -F 'Vendor=2c7c ProdID=0620' '{print $2}' | cut -c-1220)
 if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
 then
-    PROTO="QMI"
+    PROTO="qmi"
 elif echo "$PVCUT" | grep -q "Driver=cdc_mbim"
 then
-    PROTO="MBIM"
+    PROTO="mbim"
 elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
 then
-    PROTO="ECM"
+    PROTO="ecm"
 fi
-

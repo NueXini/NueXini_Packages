@@ -10,6 +10,9 @@ getsupportedbands() {
 	O=$(sms_tool -d $_DEVICE at "at+cgmm")
 	_NAME=$(echo "$O" | awk '/^[a-zA-Z0-9]/ && !/at\+cgmm/{print $0}' | xargs)
 	case "$_NAME" in
+	"ME906s"*)
+		echo "1 2 3 5 7 8 20 28"
+		;;
 	"ME909s-120")
 		echo "1 2 3 4 5 7 8 20"
 		;;
@@ -18,6 +21,9 @@ getsupportedbands() {
 		;;
 	"ME909s-821a")
 		echo "1 3 5 8 38 39 40 41"
+		;;
+	"ME909u-521")
+		echo "1 2 3 5 7 8 20"
 		;;
 	*)
 		echo "1 3 7 8 20"
@@ -28,7 +34,11 @@ getsupportedbands() {
 getbands() {
 	O=$(sms_tool -d $_DEVICE at "at^syscfgex?")
 	HEX="0x"$(echo "$O" | awk -F[:,] '/^\^SYSCFGEX:/{print $6}' | xargs)
-	[ "$HEX" = "0x" ] || hextobands "$HEX"
+	if [ "$HEX" = "0x7FFFFFFFFFFFFFFF" ]; then
+		getsupportedbands
+	else
+		[ "$HEX" = "0x" ] || hextobands "$HEX"
+	fi
 }
 
 setbands() {

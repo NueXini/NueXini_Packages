@@ -4,7 +4,7 @@
 'require fs';
 
 /*
-	Copyright 2021 Rafał Wabik - IceG - From eko.one.pl forum
+	Copyright 2021-2022 Rafał Wabik - IceG - From eko.one.pl forum
 	
 	rssi/rsrp/rsrq/sinnr formulas for percentages taken from
 	https://github.com/koshev-msk/luci-app-modeminfo
@@ -390,6 +390,20 @@ return view.extend({
 
 					}
 
+					if (document.getElementById('tac')) {
+						var view = document.getElementById("tac");
+
+						if (json.tac_hex == json.lac_hex) {
+						view.textContent = json.tac_hex + ' (' + json.lac_dec + ')' ;
+						}
+						else {
+						view.textContent = json.tac_hex + ' (' + json.tac_dec + ')' ;
+						}
+						if (json.tac_dec == '' || json.tac_hex == '') {
+						view.textContent = json.lac_hex   + ' (' + json.lac_dec + ')' ;
+						}
+					}
+
 					if (document.getElementById('cid')) {
 						var view = document.getElementById("cid");
 						if (json.cid_dec == '' || json.cid_hex == '') { 
@@ -399,6 +413,46 @@ return view.extend({
 						}
 						else {
 						view.textContent = json.cid_hex   + ' (' + json.cid_dec + ')' ;
+						}
+					}
+
+					if (document.getElementById('pband')) {
+						var view = document.getElementById("pband");
+						if (json.pband == '') { 
+						view.textContent = '-';
+						}
+						else {
+						view.textContent = json.pband;
+						}
+					}
+
+					if (document.getElementById('pci')) {
+						var view = document.getElementById("pci");
+						if (json.pci == '') { 
+						view.textContent = '-';
+						}
+						else {
+						view.textContent = json.pci + ' ' + json.earfcn;
+						}
+					}
+
+					if (document.getElementById('sband')) {
+						var view = document.getElementById("sband");
+						if (json.sband == '') { 
+						view.textContent = '-';
+						}
+						else {
+						view.textContent = json.sband;
+						}
+					}
+
+					if (document.getElementById('spci')) {
+						var view = document.getElementById("spci");
+						if (json.spci == '') { 
+						view.textContent = '-';
+						}
+						else {
+						view.textContent = json.spci + ' ' + json.searfcn;
 						}
 					}
 
@@ -452,8 +506,25 @@ return view.extend({
 					]),
 			]),
 
-			E('h4', {}, [ _('Signal Information') ]),
+			E('h4', {}, [ _('Cell and Signal Information') ]),
 			E('table', { 'class': 'table' }, [
+				E('tr', { 'class': 'tr' }, [
+					E('div', { 'class': 'td left', 'width': '33%' }, [ _('MCC MNC: ')]),
+					E('div', { 'class': 'td left', 'id': 'mccmnc' }, [ '-' ]),
+					]),
+				E('tr', { 'class': 'tr' }, [
+					E('div', { 'class': 'td left', 'width': '33%' }, [ _('LAC: ')]),
+					E('div', { 'class': 'td left', 'id': 'lac' }, [ '-' ]),
+					]),
+				E('tr', { 'class': 'tr' }, [
+					E('div', { 'class': 'td left', 'width': '33%' }, [ _('CellID: ')]),
+					E('div', { 'class': 'td left', 'id': 'cid' }, [ '-' ]),
+					]),
+				E('tr', { 'class': 'tr' }, [
+					E('div', { 'class': 'td left', 'width': '33%' }, [ _('TAC: ')]),
+					E('div', { 'class': 'td left', 'id': 'tac' }, [ '-' ]),
+					]),
+
 				E('tr', { 'class': 'tr' }, [
 					E('div', { 'class': 'td left', 'width': '33%' }, [ _('CSQ: ')]),
 					E('div', { 'class': 'td' }, E('div', {
@@ -499,24 +570,23 @@ return view.extend({
 							}, E('div')
 						))
 					]),
-			]),
-
-
-			E('h4', {}, [ _('Cell Information') ]),
-			E('table', { 'class': 'table' }, [
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('MCC MNC: ')]),
-					E('div', { 'class': 'td left', 'id': 'mccmnc' }, [ '-' ]),
+					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Primary band: ')]),
+					E('div', { 'class': 'td left', 'id': 'pband' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('LAC: ')]),
-					E('div', { 'class': 'td left', 'id': 'lac' }, [ '-' ]),
-					]),
-				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('CID: ')]),
-					E('div', { 'class': 'td left', 'id': 'cid' }, [ '-' ]),
+					E('div', { 'class': 'td left', 'width': '33%' }, [ _('PCI & EARFCN: ')]),
+					E('div', { 'class': 'td left', 'id': 'pci' }, [ '-' ]),
 					]),
 
+				E('tr', { 'class': 'tr' }, [
+					E('div', { 'class': 'td left', 'width': '33%' }, [ _('(S) band: ')]),
+					E('div', { 'class': 'td left', 'id': 'sband' }, [ '-' ]),
+					]),
+				E('tr', { 'class': 'tr' }, [
+					E('div', { 'class': 'td left', 'width': '33%' }, [ _('(S) PCI & (S) EARFCN: ')]),
+					E('div', { 'class': 'td left', 'id': 'spci' }, [ '-' ]),
+					]),
 			]),
 
 		]);

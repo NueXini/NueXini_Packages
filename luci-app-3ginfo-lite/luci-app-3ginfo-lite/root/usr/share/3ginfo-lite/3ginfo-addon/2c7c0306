@@ -58,11 +58,11 @@ PV=$(cat /sys/kernel/debug/usb/devices)
 PVCUT=$(echo $PV | awk -F 'Vendor=2c7c ProdID=0306' '{print $2}' | cut -c-1220)
 if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
 then
-    PROTO="QMI"
+    PROTO="qmi"
 elif echo "$PVCUT" | grep -q "Driver=cdc_mbim"
 then
-    PROTO="MBIM"
+    PROTO="mbim"
 elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
 then
-    PROTO="ECM"
+    PROTO="ecm"
 fi

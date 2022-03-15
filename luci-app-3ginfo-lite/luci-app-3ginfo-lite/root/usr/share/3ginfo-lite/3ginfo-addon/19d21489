@@ -1,6 +1,5 @@
-# ZTE MF286/MF286A
+# ZTE MF286R
 
-#O=$(sms_tool -d $DEVICE at "at+zrssi;+zcellinfo?;+zcainfo?;+zdon?")
 O=$(sms_tool -d $DEVICE at "at+zrssi;+zcellinfo?;+zcainfo?")
 
 case "$MODE_NUM" in
@@ -13,7 +12,8 @@ case "$MODE_NUM" in
 	2*|\
 	4*|\
 	5*|\
-	6*)
+	6*|\
+	8*)
 		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $2}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
 		ADDON="$ADDON"'{"RSCP":"'$T' dBm"}'
@@ -23,7 +23,20 @@ case "$MODE_NUM" in
 		T=$(echo "$O" | awk -F[,:] '/^\+ZCELLINFO/ {print $4}' | xargs)
 		[ -n "$T" ] && MODE="$T"
 		;;
-	7*)
+
+	7*|\
+	9*)
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $4}' | xargs)
+		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
+			[ -n "$ADDON" ] && ADDON="$ADDON,"
+			T_HEX=$(printf "%X" $T)
+			ADDON="$ADDON"'{"TAC":"'$T' ('$T_HEX')"}'
+		fi
+
+		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $4}' | xargs)
+		[ -n "$ADDON" ] && ADDON="$ADDON,"
+		RSSI="$T"
+		ADDON="$ADDON"'{"RSSI":"'$T' dBm"}'
 		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $2}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
 		RSRP="$T"
@@ -32,14 +45,11 @@ case "$MODE_NUM" in
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
 		RSRQ="$T"
 		ADDON="$ADDON"'{"RSRQ":"'$T' dB"}'
-		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $4}' | xargs)
-		[ -n "$ADDON" ] && ADDON="$ADDON,"
-		RSSI="$T"
-		ADDON="$ADDON"'{"RSSI":"'$T' dBm"}'
 		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $5}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
 		SINR="$T"
 		ADDON="$ADDON"'{"SINR":"'$T' dB"}'
+
 		T=$(echo "$O" | awk -F[,:] '/^\+ZCELLINFO/ {print $4}' | xargs)
 		case "$T" in
 			*"LTE B1") MODE=$(band 1 "LTE ");;
@@ -49,61 +59,64 @@ case "$MODE_NUM" in
 			*"LTE B20") MODE=$(band 20 "LTE ");;
 			*) MODE="${T}";;
 		esac
-		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $9}' | xargs)
-		if [ -n "$T" ]; then
-			case $T in
-				*"1") MODE="${MODE/LTE/LTE_A} / "$(band 1 "");;
-				*"3") MODE="${MODE/LTE/LTE_A} / "$(band 3 "");;
-				*"7") MODE="${MODE/LTE/LTE_A} / "$(band 7 "");;
-				*"8") MODE="${MODE/LTE/LTE_A} / "$(band 8 "");;
-				*"20") MODE="${MODE/LTE/LTE_A} / "$(band 20 "");;
-				*) MODE="${MODE/LTE/LTE_A} / B${T}";;
-			esac
-				MODE=$(echo $MODE | sed "s/LTE_A/LTE-A |/g")
-		fi
 
-		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $3}' | xargs)
-		if [ -n "$T" ]; then
-			T1=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $6}' | xargs)
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $3}' | xargs)
+		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
+			T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $6}' | xargs)
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			PBAND="$(band $T "") @$T1 MHz"
 			ADDON="$ADDON"'{"Primary band":"'$(band $T "")', '$T1' MHz"}'
 		fi
-		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $2}' | xargs)
-		if [ -n "$T" ]; then
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $2}' | xargs)
+		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			PCI="$T"
 			ADDON="$ADDON"'{"PCI":"'$T'"}'
 		fi
-		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $5}' | xargs)
-		if [ -n "$T" ]; then
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $5}' | xargs)
+		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			EARFCN="$T"
 			ADDON="$ADDON"'{"EARFCN":"'$T'"}'
 		fi
 
-		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $9}' | xargs)
-		if [ -n "$T" ]; then
-			T1=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $11}' | xargs)
-			[ -n "$ADDON" ] && ADDON="$ADDON,"
-			SBAND="$(band $T "") @$T1 MHz"
-			ADDON="$ADDON"'{"(S) band":"'$(band $T "")', '$T1' MHz"}'
-		fi
-		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $7}' | xargs)
-		if [ -n "$T" ]; then
-			[ -n "$ADDON" ] && ADDON="$ADDON,"
-			SPCI="$T"
-			ADDON="$ADDON"'{"(S) PCI":"'$T'"}'
-		fi
-		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $10}' | xargs)
-		if [ -n "$T" ]; then
-			[ -n "$ADDON" ] && ADDON="$ADDON,"
-			SEARFCN="$T"
-			ADDON="$ADDON"'{"(S) EARFCN":"'$T'"}'
-		fi
+		if [ "x$MODE_NUM" = "x9" ]; then
+			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $9}' | xargs)
+			if [ -n "$T" ]; then
+				case $T in
+					*"1") MODE="${MODE/LTE/LTE_A} / "$(band 1 "");;
+					*"3") MODE="${MODE/LTE/LTE_A} / "$(band 3 "");;
+					*"7") MODE="${MODE/LTE/LTE_A} / "$(band 7 "");;
+					*"8") MODE="${MODE/LTE/LTE_A} / "$(band 8 "");;
+					*"20") MODE="${MODE/LTE/LTE_A} / "$(band 20 "");;
+					*) MODE="${MODE/LTE/LTE_A} / B${T}";;
+				esac
+					MODE=$(echo $MODE | sed "s/LTE_A/LTE-A |/g")
+			fi
 
+			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $9}' | xargs)
+			if [ -n "$T" ]; then
+				T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $11}' | xargs)
+				[ -n "$ADDON" ] && ADDON="$ADDON,"
+				SBAND="$(band $T "") @$T1 MHz"
+				ADDON="$ADDON"'{"(S) band":"'$(band $T "")', '$T1' MHz"}'
+			fi
+			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $7}' | xargs)
+			if [ -n "$T" ]; then
+				[ -n "$ADDON" ] && ADDON="$ADDON,"
+				SPCI="$T"
+				ADDON="$ADDON"'{"(S) PCI":"'$T'"}'
+			fi
+			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $10}' | xargs)
+			if [ -n "$T" ]; then
+				[ -n "$ADDON" ] && ADDON="$ADDON,"
+				SEARFCN="$T"
+				ADDON="$ADDON"'{"(S) EARFCN":"'$T'"}'
+			fi
+		fi
 		;;
 esac
+
 
 OF=$(sms_tool -d $DEVICE at "ati")
 DEVV=$(echo $OF | tr -s "\n"  | xargs)
@@ -121,19 +134,14 @@ MODEL="$MODELB "$MODELDCUT
 # Protocol
 # DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
 PV=$(cat /sys/kernel/debug/usb/devices)
-PVCUT=$(echo $PV | awk -F 'Vendor=19d2 ProdID=1432' '{print $2}' | cut -c-1220)
+PVCUT=$(echo $PV | awk -F 'Vendor=19d2 ProdID=1489' '{print $2}' | cut -c-1220)
 if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
 then
-    PROTO="qmi"
+    PROTO="QMI"
 elif echo "$PVCUT" | grep -q "Driver=cdc_mbim"
 then
-    PROTO="mbim"
+    PROTO="MBIM"
 elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
 then
-    PROTO="ecm"
+    PROTO="ECM"
 fi
-
-#T=$(echo "$O" | awk -F[,:] '/^\+ZDON/ {print $2}' | xargs)
-#if [ -n "$T" ] && [ -z "$FORCE_PLMN" ]; then
-#	COPS="$T"
-#fi

@@ -2,6 +2,13 @@
 
 O=$(sms_tool -d $DEVICE at "AT+BMTCELLINFO")
 
+T=$(echo "$O" | awk -F[,:] '/^TAC:/ {print $2}' | xargs)
+if [ -n "$T" ]; then
+	[ -n "$ADDON" ] && ADDON="$ADDON,"
+	T_HEX=$(printf "%X" $T)
+	ADDON="$ADDON"'{"TAC":"'$T' ('$T_HEX')"}'
+fi
+
 ADDON=""
 T=$(echo "$O" | awk -F[,:] '/^RSSI:/ {print $2}' | xargs)
 if [ -n "$T" ]; then
@@ -40,4 +47,20 @@ if [ "x$MODE" = "xLTE" ]; then
 			*) MODE="LTE B${T}";;
 		esac
 	fi
+fi
+
+T=$(echo "$O" | awk -F[,:] '/^PCI:/ {print $2}' | xargs)
+if [ -n "$T" ]; then
+	[ -n "$ADDON" ] && ADDON="$ADDON,"
+	ADDON="$ADDON"'{"PCI":"'$T'"}'
+fi
+T=$(echo "$O" | awk -F[,:] '/^EARFCN_DL:/ {print $2}' | xargs)
+if [ -n "$T" ] && [ "x$T" != "x0" ]; then
+	[ -n "$ADDON" ] && ADDON="$ADDON,"
+	ADDON="$ADDON"'{"EARFCN DL":"'$T'"}'
+fi
+T=$(echo "$O" | awk -F[,:] '/^EARFCN_UL:/ {print $2}' | xargs)
+if [ -n "$T" ] && [ "x$T" != "x0" ]; then
+	[ -n "$ADDON" ] && ADDON="$ADDON,"
+	ADDON="$ADDON"'{"EARFCN UL":"'$T'"}'
 fi

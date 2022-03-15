@@ -10,9 +10,9 @@ case "$MODE_NUM" in
 		RSSI="$T"
 		ADDON="$ADDON"'{"RSSI":"'$T' dBm"}'
 		;;
-	2*| \
-	4*| \
-	5*| \
+	2*|\
+	4*|\
+	5*|\
 	6*)
 		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $2}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
@@ -72,6 +72,64 @@ case "$MODE_NUM" in
 				MODE=$(echo $MODE | sed "s/LTE_A/LTE-A |/g")
 			fi
 		fi
+
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $3}' | xargs)
+		if [ -n "$T" ]; then
+			T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $6}' | xargs)
+			[ -n "$ADDON" ] && ADDON="$ADDON,"
+			PBAND="$(band $T "") @$T1 MHz"
+			ADDON="$ADDON"'{"Primary band":"'$(band $T "")', '$T1' MHz"}'
+		fi
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $2}' | xargs)
+		if [ -n "$T" ]; then
+			[ -n "$ADDON" ] && ADDON="$ADDON,"
+			PCI="$T"
+			ADDON="$ADDON"'{"PCI":"'$T'"}'
+		fi
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $5}' | xargs)
+		if [ -n "$T" ]; then
+			[ -n "$ADDON" ] && ADDON="$ADDON,"
+			EARFCN="$T"
+			ADDON="$ADDON"'{"EARFCN":"'$T'"}'
+		fi
+
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $9}' | xargs)
+		if [ -n "$T" ]; then
+			T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $11}' | xargs)
+			[ -n "$ADDON" ] && ADDON="$ADDON,"
+			SBAND="$(band $T "") @$T1 MHz"
+			ADDON="$ADDON"'{"(S1) band":"'$(band $T "")', '$T1' MHz"}'
+		fi
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $7}' | xargs)
+		if [ -n "$T" ]; then
+			[ -n "$ADDON" ] && ADDON="$ADDON,"
+			SPCI="$T"
+			ADDON="$ADDON"'{"(S1) PCI":"'$T'"}'
+		fi
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $10}' | xargs)
+		if [ -n "$T" ]; then
+			[ -n "$ADDON" ] && ADDON="$ADDON,"
+			SEARFCN="$T"
+			ADDON="$ADDON"'{"(S1) EARFCN":"'$T'"}'
+		fi
+
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $14}' | xargs)
+		if [ -n "$T" ]; then
+			T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $16}' | xargs)
+			[ -n "$ADDON" ] && ADDON="$ADDON,"
+			ADDON="$ADDON"'{"(S2) band":"'$(band $T "")', '$T1' MHz"}'
+		fi
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $12}' | xargs)
+		if [ -n "$T" ]; then
+			[ -n "$ADDON" ] && ADDON="$ADDON,"
+			ADDON="$ADDON"'{"(S2) PCI":"'$T'"}'
+		fi
+		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $15}' | xargs)
+		if [ -n "$T" ]; then
+			[ -n "$ADDON" ] && ADDON="$ADDON,"
+			ADDON="$ADDON"'{"(S2) EARFCN":"'$T'"}'
+		fi
+
 		;;
 esac
 
@@ -79,8 +137,6 @@ OF=$(sms_tool -d $DEVICE at "ati")
 DEVV=$(echo $OF | tr -s "\n"  | xargs)
 FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n"  | xargs)
 FW=$(echo $FWA | cut -c 8-)
-
-COPS=$(echo $COPS | sed ':s;s/\(\<\S*\>\)\(.*\)\<\1\>/\1\2/g;ts')
 
 MODELA=$(echo $DEVV | awk -F 'Revision: ' '{print $1}'| xargs)
 MODELB=$(echo $MODELA | awk -F 'Manufacturer: |CORPORATION' '{print $2}'| xargs)
@@ -96,13 +152,13 @@ PV=$(cat /sys/kernel/debug/usb/devices)
 PVCUT=$(echo $PV | awk -F 'Vendor=19d2 ProdID=1485' '{print $2}' | cut -c-1220)
 if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
 then
-    PROTO="QMI"
+    PROTO="qmi"
 elif echo "$PVCUT" | grep -q "Driver=cdc_mbim"
 then
-    PROTO="MBIM"
+    PROTO="mbim"
 elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
 then
-    PROTO="ECM"
+    PROTO="ecm"
 fi
 
 #T=$(echo "$O" | awk -F[,:] '/^\+ZDON/ {print $2}' | xargs)

@@ -25,11 +25,8 @@ msgstr "Informacje ogólne"
 msgid "Modem Information"
 msgstr "Informacje o modemie"
 
-msgid "Signal Information"
-msgstr "Informacje o sygnale"
-
-msgid "Cell Information"
-msgstr "Informacje o sieci komórkowej"
+msgid "Cell and Signal Information"
+msgstr "Informacje o sieci i sygnale"
 
 msgid "Mode:"
 msgstr "Technologia:"
@@ -107,3 +104,9 @@ msgstr "Średni zasięg"
 
 msgid "Cell edge"
 msgstr "Na krawędzi zasięgu"
+
+msgid "Primary band: "
+msgstr "Pasmo podstawowe: "
+
+msgid "(S) band: "
+msgstr "Pasmo (S): "
