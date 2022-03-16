@@ -74,16 +74,18 @@ start_service()
 	append_param "-p" "${http_port}":"${https_port}"
 
 	if is_enabled "config" "pub_access"; then
-		uci -q batch <<-EOF
-			add firewall rule
-			set firewall.@rule[-1].name='unblockneteasemusic_pub_access'
-			set firewall.@rule[-1].proto='tcp'
-			set firewall.@rule[-1].src='wan'
-			set firewall.@rule[-1].dest_port='${http_port}-${https_port}'
-			set firewall.@rule[-1].target='ACCEPT'
-			commit firewall
-		EOF
-		fw4 reload
+		local rule="$(uci show firewall | grep "name='unblockneteasemusic_pub_access'" | awk -F '.' '{ print $2}')"
+		[ -n "${rule}" ] || {
+			uci -q batch <<-EOF
+				add firewall rule
+				set firewall.@rule[-1].name='unblockneteasemusic_pub_access'
+				set firewall.@rule[-1].proto='tcp'
+				set firewall.@rule[-1].src='wan'
+				set firewall.@rule[-1].dest_port='${http_port}-${https_port}'
+				set firewall.@rule[-1].target='ACCEPT'
+				commit firewall
+			EOF
+		}
 	fi
 
 	local music_source
