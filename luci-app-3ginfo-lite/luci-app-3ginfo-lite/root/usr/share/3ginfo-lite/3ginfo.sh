@@ -89,7 +89,7 @@ if [ -n "$NETUP" ]; then
 
 fi
 
-O=$(sms_tool -d $DEVICE at "AT+CSQ;+CPIN?;+COPS=3,0;+COPS?;+COPS=3,2;+COPS?;+CREG=2;+CREG?")
+O=$(sms_tool -D -d $DEVICE at "AT+CSQ;+CPIN?;+COPS=3,0;+COPS?;+COPS=3,2;+COPS?;+CREG=2;+CREG?")
 
 # CSQ
 CSQ=$(echo "$O" | awk -F[,\ ] '/^\+CSQ/ {print $2}')
@@ -123,6 +123,26 @@ fi
 
 COPZ=$(echo $COPS | sed ':s;s/\(\<\S*\>\)\(.*\)\<\1\>/\1\2/g;ts')
 COPS=$(echo $COPZ | awk '{for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) }}1')
+
+T=$(echo "$O" | awk -F[,\ ] '/^\+CPIN:/ {print $0;exit}' | xargs)
+if [ -n "$T" ]; then
+	[ "$T" = "+CPIN: READY" ] || REG=$(echo "$T" | cut -f2 -d: | xargs)
+fi
+
+T=$(echo "$O" | awk -F[,\ ] '/^\+CME ERROR:/ {print $0;exit}')
+if [ -n "$T" ]; then
+	case "$T" in
+	"+CME ERROR: 10"*) REG="SIM not inserted";;
+	"+CME ERROR: 11"*) REG="SIM PIN required";;
+	"+CME ERROR: 12"*) REG="SIM PUK required";;
+	"+CME ERROR: 13"*) REG="SIM failure";;
+	"+CME ERROR: 14"*) REG="SIM busy";;
+	"+CME ERROR: 15"*) REG="SIM wrong";;
+	"+CME ERROR: 17"*) REG="SIM PIN2 required";;
+	"+CME ERROR: 18"*) REG="SIM PUK2 required";;
+	*) REG=$(echo "$T" | cut -f2 -d: | xargs);;
+	esac
+fi
 
 # CREG
 eval $(echo "$O" | awk -F[,] '/^\+CREG/ {gsub(/[[:space:]"]+/,"");printf "T=\"%d\";LAC_HEX=\"%X\";CID_HEX=\"%X\";LAC_DEC=\"%d\";CID_DEC=\"%d\";MODE_NUM=\"%d\"", $2, "0x"$3, "0x"$4, "0x"$3, "0x"$4, $5}')
@@ -170,28 +190,13 @@ case "$MODE_NUM" in
 esac
 
 # TAC
-TO=$(sms_tool -d $DEVICE at "at+cereg")
-TAC=$(echo "$TO" | awk -F[,] '/^\+CEREG/ {printf "%s", toupper($3)}' | sed 's/[^A-F0-9]//g')
+OTX=$(sms_tool -d $DEVICE at "at+cereg")
+TAC=$(echo "$OTX" | awk -F[,] '/^\+CEREG/ {printf "%s", toupper($3)}' | sed 's/[^A-F0-9]//g')
 if [ "x$TAC" != "x" ]; then
 	TAC_HEX=$(printf %d 0x$TAC)
 else
-	TAC_DEC="-"
+	TAC="-"
 	TAC_HEX="-"
-fi
-
-T=$(echo "$O" | awk -F[,\ ] '/^\+CME ERROR:/ {print $0;exit}')
-if [ -n "$T" ]; then
-	case "$T" in
-	"+CME ERROR: 10"*) REG="SIM not inserted";;
-	"+CME ERROR: 11"*) REG="SIM PIN required";;
-	"+CME ERROR: 12"*) REG="SIM PUK required";;
-	"+CME ERROR: 13"*) REG="SIM failure";;
-	"+CME ERROR: 14"*) REG="SIM busy";;
-	"+CME ERROR: 15"*) REG="SIM wrong";;
-	"+CME ERROR: 17"*) REG="SIM PIN2 required";;
-	"+CME ERROR: 18"*) REG="SIM PUK2 required";;
-	*) REG=$(echo "$T" | cut -f2 -d: | xargs);;
-	esac
 fi
 
 DEVICE=$(uci -q get 3ginfo.@3ginfo[0].device)

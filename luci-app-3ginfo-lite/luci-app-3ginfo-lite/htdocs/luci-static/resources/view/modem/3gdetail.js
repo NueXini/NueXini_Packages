@@ -220,6 +220,28 @@ return view.extend({
 						}
 					}
 
+					if (document.getElementById('sim')) {
+						var view = document.getElementById("sim");
+						if (json.registration == '') { 
+						view.textContent = '-';
+						}
+						else {
+						view.textContent = json.registration;
+						if (json.registration == '0') { 
+							view.textContent = _('Not registered');
+						}
+						if (json.registration == '1') { 
+							view.textContent = _('Registered');
+						}
+						if (json.registration == '2') { 
+							view.textContent = _('Searching');
+						}
+						if (json.registration == '3') { 
+							view.textContent = _('Registering denied');
+						}
+					}
+					}
+
 					if (document.getElementById('mode')) {
 						var view = document.getElementById("mode");
 						if (json.mode == '') { 
@@ -471,6 +493,10 @@ return view.extend({
 				E('tr', { 'class': 'tr' }, [
 					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Operator:')]),
 					E('div', { 'class': 'td left', 'id': 'operator' }, [ '-' ]),
+					]),
+				E('tr', { 'class': 'tr' }, [
+					E('div', { 'class': 'td left', 'width': '33%' }, [ _('SIM status:')]),
+					E('div', { 'class': 'td left', 'id': 'sim' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
 					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Connection statistics:')]),

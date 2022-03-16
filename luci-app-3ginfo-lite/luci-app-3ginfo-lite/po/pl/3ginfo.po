@@ -110,3 +110,18 @@ msgstr "Pasmo podstawowe: "
 
 msgid "(S) band: "
 msgstr "Pasmo (S): "
+
+msgid "SIM status:"
+msgstr "Status karty SIM:"
+
+msgid "Not registered"
+msgstr "Nie zalogowana do sieci"
+
+msgid "Registered"
+msgstr "Zalogowana do sieci"
+
+msgid "Searching"
+msgstr "Wyszukiwanie"
+
+msgid "Registering denied"
+msgstr "Odmowa zalogowana do sieci"
