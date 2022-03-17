@@ -11,7 +11,6 @@ STOP=10
 NAME="unblockneteasemusic"
 UPGRADE_CONF="/lib/upgrade/keep.d/$NAME"
 
-IPT_N="iptables -t nat"
 RULES_UC="/usr/share/$NAME/rules/default.uc"
 RULES_NFT="/etc/nftables.d/90-$NAME-rules.nft"
 
@@ -72,21 +71,6 @@ start_service()
 	config_get hijack_ways "config" "hijack_ways" "use_ipset"
 	[ "${hijack_ways}" = "use_hosts" ] && { http_port="80"; https_port="443"; }
 	append_param "-p" "${http_port}":"${https_port}"
-
-	if is_enabled "config" "pub_access"; then
-		local rule="$(uci show firewall | grep "name='unblockneteasemusic_pub_access'" | awk -F '.' '{ print $2}')"
-		[ -n "${rule}" ] || {
-			uci -q batch <<-EOF
-				add firewall rule
-				set firewall.@rule[-1].name='unblockneteasemusic_pub_access'
-				set firewall.@rule[-1].proto='tcp'
-				set firewall.@rule[-1].src='wan'
-				set firewall.@rule[-1].dest_port='${http_port}-${https_port}'
-				set firewall.@rule[-1].target='ACCEPT'
-				commit firewall
-			EOF
-		}
-	fi
 
 	local music_source
 	config_get music_source "config" "music_source" "default"
@@ -165,6 +149,11 @@ start_service()
 		local tmp="/tmp/$NAME"
 		local neteasemusic_addr="$(echo -e "${netease_music_ips}\n${netease_music_ips2}" |sort -u |awk '{print $1}')"
 		json_init
+		if is_enabled "config" "pub_access"; then
+			json_add_int o_pub_access "1"
+		else
+			json_add_int o_pub_access "0"
+		fi
 		json_add_int o_http_port "${http_port}"
 		json_add_int o_https_port "${https_port}"
 		json_add_string o_acl_http_addr "$acl_http_addr"
@@ -223,14 +212,6 @@ stop_service()
 	{ [ -f "${self_issue_cert_crt}" ] && [ -f "${self_issue_cert_key}" ]; } && {
 		echo "${self_issue_cert_crt}" >> "${UPGRADE_CONF}"
 		echo "${self_issue_cert_key}" >> "${UPGRADE_CONF}"
-	}
-
-	local rule="$(uci show firewall | grep "name='unblockneteasemusic_pub_access'" | awk -F '.' '{ print $2}')"
-	[ -n "${rule}" ] && {
-		uci -q batch <<-EOF
-			delete firewall.${rule}
-			commit firewall
-		EOF
 	}
 
 	[ ! -e "$RULES_NFT" ] || rm -f "$RULES_NFT"
