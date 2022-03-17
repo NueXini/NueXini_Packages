@@ -72,6 +72,16 @@ start_service()
 	[ "${hijack_ways}" = "use_hosts" ] && { http_port="80"; https_port="443"; }
 	append_param "-p" "${http_port}":"${https_port}"
 
+	json_init
+	if is_enabled "config" "pub_access"; then
+		json_add_int o_pub_access "1"
+	else
+		json_add_int o_pub_access "0"
+	fi
+	json_add_int o_http_port "${http_port}"
+	json_add_int o_https_port "${https_port}"
+	json_add_string o_hijack_ways "${hijack_ways}"
+
 	local music_source
 	config_get music_source "config" "music_source" "default"
 	[ "${music_source}" != "default" ] && append_param -o "${music_source}"
@@ -106,6 +116,7 @@ start_service()
 	procd_set_param respawn
 
 	local lan_addr="$(uci -q get network.lan.ipaddr)"
+	local tmp="/tmp/$NAME"
 	if [ "${hijack_ways}" = "use_ipset" ]; then
 		# TODO: wating for dnsmasq support nftset
 		mkdir -p "/tmp/dnsmasq.d"
@@ -146,31 +157,11 @@ start_service()
 
 		local netease_music_ips="$(uclient-fetch -qO- "http://httpdns.n.netease.com/httpdns/v2/d?domain=music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |jsonfilter -e '@.data.*.ip.*')"
 		local netease_music_ips2="$(uclient-fetch -qO- "https://music.httpdns.c.163.com/d" --post-data="music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |jsonfilter -e '@.dns.*["ips"].*')"
-		local tmp="/tmp/$NAME"
 		local neteasemusic_addr="$(echo -e "${netease_music_ips}\n${netease_music_ips2}" |sort -u |awk '{print $1}')"
-		json_init
-		if is_enabled "config" "pub_access"; then
-			json_add_int o_pub_access "1"
-		else
-			json_add_int o_pub_access "0"
-		fi
-		json_add_int o_http_port "${http_port}"
-		json_add_int o_https_port "${https_port}"
+
 		json_add_string o_acl_http_addr "$acl_http_addr"
 		json_add_string o_acl_https_addr "$acl_https_addr"
 		json_add_string o_neteasemusic_addr "$neteasemusic_addr"
-		json_dump -i >"$tmp.json"
-
-		if ucode -S -i "$RULES_UC" -E "$tmp.json" >"$tmp.nft" \
-			&& ! cmp -s "$tmp.nft" "$RULES_NFT"; then
-			echo "table inet chk {include \"$tmp.nft\";}" >"$tmp.nft.chk"
-			if nft -f "$tmp.nft.chk" -c; then
-				mv -f "$tmp.nft" "$RULES_NFT"
-				fw4 reload
-			fi
-			rm -f "$tmp.nft.chk"
-		fi
-		rm -f "$tmp.json" "$tmp.nft"
 	elif [ "${hijack_ways}" = "use_hosts" ]; then
 		mkdir -p "/tmp/dnsmasq.d"
 		rm -f "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
@@ -189,6 +180,18 @@ start_service()
 
 		ip route add "223.252.199.10" dev lo
 	fi
+
+	json_dump -i >"$tmp.json"
+	if ucode -S -i "$RULES_UC" -E "$tmp.json" >"$tmp.nft" \
+		&& ! cmp -s "$tmp.nft" "$RULES_NFT"; then
+		echo "table inet chk {include \"$tmp.nft\";}" >"$tmp.nft.chk"
+		if nft -f "$tmp.nft.chk" -c; then
+			mv -f "$tmp.nft" "$RULES_NFT"
+			fw4 reload
+		fi
+		rm -f "$tmp.nft.chk"
+	fi
+	rm -f "$tmp.json" "$tmp.nft"
 
 	procd_close_instance
 } >"/dev/null" 2>&1
