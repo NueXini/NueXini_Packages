@@ -237,7 +237,7 @@ load_acl() {
 		echolog "访问控制："
 		for item in $items; do
 			local enabled sid remarks sources tcp_proxy_mode udp_proxy_mode tcp_no_redir_ports udp_no_redir_ports tcp_proxy_drop_ports udp_proxy_drop_ports tcp_redir_ports udp_redir_ports tcp_node udp_node dns_mode dns_forward v2ray_dns_mode dns_doh dns_client_ip
-			local _ip _mac _iprange _ipset _ip_or_mac rule_list tcp_port udp_port tcp_node_remark udp_node_remark config_file
+			local _ip _mac _iprange _ipset _ip_or_mac rule_list tcp_port udp_port tcp_node_remark udp_node_remark config_file _extra_param
 			sid=$(uci -q show "${CONFIG}.${item}" | grep "=acl_rule" | awk -F '=' '{print $1}' | awk -F '.' '{print $2}')
 			eval $(uci -q show "${CONFIG}.${item}" | cut -d'.' -sf 3-)
 			[ "$enabled" = "1" ] || continue
@@ -299,7 +299,7 @@ load_acl() {
 									run_dns2socks flag=acl_${sid} socks_address=127.0.0.1 socks_port=$socks_port listen_address=0.0.0.0 listen_port=${_dns_port} dns=$dns_forward cache=1
 								elif [ "$dns_mode" = "v2ray" -o "$dns_mode" = "xray" ]; then
 									config_file=$TMP_ACL_PATH/${tcp_node}_SOCKS_${socks_port}_DNS.json
-									run_v2ray_dns_socks flag=acl_${sid} type=$dns_mode socks_address=127.0.0.1 socks_port=$socks_port listen_address=0.0.0.0 listen_port=${_dns_port} dns_proto=${v2ray_dns_mode} dns_tcp_server=${dns_forward} doh="${dns_forward}" dns_client_ip=${dns_client_ip} dns_query_strategy=${DNS_QUERY_STRATEGY} config_file=$config_file
+									run_v2ray flag=acl_${sid} type=$dns_mode dns_socks_address=127.0.0.1 dns_socks_port=$socks_port dns_listen_port=${_dns_port} dns_proto=${v2ray_dns_mode} dns_tcp_server=${dns_forward} doh="${dns_forward}" dns_client_ip=${dns_client_ip} dns_query_strategy=${DNS_QUERY_STRATEGY} config_file=$config_file
 								fi
 								eval node_${tcp_node}_$(echo -n "${dns_forward}" | md5sum | cut -d " " -f1)=${_dns_port}
 							}
@@ -337,19 +337,27 @@ load_acl() {
 								redir_port=$(get_new_port $(expr $redir_port + 1))
 								eval node_${tcp_node}_redir_port=$redir_port
 								tcp_port=$redir_port
-								config_file=$TMP_ACL_PATH/${tcp_node}_SOCKS_${socks_port}.json
+								config_file="acl/${tcp_node}_SOCKS_${socks_port}.json"
 
 								local type=$(echo $(config_n_get $tcp_node type) | tr 'A-Z' 'a-z')
 								if [ -n "${type}" ] && ([ "${type}" = "v2ray" ] || [ "${type}" = "xray" ]); then
 									config_file=$(echo $config_file | sed "s/SOCKS/TCP_UDP_SOCKS/g")
-									run_v2ray flag=$tcp_node node=$tcp_node redir_port=$redir_port socks_address=127.0.0.1 socks_port=$socks_port config_file=$config_file
+									_extra_param="socks_address=127.0.0.1 socks_port=$socks_port"
+									if [ "$dns_mode" = "v2ray" -o "$dns_mode" = "xray" ]; then
+										config_file=$(echo $config_file | sed "s/SOCKS_${socks_port}/DNS/g")
+										dns_port=$(get_new_port $(expr $dns_port + 1))
+										_dns_port=$dns_port
+										_extra_param="dns_listen_port=${_dns_port} dns_proto=${v2ray_dns_mode} dns_tcp_server=${dns_forward} doh=${dns_forward} dns_client_ip=${dns_client_ip} dns_query_strategy=${DNS_QUERY_STRATEGY}"
+									fi
+									config_file="$TMP_PATH/$config_file"
+									run_v2ray flag=$tcp_node node=$tcp_node tcp_redir_port=$redir_port ${_extra_param} config_file=$config_file
 								else
 									run_socks flag=$tcp_node node=$tcp_node bind=127.0.0.1 socks_port=$socks_port config_file=$config_file
 									local log_file=$TMP_ACL_PATH/ipt2socks_${tcp_node}_${redir_port}.log
 									log_file="/dev/null"
 									run_ipt2socks flag=acl_${tcp_node} tcp_tproxy=${is_tproxy} local_port=$redir_port socks_address=127.0.0.1 socks_port=$socks_port log_file=$log_file
 								fi
-								run_dns
+								run_dns ${_dns_port}
 							fi
 							filter_node $tcp_node TCP > /dev/null 2>&1 &
 							filter_node $tcp_node UDP > /dev/null 2>&1 &
@@ -380,12 +388,13 @@ load_acl() {
 								redir_port=$(get_new_port $(expr $redir_port + 1))
 								eval node_${udp_node}_redir_port=$redir_port
 								udp_port=$redir_port
-								config_file=$TMP_ACL_PATH/${udp_node}_SOCKS_${socks_port}.json
+								config_file="acl/${udp_node}_SOCKS_${socks_port}.json"
 
 								local type=$(echo $(config_n_get $udp_node type) | tr 'A-Z' 'a-z')
 								if [ -n "${type}" ] && ([ "${type}" = "v2ray" ] || [ "${type}" = "xray" ]); then
 									config_file=$(echo $config_file | sed "s/SOCKS/TCP_UDP_SOCKS/g")
-									run_v2ray flag=$udp_node node=$udp_node redir_port=$redir_port socks_address=127.0.0.1 socks_port=$socks_port config_file=$config_file
+									config_file="$TMP_PATH/$config_file"
+									run_v2ray flag=$udp_node node=$udp_node udp_redir_port=$redir_port config_file=$config_file
 								else
 									run_socks flag=$udp_node node=$udp_node bind=127.0.0.1 socks_port=$socks_port config_file=$config_file
 									local log_file=$TMP_ACL_PATH/ipt2socks_${udp_node}_${redir_port}.log
@@ -520,7 +529,7 @@ load_acl() {
 				$ip6t_m -A PSW $(comment "$remarks") ${_ipt_source} -p udp -j RETURN 2>/dev/null
 			done
 			unset enabled sid remarks sources tcp_proxy_mode udp_proxy_mode tcp_no_redir_ports udp_no_redir_ports tcp_proxy_drop_ports udp_proxy_drop_ports tcp_redir_ports udp_redir_ports tcp_node udp_node dns_mode dns_forward v2ray_dns_mode dns_doh dns_client_ip
-			unset _ip _mac _iprange _ipset _ip_or_mac rule_list tcp_port udp_port tcp_node_remark udp_node_remark config_file
+			unset _ip _mac _iprange _ipset _ip_or_mac rule_list tcp_port udp_port tcp_node_remark udp_node_remark config_file _extra_param
 			unset ipt_tmp msg msg2
 			unset redirect_dns_port
 		done
@@ -879,7 +888,7 @@ add_firewall_rule() {
 	[ ! -z "${WAN_IP}" ] && $ipt_m -A PSW $(comment "WAN_IP_RETURN") -d "${WAN_IP}" -j RETURN
 	unset WAN_IP
 
-	insert_rule_after "$ipt_m" "PREROUTING" "mwan3" "-j PSW"
+	insert_rule_before "$ipt_m" "PREROUTING" "mwan3" "-j PSW"
 	insert_rule_before "$ipt_m" "PREROUTING" "PSW" "-p tcp -m socket -j PSW_DIVERT"
 
 	$ipt_m -N PSW_OUTPUT
@@ -923,7 +932,7 @@ add_firewall_rule() {
 	[ ! -z "${WAN6_IP}" ] && $ip6t_m -A PSW $(comment "WAN6_IP_RETURN") -d ${WAN6_IP} -j RETURN
 	unset WAN6_IP
 
-	insert_rule_after "$ip6t_m" "PREROUTING" "mwan3" "-j PSW"
+	insert_rule_before "$ip6t_m" "PREROUTING" "mwan3" "-j PSW"
 	insert_rule_before "$ip6t_m" "PREROUTING" "PSW" "-p tcp -m socket -j PSW_DIVERT"
 
 	$ip6t_m -N PSW_OUTPUT
@@ -1201,7 +1210,7 @@ gen_include() {
 			[ "$accept_icmp" = "1" ] && \$(${MY_PATH} insert_rule_after "$ipt_n" "PREROUTING" "prerouting_rule" "-p icmp -j PSW")
 			[ -z "${is_tproxy}" ] && \$(${MY_PATH} insert_rule_after "$ipt_n" "PREROUTING" "prerouting_rule" "-p tcp -j PSW")
 
-			\$(${MY_PATH} insert_rule_after "$ipt_m" "PREROUTING" "mwan3" "-j PSW")
+			\$(${MY_PATH} insert_rule_before "$ipt_m" "PREROUTING" "mwan3" "-j PSW")
 			\$(${MY_PATH} insert_rule_before "$ipt_m" "PREROUTING" "PSW" "-p tcp -m socket -j PSW_DIVERT")
 
 			WAN_IP=\$(${MY_PATH} get_wan_ip)
@@ -1229,7 +1238,7 @@ gen_include() {
 
 			[ "$accept_icmpv6" = "1" ] && $ip6t_n -A PREROUTING -p ipv6-icmp -j PSW
 
-			\$(${MY_PATH} insert_rule_after "$ip6t_m" "PREROUTING" "mwan3" "-j PSW")
+			\$(${MY_PATH} insert_rule_before "$ip6t_m" "PREROUTING" "mwan3" "-j PSW")
 			\$(${MY_PATH} insert_rule_before "$ip6t_m" "PREROUTING" "PSW" "-p tcp -m socket -j PSW_DIVERT")
 
 			PR_INDEX=\$(${MY_PATH} RULE_LAST_INDEX "$ip6t_m" PSW WAN6_IP_RETURN -1)

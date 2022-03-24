@@ -1,0 +1,23 @@
+msgid "Home Connect"
+msgstr "Home Connect"
+
+msgid "HomeConnect is a simple and easy-to-use VPN Server(based on softethervpn5) customized for HomeLede firmware. HomeConnect provides L2TP over IPSec service, 0 configuration, out of the box. You can use the built-in VPN client for ios, android, mac, and windows to connect directly."
+msgstr "HomeConnect 是一款为HomeLede固件定制的、简单易用的VPN Server（基于softethervpn5）。HomeConnect提供L2TP over IPSec服务，0配置，开箱即用。可使用ios、android、mac、windows内置VPN客户端直接连接。"
+
+msgid "PPTP VPN Server status"
+msgstr "PPTP VPN 服务器运行状态"
+
+msgid "Current Condition"
+msgstr "当前状态"
+
+msgid "Enabled"
+msgstr "启用"
+
+msgid "Open L2TP/IPSec firewall"
+msgstr "开启L2TP/IPSec防火墙"
+
+msgid "Open the MS-SSTP firewall"
+msgstr "开启MS-SSTP防火墙"
+
+msgid "Open the OpenVPN firewall"
+msgstr "开启OpenVPN防火墙"
