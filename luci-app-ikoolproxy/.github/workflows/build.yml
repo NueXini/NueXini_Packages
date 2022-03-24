@@ -1,10 +1,10 @@
+name: build
+
 on:
   push:
     tags:
       - "*"
-  #watch:
-      #types: [started]
-      
+
 jobs:
   release:
     name: Build and Release for ${{ matrix.arch }}
@@ -117,11 +117,11 @@ jobs:
           find "$SDK_HOME/bin" -type f -name "${PACKAGE_NAME}_*.ipk" \
            -exec cp -f {} "${{ github.workspace }}" \;
           find "$SDK_HOME/bin" -type f -name "koolproxy_*.ipk" \
-           -exec cp -f {} "${{ github.workspace }}" \; 
-          
+           -exec cp -f {} "${{ github.workspace }}" \;
+           
       - name: Release and Upload Assets
         uses: softprops/action-gh-release@v1
         with:
-           files: "*.ipk"
+          files: "*.ipk"
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
