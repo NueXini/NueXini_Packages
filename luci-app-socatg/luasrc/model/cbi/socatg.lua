@@ -6,9 +6,9 @@ s = m:section(TypedSection, "socatg")
 s.addremove = false
 s.anonymous = true
 
-v6port = s:option(Value, "v6port", translate("v6port"))
-v4host = s:option(Value, "v4host", translate("v4host"))
-v4port = s:option(Value, "v4port", translate("v4port"))
+v6port = s:option(Value, "v6port", translate("IPv6 Port"))
+v4host = s:option(Value, "v4host", translate("IPv4 Host"))
+v4port = s:option(Value, "v4port", translate("IPv4 Port"))
 
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
