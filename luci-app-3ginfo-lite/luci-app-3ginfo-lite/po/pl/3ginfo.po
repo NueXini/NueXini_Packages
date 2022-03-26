@@ -25,8 +25,8 @@ msgstr "Informacje ogólne"
 msgid "Modem Information"
 msgstr "Informacje o modemie"
 
-msgid "Cell and Signal Information"
-msgstr "Informacje o sieci i sygnale"
+msgid "Cell / Signal Information"
+msgstr "Informacje o sieci / sygnale"
 
 msgid "Mode:"
 msgstr "Technologia:"

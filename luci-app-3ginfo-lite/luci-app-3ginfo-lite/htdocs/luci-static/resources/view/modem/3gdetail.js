@@ -532,7 +532,7 @@ return view.extend({
 					]),
 			]),
 
-			E('h4', {}, [ _('Cell and Signal Information') ]),
+			E('h4', {}, [ _('Cell / Signal Information') ]),
 			E('table', { 'class': 'table' }, [
 				E('tr', { 'class': 'tr' }, [
 					E('div', { 'class': 'td left', 'width': '33%' }, [ _('MCC MNC: ')]),

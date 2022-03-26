@@ -15,12 +15,12 @@ if [ "x$T" = "xLTE" ]; then
 
 	PDLBW=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $13}' | xargs)
 	case "$PDLBW" in
-  		"0") PDLBW="1,4 MHz" ;;
-  		"1") PDLBW="3 MHz" ;;
-  		"2") PDLBW="5 MHz" ;;
-  		"3") PDLBW="10 MHz" ;;
-  		"4") PDLBW="15 MHz" ;;
-  		"5") PDLBW="20 MHz" ;;
+  		"0") PDLBW="1,4 MHz";;
+  		"1") PDLBW="3 MHz";;
+  		"2") PDLBW="5 MHz";;
+  		"3") PDLBW="10 MHz";;
+  		"4") PDLBW="15 MHz";;
+  		"5") PDLBW="20 MHz";;
   		*) PDLBW="-"
 	esac
 
@@ -98,12 +98,12 @@ if [ -n "$T" ]; then
 	SX=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{print $3}' | xargs)
 	SDLBW=$(echo ${SX%% *})
 	case "$SDLBW" in
-  		"6") SDLBW="1,4 MHz" ;;
-  		"15") SDLBW"3 MHz" ;;
-  		"25") SDLBW="5 MHz" ;;
-  		"50") SDLBW="10 MHz" ;;
-  		"75") SDLBW="15 MHz" ;;
-  		"100") SDLBW="20 MHz" ;;
+  		"6") SDLBW="1,4 MHz";;
+  		"15") SDLBW"3 MHz";;
+  		"25") SDLBW="5 MHz";;
+  		"50") SDLBW="10 MHz";;
+  		"75") SDLBW="15 MHz";;
+  		"100") SDLBW="20 MHz";;
   		*) SDLBW="-"
 	esac
 

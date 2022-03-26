@@ -260,14 +260,21 @@ return view.extend({
 		var modem = json.modem;
 		for (var i = 0; i < json.enabled.length; i++) 
 		{
-				modemen += 'B' + json.enabled[i] + '  ';
+				var txtband = json.enabled[i].toString();
+				var numb = txtband.match(/\d+$/);
+				modemen += 'B' + numb + '  ';
 				modemen = modemen.replace('undefined', '');
 		}
+		modemen = modemen.trim();
+
 		for (var i = 0; i < json.supported.length; i++) 
 		{
-				sbands += 'B' + json.supported[i].band + '  ';
+				var txtband = json.supported[i].band.toString();
+				var numb = txtband.match(/\d+$/);
+				sbands += 'B' + numb + '  ';
 				sbands = sbands.replace('undefined', '');
 		}
+		sbands = sbands.trim();
 		
 		pollData: poll.add(function() {
 			return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh', ['json']))
@@ -284,9 +291,11 @@ return view.extend({
 				for (var i = 0; i < json.enabled.length; i++) 
 				{
 				//renderHTML += 'B' + String.format(strongband, _(""), _(json.enabled[i]))+'  ';
-				renderHTML += 'B' +json.enabled[i] + '  ';
+				var txtband = json.enabled[i].toString();
+				var numb = txtband.match(/\d+$/);
+				renderHTML += 'B' + numb + '  ';
 				view.innerHTML  = '';
-  				view.innerHTML  = renderHTML;
+  				view.innerHTML  = renderHTML.trim();
 				}
 
 				}
@@ -440,7 +449,7 @@ return view.extend({
 
 				if (mrestart == '1') {
 
-				fs.exec('sleep 15');
+				fs.exec('sleep 20');
 				//sms_tool -d $_DEVICE at "cmd"
 				fs.exec_direct('/usr/bin/sms_tool', [ '-d' , sport , 'at' , cmdrestart ]);
 				}

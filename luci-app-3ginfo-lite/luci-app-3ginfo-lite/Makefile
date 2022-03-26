@@ -7,10 +7,18 @@ PKG_NAME:=luci-app-3ginfo-lite
 LUCI_TITLE:=LuCI panel for 3ginfo-lite
 LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+sms-tool
-PKG_VERSION:=1.0.15-20220316
+PKG_VERSION:=1.0.15-20220325
 PKG_RELEASE:=1
 
-include $(TOPDIR)/feeds/luci/luci.mk
+define Package/$(PKG_NAME)
+	$(call Package/luci/webtemplate)
+	TITLE:=$(LUCI_TITLE)
+	DEPENDS:=$(LUCI_DEPENDS)
+endef
+
+define Package/$(PKG_NAME)/description
+	LuCI panel for 3ginfo-lite.
+endef
 
 define Package/luci-app-3ginfo-lite/postinst
 #!/bin/sh
@@ -24,5 +32,9 @@ rm -rf /tmp/luci-modulecache/
 /usr/share/3ginfo-lite/set_3ginfo_port.sh
 exit 0
 endef
+
+include $(TOPDIR)/feeds/luci/luci.mk
+
+$(eval $(call BuildPackage,$(PKG_NAME)))
 
 # call BuildPackage - OpenWrt buildroot signature
