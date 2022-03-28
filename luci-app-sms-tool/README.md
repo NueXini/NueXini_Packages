@@ -21,13 +21,16 @@ Luci-app-sms-tool jest prostym interfejsem użytkownika dla projetu/aplikacji sm
 #Modem drivers are required for proper operation.
 opkg install kmod-usb-serial kmod-usb-serial-option luci-compat
 
-#Install sms-tool.
-opkg install sms-tool_2021-12-03-d38898f4-1_XXX.ipk
+#The sms-tool package is not available in the OpenWrt core repository. 
+#Sms-tool is only available in the eko.one.pl forum repository. 
+#If you do not have an image from forum eko.one.pl you have to compile the package manually.
 
-#Install gui.
-opkg install luci-app-sms-tool_1.9.3-20211205_all.ipk
-or (without luci-compat)
-opkg install luci-app-sms-tool_1.9.3-20211205_all-lc.ipk
+#For images from the eko.one.pl forum we proceed:
+opkg update
+opkg install sms-tool
+
+wget https://github.com/4IceG/luci-app-sms-tool/releases/download/1.9.4-20220325/luci-app-sms-tool_1.9.4-20220325_all.ipk -O /tmp/luci-app-sms-tool_1.9.4-20220325_all.ipk
+opkg install /tmp/luci-app-sms-tool_1.9.4-20220325_all.ipk
 ```
 
 ## <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_United_Kingdom.png" height="32"> Screenshots / <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_Poland.png" height="32"> Zrzuty ekranu
