@@ -1,0 +1,127 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+msgid "Information about 3G/4G connection"
+msgstr "Informacja o statusie połączenia 3G/4G"
+
+msgid "More information about the 3ginfo on the"
+msgstr "Więcej informacji o 3ginfo na"
+
+msgid "eko.one.pl forum"
+msgstr "forum eko.one.pl"
+
+msgid "Details"
+msgstr "Szczegóły"
+
+msgid "USB debug information"
+msgstr "Debugowanie portu USB"
+
+msgid "Configuration"
+msgstr "Konfiguracja"
+
+msgid "General Information"
+msgstr "Informacje ogólne"
+
+msgid "Modem Information"
+msgstr "Informacje o modemie"
+
+msgid "Cell / Signal Information"
+msgstr "Informacje o sieci / sygnale"
+
+msgid "Mode:"
+msgstr "Technologia:"
+
+msgid "Operator:"
+msgstr "Operator:"
+
+msgid "Signal strength:"
+msgstr "Siła sygnału:"
+
+msgid "Connection statistics:"
+msgstr "Statystyki połączenia:"
+
+msgid "Modem type:"
+msgstr "Typ modemu:"
+
+msgid "Additional information"
+msgstr "Informacje dodatkowe"
+
+msgid "Revision / Firmware:"
+msgstr "Rewizja / Wersja firmware:"
+
+msgid "IP adress / Communication Port:"
+msgstr "Adres IP / Port do komunikacji:"
+
+msgid "Chip Temperature:"
+msgstr "Temperatura układu:"
+
+msgid "Configuration 3ginfo-lite"
+msgstr "Konfiguracja 3ginfo-lite"
+
+msgid "Configuration panel for the 3ginfo-lite application."
+msgstr "Panel konfiguracyjny dla aplikacji 3ginfo-lite."
+
+msgid "Network"
+msgstr "Sieć"
+
+msgid "IP adress / Port for communication with the modem"
+msgstr "Adres IP / Port do komunikacji z modemem"
+
+msgid ""
+"Select the appropriate settings. <br /> <br />Traditional "
+"modem. <br /> Select one of the available ttyUSBX "
+"ports.<br /> <br />HiLink modem. <br /> Enter the IP address "
+"192.168.X.X under which the modem is available."
+msgstr ""
+"Wybierz odpowiednie ustawienia. <br /> <br />Tradycyjny "
+"modem. <br /> Wybierz jeden z dostępnych portów "
+"ttyUSBX.<br /> <br />Modem typu HiLink. <br /> Wprowadź adres IP "
+"192.168.X.X pod którym dostępny jest modem."
+
+msgid "Protocol:"
+msgstr "Protokół:"
+
+msgid "Very good"
+msgstr "Bardzo dobry"
+
+msgid "Good"
+msgstr "Dobry"
+
+msgid "Weak"
+msgstr "Słaby"
+
+msgid "Very weak"
+msgstr "Bardzo słaby"
+
+msgid "Excellent"
+msgstr "Doskonały"
+
+msgid "Good"
+msgstr "Dobry"
+
+msgid "Mid cell"
+msgstr "Średni zasięg"
+
+msgid "Cell edge"
+msgstr "Na krawędzi zasięgu"
+
+msgid "Primary band: "
+msgstr "Pasmo podstawowe: "
+
+msgid "(S) band: "
+msgstr "Pasmo (S): "
+
+msgid "SIM status:"
+msgstr "Status karty SIM:"
+
+msgid "Not registered"
+msgstr "Nie zalogowana do sieci"
+
+msgid "Registered"
+msgstr "Zalogowana do sieci"
+
+msgid "Searching"
+msgstr "Wyszukiwanie"
+
+msgid "Registering denied"
+msgstr "Odmowa zalogowana do sieci"
