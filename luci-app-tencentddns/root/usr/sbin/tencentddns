@@ -89,7 +89,7 @@ query_recordid() {
 }
 
 update_record() {
-        send_request "Record.Modify" "domain=$main_dm&sub_domain=$sub_dm&record_id=$1&record_type=A&record_line=%e9%bb%98%e8%ae%a4&value=$ip"
+        send_request "Record.Ddns" "domain=$main_dm&sub_domain=$sub_dm&record_id=$1&record_type=A&record_line=%e9%bb%98%e8%ae%a4&value=$ip"
 }
 
 add_record() {
