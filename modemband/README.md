@@ -2,10 +2,12 @@ Setting LTE bands for selected modems.
 
 Supported devices:
 - BroadMobi BM806U
-- Dell DW5821e Snapdragon X20 LTE
+- Dell DW5821e Snapdragon X20 LTE (Foxconn T77W968)
 - Fibocom L850-GL
 - Fibocom L850-GL in mbim mode
 - Fibocom L860-GL
+- HP lt4220 (Foxconn T77W676)
+- HP lt4220 (Foxconn T77W676) in mbim mode
 - Huawei (various models) in serial mode
 - Quectel EC20
 - Quectel EC25
@@ -14,7 +16,9 @@ Supported devices:
 - Quectel EM160R-GL
 - Quectel EP06-E
 - Quectel RG502Q-EA
-- Telit LN960
+- Telit LN940 (Foxconn T77W676)
+- Telit LN940 (Foxconn T77W676) in mbim mode
+- Telit LN960 (Foxconn T77W968)
 - ZTE MF286 (router)
 - ZTE MF286A (router)
 - ZTE MF286D (router)
