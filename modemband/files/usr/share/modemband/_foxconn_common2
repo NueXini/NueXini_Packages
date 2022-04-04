@@ -7,7 +7,7 @@ getbands() {
 # ^SLBAND: LTE,1,2,3,4,5,7,8,12,13,17,18,19,20,21,25,26,28,29,30,38,39,40,41,66
 
 	O=$(sms_tool -d $_DEVICE at "at^slband?")
-	echo "$O" | awk -F: '^\^SLBAND:.*LTE,/{gsub("LTE,","");gsub(","," ");print $2}' | xargs
+	echo "$O" | awk -F: '/^\^SLBAND:.*LTE,/{gsub("LTE,","");gsub(","," ");print $2}' | xargs
 }
 
 setbands() {
