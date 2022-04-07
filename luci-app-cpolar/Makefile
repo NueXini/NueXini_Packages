@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-cpolar
-PKG_VERSION:=1.0.6
+PKG_VERSION:=1.0.7
 PKG_RELEASE:=1
 
 PKG_LICENSE:=MIT
@@ -27,7 +27,7 @@ define Package/$(PKG_NAME)/postinst
 if [ -z "$${IPKG_INSTROOT}" ] ; then
 	status=$(uci get cpolar.main.enabled 2>/dev/null)
 	if [ "$status" == "1" ]; then
-		/etc/init.d/cpolar reload
+		/etc/init.d/cpolar restart
 		rm -rf /tmp/luci-indexcache /tmp/luci-modulecache
 	fi
 fi

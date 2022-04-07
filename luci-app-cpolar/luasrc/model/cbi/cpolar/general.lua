@@ -33,7 +33,7 @@ o.rmempty = false
 o = s:option(Button, "_reload", translate("Reload Service"), translate("This will restart service when config file changes."))
 o.inputstyle = "reload"
 o.write = function ()
-	sys.call("/etc/init.d/cpolar reload 2>/dev/null")
+	sys.call("/etc/init.d/cpolar restart 2>/dev/null")
 end
 
 o = s:option(Value, "authtoken", translate("AuthToken"), translate("cpolar Authtoken, visit cpolar background dashboard to <a href=\"https://dashboard.cpolar.com/auth\" target=\"_blank\">get your authentication token</a> <br/> No account? <a href=\"https://dashboard.cpolar.com/signup\" target=\"_blank\">Sign up for free</a> to get an authentication token"))
