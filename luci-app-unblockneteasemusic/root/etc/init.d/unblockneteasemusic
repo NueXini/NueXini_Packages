@@ -182,7 +182,7 @@ start_service()
 	fi
 
 	json_dump -i >"$tmp.json"
-	if ucode -S -i "$RULES_UC" -E "$tmp.json" >"$tmp.nft" \
+	if utpl -F "$tmp.json" -S "$RULES_UC" >"$tmp.nft" \
 		&& ! cmp -s "$tmp.nft" "$RULES_NFT"; then
 		echo "table inet chk {include \"$tmp.nft\";}" >"$tmp.nft.chk"
 		if nft -f "$tmp.nft.chk" -c; then
