@@ -5,10 +5,8 @@ function index()
 		return
 	end
 
-	local page = entry({"admin", "services", "udp2raw"},
-		firstchild(), _("udp2raw-tunnel"))
-	page.dependent = false
-	page.acl_depends = { "luci-app-udp2raw" }
+	entry({"admin", "services", "udp2raw"},
+		firstchild(), _("udp2raw-tunnel")).dependent = false
 
 	entry({"admin", "services", "udp2raw", "general"},
 		cbi("udp2raw/general"), _("Settings"), 1)

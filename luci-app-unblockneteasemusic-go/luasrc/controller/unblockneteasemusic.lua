@@ -9,9 +9,7 @@ function index()
 		return
 	end
 
-	local page = entry({"admin", "services", "unblockneteasemusic"},firstchild(), _("解除云音乐播放限制"), 50)
-	page.dependent = false
-	page.acl_depends = { "luci-app-unblockneteasemusic-go" }
+	entry({"admin", "services", "unblockneteasemusic"},firstchild(), _("解除云音乐播放限制"), 50).dependent = false
 
 	entry({"admin", "services", "unblockneteasemusic", "general"},cbi("unblockneteasemusic"), _("基本设定"), 1)
 	entry({"admin", "services", "unblockneteasemusic", "senior"},cbi("unblockneteasemusic_senior"), _("高级设定"), 2)

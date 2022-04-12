@@ -1,0 +1,11 @@
+{
+	"luci-app-smstools3": {
+		"description": "Grant UCI access for luci-app-smstools3",
+		"read": {
+			"uci": [ "smstools3" ]
+		},
+		"write": {
+			"uci": [ "smstools3" ]
+		}
+	}
+}

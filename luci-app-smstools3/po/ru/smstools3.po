@@ -1,0 +1,224 @@
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Konstantine Shevlyakov <shevlakov@132lan.ru>\n"
+
+#: applications/luci-app-smstools3/luasrc/controller/smstools3.lua:9
+msgid "Smstools3 SMS"
+msgstr ""
+
+#: applications/luci-app-smstools3/luasrc/controller/smstools3.lua:10
+msgid "Incoming"
+msgstr "Входяшие"
+
+#: applications/luci-app-smstools3/luasrc/controller/smstools3.lua:11
+msgid "Outcoming"
+msgstr "Исходящие"
+
+#: applications/luci-app-smstools3/luasrc/controller/smstools3.lua:12
+msgid "Push"
+msgstr "Отправить"
+
+#: applications/luci-app-smstools3/luasrc/controller/smstools3.lua:13
+msgid "Setup"
+msgstr "Настройки"
+
+#: applications/luci-app-smstools3/luasrc/controller/smstools3.lua:14
+msgid "User Script"
+msgid "Скрипт"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/in.htm:76
+msgid "Delete all incoming messages!"
+msgstr "Входящие сообщения удалены!"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/in.htm:83
+msgid "Smstools3: Incoming Messages"
+msgstr "Smstools3: Входящие сообщения"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/in.htm:87
+msgid "From"
+msgstr "От"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/in.htm:88
+msgid "Send"
+msgstr "Отправлено"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/in.htm:89
+msgid "Recieve"
+msgstr "Принято"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/in.htm:90
+msgid "Message"
+msgstr "Текст сообщения"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/in.htm:96
+msgid "Remove All"
+msgstr "Удалить все"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/in.htm:96
+msgid "Delete All incoming Messages"
+msgstr "Удалить все входящие сообщения"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/out.htm:74
+msgid "All outgoing messages are deleted!"
+msgstr "Исходящие сообщения удалены!"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/out.htm:82
+msgid "Smstools3: Outcoming Messages"
+msgstr "Smstools3: Исходящие сообщения"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/out.htm:86
+msgid "To"
+msgstr "Кому"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/out.htm:87
+msgid "Send"
+msgstr "Отправлено"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/out.htm:88
+msgid "Send Time"
+msgstr "Время отправки (сек)"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/out.htm:89
+msgid "Message"
+msgstr "Текст сообщения"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/out.htm:94
+msgid "Remove All"
+msgstr "Удалить все"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/out.htm:94
+msgid "Delete All Sent Messages"
+msgstr "Удалить все исходящие сообщения"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/send.htm:2
+msgid "Smstools3: Send Message"
+msgstr "Smstools3: Написать сообщение"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/send.htm:16
+msgid "You must enter a phone number!"
+msgstr "Введите номер телефона!"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/send.htm:22
+msgid "Invalid phone number!"
+msgstr "Это не номер телефона!"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/send.htm:31
+msgid "Message is blank!"
+msgstr "Пустое сообщение!"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/send.htm:43
+msgid "Message sent."
+msgstr "Сообщение отправлено."
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/send.htm:64
+msgid "Send To"
+msgstr "Номер телефона"
+
+#: applications/luci-app-smstools3/luasrc/view/modem/sms/send.htm:80
+msgid "Push"
+msgstr "Отправить"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:11
+msgid "Setup smstools3"
+msgstr "Настройки smstools3"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:12
+msgid "Configure smstools3 daemon."
+msgstr "Конфигурация службы smstools3."
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:17
+msgid "Decode SMS"
+msgstr "Декодировать SMS"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:18
+msgid "Decode Incoming messages to UTF-8 codepage."
+msgstr "Преобразовать входящие сообщения в UTF-8."
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:20
+msgid "Unexepted Input"
+msgstr "Нештатные команды"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:21
+msgid "Enable Unexpected input from COM port."
+msgstr "Принимать команды, не предназначенные для службы на COM-порт."
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:23
+msgid "Delay time"
+msgstr "Активное время"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:23
+msgid "Default value: 10<br />Smsd sleep so many seconds when it has nothing to do."
+msgstr "По-умолчанию: 10<br />Время активной работы smsd после после принятия или отправки сообщений."
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:27
+msgid "SMS Storage"
+msgstr "Хранилище SMS"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:28
+msgid "Select storage to save SMS."
+msgstr "Выберите тип храниния SMS сообщений."
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:29
+msgid "Temporary"
+msgstr "Временное"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:30
+msgid "Persistent"
+msgstr "Постоянное"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:34
+msgid "Device"
+msgstr "COM-порт"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:34
+msgid "Select COM port."
+msgstr "Выберите порт."
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:43
+msgid "PIN Code"
+msgstr "ПИН-код"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:44
+msgid "Default value: not in use.<br />Specifies the PIN number of the SIM card inside the modem."
+msgstr "По-умолчанию не используется.<br />Укажите PIN-код симкарты."
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:47
+msgid "Loglevel"
+msgstr "Журнал"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:48
+msgid "Verbose logging output."
+msgstr "Подробный вывод журнала."
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:60
+msgid "Enable LED indication incoming messages."
+msgstr "Включить индикацию LED для входящих сообщений."
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:62
+msgid "Select LED"
+msgstr "Выбрать светодиод"
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:63
+msgid "LED indicate to Incoming messages.<br />To revert, setup led \"System -> LED Configuration\" again."
+msgstr "Светодиод для индикации входящих сообщений. Для возврата поведения светодиода, настройте его заново<br > в \"Система - Настройка LED индикации\""
+
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smsevent.lua:11
+msgid "Edit smstools3 user script.<br />Add user's actions for incoming & outcoming messages.<br />Is shell script for smstools3 scenario.<br/>See <a href=\"http://smstools3.kekekasvi.com/index.php?p=eventhandler\">smstools3 manual page</a> for more details."
+msgstr "Пользовательский скрипт оболочки ash для smstools3.<br />Действия для входящих и исходящих сообщений.<br/>Подробности сморите в <a href=\"http://smstools3.kekekasvi.com/index.php?p=eventhandler\">руководстве к smstools3</a>."
+
+
+
+
+
+
+
+
+
+
+
+
+
+

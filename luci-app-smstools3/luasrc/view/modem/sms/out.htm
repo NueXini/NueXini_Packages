@@ -1,0 +1,97 @@
+<%#
+ Copyright 2008 Steven Barth <steven@midlink.org>
+ Copyright 2008-2011 Jo-Philipp Wich <jow@openwrt.org>
+ Licensed to the public under the Apache License 2.0.
+-%>
+<%
+local fs     = require("nixio.fs")
+local http   = require("luci.http")
+local util   = require("luci.util")
+local sys	 = require("luci.sys")
+
+local dir = '/var/spool/sms/sent/'
+msg = {}
+
+function directory(dir)
+   local p = io.popen('find "'..dir..'" -type f')
+   for file in p:lines() do
+      table.insert(msg, file)
+      msg[#msg + 1] = sms
+   end
+end
+
+
+start_string = '<div class="td left" width="25%">'
+end_string = '</b></div>'
+foot = '</div>'
+
+function exist(dir)
+   directory(dir)
+   for k,v in pairs(msg) do
+      msg[k] = v
+      --print(v)
+	  	if (k%2==0) then
+			head = '<div class="tr cbi-rowstyle-2">'
+		else
+			head = '<div class="tr cbi-rowstyle-1">'
+		end
+      local f = io.open(v, "rb")
+      if f then
+        f:close()
+      end
+      lines = {}
+      for r in io.lines(v) do
+        lines[#lines + 1] = r
+      end
+      if (lines[1] ~= nil) then
+	    for fr in lines[1]:gmatch("%w+") do
+           if (tonumber(fr)) and (#fr >= 7 ) then
+              fromto = fr
+			  fromto = ('+'..fromto..'')
+		   else
+			  fromto = fr
+		   end
+        end
+	send = {}
+	for sn in lines[4]:gmatch("%S+") do
+	   send[#send + 1] = sn
+        end
+	recieved ={}
+	for res in lines[5]:gmatch("%S+") do
+           recieved[#recieved + 1] = res
+        end
+	local utf8str = luci.sys.exec('cat '..v..' | tail -1')
+	if (utf8str ~= "[Aa-Zz]") then
+		utf8str = luci.sys.exec('cat '..v..' | tail -1 | iconv -t UTF-8 -f UCS-2')
+	end
+	print(head, start_string, fromto, end_string, start_string,  send[2], send[3], end_string, start_string, recieved[2], end_string, start_string, utf8str, end_string, foot)
+      end
+   end
+end
+%>
+
+<script type="text/javascript">//<![CDATA[
+    function erase_out_sms(){
+	    XHR.get('<%=luci.dispatcher.build_url("admin", "modem", "erase_out_sms")%>');
+	    alert("<%:All outgoing messages are deleted!%>");
+	    location.reload();
+    }
+//]]></script>
+
+<%+header%>
+<h2 name="content"><%:Smstools3: Outcoming Messages%></h2>
+<fieldset class="cbi-section">
+		<div class="table" width="100%">
+			<div class="tr cbi-rowstyle-2">
+				<div class="td left" width="25%"><b><%:To%></b></div>
+				<div class="td left" width="25%"><b><%:Send%></b></div>
+				<div class="td left" width="25%"><b><%:Send Time%></b></div>
+				<div class="td left" width="25%"><b><%:Message%></b></div>
+			</div>
+			<% exist(dir) %>
+		</div>
+		<div class="table" width="100%">
+			<div class="td left" width="100%"><input class="cbi-button cbi-button-remove" type="submit" value="<%:Remove All%>" title="<%:Delete All Sent Messages%>" onclick="return erase_out_sms()"/></div>
+		</div>
+</fieldset>
+<%+footer%>

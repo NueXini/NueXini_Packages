@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ ! -d /root/sms ] || [ ! -f /tmp/smsd.conf ]; then
+        /usr/share/luci-app-smstools3/event.sh > /tmp/smsd.conf
+fi
+
+sleep 10 && \
+	/etc/init.d/smstools3 stop && \
+	sleep 3 && \
+	/etc/init.d/smstools3 start &
+
