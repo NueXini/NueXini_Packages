@@ -28,7 +28,7 @@ msgstr "Informacje o modemie"
 msgid "Cell / Signal Information"
 msgstr "Informacje o sieci / sygnale"
 
-msgid "Mode:"
+msgid "Technology:"
 msgstr "Technologia:"
 
 msgid "Operator:"
@@ -120,8 +120,8 @@ msgstr "Nie zalogowana do sieci"
 msgid "Registered"
 msgstr "Zalogowana do sieci"
 
-msgid "Searching"
-msgstr "Wyszukiwanie"
+msgid "Searching.."
+msgstr "Wyszukiwanie.."
 
 msgid "Registering denied"
 msgstr "Odmowa zalogowana do sieci"

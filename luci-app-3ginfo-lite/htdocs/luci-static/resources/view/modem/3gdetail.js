@@ -234,7 +234,7 @@ return view.extend({
 							view.textContent = _('Registered');
 						}
 						if (json.registration == '2') { 
-							view.textContent = _('Searching');
+							view.textContent = _('Searching..');
 						}
 						if (json.registration == '3') { 
 							view.textContent = _('Registering denied');
@@ -503,7 +503,7 @@ return view.extend({
 					E('div', { 'class': 'td left', 'id': 'connst' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Mode:')]),
+					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Technology:')]),
 					E('div', { 'class': 'td left', 'id': 'mode' }, [ '-' ]),
 					]),
 			]),
