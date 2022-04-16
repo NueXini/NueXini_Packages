@@ -123,33 +123,18 @@ DEVV=$(echo $OF | tr -s "\n"  | xargs)
 FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n"  | xargs)
 FW=$(echo $FWA | cut -c 8-)
 
-MODELA=$(echo $DEVV | awk -F 'Revision: ' '{print $1}'| xargs)
-MODELB=$(echo $MODELA | awk -F 'Manufacturer: |CORPORATION' '{print $2}'| xargs)
+# MODELA=$(echo $DEVV | awk -F 'Revision: ' '{print $1}'| xargs)
+# MODELB=$(echo $MODELA | awk -F 'Manufacturer: |CORPORATION' '{print $2}'| xargs)
 
 MODELD=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n"  | xargs)
-MODELDCUT=$(echo $MODELD | cut -c 9-)
-
-if echo "$MODELD" | grep -q "LINUX" || echo "$MODELD" | grep -q "Linux"
-then
-    MODEL="Linux"
-else
-    MODEL="$MODELB "$MODELDCUT
-fi
+MODELDCUT=$(echo $MODELD | awk -F'CGMM: ' '{print $2}' | sed 's/"//g')
+MODEL="Marvell "$MODELDCUT
 
 # Protocol
 # DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
 PV=$(cat /sys/kernel/debug/usb/devices)
 PVCUT=$(echo $PV | awk -F 'Vendor=19d2 ProdID=1489' '{print $2}' | cut -c-1450)
-if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
-then
-    PROTO="qmi"
-elif echo "$PVCUT" | grep -q "Driver=cdc_mbim"
-then
-    PROTO="mbim"
-elif echo "$PVCUT" | grep -q "Driver=rndis_host"
+if echo "$PVCUT" | grep -q "Driver=rndis_host"
 then
     PROTO="rndis"
-elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
-then
-    PROTO="ecm"
 fi
