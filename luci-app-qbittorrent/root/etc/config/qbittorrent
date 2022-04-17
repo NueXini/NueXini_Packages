@@ -16,4 +16,8 @@ config qbittorrent 'main'
 	option profile '/opt'
 	option UseRandomPort 'false'
 	option PortRangeMin '55555'
+	option TempPathEnabled 'false'
 	option enabled '0'
+	option AuthSubnetWhitelistEnabled 'true'
+	list AuthSubnetWhitelist '192.168.0.0/16'
+
