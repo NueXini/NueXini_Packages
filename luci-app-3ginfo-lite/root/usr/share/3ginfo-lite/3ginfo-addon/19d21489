@@ -118,17 +118,17 @@ case "$MODE_NUM" in
 esac
 
 
-OF=$(sms_tool -d $DEVICE at "ati")
-DEVV=$(echo $OF | tr -s "\n"  | xargs)
+# OF=$(sms_tool -d $DEVICE at "ati")
+# DEVV=$(echo $OF | tr -s "\n"  | xargs)
 FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n"  | xargs)
 FW=$(echo $FWA | cut -c 8-)
 
-# MODELA=$(echo $DEVV | awk -F 'Revision: ' '{print $1}'| xargs)
-# MODELB=$(echo $MODELA | awk -F 'Manufacturer: |CORPORATION' '{print $2}'| xargs)
+MODELB=$(sms_tool -d $DEVICE at "AT+CGMI" | tr -s "\n"  | xargs)
+MODELBCUT=$(echo $MODELB | awk -F'CGMI: ' '{print $2}' | sed 's/"//g' | sed 's/ CORPORATION//g')
 
 MODELD=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n"  | xargs)
 MODELDCUT=$(echo $MODELD | awk -F'CGMM: ' '{print $2}' | sed 's/"//g')
-MODEL="Marvell "$MODELDCUT
+MODEL="$MODELBCUT "$MODELDCUT
 
 # Protocol
 # DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
