@@ -132,9 +132,19 @@ MODEL="$MODELBCUT "$MODELDCUT
 
 # Protocol
 # DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
-PV=$(cat /sys/kernel/debug/usb/devices)
-PVCUT=$(echo $PV | awk -F 'Vendor=19d2 ProdID=1489' '{print $2}' | cut -c-1450)
-if echo "$PVCUT" | grep -q "Driver=rndis_host"
-then
-    PROTO="rndis"
+ncm=$(grep cdc_ncm /sys/kernel/debug/usb/devices 2>/dev/null)
+if [ -n "$ncm" ] ; then
+		PROTO="ncm"
+fi
+qmi=$(grep qmi_wwan /sys/kernel/debug/usb/devices 2>/dev/null)
+if [ -n "$qmi" ] ; then
+		PROTO="qmi"
+fi
+mbim=$(grep cdc_mbim /sys/kernel/debug/usb/devices 2>/dev/null)
+if [ -n "$mbim" ] ; then
+		PROTO="mbim"
+fi
+ecm=$(grep cdc_ether /sys/kernel/debug/usb/devices 2>/dev/null)
+if [ -n "$ecm" ] ; then
+		PROTO="ecm"
 fi

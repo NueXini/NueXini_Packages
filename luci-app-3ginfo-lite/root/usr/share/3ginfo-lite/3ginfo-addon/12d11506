@@ -43,21 +43,22 @@ MODEL=$(echo $MODELC | awk '{print toupper(substr($0,0,1))tolower(substr($0,2))}
 FW=$(echo $DEV2 | awk -F 'Revision:|IMEI' '{print $2}'| xargs)
 
 # Protocol
-# Driver=qmi_wwan & Driver=cdc_mbim & Driver=cdc_ether & Driver=huawei_cdc_ncm
-PV=$(cat /sys/kernel/debug/usb/devices)
-PVCUT=$(echo $PV | awk -F 'Vendor=12d1 ProdID=1506' '{print $2}' | cut -c-1104)
-if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
-then
-    PROTO="qmi"
-elif echo "$PVCUT" | grep -q "Driver=cdc_mbim"
-then
-    PROTO="mbim"
-elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
-then
-    PROTO="ecm"
-elif echo "$PVCUT" | grep -q "Driver=huawei_cdc_ncm"
-then
-    PROTO="ncm"
+# DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
+ncm=$(grep cdc_ncm /sys/kernel/debug/usb/devices 2>/dev/null)
+if [ -n "$ncm" ] ; then
+		PROTO="ncm"
+fi
+qmi=$(grep qmi_wwan /sys/kernel/debug/usb/devices 2>/dev/null)
+if [ -n "$qmi" ] ; then
+		PROTO="qmi"
+fi
+mbim=$(grep cdc_mbim /sys/kernel/debug/usb/devices 2>/dev/null)
+if [ -n "$mbim" ] ; then
+		PROTO="mbim"
+fi
+ecm=$(grep cdc_ether /sys/kernel/debug/usb/devices 2>/dev/null)
+if [ -n "$ecm" ] ; then
+		PROTO="ecm"
 fi
 
 # Temperature
