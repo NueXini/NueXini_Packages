@@ -9,7 +9,7 @@ sed -i '$a src-git NueXini_Packages https://github.com/NueXini/NueXini_Packages.
 ## 2.主题
 [lean lede](https://github.com/coolsnowwolf/lede/tree/master)，**请选择1806的主题**
 
-[OpenWrt Snapshots](https://github.com/openwrt/openwrt/tree/master)，**请选择1907及以上版本的主题****
+[OpenWrt Snapshots](https://github.com/openwrt/openwrt/tree/master)，**请选择1907及以上版本的主题**
 
 **文件名不带版本则默认为1806**
 
