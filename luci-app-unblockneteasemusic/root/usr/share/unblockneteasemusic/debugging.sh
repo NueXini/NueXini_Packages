@@ -28,7 +28,6 @@ echo -e "luci-app-unblockneteasmusic info:"
 opkg info "luci-app-unblockneteasemusic"
 ls -lh "/etc/config/unblockneteasemusic" "/etc/init.d/unblockneteasemusic" "/usr/share/unblockneteasemusic"
 cat "/etc/config/unblockneteasemusic" | sed -e "s,joox_cookie .*,joox_cookie 'set',g" \
-	-e "s,migu_cookie .*,migu_cookie 'set',g" \
 	-e "s,qq_cookie .*,qq_cookie 'set',g" \
 	-e "s,youtube_key .*,youtube_key 'set',g" \
 	-e "s,proxy_server_ip .*,proxy_server_ip 'set',g"
@@ -59,7 +58,7 @@ echo -e "\n"
 echo -e "Running info:"
 procd_running_status="$(/etc/init.d/unblockneteasemusic status)"
 echo -e "PROCD running status: $procd_running_status"
-[ "$procd_running_status" = "running" ] && { ps | grep "unblockneteasemusic" | grep "app\.js" || echo -e "Thread is not found."; }
+[ "$procd_running_status" = "running" ] && { ps -w | grep "unblockneteasemusic" | grep "app\.js" || echo -e "Thread is not found."; }
 echo -e "\n"
 
 [ "$procd_running_status" != "running" ] || {
