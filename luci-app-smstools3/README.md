@@ -3,10 +3,10 @@
 Web UI smstools3 for OpenWrt LuCI.
 How-to compile:
 ```
-cd feeds/luci/application/
+cd feeds/luci/applications/
 git clone https://github.com/koshev-msk/luci-app-smstools3.git
 cd ../../..
-./scripts feeds update -a; ./scripts/feeds install -a
+./scripts/feeds update -a; ./scripts/feeds install -a
 make -j $(($(nproc)+1)) package/feeds/luci/luci-app-smstools3/compile
 ```
 
