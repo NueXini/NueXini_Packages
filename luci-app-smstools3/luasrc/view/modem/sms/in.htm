@@ -63,7 +63,16 @@ function exist(dir)
         for res in lines[5]:gmatch("%S+") do
            recieved[#recieved + 1] = res
         end
-		print(head, start_string, fromto, end_string, start_string,  send[2], send[3], end_string, start_string, recieved[2], recieved[3], end_string, start_string, lines[14], end_string, foot)
+	text = {}
+        for t in table.concat(lines,"<br />",14,r):gmatch("%S+") do
+           text[#text + 1] = t
+        end
+		print(head, start_string, fromto, 
+	 	end_string, start_string,
+	 	send[2], send[3], end_string,
+	 	start_string, recieved[2], recieved[3],
+	 	end_string, start_string, 
+	 	table.concat(text, " "), end_string, foot)
       end
    end
 end
