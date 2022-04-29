@@ -1,7 +1,7 @@
 --Remove the spaces in the string
 function trim(str)
-   --return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
-   return (string.gsub(str, "%s+", ""))
+    --return (string.gsub(str, "^%s*(.-)%s*$", "%1"))
+    return (string.gsub(str, "%s+", ""))
 end
 
 --Auto-complete node
