@@ -1,4 +1,4 @@
---Copyright: https://github.com/coolsnowwolf/lede/tree/master/package/lean/luci-app-cpufreq
+--Copyright: https://github.com/coolsnowwolf/luci/tree/master/applications/luci-app-cpufreq
 --Planner: https://github.com/unifreq/openwrt_packit
 --Extended support: https://github.com/ophub/luci-app-amlogic
 --Function: Support multi-core

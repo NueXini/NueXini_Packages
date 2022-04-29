@@ -52,7 +52,7 @@ ifeq ($(ARCH),aarch64)
 endif
 
 
-PKG_SOURCE:=nezha-agent_linux_$(PKG_ARCH_NEZHA-AGENT).tar.gz
+PKG_SOURCE:=nezha-agent_linux_$(PKG_ARCH_NEZHA-AGENT).zip
 
 PKG_SOURCE_URL:=https://github.com/naiba/nezha/releases/latest/download/
 

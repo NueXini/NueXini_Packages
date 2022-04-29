@@ -1,3 +1,7 @@
+--Copyright: https://github.com/coolsnowwolf/luci/tree/master/applications/luci-app-filetransfer
+--Extended support: https://github.com/ophub/luci-app-amlogic
+--Function: Download files
+
 local io = require "io"
 local os = require "os"
 local fs = require "nixio.fs"

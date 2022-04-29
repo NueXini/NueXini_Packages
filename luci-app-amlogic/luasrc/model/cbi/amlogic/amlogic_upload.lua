@@ -1,3 +1,7 @@
+--Copyright: https://github.com/coolsnowwolf/luci/tree/master/applications/luci-app-filetransfer
+--Extended support: https://github.com/ophub/luci-app-amlogic
+--Function: Upload files
+
 local os    = require "os"
 local fs    = require "nixio.fs"
 local nutil = require "nixio.util"
