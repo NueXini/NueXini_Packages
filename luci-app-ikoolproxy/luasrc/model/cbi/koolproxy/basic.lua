@@ -45,7 +45,6 @@ e:value("daily.txt", translate("每日规则"))
 e:value("kp.dat", translate("视频规则"))
 e:value("user.txt", translate("自定义规则"))
 e.optional = false
-e.rmempty = true
 
 e = t:option(MultiValue, "thirdparty_rules", translate("第三方规则"))
 e:value("adg.txt", translate("AdGuard规则"))
@@ -54,7 +53,6 @@ e:value("yhosts.txt", translate("Yhosts规则"))
 e:value("antiad.txt", translate("AntiAD规则"))
 e:value("adgk.txt", translate("Banben规则"))
 e.optional = false
-e.rmempty = true
 
 e = t:option(ListValue, "koolproxy_port", translate("端口控制"))
 e:value(0, translate("关闭"))
