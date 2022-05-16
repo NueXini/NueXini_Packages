@@ -246,16 +246,19 @@ return view.extend({
 	formdata: { modemband: {} },
 
 	load: function() {
-		return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh', ['json']));
+		return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh', [ 'json' ]));
 	},
 
 	render: function(data) {
 		var m, s, o;
 
+		if (data != null){
+		try {
+
 		var json = JSON.parse(data);
 		var modemen, sbands;
 
-		if(!("error" in json)) {
+		if (!("error" in json)) {
 
 		var modem = json.modem;
 		for (var i = 0; i < json.enabled.length; i++) 
@@ -277,17 +280,17 @@ return view.extend({
 		sbands = sbands.trim();
 		
 		pollData: poll.add(function() {
-			return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh', ['json']))
+			return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh', [ 'json' ]))
 			.then(function(res) {
 				var json = JSON.parse(res);
 				//modemen = _('Waiting for device...');
-				if ( data != null ) { 
+				if ( json != null ) { 
 
 				var renderHTML = "";
 				//var strongband = "<span style=\"font-weight:bold;\">%s%s</span>";		
 
 				var view = document.getElementById("modemlteb");
-				view.innerHTML = modemen;
+				//view.innerHTML = modemen;
 				for (var i = 0; i < json.enabled.length; i++) 
 				{
 				//renderHTML += 'B' + String.format(strongband, _(""), _(json.enabled[i]))+'  ';
@@ -322,6 +325,12 @@ return view.extend({
 			ui.addNotification(null, E('p', _('Port not found, quitting...')), 'error');
 			}
 		}
+
+			} catch (err) {
+  				console.log('Error: ', err.message);
+			}
+
+		}		
 
 		var info = _('Configuration modem frequency bands. More information about the modemband application on the') + ' <a href="https://eko.one.pl/?p=openwrt-modemband" target="_blank">' + _('eko.one.pl forum') + '</a>.';
 
