@@ -47,8 +47,6 @@
     border-bottom: 1px solid #eee;
 }
 
-
-
 .th {
     font-weight: bold;
 }
@@ -669,7 +667,7 @@ td > table > tbody > tr > td,
 .cbi-button-apply.important,
 .cbi-button-reload.important,
 .cbi-button-action.important {
-	color: #fff;
+    color: #fff;
     background-color: #F24C7C;
 }
 
@@ -1742,6 +1740,19 @@ header > .container > .pull-right > * {
 	background-color: #8A4568;
 }
 
+.login .cbi-page-actions .cbi-button-apply,
+.login .cbi-button-apply {
+    color: #fff;
+    border: 1px solid #f24b7c;
+    background-color: #f24b7c;
+}
+
+.login .cbi-button-reset {
+    color: #fff;
+    border: 1px solid #9a4569;
+    background-color: #9a4569;
+}
+
 .login footer {
     bottom: 0;
     position: absolute;
@@ -1946,7 +1957,7 @@ body.lang_pl.login .cbi-value-title {
     .login {
         background: #354057;
     }
-    
+
     .logged-in .main-left {
         width: 0;
         position: fixed;
@@ -2032,7 +2043,7 @@ body.lang_pl.login .cbi-value-title {
     .cbi-section {
         padding: 1rem;
     }
-    
+
     table, .table {
         border-bottom: 1px solid #eee;
     }
@@ -2133,7 +2144,7 @@ body.lang_pl.login .cbi-value-title {
     .hide-xs {
         display: none;
     }
-    
+
     /* The scroll bar of the navigation bar is compatible with each browser. */
 	/* Google */
 	.main-left .navbar-container::-webkit-scrollbar {
