@@ -1,4 +1,5 @@
 -- Copyright 2020 Lienol <lawlienol@gmail.com>
+
 module("luci.controller.socat", package.seeall)
 
 function index()
