@@ -11,9 +11,11 @@
 
 <script type="text/javascript">//<![CDATA[
 
-	var bar_line = '<div class="cbi-progressbar">' +                                         
-                                '<div style="animation-direction: reverse; width:%d%%">' +       
-                                        '<sub>%s</sub>' +                                        
+	var bar_line = '<div class="cbi-progressbar" style="top: -0.5em">' +                                         
+                                '<div style="animation-direction: reverse; width:%d%%">' +
+					'<div style="position:absolute">' +
+	                                        '<sub>%s</sub>' +
+					'</div>' +
                                 '</div>' +                                                       
                         '</div>';
 
