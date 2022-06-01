@@ -5,6 +5,7 @@ uci -q batch <<-EOF >/dev/null
 	add ucitrack mia
 	set ucitrack.@mia[-1].init=mia
 	commit ucitrack
+
 	delete firewall.mia
 	set firewall.mia=include
 	set firewall.mia.type=script

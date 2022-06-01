@@ -2,7 +2,7 @@ a = Map("mia")
 a.title = translate("Internet Access Schedule Control")
 a.description = translate("Access Schedule Control Settins")
 
-a:section(SimpleSection).template = "mia/mia_status"
+a:section(SimpleSection).template  = "mia/mia_status"
 
 t = a:section(TypedSection, "basic")
 t.anonymous = true
@@ -34,7 +34,7 @@ e.optional = false
 e.default = "00:00"
 
 e = t:option(Value, "timeoff", translate("End time"))
-e.optional=false
+e.optional = false
 e.default = "23:59"
 
 e = t:option(Flag, "z1", translate("Mon"))
@@ -43,7 +43,7 @@ e.default = 1
 
 e = t:option(Flag, "z2", translate("Tue"))
 e.rmempty = true
-e.default=1
+e.default = 1
 
 e = t:option(Flag, "z3", translate("Wed"))
 e.rmempty = true
