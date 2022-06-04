@@ -13,11 +13,11 @@ m = Map("dnsforwarder")
 m.title = translate("运行日志")
 m.description = translate("如果想观察日志，需要在配置文件中写明LogOn true 和 LogFileFolder /var/log")
 
-s = m:section(TypedSection,"arguments","")
+s = m:section(TypedSection, "arguments")
 s.addremove = false
 s.anonymous = true
 
-gfwlist = s:option(TextValue, "gfwlist",nil, nil)
+gfwlist = s:option(TextValue, "gfwlist", nil, nil)
 gfwlist.description = translate("日志文件默认位置:" .. log)
 gfwlist.rows = 26
 gfwlist.wrap = "off"

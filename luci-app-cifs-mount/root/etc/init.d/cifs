@@ -64,4 +64,3 @@ stop() {
     umount -d -l $line 2>/dev/null
 	done
 }
-

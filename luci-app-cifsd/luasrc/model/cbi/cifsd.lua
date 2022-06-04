@@ -15,16 +15,13 @@ s:taboption("general", Value, "description", translate("Description"))
 o = s:taboption("general", Value, "workgroup", translate("Workgroup"))
 o.placeholder = 'WORKGROUP'
 
-a = s:taboption("general", Flag, "autoshare", translate("Auto Share"),
-        translate("Auto share local disk which connected"))
+a = s:taboption("general", Flag, "autoshare", translate("Auto Share"))
+a.description = translate("Auto share local disk which connected")
 a.rmempty = false
 a.default = "0"
 
-tmpl = s:taboption("template", Value, "_tmpl",
-	translate("Edit the template that is used for generating the cifsd configuration."), 
-	translate("This is the content of the file '/etc/ksmbd/smb.conf.template' from which your cifsd configuration will be generated. \
-			Values enclosed by pipe symbols ('|') should not be changed. They get their values from the 'General Settings' tab."))
-
+tmpl = s:taboption("template", Value, "_tmpl", translate("Edit the template that is used for generating the cifsd configuration."))
+tmpl.description = translate("This is the content of the file '/etc/ksmbd/smb.conf.template' from which your cifsd configuration will be generated. Values enclosed by pipe symbols ('|') should not be changed. They get their values from the 'General Settings' tab.")
 tmpl.template = "cbi/tvalue"
 tmpl.rows = 20
 
@@ -38,13 +35,14 @@ function tmpl.write(self, section, value)
 end
 
 
-s = m:section(TypedSection, "share", translate("Shared Directories")
-  , translate("Please add directories to share. Each directory refers to a folder on a mounted device."))
+s = m:section(TypedSection, "share", translate("Shared Directories"))
+s.description = translate("Please add directories to share. Each directory refers to a folder on a mounted device.")
 s.anonymous = true
 s.addremove = true
 s.template = "cbi/tblsection"
 
 s:option(Value, "name", translate("Name"))
+
 pth = s:option(Value, "path", translate("Path"))
 if nixio.fs.access("/etc/config/fstab") then
         pth.titleref = luci.dispatcher.build_url("admin", "system", "fstab")
@@ -79,14 +77,14 @@ go.default = "yes"
 
 -- hd = s:option(Flag, "hide_dot_files", translate("Hide dot files"))
 
-cm = s:option(Value, "create_mask", translate("Create mask"),
-        translate("Mask for new files"))
+cm = s:option(Value, "create_mask", translate("Create mask"))
+cm.description = translate("Mask for new files")
 cm.rmempty = true
 cm.size = 4
 cm.default = "0666"
 
-dm = s:option(Value, "dir_mask", translate("Directory mask"),
-        translate("Mask for new directories"))
+dm = s:option(Value, "dir_mask", translate("Directory mask"))
+dm.description = translate("Mask for new directories")
 dm.rmempty = true
 dm.size = 4
 dm.default = "0777"

@@ -4,7 +4,7 @@ function index()
 	if not nixio.fs.access("/etc/config/dockerd") then
 		return
 	end
-	
+
 	entry({"admin", "services", "docker"}, cbi("docker"), _("Docker CE Container"), 199).dependent = true
 	entry({"admin", "services", "docker", "status"}, call("act_status")).leaf = true
 end

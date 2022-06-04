@@ -39,4 +39,3 @@ msgstr "只读"
 
 msgid "Read/Write"
 msgstr "可读/写"
-

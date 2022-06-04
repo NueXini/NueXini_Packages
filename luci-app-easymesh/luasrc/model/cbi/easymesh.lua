@@ -1,6 +1,6 @@
 -- Copyright (C) 2021 dz <dingzhong110@gmail.com>
 
-local m,s,o
+local m, s, o
 local sys = require "luci.sys"
 local uci = require "luci.model.uci".cursor()
 
@@ -32,17 +32,20 @@ function detect_Node()
 end
 local Nodes = luci.sys.exec("batctl n 2>/dev/null| tail +3 | wc -l")
 local Node = detect_Node()
+
 v = m:section(Table, Node, "" ,translate("<b>Active node：" .. Nodes .. "</b>"))
 v:option(DummyValue, "IF")
 v:option(DummyValue, "Neighbor")
 v:option(DummyValue, "lastseen")
 
 -- Basic
-s = m:section(TypedSection, "easymesh", translate("Settings"), translate("General Settings"))
+s = m:section(TypedSection, "easymesh", translate("Settings"))
+s.description = translate("General Settings")
 s.anonymous = true
 
 ---- Eanble
-o = s:option(Flag, "enabled", translate("Enable"), translate("Enable or disable EASY MESH"))
+o = s:option(Flag, "enabled", translate("Enable"))
+o.description = translate("Enable or disable EASY MESH")
 o.default = 0
 o.rmempty = false
 
@@ -52,7 +55,8 @@ o:value("server", translate("host MESH"))
 o:value("client", translate("son MESH"))
 o.rmempty = false
 
-apRadio = s:option(ListValue, "apRadio", translate("MESH Radio device"), translate("The radio device which MESH use"))
+apRadio = s:option(ListValue, "apRadio", translate("MESH Radio device"))
+apRadio.description = translate("The radio device which MESH use")
 uci:foreach("wireless", "wifi-device",
 							function(s)
 								apRadio:value(s['.name'])
@@ -66,7 +70,7 @@ o = s:option(Value, "mesh_id", translate("MESH ID"))
 o.default = "easymesh"
 o.description = translate("MESH ID")
 
-enable = s:option(Flag, "encryption", translate("Encryption"), translate(""))
+enable = s:option(Flag, "encryption", translate("Encryption"))
 enable.default = 0
 enable.rmempty = false
 
@@ -75,11 +79,12 @@ o.default = "easymesh"
 o:depends("encryption", 1)
 
 ---- kvr
-enable = s:option(Flag, "kvr", translate("K/V/R"), translate(""))
+enable = s:option(Flag, "kvr", translate("K/V/R"))
 enable.default = 1
 enable.rmempty = false
 
-o = s:option(Value, "mobility_domain", translate("Mobility Domain"), translate("4-character hexadecimal ID"))
+o = s:option(Value, "mobility_domain", translate("Mobility Domain"))
+o.description = translate("4-character hexadecimal ID")
 o.default = "4f57"
 o.datatype = "and(hexstring,rangelength(4,4))"
 o:depends("kvr", 1)
@@ -95,7 +100,8 @@ o.atatype = "range(-1,-120)"
 o:depends("kvr", 1)
 
 ---- ap_mode
-enable = s:option(Flag, "ap_mode", translate("AP MODE Enable"), translate("Enable or disable AP MODE"))
+enable = s:option(Flag, "ap_mode", translate("AP MODE Enable"))
+enable.description = translate("Enable or disable AP MODE")
 enable.default = 0
 enable.rmempty = false
 

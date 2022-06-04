@@ -1,4 +1,3 @@
-
 module("luci.controller.cifs", package.seeall)
 
 function index()

@@ -5,4 +5,3 @@ config cifs
 	option iocharset 'utf8'
 	option delay '5'
 	option mountarea '/mnt'
-
