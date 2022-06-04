@@ -2,7 +2,7 @@ a = Map("zerotier")
 a.title = translate("ZeroTier")
 a.description = translate("Zerotier is an open source, cross-platform and easy to use virtual LAN")
 
-a:section(SimpleSection).template = "zerotier/zerotier_status"
+a:section(SimpleSection).template  = "zerotier/zerotier_status"
 
 t = a:section(NamedSection, "sample_config", "zerotier")
 t.anonymous = true
@@ -10,7 +10,7 @@ t.addremove = false
 
 e = t:option(Flag, "enabled", translate("Enable"))
 e.default = 0
-e.rmempty=false
+e.rmempty = false
 
 e = t:option(DynamicList, "join", translate('ZeroTier Network ID'))
 e.password = true

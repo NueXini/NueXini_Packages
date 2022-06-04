@@ -17,7 +17,7 @@ PKG_NAME:=luci-app-baidupcs-web
 PKG_VERSION:=1.0
 PKG_RELEASE:=5
 
-PKG_MAINTAINER:=<https://github.com/KFERMercer/luci-app-baidupcs-web>
+PKG_MAINTAINER:=KFERMercer <KFER.Mercer@gmail.com>
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

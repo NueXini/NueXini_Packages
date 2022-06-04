@@ -18,8 +18,3 @@ msgstr "小时"
 
 msgid "Minute"
 msgstr "分钟"
-
-
-
-
-

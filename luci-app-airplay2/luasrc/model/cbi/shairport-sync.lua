@@ -5,7 +5,7 @@ m = Map("shairport-sync")
 m.title = translate("Apple AirPlay 2 Receiver")
 m.description = translate("Apple AirPlay 2 Receiver is a simple AirPlay server implementation")
 
-m:section(SimpleSection).template = "shairport-sync/shairport-sync_status"
+m:section(SimpleSection).template  = "shairport-sync/shairport-sync_status"
 
 s = m:section(TypedSection, "shairport-sync")
 s.addremove = false
@@ -34,7 +34,7 @@ interpolation = s:option(ListValue, "interpolation", translate("Interpolation"))
 interpolation:value("basic", translate("Internal Basic Resampler"))
 interpolation:value("soxr", translate("High quality SoX Resampler (fast CPU required)"))
 
-port=s:option(Value, "port", translate("Port"))
+port = s:option(Value, "port", translate("Port"))
 port.rmempty = false
 port.datatype = "port"
 
