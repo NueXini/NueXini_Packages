@@ -6,17 +6,22 @@ ful.reset = false
 ful.submit = false
 
 sul = ful:section(SimpleSection, "", translate("Upload file to '/tmp/upload/'"))
+
 fu = sul:option(FileUpload, "")
 fu.template = "filetransfer/other_upload"
+
 um = sul:option(DummyValue, "", nil)
 um.template = "filetransfer/other_dvalue"
 
 fdl = SimpleForm("download", translate("Download"), nil)
 fdl.reset = false
 fdl.submit = false
+
 sdl = fdl:section(SimpleSection, "", translate("Download file"))
+
 fd = sdl:option(FileUpload, "")
 fd.template = "filetransfer/other_download"
+
 dm = sdl:option(DummyValue, "", nil)
 dm.template = "filetransfer/other_dvalue"
 
@@ -119,6 +124,7 @@ nm = tb:option(DummyValue, "name", translate("File name"))
 mt = tb:option(DummyValue, "mtime", translate("Modify time"))
 ms = tb:option(DummyValue, "modestr", translate("Attributes"))
 sz = tb:option(DummyValue, "size", translate("Size"))
+
 btnrm = tb:option(Button, "remove", translate("Remove"))
 btnrm.render = function(self, section, scope)
 	self.inputstyle = "remove"
