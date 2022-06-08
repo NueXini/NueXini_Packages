@@ -94,6 +94,9 @@ port = s:option(Value, "port", translate("Port"))
 port.datatype = "port"
 port.optional = false
 
+subnet = s:option(Value, "subnet", translate("DHCP Subnet"))
+subnet.optional = false
+
 -- Static route
 s = m:section(TypedSection, "route", translate("N2N routes"),
               translate("Static route for n2n interface"))

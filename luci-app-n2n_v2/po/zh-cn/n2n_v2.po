@@ -50,6 +50,9 @@ msgstr "N2N Supernode节点设置"
 msgid "Port"
 msgstr "端口"
 
+msgid "DHCP Subnet"
+msgstr "子网IP段"
+
 msgid "Supernode Port"
 msgstr "Supernode节点端口"
 
