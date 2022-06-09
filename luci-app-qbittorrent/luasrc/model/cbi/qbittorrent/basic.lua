@@ -2,7 +2,7 @@ m = Map("qbittorrent")
 m.title = translate("qBittorrent")
 m.description = translate("qBittorrent is a cross-platform free and open-source BitTorrent client")
 
-m:section(SimpleSection).template = "qbittorrent/qbittorrent_status"
+m:section(SimpleSection).template  = "qbittorrent/qbittorrent_status"
 
 s = m:section(NamedSection, "main", "qbittorrent")
 

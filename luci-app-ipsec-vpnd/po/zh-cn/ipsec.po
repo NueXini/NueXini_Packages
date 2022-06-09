@@ -30,5 +30,3 @@ msgstr "禁止开机启动"
 
 msgid "Enable on startup"
 msgstr "允许开机启动"
-
-

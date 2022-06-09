@@ -2,7 +2,7 @@ mp = Map("pptpd")
 mp.title = translate("PPTP VPN Server")
 mp.description = translate("PPTP VPN Server connectivity using the native built-in VPN Client on Windows/Linux or Andriod")
 
-mp:section(SimpleSection).template = "pptp-server/pptp-server_status"
+mp:section(SimpleSection).template  = "pptp-server/pptp-server_status"
 
 s = mp:section(NamedSection, "pptpd", "service")
 s.anonymouse = true

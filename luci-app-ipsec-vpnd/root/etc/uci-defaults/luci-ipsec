@@ -19,41 +19,41 @@ uci -q batch <<-EOF >/dev/null
 	
 	commit network
 		
-  delete firewall.ike
-  add firewall rule
-  rename firewall.@rule[-1]="ike"
-  set firewall.@rule[-1].name="ike"
-  set firewall.@rule[-1].target="ACCEPT"
-  set firewall.@rule[-1].src="wan"
-  set firewall.@rule[-1].proto="udp"
-  set firewall.@rule[-1].dest_port="500"
+	delete firewall.ike
+	add firewall rule
+	rename firewall.@rule[-1]="ike"
+	set firewall.@rule[-1].name="ike"
+	set firewall.@rule[-1].target="ACCEPT"
+	set firewall.@rule[-1].src="wan"
+	set firewall.@rule[-1].proto="udp"
+	set firewall.@rule[-1].dest_port="500"
   
-  delete firewall.ipsec
-  add firewall rule
-  rename firewall.@rule[-1]="ipsec"
-  set firewall.@rule[-1].name="ipsec"
-  set firewall.@rule[-1].target="ACCEPT"
-  set firewall.@rule[-1].src="wan"
-  set firewall.@rule[-1].proto="udp"
-  set firewall.@rule[-1].dest_port="4500"
+	delete firewall.ipsec
+	add firewall rule
+	rename firewall.@rule[-1]="ipsec"
+	set firewall.@rule[-1].name="ipsec"
+	set firewall.@rule[-1].target="ACCEPT"
+	set firewall.@rule[-1].src="wan"
+	set firewall.@rule[-1].proto="udp"
+	set firewall.@rule[-1].dest_port="4500"
   
-  delete firewall.ah
-  add firewall rule
-  rename firewall.@rule[-1]="ah"
-  set firewall.@rule[-1].name="ah"
-  set firewall.@rule[-1].target="ACCEPT"
-  set firewall.@rule[-1].src="wan"
-  set firewall.@rule[-1].proto="ah"
+	delete firewall.ah
+	add firewall rule
+	rename firewall.@rule[-1]="ah"
+	set firewall.@rule[-1].name="ah"
+	set firewall.@rule[-1].target="ACCEPT"
+	set firewall.@rule[-1].src="wan"
+	set firewall.@rule[-1].proto="ah"
   
-  delete firewall.esp
-  add firewall rule
-  rename firewall.@rule[-1]="esp"
-  set firewall.@rule[-1].name="esp"
-  set firewall.@rule[-1].target="ACCEPT"
-  set firewall.@rule[-1].src="wan"
-  set firewall.@rule[-1].proto="esp"
+	delete firewall.esp
+	add firewall rule
+	rename firewall.@rule[-1]="esp"
+	set firewall.@rule[-1].name="esp"
+	set firewall.@rule[-1].target="ACCEPT"
+	set firewall.@rule[-1].src="wan"
+	set firewall.@rule[-1].proto="esp"
   
-  delete firewall.VPN
+	delete firewall.VPN
 	set firewall.VPN=zone
 	set firewall.VPN.name="VPN"
 	set firewall.VPN.input="ACCEPT"
@@ -61,13 +61,13 @@ uci -q batch <<-EOF >/dev/null
 	set firewall.VPN.output="ACCEPT"
 	set firewall.VPN.network="VPN"
 	
-  delete firewall.vpn
+	delete firewall.vpn
 	set firewall.vpn=forwarding
 	set firewall.vpn.name="vpn"
 	set firewall.vpn.dest="wan"
 	set firewall.vpn.src="VPN"
   
-  commit firewall
+	commit firewall
 EOF
 
 uci -q batch <<-EOF >/dev/null

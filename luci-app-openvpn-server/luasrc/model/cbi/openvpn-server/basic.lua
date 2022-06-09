@@ -2,7 +2,7 @@ mp = Map("openvpn")
 mp.title = translate("OpenVPN Server")
 mp.description = translate("An easy config OpenVPN Server Web-UI")
 
-mp:section(SimpleSection).template = "openvpn-server/openvpn-server_status"
+mp:section(SimpleSection).template  = "openvpn-server/openvpn-server_status"
 
 s = mp:section(TypedSection, "openvpn")
 s.anonymous = true
@@ -25,13 +25,13 @@ ddns.default = "exmple.com"
 ddns.rmempty = false
 
 localnet = s:option(Value, "server", translate("Client Network"))
-localnet.datatype = "string"
 localnet.description = translate("VPN Client Network IP with subnet")
+localnet.datatype = "string"
 
 list = s:option(DynamicList, "push")
 list.title = translate("Client Settings")
-list.datatype = "string"
 list.description = translate("Set route 192.168.0.0 255.255.255.0 and dhcp-option DNS 192.168.0.1 base on your router")
+list.datatype = "string"
 
 o = s:option(Button, "certificate", translate("OpenVPN Client config file"))
 o.inputtitle = translate("Download .ovpn file")

@@ -1,4 +1,4 @@
-module("luci.controller.nps",package.seeall)
+module("luci.controller.nps", package.seeall)
 
 function index()
 	if not nixio.fs.access("/etc/config/nps") then

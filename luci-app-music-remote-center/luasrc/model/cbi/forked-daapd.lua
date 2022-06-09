@@ -5,7 +5,7 @@ m = Map("forked-daapd")
 m.title = translate("Music Remote Center")
 m.description = translate("Music Remote Center is a DAAP (iTunes Remote), MPD (Music Player Daemon) and RSP (Roku) media server.")
 
-m:section(SimpleSection).template = "forked-daapd/forked-daapd_status"
+m:section(SimpleSection).template  = "forked-daapd/forked-daapd_status"
 
 s = m:section(TypedSection, "forked-daapd")
 s.addremove = false
@@ -23,7 +23,7 @@ db_path = s:option(Value, "db_path", translate("Database File Path"))
 db_path.default = "/opt/forked-daapd-songs3.db"
 db_path.rmempty = false
 
-directories=s:option(Value, "directories", translate("Music Directorie Path"))
+directories = s:option(Value, "directories", translate("Music Directorie Path"))
 directories.default = "/opt/music"
 directories.rmempty = false
 

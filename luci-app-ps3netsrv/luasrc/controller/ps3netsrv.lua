@@ -1,4 +1,4 @@
-module("luci.controller.ps3netsrv",package.seeall)
+module("luci.controller.ps3netsrv", package.seeall)
 
 function index()
 	if not nixio.fs.access("/etc/config/ps3netsrv") then

@@ -4,7 +4,7 @@ function index()
 	if not nixio.fs.access("/etc/config/openvpn") then
 		return
 	end
-	
+
 	entry({"admin", "vpn"}, firstchild(), "VPN", 45).dependent = false
 	entry({"admin", "vpn", "openvpn-server"}, alias("admin", "vpn", "openvpn-server", "basic"), _("OpenVPN Server"), 80).dependent = true
 	entry({"admin", "vpn", "openvpn-server", "basic"}, cbi("openvpn-server/basic"), _("Base Setting"), 1).leaf = true

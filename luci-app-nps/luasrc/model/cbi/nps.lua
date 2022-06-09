@@ -2,7 +2,7 @@ m = Map("nps")
 m.title = translate("Nps Penetrate")
 m.description = translate("Nps is a fast reverse proxy to help you expose a local server behind a NAT or firewall to the internet.")
 
-m:section(SimpleSection).template = "nps/nps_status"
+m:section(SimpleSection).template  = "nps/nps_status"
 
 s = m:section(TypedSection, "nps")
 s.addremove = false

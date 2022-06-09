@@ -2,6 +2,7 @@
 --N2N VPN(V2) configuration page. Made by 981213
 --
 ]] --
+
 local fs = require "nixio.fs"
 
 function get_mask(v)
@@ -26,7 +27,7 @@ m = Map("n2n_v2")
 m.title = translate("N2N v2 VPN")
 m.description = translatef("n2n is a layer-two peer-to-peer virtual private network (VPN) which allows users to exploit features typical of P2P applications at network instead of application level.")
 
-m:section(SimpleSection).template = "n2n_v2/n2n_v2_status"
+m:section(SimpleSection).template  = "n2n_v2/n2n_v2_status"
 
 s = m:section(TypedSection, "edge", translate("N2N Edge Settings"))
 s.anonymous = true
@@ -98,8 +99,8 @@ subnet = s:option(Value, "subnet", translate("DHCP Subnet"))
 subnet.optional = false
 
 -- Static route
-s = m:section(TypedSection, "route", translate("N2N routes"),
-              translate("Static route for n2n interface"))
+s = m:section(TypedSection, "route", translate("N2N routes"))
+s.description = translate("Static route for n2n interface")
 s.anonymous = true
 s.addremove = true
 s.template = "cbi/tblsection"

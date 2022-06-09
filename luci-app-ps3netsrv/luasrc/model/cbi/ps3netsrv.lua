@@ -5,7 +5,7 @@ m = Map("ps3netsrv")
 m.title = translate("PS3 NET Server")
 m.description = translate("PS3NETSRV is ISO/PKG server for Sony PlayStation 3 webMAN-MOD plugin")
 
-m:section(SimpleSection).template = "ps3netsrv/ps3netsrv_status"
+m:section(SimpleSection).template  = "ps3netsrv/ps3netsrv_status"
 
 s = m:section(TypedSection, "ps3netsrv")
 s.addremove = false

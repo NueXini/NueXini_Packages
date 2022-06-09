@@ -1,10 +1,10 @@
-module("luci.controller.qbittorrent",package.seeall)
+module("luci.controller.qbittorrent", package.seeall)
 
 function index()
 	if not nixio.fs.access("/etc/config/qbittorrent") then
 		return
 	end
-	
+
 	entry({"admin", "nas", "qBittorrent"}, alias("admin", "nas", "qBittorrent", "basic"), _("qBittorrent"), 30).dependent = true
 	entry({"admin", "nas", "qBittorrent", "basic"}, cbi("qbittorrent/basic"), _("Basic Settings"), 1).leaf = true
 	entry({"admin", "nas", "qBittorrent", "connection"}, cbi("qbittorrent/connection"), _("Connection Settings"), 2).leaf = true

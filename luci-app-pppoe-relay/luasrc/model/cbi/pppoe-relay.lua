@@ -1,7 +1,7 @@
 local s = require"luci.sys"
 local net = require "luci.model.network".init()
 local ifaces = s.net:devices()
-local m,s,o
+local m, s, o
 
 m = Map("pppoe-relay")
 m.title = translate("PPPoE Relay")
@@ -10,9 +10,9 @@ m.description = translate("Opening the PPPoE relay allows devices in the Intrane
 s = m:section(TypedSection, "service")
 s.addremove = true
 s.anonymous = true
-s.template="cbi/tblsection"
+s.template = "cbi/tblsection"
 
-o = s:option(Flag,"enabled",translate("Enabled"))
+o = s:option(Flag, "enabled", translate("Enabled"))
 o.rmempty = false
 
 o = s:option(ListValue, "server_interface", translate("Server Interface"))

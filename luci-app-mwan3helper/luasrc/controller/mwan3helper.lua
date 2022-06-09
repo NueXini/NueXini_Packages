@@ -1,4 +1,3 @@
-
 -- Licensed to the public under the GNU General Public License v3.
 
 module("luci.controller.mwan3helper", package.seeall)

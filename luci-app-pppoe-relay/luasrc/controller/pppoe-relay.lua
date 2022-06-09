@@ -1,4 +1,4 @@
-module("luci.controller.pppoe-relay",package.seeall)
+module("luci.controller.pppoe-relay", package.seeall)
 
 function index()
 	if not nixio.fs.access("/etc/config/pppoe-relay") then

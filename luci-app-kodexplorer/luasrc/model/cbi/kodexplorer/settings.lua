@@ -1,4 +1,7 @@
-m = Map("kodexplorer", translate("KodExplorer"), translate("KodExplorer is a fast and efficient private cloud and online document management system that provides secure, controllable, easy-to-use and highly customizable private cloud products for personal websites, enterprise private cloud deployment, network storage, online document management, and online office. With Windows style interface and operation habits, it can be used quickly without adaptation. It supports online preview of hundreds of common file formats and is extensible and easy to customize."))
+m = Map("kodexplorer")
+m.title = translate("KodExplorer")
+m.description = translate("KodExplorer is a fast and efficient private cloud and online document management system that provides secure, controllable, easy-to-use and highly customizable private cloud products for personal websites, enterprise private cloud deployment, network storage, online document management, and online office. With Windows style interface and operation habits, it can be used quickly without adaptation. It supports online preview of hundreds of common file formats and is extensible and easy to customize.")
+
 m:append(Template("kodexplorer/status"))
 
 s = m:section(TypedSection, "global")
@@ -76,7 +79,8 @@ o:depends("https", 1)
 o = s:taboption("global", FileUpload, "key", translate("key"))
 o:depends("https", 1)
 
-o = s:taboption("global", Value, "memory_limit", translate("Maximum memory usage"), translate("If your device has a lot of memory, you can increase it."))
+o = s:taboption("global", Value, "memory_limit", translate("Maximum memory usage"))
+o.description = translate("If your device has a lot of memory, you can increase it.")
 o.default = "32M"
 o.rmempty = false
 
@@ -87,10 +91,12 @@ o.rmempty = false
 o = s:taboption("global", DynamicList, "open_basedir", translate("Accessible directory"))
 o.rmempty = false
 
-o = s:taboption("global", Value, "project_directory", translate("Project directory"), translate("It is recommended to insert a usb flash drive or hard disk and enter the path. For example, /mnt/sda1/kodexplorer"))
+o = s:taboption("global", Value, "project_directory", translate("Project directory"))
+o.description = translate("It is recommended to insert a usb flash drive or hard disk and enter the path. For example, /mnt/sda1/kodexplorer")
 o.default = "/mnt/sda1/kodexplorer"
 o.rmempty = false
 
 o = s:taboption("global", Button, "_update")
 o.template = "kodexplorer/version"
+
 return m

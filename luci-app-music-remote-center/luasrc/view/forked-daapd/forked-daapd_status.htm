@@ -1,5 +1,5 @@
 <script type="text/javascript">//<![CDATA[
-XHR.poll(3, '<%=url([[admin]], [[nas]], [[forked-daapd]], [[run]])%>', null,
+XHR.poll(3, '<%=url([[admin]], [[nas]], [[forked-daapd]], [[status]])%>', null,
 	function(x, data) {
 		var tb = document.getElementById('forked-daapd_status');
 		if (data && tb) {
