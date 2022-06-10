@@ -16,6 +16,7 @@ PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE
 PKG_MAINTAINER:=Yu Wang
 
+PKG_CONFIG_DEPENDS:=CONFIG_USE_GLIBC
 PKG_BUILD_PARALLEL:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -25,7 +26,7 @@ define Package/udp2raw
   CATEGORY:=Network
   TITLE:=Tunnel which turns UDP Traffic into Encrypted FakeTCP/UDP/ICMP Traffic
   URL:=https://github.com/wangyu-/udp2raw
-  DEPENDS:=+libstdcpp +libpthread +librt
+  DEPENDS:=+libstdcpp +libpthread +librt +USE_GLIBC:libatomic
   PROVIDES:=udp2raw-tunnel
 endef
 
@@ -34,6 +35,9 @@ define Package/udp2raw/description
 endef
 
 MAKE_FLAGS += cross
+ifdef CONFIG_USE_GLIBC
+  TARGET_LDFLAGS+= -latomic
+endif
 
 define Build/Prepare
 	$(PKG_UNPACK)
