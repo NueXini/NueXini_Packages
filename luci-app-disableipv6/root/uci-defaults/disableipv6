@@ -1,0 +1,13 @@
+#!/bin/sh
+
+uci -q batch <<-EOF >/dev/null
+	delete ucitrack.@disableipv6[-1]
+	add ucitrack disableipv6
+	set ucitrack.@disableipv6[-1].init=disableipv6
+	commit ucitrack
+EOF
+
+chmod 755 /etc/init.d/disableipv6  >/dev/null 2>&1
+
+rm -rf /tmp/luci-modulecache /tmp/luci-indexcache
+exit 0
