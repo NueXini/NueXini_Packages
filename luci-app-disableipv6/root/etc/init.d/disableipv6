@@ -10,6 +10,7 @@ start()
 	[ $enable -eq 0 ] && exit 0
 	uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 	uci commit dhcp
+	cat /etc/sysctl.conf | grep -q 'disable_ipv6 = 1' && exit 0
 	echo 'net.ipv6.conf.all.disable_ipv6 = 1' >> /etc/sysctl.conf
 	sysctl -p /etc/sysctl.conf
 }

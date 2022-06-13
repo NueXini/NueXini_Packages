@@ -3,3 +3,6 @@ msgstr "禁用IPV6"
 
 msgid "It can disable ipv6 for all eth."
 msgstr "禁用所有接口的IPV6"
+
+msgid "Enable"
+msgstr "启用"

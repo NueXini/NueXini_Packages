@@ -10,14 +10,8 @@ s=m:section(TypedSection, "onoff","")
 s.addremove=false
 s.anonymous=true
 
-e=s:option(Flag,"enable",translate("Disable IPV6"))
+e=s:option(Flag,"enable",translate("Enable"))
 e.rmempty = false
 e.default=0
-
-
-local e=luci.http.formvalue("cbi.apply")
-if e then
-  io.popen("/etc/init.d/disableipv6 restart")
-end
 
 return m
