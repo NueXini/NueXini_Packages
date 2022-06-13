@@ -7,5 +7,7 @@ uci -q batch <<-EOF >/dev/null
 	commit ucitrack
 EOF
 
+chmod 0755 /etc/init.d/disableipv6 >/dev/null 2>&1
+
 rm -rf /tmp/luci-*cache
 exit 0
