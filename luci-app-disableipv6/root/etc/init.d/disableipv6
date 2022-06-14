@@ -2,25 +2,36 @@
 # NueXini
 
 START=99
-STOP=19
 
-start()
+disableipv6()
 {
-	stop
-	enable=$(uci get disableipv6.@onoff[0].enable)
-	[ $enable -eq 0 ] && exit 0
-	cat /etc/sysctl.conf | grep -q 'disable_ipv6 = 1' && exit 0
+	local enable
+	config_get_bool enable $1 enable
+	[ $enable -eq 0 ] && off
+	[ $enable -eq 1 ] && on
+	/etc/init.d/dnsmasq restart >/dev/null 2>&1
+}
+
+on()
+{
 	uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 	uci commit dhcp
+	cat /etc/sysctl.conf | grep -q 'disable_ipv6 = 1' && exit 0
 	echo 'net.ipv6.conf.all.disable_ipv6 = 1' >> /etc/sysctl.conf
 	sysctl -p /etc/sysctl.conf
 }
 
-stop()
+off()
 {
 	uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 	uci commit dhcp
 	sed -i '/disable_ipv6/d' /etc/sysctl.conf
 	sysctl -p /etc/sysctl.conf
+}
+
+start()
+{
+	config_load disableipv6
+	config_foreach disableipv6 onoff
 }
 
