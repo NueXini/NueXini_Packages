@@ -23,6 +23,41 @@ function if_null() {
         done
 }
 
+cli_status() {
+	 . /usr/share/modeminfo/scripts/ch_to_band
+        ch_to_band $EARFCN
+	if [ $LTE_CA -ge 1 ]; then
+		MODE=LTE+
+		BAND="B$SC${SCC}"
+		BANDWIDH=$BWCA
+	else
+		BAND="B$SC"
+		BANDWIDH=$BWDL
+	fi
+	case $CSQ_COL in
+		green) COLOR="\e[30;42m" ;;
+		orange) COLOR="\e[33;43m" ;;
+		red) COLOR="\e[41m" ;;
+		*) COLOR="\e[47m" ;;
+	esac
+	END="\e[0m"
+	echo -e "DEVICE:\t\t$DEVICE"
+	echo -e "NETWORK:\t${COPS} / ${MODE} / $BAND / ${BANDWIDH}Mhz"
+	STREIGH="$COLOR${CSQ_PER}%$END"
+	case $MODE in
+		LTE*)
+			if [ $DISTANCE ]; then
+				STREIGH="$COLOR${CSQ_PER}%$END ~${DISTANCE}km"
+			fi
+			VALUES="RSSI: ${CSQ_RSSI}dBm / RSRP: ${RSRP}dBm / RSRQ: ${RSRQ}dB / SINR: ${SINR}dB"
+		;;
+		WCDMA|*HSP*|*HUS*|UMTS) VALUES="RSSI: ${CSQ_RSSI}dBm / ECIO: ${SINR}dB" ;;
+		*) VALUES="RSSI: ${CSQ_RSSI}dBm" ;;
+	esac
+	echo -e "SIGNAL:\t\t $STREIGH"
+	echo -e "$VALUES" 
+}
+
 if [ $(uci -q get modeminfo.@modeminfo[0].qmi_mode) ]; then
 	SCRIPT=/usr/share/modeminfo/scripts/modeminfo-qmi
 else
@@ -39,6 +74,9 @@ get_device_info
 get_data_in
 get_hwinfo
 if_null
-json_status
+case $1 in
+	-c) cli_status ;;
+	*) json_status ;;
+esac
 
 exit 0
