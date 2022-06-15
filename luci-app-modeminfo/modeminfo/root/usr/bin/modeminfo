@@ -26,14 +26,24 @@ function if_null() {
 cli_status() {
 	 . /usr/share/modeminfo/scripts/ch_to_band
         ch_to_band $EARFCN
-	if [ $LTE_CA -ge 1 ]; then
-		MODE=LTE+
-		BAND="B$SC${SCC}"
-		BANDWIDH=$BWCA
-	else
-		BAND="B$SC"
-		BANDWIDH=$BWDL
-	fi
+	case $MODE in
+		LTE*)
+		if [ $LTE_CA -ge 1 ]; then
+			MODE=LTE+
+			BAND="B$SC${SCC}"
+			BANDWIDH=$BWCA
+		else
+			BAND="B$SC"
+			case $BWDL in
+				1) BANDWIDH=1.4 ;;
+				2) BANDWIDH=5 ;;
+				3) BANDWIDH=10 ;;
+				4) BANDWIDH=15 ;;
+				5) BANDWIDH=20 ;;
+			esac
+		fi
+		;;
+	esac
 	case $CSQ_COL in
 		green) COLOR="\e[30;42m" ;;
 		orange) COLOR="\e[33;43m" ;;
@@ -41,20 +51,42 @@ cli_status() {
 		*) COLOR="\e[47m" ;;
 	esac
 	END="\e[0m"
+	case $DEVICE in
+		0) DEVICE="Generic Qualcomm" ;;
+	esac
 	echo -e "DEVICE:\t\t$DEVICE"
-	echo -e "NETWORK:\t${COPS} / ${MODE} / $BAND / ${BANDWIDH}Mhz"
 	STREIGH="$COLOR${CSQ_PER}%$END"
+	EARFCN=$(echo $EARFCN | awk '{print $1}')
 	case $MODE in
 		LTE*)
 			if [ $DISTANCE ]; then
 				STREIGH="$COLOR${CSQ_PER}%$END ~${DISTANCE}km"
 			fi
+			NETINFO="${COPS} / ${MODE} / $BAND / ${BANDWIDH}Mhz"
 			VALUES="RSSI: ${CSQ_RSSI}dBm / RSRP: ${RSRP}dBm / RSRQ: ${RSRQ}dB / SINR: ${SINR}dB"
+			TWINFO="EARFCN: $EARFCN | LAC/CID: ${LAC}/${CID} | ENBID: $ENBID | PCI: $PCI"
 		;;
-		WCDMA|*HSP*|*HUS*|UMTS) VALUES="RSSI: ${CSQ_RSSI}dBm / ECIO: ${SINR}dB" ;;
-		*) VALUES="RSSI: ${CSQ_RSSI}dBm" ;;
+		*WCDMA*|*HSP*|*HUS*|*UMTS*)
+			BAND=$SC
+			NETINFO="${COPS} / ${MODE} / $BAND"
+			VALUES="RSSI: ${CSQ_RSSI}dBm / ECIO: ${SINR}dB"
+			TWINFO="UARFCN: $EARFCN | LAC/CID: ${LAC}/${CID}"
+		;;
+		GSM*|EGDE*)
+			BAND=$SC
+			NETINFO="${COPS} / ${MODE} / $BAND"
+			VALUES="RSSI: ${CSQ_RSSI}dBm"
+			TWINFO="ARFCN: $EARFCN | LAC/CID: ${LAC}/${CID}"
+		;;
 	esac
-	echo -e "SIGNAL:\t\t $STREIGH"
+	case $MIMO in
+		2) RXMIMO="MIMO 2x2" ;;
+		4) RXMIMO="MIMO 4x4" ;;
+		0|1) RXMIMO="SISO 1x1" ;;
+	esac
+	echo -e "NETWORK:\t${NETINFO}"
+	echo -e "SIGNAL:\t\t $STREIGH | $RXMIMO"
+	echo "$TWINFO"
 	echo -e "$VALUES" 
 }
 
