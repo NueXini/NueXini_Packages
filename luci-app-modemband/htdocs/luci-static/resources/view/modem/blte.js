@@ -258,7 +258,10 @@ return view.extend({
 		var json = JSON.parse(data);
 		var modemen, sbands;
 
-		if (!("error" in json)) {
+		//if (!("error" in json)) {
+		//if (("error" in json)==false){
+		//if(!json["error"]){
+		if(!json.hasOwnProperty('error')){
 
 		var modem = json.modem;
 		for (var i = 0; i < json.enabled.length; i++) 
