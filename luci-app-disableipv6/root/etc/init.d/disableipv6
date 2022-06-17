@@ -16,17 +16,33 @@ on()
 {
 	uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 	uci commit dhcp
-	cat /etc/sysctl.conf | grep -q 'disable_ipv6 = 1' && exit 0
+	
+	sed -i '/disable_ipv6/d' /etc/sysctl.conf
 	echo 'net.ipv6.conf.all.disable_ipv6 = 1' >> /etc/sysctl.conf
 	sysctl -p /etc/sysctl.conf
+	
+	/etc/init.d/odhcpd enable
+	
+	uci del network.@device[0].ipv6
+	uci del network.@device[1].ipv6
+	uci del network.@device[2].ipv6
+	uci commit network
 }
 
 off()
 {
 	uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 	uci commit dhcp
+	
 	sed -i '/disable_ipv6/d' /etc/sysctl.conf
 	sysctl -p /etc/sysctl.conf
+	
+	/etc/init.d/odhcpd disable
+	
+	uci set network.@device[0].ipv6='0'
+	uci set network.@device[1].ipv6='0'
+	uci set network.@device[2].ipv6='0'
+	uci commit network
 }
 
 start()
