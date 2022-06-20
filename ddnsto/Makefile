@@ -14,7 +14,7 @@ PKG_VERSION:=1.5.0
 PKG_RELEASE:=$(PKG_ARCH_DDNSTO)-2
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://fw.koolcenter.com/binary/ddnsto/
-PKG_HASH:=62ec74c8977ab8b2d6f0be45442118f973aac0043519fd2b7e251ffea0cac721
+PKG_HASH:=5e7c0a3669bf5a8fa100e97afcb4bbc713ee39edab92a8ff2e1373b96114c285
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_VERSION)
 
@@ -62,7 +62,6 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./files/ddnsto.init $(1)/etc/init.d/ddnsto
 	$(INSTALL_BIN) ./files/ddnsto-monitor.sh $(1)/usr/sbin/ddnsto-monitor.sh
 	$(INSTALL_BIN) ./files/ddnsto.uci-default $(1)/etc/uci-defaults/ddnsto
-	$(INSTALL_BIN) ./files/ddnsto-monitor.sh $(1)/usr/sbin/ddnsto-monitor.sh
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
