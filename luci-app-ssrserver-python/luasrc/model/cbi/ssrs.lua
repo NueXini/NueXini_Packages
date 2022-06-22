@@ -1,4 +1,4 @@
-local a,t,e
+local a, t, e
 local m, s
 local o = require"nixio.fs"
 local n = {
@@ -30,7 +30,7 @@ local s = {
 "auth_chain_f",
 }
 
-local i={
+local i = {
 "plain",
 "http_simple",
 "http_post",
@@ -39,7 +39,7 @@ local i={
 "tls1.2_ticket_fastauth",
 }
 
-local o={
+local o = {
 "false",
 "true",
 }
@@ -48,9 +48,9 @@ a = Map("ssrs")
 a.title = translate("ShadowSocksR Server Config")
 a.description = translate("ShadowsocksR Python Server is a fork of the Shadowsocks project, claimed to be superior in terms of security and stability")
 
-a:section(SimpleSection).template = "ssrs/ssrs_status"
+a:section(SimpleSection).template  = "ssrs/ssrs_status"
 
-t = a:section(TypedSection,"server",translate(""))
+t = a:section(TypedSection, "server")
 t.anonymous = true
 t.addremove = false
 
@@ -67,15 +67,15 @@ e.password = true
 e.rmempty = false
 
 e = t:option(ListValue, "encrypt_method", translate("Encrypt Method"))
-for a,t in ipairs(n)do e:value(t)end
+for a, t in ipairs(n)do e:value(t)end
 e.rmempty = false
 
 e = t:option(ListValue, "protocol", translate("Protocol"))
-for a,t in ipairs(s)do e:value(t)end
+for a, t in ipairs(s)do e:value(t)end
 e.rmempty = false
 
-e = t:option(ListValue,"obfs",translate("Obfs"))
-for a,t in ipairs(i)do e:value(t)end
+e = t:option(ListValue, "obfs", translate("Obfs"))
+for a, t in ipairs(i)do e:value(t)end
 e.rmempty = false
 
 return a

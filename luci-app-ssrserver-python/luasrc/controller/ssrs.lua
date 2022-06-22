@@ -1,4 +1,4 @@
-module("luci.controller.ssrs",package.seeall)
+module("luci.controller.ssrs", package.seeall)
 
 function index()
 	if not nixio.fs.access("/etc/config/ssrs") then

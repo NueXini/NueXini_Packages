@@ -1,10 +1,10 @@
-module("luci.controller.xlnetacc",package.seeall)
+module("luci.controller.xlnetacc", package.seeall)
 
 function index()
 	if not nixio.fs.access("/etc/config/xlnetacc") then
 		return
 	end
-	
+
 	entry({"admin", "services", "xlnetacc"}, alias("admin", "services", "xlnetacc", "general"), _("XLNetAcc"), 90).dependent = true
 	entry({"admin", "services", "xlnetacc", "general"}, cbi("xlnetacc"), _("Settings"), 1).leaf = true
 	entry({"admin", "services", "xlnetacc", "log"}, template("xlnetacc/logview"), _("Log"), 2).leaf = true

@@ -5,6 +5,7 @@ uci -q batch <<-EOF >/dev/null
 	add ucitrack unblockmusic
 	set ucitrack.@unblockmusic[-1].init=unblockmusic
 	commit ucitrack
+
 	delete firewall.unblockmusic
 	set firewall.unblockmusic=include
 	set firewall.unblockmusic.type=script

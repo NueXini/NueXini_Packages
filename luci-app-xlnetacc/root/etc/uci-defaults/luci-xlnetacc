@@ -1,6 +1,11 @@
-uci batch <<EOF
+#!/bin/sh
+
+uci -q batch <<-EOF >/dev/null
 	delete ucitrack.@xlnetacc[-1]
 	add ucitrack xlnetacc
 	set ucitrack.@xlnetacc[-1].init=xlnetacc
 	commit ucitrack
 EOF
+
+rm -f /tmp/luci-indexcache
+exit 0

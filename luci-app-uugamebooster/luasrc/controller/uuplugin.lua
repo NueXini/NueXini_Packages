@@ -1,11 +1,11 @@
-module("luci.controller.uuplugin",package.seeall)
+module("luci.controller.uuplugin", package.seeall)
 
 function index()
 	if not nixio.fs.access("/etc/config/uuplugin") then
 		return
 	end
 
-	entry({"admin", "services", "uuplugin"}, cbi("uuplugin/uuplugin"), ("UU GameAcc"), 99).dependent = true
+	entry({"admin", "services", "uuplugin"}, cbi("uuplugin"), ("UU GameAcc"), 99).dependent = true
 	entry({"admin", "services", "uuplugin", "status"}, call("act_status")).leaf = true
 end
 

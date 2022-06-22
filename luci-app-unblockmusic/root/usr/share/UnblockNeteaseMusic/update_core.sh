@@ -65,4 +65,3 @@ function main(){
   luci_update="n"
 	[ "$1" == "luci_update" ] && luci_update="y"
 	main
-	

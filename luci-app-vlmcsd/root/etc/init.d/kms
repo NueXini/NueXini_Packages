@@ -53,4 +53,3 @@ stop() {
     killall -q -9 vlmcsd
     echo "KMS Server has stopped."
 }
-
