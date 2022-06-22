@@ -1,4 +1,4 @@
-module("luci.controller.release_ram",package.seeall)
+module("luci.controller.release_ram", package.seeall)
 
 function index()
 
