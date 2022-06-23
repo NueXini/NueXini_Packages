@@ -422,7 +422,9 @@ function ddnsto_submit()
         log = log .. "请关闭对话框\n"
         ddnsto_writelog(log)
         
-        luci.util.exec("/etc/init.d/ddnsto restart")
+        luci.util.exec("/etc/init.d/ddnsto stop")
+        luci.util.exec("sleep 1")
+        luci.util.exec("/etc/init.d/ddnsto start")
         luci.util.exec("sleep 1")
     else
         log = log .. "参数错误：\n"
