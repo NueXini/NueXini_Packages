@@ -3,21 +3,6 @@
 
 START=99
 
-disableipv6()
-{
-	local enable
-	config_get_bool enable $1 enable
-	
-	sed -i '/disable_ipv6/d' /etc/sysctl.conf
-	
-	[ $enable -eq 0 ] && off
-	[ $enable -eq 1 ] && on
-	
-	sysctl -p /etc/sysctl.conf
-	
-	/etc/init.d/dnsmasq restart >/dev/null 2>&1
-}
-
 on()
 {
 	uci set dhcp.@dnsmasq[0].filter_aaaa='1'
@@ -46,9 +31,29 @@ off()
 	uci commit network
 }
 
+onoff()
+{
+	local enable
+	config_get_bool enable $1 enable
+	
+	sed -i '/disable_ipv6/d' /etc/sysctl.conf
+	
+	[ $enable -eq 0 ] && off
+	[ $enable -eq 1 ] && on
+	
+	sysctl -p /etc/sysctl.conf
+	
+	/etc/init.d/dnsmasq restart >/dev/null 2>&1
+}
+
 start()
 {
 	config_load disableipv6
-	config_foreach disableipv6 onoff
+	config_foreach onoff onoff
+}
+
+stop()
+{
+	echo 'disableipv6 stopped...'
 }
 
