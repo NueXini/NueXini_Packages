@@ -1,4 +1,5 @@
 #!/bin/sh /etc/rc.common
+
 # NueXini
 
 START=99
@@ -10,11 +11,11 @@ on()
 	
 	echo 'net.ipv6.conf.all.disable_ipv6 = 1' >> /etc/sysctl.conf
 	
-	/etc/init.d/odhcpd disable
+	/etc/init.d/odhcpd disable >/dev/null 2>&1
 	
-	uci set network.@device[0].ipv6='0'
-	uci set network.@device[1].ipv6='0'
-	uci set network.@device[2].ipv6='0'
+	uci set network.@device[0].ipv6='0' >/dev/null 2>&1
+	uci set network.@device[1].ipv6='0' >/dev/null 2>&1
+	uci set network.@device[2].ipv6='0' >/dev/null 2>&1
 	uci commit network
 }
 
@@ -23,11 +24,11 @@ off()
 	uci set dhcp.@dnsmasq[0].filter_aaaa='0'
 	uci commit dhcp
 	
-	/etc/init.d/odhcpd enable
+	/etc/init.d/odhcpd enable >/dev/null 2>&1
 	
-	uci del network.@device[0].ipv6
-	uci del network.@device[1].ipv6
-	uci del network.@device[2].ipv6
+	uci del network.@device[0].ipv6 >/dev/null 2>&1
+	uci del network.@device[1].ipv6 >/dev/null 2>&1
+	uci del network.@device[2].ipv6 >/dev/null 2>&1
 	uci commit network
 }
 
