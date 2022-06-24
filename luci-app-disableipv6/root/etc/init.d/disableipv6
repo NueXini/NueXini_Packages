@@ -37,12 +37,12 @@ onoff()
 	local enable
 	config_get_bool enable $1 enable
 	
-	sed -i '/disable_ipv6/d' /etc/sysctl.conf
+	sed -i '/disable_ipv6/d' /etc/sysctl.conf >/dev/null 2>&1
 	
 	[ $enable -eq 0 ] && off
 	[ $enable -eq 1 ] && on
 	
-	sysctl -p /etc/sysctl.conf
+	sysctl -p /etc/sysctl.conf >/dev/null 2>&1
 	
 	/etc/init.d/dnsmasq restart >/dev/null 2>&1
 }
