@@ -5,7 +5,7 @@ msgstr ""
 "POT-Creation-Date: 2014-10-01\n"
 "PO-Revision-Date: 2014-10-01\n"
 "Last-Translator: 981213 <gch981213@gmail.com>\n"
-"Language: zh_CN\n"
+"Language: zh-cn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -44,6 +44,12 @@ msgstr "N2N网络组名称"
 msgid "Enable packet forwarding"
 msgstr "启用数据包转发"
 
+msgid "Enable IP masquerade"
+msgstr "IP动态伪装"
+
+msgid "Make packets from LAN to other edge nodes appear to be sent from the tunnel IP. This can make setting up your firewall easier"
+msgstr "使局域网发往其他边缘节点的数据包看起来像是从接口IP发出的。这也许能帮助你方便地设置防火墙"
+
 msgid "N2N Supernode Settings"
 msgstr "N2N Supernode节点设置"
 
@@ -62,11 +68,11 @@ msgstr "第二Supernode节点端口"
 msgid "Encryption key"
 msgstr "加密密钥"
 
-msgid "<b style='color:green;'>N2N v2 VPN is running.</b>"
-msgstr "<b style='color:green;'>N2N v2 VPN 运行中</b>"
+msgid "RUNNING"
+msgstr "运行中"
 
-msgid "<b style='color:red;'>N2N v2 VPN is not running.</b>"
-msgstr "<b style='color:red;'>N2N v2 VPN 未运行</b>"
+msgid "NOT RUNNING"
+msgstr "未运行"
 
 msgid "N2N routes"
 msgstr "路由表"
