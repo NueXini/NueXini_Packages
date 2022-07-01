@@ -109,8 +109,10 @@ if [ "x$COPS_NUM" = "x" ]; then
 	COPS_MCC="-"
 	COPS_MNC="-"
 else
-	COPS_MCC=${COPS_NUM:0:3}
-	COPS_MNC=${COPS_NUM:3:3}
+	COPS_MCCB=${COPS_NUM:0:3}
+	COPS_MCC=$(echo "$COPS_MCCB" | tr '\n' ' ' | sed 's/ //g')
+	COPS_MNCB=${COPS_NUM:3:3}
+	COPS_MNC=$(echo "$COPS_MNCB" | tr '\n' ' ' | sed 's/ //g')
 	COPS=$(awk -F[\;] '/'$COPS_NUM'/ {print $2}' $RES/mccmnc.dat)
 fi
 [ "x$COPS" = "x" ] && COPS=$COPS_NUM

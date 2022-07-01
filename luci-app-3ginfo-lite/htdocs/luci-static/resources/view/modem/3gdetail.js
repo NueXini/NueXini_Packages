@@ -487,73 +487,73 @@ return view.extend({
 			E('h4', {}, [ _('General Information') ]),
 			E('table', { 'class': 'table' }, [
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Signal strength:')]),
-					E('div', { 'class': 'td left', 'id': 'signal' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Signal strength:')]),
+					E('td', { 'class': 'td left', 'id': 'signal' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Operator:')]),
-					E('div', { 'class': 'td left', 'id': 'operator' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Operator:')]),
+					E('td', { 'class': 'td left', 'id': 'operator' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('SIM status:')]),
-					E('div', { 'class': 'td left', 'id': 'sim' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('SIM status:')]),
+					E('td', { 'class': 'td left', 'id': 'sim' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Connection statistics:')]),
-					E('div', { 'class': 'td left', 'id': 'connst' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Connection statistics:')]),
+					E('td', { 'class': 'td left', 'id': 'connst' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Technology:')]),
-					E('div', { 'class': 'td left', 'id': 'mode' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Technology:')]),
+					E('td', { 'class': 'td left', 'id': 'mode' }, [ '-' ]),
 					]),
 			]),
 
 			E('h4', {}, [ _('Modem Information') ]),
 			E('table', { 'class': 'table' }, [
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Modem type:')]),
-					E('div', { 'class': 'td left', 'id': 'modem' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Modem type:')]),
+					E('td', { 'class': 'td left', 'id': 'modem' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Revision / Firmware:')]),
-					E('div', { 'class': 'td left', 'id': 'fw' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Revision / Firmware:')]),
+					E('td', { 'class': 'td left', 'id': 'fw' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('IP adress / Communication Port:')]),
-					E('div', { 'class': 'td left', 'id': 'cport' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('IP adress / Communication Port:')]),
+					E('td', { 'class': 'td left', 'id': 'cport' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Protocol:')]),
-					E('div', { 'class': 'td left', 'id': 'protocol' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Protocol:')]),
+					E('td', { 'class': 'td left', 'id': 'protocol' }, [ '-' ]),
 					]),
 				E('tr', { 'id': 'tempn', 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Chip Temperature:')]),
-					E('div', { 'class': 'td left', 'id': 'temp' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Chip Temperature:')]),
+					E('td', { 'class': 'td left', 'id': 'temp' }, [ '-' ]),
 					]),
 			]),
 
 			E('h4', {}, [ _('Cell / Signal Information') ]),
 			E('table', { 'class': 'table' }, [
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('MCC MNC: ')]),
-					E('div', { 'class': 'td left', 'id': 'mccmnc' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('MCC MNC: ')]),
+					E('td', { 'class': 'td left', 'id': 'mccmnc' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('LAC: ')]),
-					E('div', { 'class': 'td left', 'id': 'lac' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('LAC: ')]),
+					E('td', { 'class': 'td left', 'id': 'lac' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('CellID: ')]),
-					E('div', { 'class': 'td left', 'id': 'cid' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Cell ID: ')]),
+					E('td', { 'class': 'td left', 'id': 'cid' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('TAC: ')]),
-					E('div', { 'class': 'td left', 'id': 'tac' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('TAC: ')]),
+					E('td', { 'class': 'td left', 'id': 'tac' }, [ '-' ]),
 					]),
 
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('CSQ: ')]),
-					E('div', { 'class': 'td' }, E('div', {
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CSQ: ')]),
+					E('td', { 'class': 'td' }, E('div', {
 							'id': 'csq',
 							'class': 'cbi-progressbar',
 							'title': '-'
@@ -561,8 +561,8 @@ return view.extend({
 						))
 					]),
 				E('tr', { 'id': 'rssin', 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('RSSI: ')]),
-					E('div', { 'class': 'td' }, E('div', {
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('RSSI: ')]),
+					E('td', { 'class': 'td' }, E('div', {
 							'id': 'rssi',
 							'class': 'cbi-progressbar',
 							'title': '-'
@@ -570,8 +570,8 @@ return view.extend({
 						))
 					]),
 				E('tr', { 'id': 'rsrpn', 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('RSRP: ')]),
-					E('div', { 'class': 'td' }, E('div', {
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('RSRP: ')]),
+					E('td', { 'class': 'td' }, E('div', {
 							'id': 'rsrp',
 							'class': 'cbi-progressbar',
 							'title': '-'
@@ -579,8 +579,8 @@ return view.extend({
 						))
 					]),
 				E('tr', { 'id': 'sinrn', 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('SINR: ')]),
-					E('div', { 'class': 'td' }, E('div', {
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('SINR: ')]),
+					E('td', { 'class': 'td' }, E('div', {
 							'id': 'sinr',
 							'class': 'cbi-progressbar',
 							'title': '-'
@@ -588,8 +588,8 @@ return view.extend({
 						))
 					]),
 				E('tr', { 'id': 'rsrqn', 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('RSRQ: ')]),
-					E('div', { 'class': 'td' }, E('div', {
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('RSRQ: ')]),
+					E('td', { 'class': 'td' }, E('div', {
 							'id': 'rsrq',
 							'class': 'cbi-progressbar',
 							'title': '-'
@@ -597,21 +597,21 @@ return view.extend({
 						))
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('Primary band: ')]),
-					E('div', { 'class': 'td left', 'id': 'pband' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Primary band: ')]),
+					E('td', { 'class': 'td left', 'id': 'pband' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('PCI & EARFCN: ')]),
-					E('div', { 'class': 'td left', 'id': 'pci' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('PCI & EARFCN: ')]),
+					E('td', { 'class': 'td left', 'id': 'pci' }, [ '-' ]),
 					]),
 
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('(S) band: ')]),
-					E('div', { 'class': 'td left', 'id': 'sband' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('(S) band: ')]),
+					E('td', { 'class': 'td left', 'id': 'sband' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('div', { 'class': 'td left', 'width': '33%' }, [ _('(S) PCI & (S) EARFCN: ')]),
-					E('div', { 'class': 'td left', 'id': 'spci' }, [ '-' ]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('(S) PCI & (S) EARFCN: ')]),
+					E('td', { 'class': 'td left', 'id': 'spci' }, [ '-' ]),
 					]),
 			]),
 

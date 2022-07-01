@@ -258,7 +258,6 @@ return view.extend({
 		var json = JSON.parse(data);
 		var modemen, sbands;
 
-		//if (!("error" in json)) {
 		//if (("error" in json)==false){
 		//if(!json["error"]){
 		if(!json.hasOwnProperty('error')){
@@ -347,18 +346,18 @@ return view.extend({
 				E('h3', _('Modem information')),
 					E('table', { 'class': 'table' }, [
 						E('tr', { 'class': 'tr' }, [
-						E('div', { 'class': 'td left', 'width': '33%' }, [ _('Modem:')]),
-						E('div', { 'class': 'td left', 'id': 'modem' }, [ modem || '-' ]),
+						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Modem:')]),
+						E('td', { 'class': 'td left', 'id': 'modem' }, [ modem || '-' ]),
 					]),
 
 						E('tr', { 'class': 'tr' }, [
-						E('div', { 'class': 'td left', 'width': '33%' }, [ _('LTE bands:')]),
-						E('div', { 'class': 'td left', 'id': 'modemlteb' }, [ modemen || '-' ]),
+						E('td', { 'class': 'td left', 'width': '33%' }, [ _('LTE bands:')]),
+						E('td', { 'class': 'td left', 'id': 'modemlteb' }, [ modemen || '-' ]),
 					]),
 
 						E('tr', { 'class': 'tr' }, [
-						E('div', { 'class': 'td left', 'width': '33%' }, [ _('Supported LTE bands:')]),
-						E('div', { 'class': 'td left', 'id': 'sbands' }, [ sbands || '-' ]),
+						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Supported LTE bands:')]),
+						E('td', { 'class': 'td left', 'id': 'sbands' }, [ sbands || '-' ]),
 					]),
 				])
 			]);
