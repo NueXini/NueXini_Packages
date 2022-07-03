@@ -6,4 +6,3 @@ getinfo() {
 }
 
 . $RES/_foxconn_common2
-
