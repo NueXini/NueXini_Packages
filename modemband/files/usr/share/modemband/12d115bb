@@ -1,9 +1,11 @@
 _DEVICE=/dev/ttyUSB1
 
 getinfo() {
+	O=$(sms_tool -d $_DEVICE at "at+cgmi")
+	VENDOR=$(echo "$O" | awk '/^[a-zA-Z0-9]/ && !/at\+cgmi/{print $0}' | xargs)
 	O=$(sms_tool -d $_DEVICE at "at+cgmm")
-	_NAME=$(echo "$O" | awk '/^[a-zA-Z0-9]/ && !/at\+cgmm/{print $0}' | xargs)
-	echo "Huawei $_NAME"
+	PRODUCT=$(echo "$O" | awk '/^[a-zA-Z0-9]/ && !/at\+cgmm/{print $0}' | xargs)
+	echo "$(echo ${VENDOR:0:1} | tr '[a-z]' '[A-Z]')${VENDOR:1} $PRODUCT"
 }
 
 getsupportedbands() {
