@@ -38,6 +38,35 @@ modem_data(){
 			ENBx=$(echo $CID | sed -e 's/..$//')
 			CELL=$(printf %d 0x${CID: -2})
 			ENBID=$(printf %d 0x$ENBx)
+			LTE_CA=$(echo "$O" | grep -i CA_Scell | wc -l)
+                        if [ $LTE_CA -ge 0 ]; then
+				. /usr/share/modeminfo/scripts/ch_to_band
+				LTE_CA=1
+				SCH=$(echo "$O" | awk -F[:,] '/CA_Scell/{print $3}')
+				SBW=$(echo "$O" | awk -F[:,] '/CA_Scell/{print $6}')
+				for ch in $SCH; do
+					ch_to_band $ch
+					SCC="$SCC+$SC"
+				done
+				for bwc in $SBW; do
+					case $bwc in
+						1) BWCx=3 ;;
+						2) BWCx=5 ;;
+						3) BWCx=10 ;;
+						4) BWCx=15 ;;
+						5) BWCx=20 ;;
+					esac
+					BWCA=$(($BWCA+$BWCx))
+				done
+				case $BWDL in
+					1) BWDx=3 ;;
+					2) BWDx=5 ;;
+					3) BWDx=10 ;;
+					4) BWDx=15 ;;
+					5) BWDx=20 ;;
+				esac
+				BWCA=$((BWDx+$BWCA))
+			fi
 		;;
 		4*|5*|6*|7*)
 			EARFCN=$(echo "$O" | awk -F[,] '/^\+CPSI/ {print $8}')

@@ -109,7 +109,7 @@ define Package/$(PKG_NAME)/install
 	$(CP) ./root/usr/share/modeminfo/scripts/ch_to_band  $(1)/usr/share/modeminfo/scripts/
 	$(CP) ./root/usr/share/modeminfo/scripts/family.at  $(1)/usr/share/modeminfo/scripts/
 	$(CP) ./root/usr/share/modeminfo/scripts/modeminfo  $(1)/usr/share/modeminfo/scripts/
-	$(CP) ./root/usr/share/modeminfo/scripts/GERERIC* $(1)/usr/share/modeminfo/scripts/
+	$(CP) ./root/usr/share/modeminfo/scripts/GENERIC* $(1)/usr/share/modeminfo/scripts/
 	$(CP) ./root/etc/config/* $(1)/etc/config
 endef
 
