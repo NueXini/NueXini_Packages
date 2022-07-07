@@ -32,7 +32,6 @@ case "$MODE_NUM" in
 		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			T_HEX=$(printf "%X" $T)
-			ADDON="$ADDON"'{"TAC":"'$T' ('$T_HEX')"}'
 		fi
 
 		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $4}' | xargs)
@@ -51,7 +50,6 @@ case "$MODE_NUM" in
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
 		SINRB="$T"
 		SINR=$(echo $SINRB | tr -dc '0-9')
-
 
 		T=$(echo "$OB" | awk -F[,:] '/^\+ZCELLINFO/ {print $4}' | xargs)
 		case "$T" in
@@ -74,13 +72,13 @@ case "$MODE_NUM" in
 		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			PCI="$T"
-			ADDON="$ADDON"'{"PCI":"'$T'"}'
+
 		fi
 		T=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $5}' | xargs)
 		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			EARFCN="$T"
-			ADDON="$ADDON"'{"EARFCN":"'$T'"}'
+
 		fi
 
 		if [ "x$MODE_NUM" = "x9" ]; then
@@ -99,22 +97,22 @@ case "$MODE_NUM" in
 
 			T=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $9}' | xargs)
 			if [ -n "$T" ]; then
-				T1=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $11}' | xargs)
+				T2=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $11}' | xargs)
 				[ -n "$ADDON" ] && ADDON="$ADDON,"
+				T1=$(echo "$T2" | tr -d " \t\n\r" | xargs)
 				SBAND="$(band $T "") @$T1 MHz"
-				ADDON="$ADDON"'{"(S) band":"'$(band $T "")', '$T1' MHz"}'
+
 			fi
 			T=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $7}' | xargs)
 			if [ -n "$T" ]; then
 				[ -n "$ADDON" ] && ADDON="$ADDON,"
 				SPCI="$T"
-				ADDON="$ADDON"'{"(S) PCI":"'$T'"}'
+
 			fi
 			T=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $10}' | xargs)
 			if [ -n "$T" ]; then
 				[ -n "$ADDON" ] && ADDON="$ADDON,"
 				SEARFCN="$T"
-				ADDON="$ADDON"'{"(S) EARFCN":"'$T'"}'
 			fi
 		fi
 		;;
