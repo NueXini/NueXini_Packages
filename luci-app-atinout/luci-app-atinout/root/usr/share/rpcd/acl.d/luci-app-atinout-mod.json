@@ -1,0 +1,17 @@
+{
+	"luci-app-atinout-mod": {
+		"description": "Grant UCI and file access for luci-app-atinout-mod",
+		"read": {
+			"uci": [ "atinout" ]
+		},
+		"write": {
+			"uci": [ "atinout" ]
+		}
+	}
+}
+
+
+
+
+
+			
