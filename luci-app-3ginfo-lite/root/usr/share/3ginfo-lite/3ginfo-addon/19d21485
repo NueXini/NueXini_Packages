@@ -30,7 +30,8 @@ case "$MODE_NUM" in
 		ADDON="$ADDON"'{"RSRP":"'$T' dBm"}'
 		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $3}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
-		RSRQ="$T"
+		RSRQB="$T"
+		RSRQ=$(echo $RSRQB | tr ' ' '\n' | grep -E '^[+-]?[0-9]*\.?([0-9]+)$' | cut -f1 -d"." )
 		ADDON="$ADDON"'{"RSRQ":"'$T' dB"}'
 		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $4}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
@@ -38,7 +39,9 @@ case "$MODE_NUM" in
 		ADDON="$ADDON"'{"RSSI":"'$T' dBm"}'
 		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $5}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
-		SINR="$T"
+		SINRB="$T"
+		SINR=$(echo $SINRB | tr ' ' '\n' | grep -E '^[+-]?[0-9]*\.?([0-9]+)$' | cut -f1 -d"." )
+
 		ADDON="$ADDON"'{"SINR":"'$T' dB"}'
 		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCELLINFO/ {print $4}' | xargs)
 		case "$T" in

@@ -44,12 +44,14 @@ case "$MODE_NUM" in
 
 		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $3}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
-		RSRQ="$T"
+		RSRQB="$T"
+		RSRQ=$(echo $RSRQB | tr ' ' '\n' | grep -E '^[+-]?[0-9]*\.?([0-9]+)$' | cut -f1 -d"." )
+
 
 		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $5}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
 		SINRB="$T"
-		SINR=$(echo $SINRB | tr -dc '0-9')
+		SINR=$(echo $SINRB | tr ' ' '\n' | grep -E '^[+-]?[0-9]*\.?([0-9]+)$' | cut -f1 -d"." )
 
 		T=$(echo "$OB" | awk -F[,:] '/^\+ZCELLINFO/ {print $4}' | xargs)
 		case "$T" in

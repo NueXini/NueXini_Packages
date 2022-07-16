@@ -34,9 +34,9 @@ return view.extend({
 
 		o = s.option(form.Value, 'set_port', _('Port for communication with the modem'), 
 			_("Select one of the available ttyUSBX ports."));
-		devs.forEach(function(dev) {
-			o.value('/dev/' + dev.name);
-		});
+		devs.sort((a, b) => a.name > b.name);
+		devs.forEach(dev => o.value('/dev/' + dev.name));
+		
 		o.placeholder = _('Please select a port');
 		o.rmempty = false;
 
@@ -57,6 +57,12 @@ return view.extend({
 		o.depends("modemrestart", "1");
 		o.rmempty = false;
 
+		o = s.option(form.Flag, 'notify',	_('Turn off notifications'),
+		_('Checking this option disables the notification that appears every time the bands are changed.')
+		);
+		o.rmempty = false;
+
 		return m.render();
 	}
 });
+

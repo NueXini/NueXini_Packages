@@ -153,3 +153,9 @@ msgstr "Wyłącz"
 
 msgid "Enable"
 msgstr "Włącz"
+
+msgid "Turn off notifications"
+msgstr "Wyłącz powiadomienia"
+
+msgid "Checking this option disables the notification that appears every time the bands are changed."
+msgstr "Zaznaczenie opcji wyłącza powiadomienie pojawiające się przy każdej zmianie pasm."

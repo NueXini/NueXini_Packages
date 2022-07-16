@@ -206,7 +206,16 @@ function handleAction(ev) {
 		if (confirm(_('Do you really want to set up all possible bands for the modem?')))
 			{
 			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands', 'default' ]);
-			ui.addNotification(null, E('p', _('The new bands settings have been sent to the modem. If the changes are not visible, a restart of the connection, modem or router may be required.')), 'info');
+
+			return uci.load('modemband').then(function() {
+				var nuser = (uci.get('modemband', '@modemband[0]', 'notify'));
+				
+				if (nuser == '0') {
+				ui.addNotification(null, E('p', _('The new bands settings have been sent to the modem. If the changes are not visible, a restart of the connection, modem or router may be required.')), 'info');
+				}
+
+    			});
+
 			}
 	}
 	if (ev === 'rebootdev') {
@@ -442,7 +451,6 @@ return view.extend({
 			var ax = args.toString();
 			ax = ax.replace(/,/g, ' ')
 			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands', ax ]);
-			ui.addNotification(null, E('p', _('The new bands settings have been sent to the modem. If the changes are not visible, a restart of the connection, modem or router may be required.') ), 'info');
 
 			return uci.load('modemband').then(function() {
 				var wrestart = (uci.get('modemband', '@modemband[0]', 'wanrestart'));
@@ -450,6 +458,12 @@ return view.extend({
 				var cmdrestart = (uci.get('modemband', '@modemband[0]', 'restartcmd'));
 				var wname = (uci.get('modemband', '@modemband[0]', 'iface'));
 				var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
+
+				var nuser = (uci.get('modemband', '@modemband[0]', 'notify'));
+				
+				if (nuser == '0') {
+				ui.addNotification(null, E('p', _('The new bands settings have been sent to the modem. If the changes are not visible, a restart of the connection, modem or router may be required.')), 'info');
+				}
 				
 				if (wrestart == '1') {
 

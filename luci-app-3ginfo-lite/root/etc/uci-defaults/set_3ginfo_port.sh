@@ -2,6 +2,14 @@
 # Copyright 2020-2021 Rafał Wabik (IceG) - From eko.one.pl forum
 # MIT License
 
+chmod +x /usr/share/3ginfo-lite/3ginfo.sh
+chmod +x /usr/share/3ginfo-lite/set_3ginfo_port.sh
+chmod +x /usr/share/3ginfo-lite/3ginfo-hilink/alcatel_hilink.sh
+chmod +x /usr/share/3ginfo-lite/3ginfo-hilink/huawei_hilink.sh
+chmod +x /usr/share/3ginfo-lite/3ginfo-hilink/zte.sh
+rm -rf /tmp/luci-indexcache
+rm -rf /tmp/luci-modulecache/
+
 work=false
 for port in /dev/ttyUSB*
 do

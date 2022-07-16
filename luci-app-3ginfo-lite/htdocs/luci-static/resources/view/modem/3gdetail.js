@@ -176,8 +176,23 @@ return view.extend({
 			return L.resolveDefault(fs.exec_direct('/usr/share/3ginfo-lite/3ginfo.sh', 'json'))
 			.then(function(res) {
 				var json = JSON.parse(res);
+
+					if (json.signal == '0' || json.signal == '') {
+						L.ui.showModal(_('3ginfo-lite'), [
+						E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
+						]);
+
+						window.setTimeout(function() {
+						//location.reload();
+						L.hideModal();
+						}, 25000).finally();
+					}
+					else {
+					L.hideModal();
+					}
 					
 					var icon;
+
 					var p = (json.signal);
 					if (p < 0)
 						icon = L.resource('icons/3ginfo-0.png');
@@ -197,26 +212,41 @@ return view.extend({
 
 					if (document.getElementById('signal')) {
 						var view = document.getElementById("signal");
+						if (json.signal == 0 || json.signal == '') {
+						view.textContent = '-';
+						}
+						else {
 						view.innerHTML = String.format('<medium>%d%%</medium></br>' + '<img style="padding-left: 10px;" src="%s"/>', p, icon);
+						}
 					}
 
 					if (document.getElementById('connst')) {
 						var view = document.getElementById("connst");
-						if (json.connt == '') { 
+						if (json.signal == 0 || json.signal == '') {
 						view.textContent = '-';
 						}
 						else {
+						if (json.connt == '' || json.connt == '-') { 
+						view.textContent = _('Waiting for connection data...');
+						}
+						else {
 						view.textContent = '⏱ '+ json.connt + ' | ↓' + json.connrx + ' ↑' + json.conntx;
+						}
 						}
 					}
 
 					if (document.getElementById('operator')) {
 						var view = document.getElementById("operator");
+						if (json.signal == 0 || json.signal == '') {
+						view.textContent = '-';
+						}
+						else {
 						if (json.operator_name == '') { 
 						view.textContent = '-';
 						}
 						else {
 						view.textContent = json.operator_name;
+						}
 						}
 					}
 
@@ -244,51 +274,77 @@ return view.extend({
 
 					if (document.getElementById('mode')) {
 						var view = document.getElementById("mode");
+						if (json.signal == 0 || json.signal == '') {
+						view.textContent = '-';
+						}
+						else {
 						if (json.mode == '') { 
 						view.textContent = '-';
 						}
 						else {
 						view.textContent = json.mode;
 						}
+
+						}
 					}
 
 					if (document.getElementById('modem')) {
 						var view = document.getElementById("modem");
+						if (json.signal == 0 || json.signal == '') {
+						view.textContent = '-';
+						}
+						else {
 						if (json.modem == '') { 
 						view.textContent = '-';
 						}
 						else {
 						view.textContent = json.modem;
 						}
+						}
 					}
 
 					if (document.getElementById('fw')) {
 						var view = document.getElementById("fw");
+						if (json.signal == 0 || json.signal == '') {
+						view.textContent = '-';
+						}
+						else {
 						if (json.firmware == '') { 
 						view.textContent = '-';
 						}
 						else {
 						view.textContent = json.firmware;
 						}
+						}
 					}
 
 					if (document.getElementById('cport')) {
 						var view = document.getElementById("cport");
+						if (json.signal == 0 || json.signal == '') {
+						view.textContent = '-';
+						}
+						else {
 						if (json.cport == '') { 
 						view.textContent = '-';
 						}
 						else {
 						view.textContent = json.cport;
 						}
+						}
 					}
 
 					if (document.getElementById('protocol')) {
 						var view = document.getElementById("protocol");
+						if (json.signal == 0 || json.signal == '') {
+						view.textContent = '-';
+						}
+						else {
 						if (json.protocol == '') { 
 						view.textContent = '-';
 						}
 						else {
 						view.textContent = json.protocol;
+						}
 						}
 					}
 
@@ -306,11 +362,17 @@ return view.extend({
 
 					if (document.getElementById('csq')) {
 						var view = document.getElementById("csq");
+						var viewn = document.getElementById("csqn");
+						if (json.signal == 0 || json.signal == '') {
+						viewn.style.display = "none";
+						}
+						else {
 						if (json.csq == '') { 
 						view.textContent = '-';
 						}
 						else {
 						csq_bar(json.csq, 31);
+						}
 						}
 					}
 
@@ -414,7 +476,10 @@ return view.extend({
 
 					if (document.getElementById('tac')) {
 						var view = document.getElementById("tac");
-
+						if (json.signal == 0 || json.signal == '') {
+						view.textContent = '-';
+						}
+						else {
 						if (json.tac_hex == json.lac_hex) {
 						view.textContent = json.tac_hex + ' (' + json.lac_dec + ')' ;
 						}
@@ -423,6 +488,7 @@ return view.extend({
 						}
 						if (json.tac_dec == '' || json.tac_hex == '') {
 						view.textContent = json.lac_hex   + ' (' + json.lac_dec + ')' ;
+						}
 						}
 					}
 
@@ -551,7 +617,7 @@ return view.extend({
 					E('td', { 'class': 'td left', 'id': 'tac' }, [ '-' ]),
 					]),
 
-				E('tr', { 'class': 'tr' }, [
+				E('tr', { 'id': 'csqn', 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CSQ: ')]),
 					E('td', { 'class': 'td' }, E('div', {
 							'id': 'csq',
@@ -621,3 +687,4 @@ return view.extend({
 	handleSave: null,
 	handleReset: null
 });
+

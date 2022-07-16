@@ -125,3 +125,9 @@ msgstr "Wyszukiwanie.."
 
 msgid "Registering denied"
 msgstr "Odmowa zalogowana do sieci"
+
+msgid "Waiting to read data from the modem..."
+msgstr "Oczekiwanie na odczyt danych z modemu..."
+
+msgid "Waiting for connection data..."
+msgstr "Oczekiwanie na dane połączenia..."
