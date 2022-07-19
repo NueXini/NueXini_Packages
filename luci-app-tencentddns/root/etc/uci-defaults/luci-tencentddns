@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh
 
 uci -q batch <<-EOF >/dev/null
 	delete ucitrack.@tencentddns[-1]

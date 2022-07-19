@@ -11,15 +11,15 @@ uci_bool_by_name() {
 }
 
 intelnetip() {
-	tmp_ip=`curl -sL --connect-timeout 3 ns1.dnspod.net:6666`
+	tmp_ip=`curl -sL -m 5 -4 myip.ipip.net/s | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1`
 	if [ "Z$tmp_ip" == "Z" ]; then
-		tmp_ip=`curl -sL --connect-timeout 3 members.3322.org/dyndns/getip`
+		tmp_ip=`curl -sL -m 5 -4 www.cip.cc | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1`
 	fi
 	if [ "Z$tmp_ip" == "Z" ]; then
-		tmp_ip=`curl -sL --connect-timeout 3 14.215.150.17:6666`
+		tmp_ip=`curl -sL -m 5 -4 ip.3322.net | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1`
 	fi
 	if [ "Z$tmp_ip" == "Z" ]; then
-		tmp_ip=`curl -sL --connect-timeout 3 whatismyip.akamai.com`
+		tmp_ip=`curl -sL -m 5 -4 ifcfg.cn | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1`
 	fi
 	echo -n $tmp_ip
 }
@@ -27,15 +27,12 @@ intelnetip() {
 resolve2ip() {
 	# resolve2ip domain<string>
 	domain=$1
-	tmp_ip=`nslookup $domain f1g1ns1.dnspod.net 2>/dev/null | sed '/^Server/d; /#53$/d' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1`
+	tmp_ip=`nslookup $domain ambulance.dnspod.net 2>/dev/null | sed '/^Server/d; /#53$/d' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1`
 	if [ "Z$tmp_ip" == "Z" ]; then
-		tmp_ip=`nslookup $domain f1g1ns2.dnspod.net  2>/dev/null | sed '/^Server/d; /#53$/d' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1`
+		tmp_ip=`nslookup $domain lupus.dnspod.net  2>/dev/null | sed '/^Server/d; /#53$/d' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1`
 	fi
 	if [ "Z$tmp_ip" == "Z" ]; then
-		tmp_ip=`nslookup $domain 114.114.115.115 2>/dev/null | sed '/^Server/d; /#53$/d' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1`
-	fi
-	if [ "Z$tmp_ip" == "Z" ]; then
-		tmp_ip=`curl -sL --connect-timeout 3 "119.29.29.29/d?dn=$domain"`
+		tmp_ip=`curl -sL -m 5 -4 "119.29.29.29/d?dn=$domain" | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -n1`
 	fi
 	echo -n $tmp_ip
 }

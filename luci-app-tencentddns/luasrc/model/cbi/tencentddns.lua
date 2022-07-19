@@ -77,7 +77,6 @@ if e then
               Subdomian=val
           end
     end
-    io.popen("/etc/tencentddnsupload 1 "..Keyid.." "..Domain.." "..Subdomian.." > /dev/null")
 	io.popen("/etc/init.d/tencentddns restart")
 end
 return t
