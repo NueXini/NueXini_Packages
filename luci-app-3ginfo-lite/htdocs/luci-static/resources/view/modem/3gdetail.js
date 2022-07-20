@@ -183,8 +183,8 @@ return view.extend({
 						]);
 
 						window.setTimeout(function() {
-						//location.reload();
-						L.hideModal();
+						location.reload();
+						//L.hideModal();
 						}, 25000).finally();
 					}
 					else {

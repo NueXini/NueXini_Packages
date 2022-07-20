@@ -267,9 +267,21 @@ return view.extend({
 		var json = JSON.parse(data);
 		var modemen, sbands;
 
-		//if (("error" in json)==false){
-		//if(!json["error"]){
 		if(!json.hasOwnProperty('error')){
+
+		if (json.enabled == '' || json.modem == '') {
+						L.ui.showModal(_('Modemband'), [
+						E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
+						]);
+
+						window.setTimeout(function() {
+						location.reload();
+						//L.hideModal();
+						}, 25000).finally();
+					}
+					else {
+					L.hideModal();
+					}
 
 		var modem = json.modem;
 		for (var i = 0; i < json.enabled.length; i++) 

@@ -158,4 +158,23 @@ msgid "Turn off notifications"
 msgstr "Wyłącz powiadomienia"
 
 msgid "Checking this option disables the notification that appears every time the bands are changed."
-msgstr "Zaznaczenie opcji wyłącza powiadomienie pojawiające się przy każdej zmianie pasm."
+msgstr "Zaznaczenie tej opcji wyłącza powiadomienie pojawiające się przy każdej zmianie pasm."
+
+msgid "Modem settings template"
+msgstr "Szablon ustawień modemu"
+
+msgid "Modemband configuration"
+msgstr "Konfiguracja modemband"
+
+msgid "Settings panel for the modemband application that allows you to customize the package for your modem."
+msgstr "Panel ustawień dla aplikacji modemband umożliwiający dostosowanie pakietu do posiadanego modemu."
+
+msgid "Edit script"
+msgstr "Edycja skryptu"
+
+msgid "Supported bands depend on the region in which the modem operates. By modifying the DEFAULT_LTE_BANDS variable, you can easily adapt the package to your modem."
+msgstr "Obsługiwane pasma zależą od regionu w którym pracuje modem. Modyfikując zmienną DEFAULT_LTE_BANDS można łatwo dostosować pakiet do modemu."
+
+msgid "Waiting to read data from the modem..."
+msgstr "Oczekiwanie na odczyt danych z modemu..."
+

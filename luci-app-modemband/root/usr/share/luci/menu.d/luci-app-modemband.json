@@ -37,5 +37,15 @@
 			"type": "view",
 			"path": "modem/blteconfig"
 		}
+	},
+
+	"admin/modem/luci-app-modemband/blteedit": {
+		"title": "Modem settings template",
+		"order": 30,
+		"action": {
+			"type": "view",
+			"path": "modem/blteedit"
+		}
 	}
+
 }
