@@ -111,7 +111,7 @@ function sinr_bar(v, m) {
 var pg = document.querySelector('#sinr')
 var vn = parseInt(v) || 0;
 var mn = parseInt(m) || 100;
-var pc = Math.floor(100-(100*(1-((mn - vn)/(mn - 25)))));
+var pc = Math.floor(100-(100*(1-((mn - vn)/(mn - 31)))));
 		if (vn >= 21 ) 
 			{
 			pg.firstElementChild.style.background = 'lime';
