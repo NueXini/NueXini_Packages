@@ -210,7 +210,7 @@ function handleAction(ev) {
 			return uci.load('modemband').then(function() {
 				var nuser = (uci.get('modemband', '@modemband[0]', 'notify'));
 				
-				if (nuser == '0') {
+				if ( nuser != '1' || nuser == null ) {
 				ui.addNotification(null, E('p', _('The new bands settings have been sent to the modem. If the changes are not visible, a restart of the connection, modem or router may be required.')), 'info');
 				}
 
@@ -473,7 +473,7 @@ return view.extend({
 
 				var nuser = (uci.get('modemband', '@modemband[0]', 'notify'));
 				
-				if (nuser == '0') {
+				if ( nuser != '1' || nuser == null ) {
 				ui.addNotification(null, E('p', _('The new bands settings have been sent to the modem. If the changes are not visible, a restart of the connection, modem or router may be required.')), 'info');
 				}
 				
