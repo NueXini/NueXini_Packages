@@ -14,6 +14,7 @@ on()
 	
 	/etc/init.d/odhcpd disable >/dev/null 2>&1
 	
+	# uci show network
 	uci set network.@device[0].ipv6='0' >/dev/null 2>&1
 	uci set network.@device[1].ipv6='0' >/dev/null 2>&1
 	uci set network.@device[2].ipv6='0' >/dev/null 2>&1
@@ -35,7 +36,7 @@ off()
 
 disableipv6_onoff()
 {
-	config_get_bool enabled $1 enabled
+	config_get_bool enabled $1 enabled 0
 	
 	sed -i '/disable_ipv6/d' /etc/sysctl.conf >/dev/null 2>&1
 	
@@ -53,7 +54,7 @@ disableipv6_onoff()
 start_service()
 {
 	config_load disableipv6
-	config_foreach disableipv6_onoff onoff
+	config_foreach disableipv6_onoff disableipv6
 }
 
 service_triggers()
