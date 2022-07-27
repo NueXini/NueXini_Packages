@@ -2,6 +2,7 @@
 
 # NueXini
 
+USE_PROCD=1
 START=99
 
 on()
@@ -32,14 +33,13 @@ off()
 	uci commit network
 }
 
-onoff()
+disableipv6_onoff()
 {
-	local enable
-	config_get_bool enable $1 enable
+	config_get_bool enabled $1 enabled
 	
 	sed -i '/disable_ipv6/d' /etc/sysctl.conf >/dev/null 2>&1
 	
-	if [ $enable = 0 ]; then
+	if [ $enabled = 0 ]; then
 		off
 	else
 		on
@@ -50,14 +50,13 @@ onoff()
 	/etc/init.d/dnsmasq restart >/dev/null 2>&1
 }
 
-start()
+start_service()
 {
 	config_load disableipv6
-	config_foreach onoff onoff
+	config_foreach disableipv6_onoff onoff
 }
 
-stop()
+service_triggers()
 {
-	return 0
+	procd_add_reload_trigger "disableipv6"
 }
-

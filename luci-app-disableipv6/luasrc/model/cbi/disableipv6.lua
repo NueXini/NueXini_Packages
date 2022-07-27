@@ -5,7 +5,7 @@ s = m:section(TypedSection, "onoff")
 s.anonymous = true
 s.addremove = false
 
-o = s:option(Flag, "enable", translate("Enable"))
+o = s:option(Flag, "enabled", translate("Enable"))
 o.rmempty = false
 o.default = "0"
 
