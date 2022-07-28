@@ -197,6 +197,28 @@ msgstr "Подробный вывод журнала."
 msgid "Enable LED indication incoming messages."
 msgstr "Включить индикацию LED для входящих сообщений."
 
+#: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:61
+msgid "Check network"
+msgstr "Тест сети"
+
+msgid "Setup network checking. Some modems incorrect test network." 
+msgstr "Настроить проверку наличия сети. Некторые модемы неверно проверяют сеть."
+
+msgid "Ignore check"
+msgstr "Всегда игнорировать"
+
+msgid "Always check"
+msgstr "Всегда проверять"
+
+msgid "Check prepare message"
+msgstr "При обработке сообщений"
+
+msgid "Ignore signal level"
+msgstr "Игнорировать уровень сигнала"
+
+msgid "Some devices do not support Bit Error Rate"
+msgstr "Некоторые устройства не поддерживают уровень сигнала"
+
 #: applications/luci-app-smstools3/luasrc/model/cbi/modem/smstools3.lua:62
 msgid "Select LED"
 msgstr "Выбрать светодиод"
@@ -206,8 +228,8 @@ msgid "LED indicate to Incoming messages.<br />To revert, setup led \"System -> 
 msgstr "Светодиод для индикации входящих сообщений. Для возврата поведения светодиода, настройте его заново<br > в \"Система - Настройка LED индикации\""
 
 #: applications/luci-app-smstools3/luasrc/model/cbi/modem/smsevent.lua:11
-msgid "Edit smstools3 user script.<br />Add user's actions for incoming & outcoming messages.<br />Is shell script for smstools3 scenario.<br/>See <a href=\"http://smstools3.kekekasvi.com/index.php?p=eventhandler\">smstools3 manual page</a> for more details."
-msgstr "Пользовательский скрипт оболочки ash для smstools3.<br />Действия для входящих и исходящих сообщений.<br/>Подробности сморите в <a href=\"http://smstools3.kekekasvi.com/index.php?p=eventhandler\">руководстве к smstools3</a>."
+msgid "Edit smstools3 user script.<br />Add user's actions for incoming and outcoming messages.<br />Is shell script for smstools3 scenario.<br/>See <a href=\"http://smstools3.kekekasvi.com/index.php?p=eventhandler\">smstools3 manual page</a> for more details."
+msgstr "Пользовательский скрипт оболочки ash для smstools3.<br />Действия для входящих и исходящих сообщений.<br/>Подробности смотрите в <a href=\"http://smstools3.kekekasvi.com/index.php?p=eventhandler\">руководстве к smstools3</a>."
 
 
 

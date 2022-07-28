@@ -1,2 +1,2 @@
 config disableipv6 'onoff'
-		option enabled '0'
+	option enabled '0'
