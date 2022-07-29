@@ -1,10 +1,8 @@
 #!/bin/sh
 
-/usr/share/luci-app-smstools3/event.sh > /tmp/smsd.conf
-rm -f /etc/smsd.conf
-ln -s /tmp/smsd.conf /etc
-
 sleep 10 && \
+	/usr/share/luci-app-smstools3/event.sh > /tmp/smsd.conf && \
+	rm -f /etc/smsd.conf && ln -s /tmp/smsd.conf /etc && \
 	/etc/init.d/smstools3 stop && \
 	sleep 3 && \
 	/etc/init.d/smstools3 start &
