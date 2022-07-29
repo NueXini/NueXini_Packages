@@ -20,11 +20,6 @@ if [ ! -d /root/sms ]; then
 	done
 fi
 
-if [ ! -f /usr/share/luci-app-smstools3/smstools3.old.init ]; then
-	mv /etc/init.d/smstools3 /usr/share/luci-app-smstools3/smstools3.init.orig
-	cp /usr/share/luci-app-smstools3/smstools3 /etc/init.d/
-fi
-
 case $STORAGE in
 	persistent)
 		if [ -d  /var/spool/sms ]; then

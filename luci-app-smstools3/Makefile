@@ -3,7 +3,7 @@ include $(TOPDIR)/rules.mk
 LUCI_TITLE:=Web UI for smstools3
 LUCI_DEPENDS:=+smstools3 +iconv +luci-compat
 PKG_LICENSE:=GPLv3
-PKG_VERSION:=0.0.6-7
+PKG_VERSION:=0.0.7-0
 
 define Package/luci-app-smstools3/postrm
 	rm -f /tmp/luci-indexcache

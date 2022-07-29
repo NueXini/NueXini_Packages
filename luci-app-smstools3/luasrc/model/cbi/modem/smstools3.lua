@@ -52,14 +52,14 @@ pin = s:option(Value, "pin", translate("PIN Code"),
 		translate("Default value: not in use.<br />Specifies the PIN number of the SIM card inside the modem."))
 pin.rmempty = true
 
-net = s:option(ListValue, "net_check", translate("Check network")
-		translate("Setup network checking. Some modems incorrect test network")
-net:value("0","Ignore check")
-net:value("1","Always check")
-net:value("2","Check prepare message")
+net = s:option(ListValue, "net_check", translate("Check network"),
+		translate("Setup network checking. Some modems incorrect test network."))
+net:value("0", translate("Ignore check"))
+net:value("1", translate("Always check"))
+net:value("2", translate("Check prepare message"))
 
-sig = s:option(Flag, "sig_check", translate"(Ignore signal level")
-		translate("Some devices do not support Bit Error Rate")
+sig = s:option(Flag, "sig_check", translate("Ignore signal level"),
+		translate("Some devices do not support Bit Error Rate"))
 
 log = s:option(ListValue, "loglevel", translate("Loglevel"),
 		translate("Verbose logging output."))
@@ -70,7 +70,7 @@ log:value("4", "Error")
 log:value("5", "Warning")
 log:value("6", "Notice")
 log:value("7", "Info")
-log:value("8", " Debug")
+log:value("8", "Debug")
 log.default = "5"
 
 led_enable = s:option(Flag, "led_enable", translate("LED"),
