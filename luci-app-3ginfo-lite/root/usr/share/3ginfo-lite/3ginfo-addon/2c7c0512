@@ -110,12 +110,12 @@ if [ -n "$T" ]; then
 	SB=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{gsub("LTE BAND ","");print $4};' | xargs)
 	SBT=$(echo ${SB%% *})
 
-	SBAND="$(band $SBT "") @$SDLBW"
+	S1BAND="$(band $SBT "") @$SDLBW"
 
 	SE=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{print $2}' | xargs)
-	SEARFCN=$(echo ${SE%% *})
+	S1EARFCN=$(echo ${SE%% *})
 	SP=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{print $6}' | xargs)
-	SPCI=$(echo ${SP%% *})
+	S1PCI=$(echo ${SP%% *})
 	
 		case $T in
 		*"LTE BAND 1") MODE=$(band 1 "LTE ");;

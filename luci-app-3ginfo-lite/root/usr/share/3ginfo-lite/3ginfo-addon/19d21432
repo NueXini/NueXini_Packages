@@ -59,7 +59,7 @@ case "$MODE_NUM" in
 				*"20") MODE="${MODE/LTE/LTE_A} / "$(band 20 "");;
 				*) MODE="${MODE/LTE/LTE_A} / B${T}";;
 			esac
-				MODE=$(echo $MODE | sed "s/LTE_A/LTE-A |/g")
+				MODE=$(echo $MODE | sed "s/LTE_A/LTE-A |/g" | sed 's,/,+,')
 		fi
 
 		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $3}' | xargs)
@@ -86,19 +86,19 @@ case "$MODE_NUM" in
 		if [ -n "$T" ]; then
 			T1=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $11}' | xargs)
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
-			SBAND="$(band $T "") @$T1 MHz"
+			S1BAND="$(band $T "") @$T1 MHz"
 			ADDON="$ADDON"'{"(S) band":"'$(band $T "")', '$T1' MHz"}'
 		fi
 		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $7}' | xargs)
 		if [ -n "$T" ]; then
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
-			SPCI="$T"
+			S1PCI="$T"
 			ADDON="$ADDON"'{"(S) PCI":"'$T'"}'
 		fi
 		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $10}' | xargs)
 		if [ -n "$T" ]; then
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
-			SEARFCN="$T"
+			S1EARFCN="$T"
 			ADDON="$ADDON"'{"(S) EARFCN":"'$T'"}'
 		fi
 

@@ -43,7 +43,32 @@ return view.extend({
 		devs.sort((a, b) => a.name > b.name);
 		devs.forEach(dev => o.value('/dev/' + dev.name));
 		o.placeholder = _('Please select a port');
-		o.rmempty = false;
+		o.rmempty = false
+
+		s = m.section(form.TypedSection, '3ginfo', _(''));
+		s.anonymous = true;
+		s.addremove = false;
+
+		s.tab('bts1', _('BTS search settings'));
+		s.anonymous = true;
+
+		o = s.taboption('bts1', form.DummyValue, '_dummy');
+			o.rawhtml = true;
+			o.default = '<div class="cbi-section-descr">' +
+				_('Hint: To set up the BTS search engine, simply fill in the required fields.') +
+				'</div>';
+
+		o = s.taboption('bts1',form.Value, 'bstart', _('Beginning of the web address'),
+		_('Paste the entire site address into the Cell ID value.')
+		);
+		//o.default = 'http://www.btsearch.pl/szukaj.php?mode=std&search=';
+		o.rmempty = true;
+
+		o = s.taboption('bts1',form.Value, 'bend', _('End of search address'),
+		_('Paste the string occurring after the Cell ID value.')
+		);
+		//o.default = '';
+		o.rmempty = true;
 
 		return m.render();
 	}

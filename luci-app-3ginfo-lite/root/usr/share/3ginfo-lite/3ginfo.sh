@@ -253,14 +253,19 @@ cat <<EOF
 "pci":"$PCI",
 "earfcn":"$EARFCN",
 "pband":"$PBAND",
-"sband":"$SBAND",
-"spci":"$SPCI",
-"searfcn":"$SEARFCN",
+"s1band":"$S1BAND",
+"s1pci":"$S1PCI",
+"s1earfcn":"$S1EARFCN",
+"s2band":"$S2BAND",
+"s2pci":"$S2PCI",
+"s2earfcn":"$S2EARFCN",
+"s3band":"$S3BAND",
+"s3pci":"$S3PCI",
+"s3earfcn":"$S3EARFCN",
 "rsrp":"$RSRP",
 "rsrq":"$RSRQ",
 "rssi":"$RSSI",
-"sinr":"$SINR",
-"addon":[$ADDON]
+"sinr":"$SINR"
 }
 EOF
 exit 0
