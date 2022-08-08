@@ -1,26 +1,15 @@
 _DEVICE=/dev/ttyUSB1
 _DEFAULT_LTE_BANDS="1 3 7 8 20 28 32 38"
+_NAME="ZTE MF286D"
+
+case $(cat /tmp/sysinfo/board_name) in
+"zte,mf289f")
+	_NAME="ZTE MF289F"
+	;;
+esac
 
 getinfo() {
-	echo "ZTE MF286D"
+	echo "$_NAME"
 }
 
-getsupportedbands() {
-	echo "$_DEFAULT_LTE_BANDS"
-}
-
-getbands() {
-# +ZNLOCKBAND: 20080800c5,2000000680380
-
-	O=$(sms_tool -d $_DEVICE at "at+znlockband?")
-	HEX="0x"$(echo "$O" | awk -F[:,] '{print $2}' | xargs)
-	hextobands "$HEX"
-}
-
-setbands() {
-	BANDS="$1"
-	[ "$BANDS" = "default" ] && BANDS="$_DEFAULT_LTE_BANDS"
-
-	HEX=$(bandstohex "$BANDS")
-	[ "$HEX" != "0" ] && sms_tool -d $_DEVICE at "at+znlockband=1,0,$HEX,0"
-}
+. $RES/_zte_common

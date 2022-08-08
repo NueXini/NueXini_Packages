@@ -90,7 +90,7 @@ case "$MODE_NUM" in
                                         *"20") MODE="$MODE / "$(band 20 "");;
                                         *) MODE="$MODE / B${T}";;
                                 esac
-                         MODE=$(echo $MODE | sed "s/LTE_A/LTE-A |/g" | sed 's,/,+,')
+                         	 MODE=$(echo $MODE)
                 fi
 
                 T=$(echo "$O" | awk -F$AWK_FILTER '/^\+ZCAINFO/ {print $3}' | xargs)
@@ -137,19 +137,19 @@ case "$MODE_NUM" in
                 if [ -n "$T" ]; then
                         T1=$(echo "$O" | awk -F$AWK_FILTER '/^\+ZCAINFO/ {print $16}' | xargs)
                         [ -n "$ADDON" ] && ADDON="$ADDON,"
-			S2BAND="$(band $T "") @$T1 MHz"
+			 S2BAND="$(band $T "") @$T1 MHz"
                         ADDON="$ADDON"'{"(T) band":"'$(band $T "")', '$T1' MHz"}'
                 fi
                 T=$(echo "$O" | awk -F$AWK_FILTER '/^\+ZCAINFO/ {print $12}' | xargs)
                 if [ -n "$T" ]; then
                         [ -n "$ADDON" ] && ADDON="$ADDON,"
-			S2PCI="$T"
+			 S2PCI="$T"
                         ADDON="$ADDON"'{"(T) PCI":"'$T'"}'
                 fi
                 T=$(echo "$O" | awk -F$AWK_FILTER '/^\+ZCAINFO/ {print $15}' | xargs)
                 if [ -n "$T" ]; then
                         [ -n "$ADDON" ] && ADDON="$ADDON,"
-			S2EARFCN="$T"
+			 S2EARFCN="$T"
                         ADDON="$ADDON"'{"(T) EARFCN":"'$T'"}'
                 fi
 				
@@ -157,19 +157,19 @@ case "$MODE_NUM" in
                 if [ -n "$T" ]; then
                         T1=$(echo "$O" | awk -F$AWK_FILTER '/^\+ZCAINFO/ {print $16}' | xargs)
                         [ -n "$ADDON" ] && ADDON="$ADDON,"
-			S3BAND="$(band $T "") @$T1 MHz"
+			 S3BAND="$(band $T "") @$T1 MHz"
                         ADDON="$ADDON"'{"(F) band":"'$(band $T "")', '$T1' MHz"}'
                 fi
                 T=$(echo "$O" | awk -F$AWK_FILTER '/^\+ZCAINFO/ {print $17}' | xargs)
                 if [ -n "$T" ]; then
                         [ -n "$ADDON" ] && ADDON="$ADDON,"
-			S3PCI="$T"
+			 S3PCI="$T"
                         ADDON="$ADDON"'{"(F) PCI":"'$T'"}'
                 fi
                 T=$(echo "$O" | awk -F$AWK_FILTER '/^\+ZCAINFO/ {print $20}' | xargs)
                 if [ -n "$T" ]; then
                         [ -n "$ADDON" ] && ADDON="$ADDON,"
-			S3EARFCN="$T"
+			 S3EARFCN="$T"
                         ADDON="$ADDON"'{"(F) EARFCN":"'$T'"}'
                 fi
 	fi		

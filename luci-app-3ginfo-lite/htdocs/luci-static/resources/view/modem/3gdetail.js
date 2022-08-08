@@ -523,6 +523,9 @@ return view.extend({
 						if (json.tac_dec == '' || json.tac_hex == '') {
 						view.textContent = json.lac_hex   + ' (' + json.lac_dec + ')' ;
 						}
+						else {
+						view.textContent = json.tac + ' (' + json.tac_dec + ')' ;
+						}
 						}
 					}
 
@@ -576,6 +579,15 @@ return view.extend({
 						}
 						else {
 						view.textContent = json.s3band + ' | ' + json.s3pci + ' ' + json.s3earfcn;
+						}
+					}
+					if (document.getElementById('s4band')) {
+						var view = document.getElementById("s4band");
+						if (json.s4band == '') { 
+						view.textContent = '-';
+						}
+						else {
+						view.textContent = json.s4band + ' | ' + json.s4pci + ' ' + json.s4earfcn;
 						}
 					}
 
@@ -654,16 +666,16 @@ return view.extend({
 					E('td', { 'class': 'td left', 'id': 'mccmnc' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('LAC:')]),
-					E('td', { 'class': 'td left', 'id': 'lac' }, [ '-' ]),
-					]),
-				E('tr', { 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Cell ID:')]),
 					E('td', { 'class': 'td left', 'id': 'cid' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [ _('TAC:')]),
 					E('td', { 'class': 'td left', 'id': 'tac' }, [ '-' ]),
+					]),
+				E('tr', { 'class': 'tr' }, [
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('LAC:')]),
+					E('td', { 'class': 'td left', 'id': 'lac' }, [ '-' ]),
 					]),
 
 				E('tr', { 'id': 'csqn', 'class': 'tr' }, [
@@ -727,6 +739,10 @@ return view.extend({
 				E('tr', { 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CA band (S3):')]),
 					E('td', { 'class': 'td left', 'id': 's3band' }, [ '-' ]),
+					]),
+				E('tr', { 'class': 'tr' }, [
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CA band (S4):')]),
+					E('td', { 'class': 'td left', 'id': 's4band' }, [ '-' ]),
 					]),
 
 				])

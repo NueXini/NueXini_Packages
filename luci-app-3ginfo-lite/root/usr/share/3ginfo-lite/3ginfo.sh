@@ -218,8 +218,15 @@ else
 
 _DEVS=$(awk '/Vendor=/{gsub(/.*Vendor=| ProdID=| Rev.*/,"");print}' /sys/kernel/debug/usb/devices | sort -u)
 for _DEV in $_DEVS; do
-	if [ -e "$RES/3ginfo-addon/$_DEV" ]; then
-		. "$RES/3ginfo-addon/$_DEV"
+if [ -e "$RES/3ginfo-addon/$_DEV" ]; then
+		case $(cat /tmp/sysinfo/board_name) in
+		"zte,mf289f")
+			. "$RES/3ginfo-addon/19d21485"
+			;;
+		*)
+			. "$RES/3ginfo-addon/$_DEV"
+			;;
+		esac
 		break
 	fi
 done
@@ -248,6 +255,7 @@ cat <<EOF
 "lac_hex":"$LAC_HEX",
 "tac_dec":"$TAC_DEC",
 "tac_hex":"$TAC_HEX",
+"tac":"$T_HEX",
 "cid_dec":"$CID_DEC",
 "cid_hex":"$CID_HEX",
 "pci":"$PCI",
@@ -262,6 +270,9 @@ cat <<EOF
 "s3band":"$S3BAND",
 "s3pci":"$S3PCI",
 "s3earfcn":"$S3EARFCN",
+"s4band":"$S4BAND",
+"s4pci":"$S4PCI",
+"s4earfcn":"$S4EARFCN",
 "rsrp":"$RSRP",
 "rsrq":"$RSRQ",
 "rssi":"$RSSI",

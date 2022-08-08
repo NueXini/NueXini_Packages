@@ -7,7 +7,7 @@ PKG_NAME:=luci-app-3ginfo-lite
 LUCI_TITLE:=LuCI panel for 3ginfo-lite
 LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+sms-tool
-PKG_VERSION:=1.0.19-20220805
+PKG_VERSION:=1.0.20-20220808
 PKG_RELEASE:=1
 
 define Package/$(PKG_NAME)
