@@ -213,18 +213,26 @@ case "$MODE_NUM" in
 		;;
 esac
 
+# Firmware
 OF=$(sms_tool -d $DEVICE at "ati")
 DEVV=$(echo $OF | tr -s "\n"  | xargs)
 FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n"  | xargs)
 FW=$(echo $FWA | cut -c 8-)
 
+# Model
 MODELA=$(echo $DEVV | awk -F 'Revision: ' '{print $1}'| xargs)
 MODELB=$(echo $MODELA | awk -F 'Manufacturer: |CORPORATION' '{print $2}'| xargs)
 
 MODELD=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n"  | xargs)
-MODELDCUT=$(echo $MODELD | cut -c 9-)
 
+SUB='MODULE'
+if [[ "$MODELD" == *"$SUB"* ]]; then
+MODELDCUT=$(echo $MODELD | awk -F 'CGMM |MODULE' '{print $2}'| xargs)
 MODEL="$MODELB "$MODELDCUT
+else
+MODELDCUT=$(echo $MODELD | cut -c 9-)
+MODEL="$MODELB "$MODELDCUT
+fi
 
 # Protocol
 # DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
@@ -245,3 +253,4 @@ fi
 #if [ -n "$T" ] && [ -z "$FORCE_PLMN" ]; then
 #	COPS="$T"
 #fi
+
