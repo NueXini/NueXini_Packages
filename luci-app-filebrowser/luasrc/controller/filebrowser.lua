@@ -31,7 +31,7 @@ end
 function act_status()
     local e = {}
     e.status = luci.sys.call(
-                   "ps -w | grep -v grep | grep 'filebrowser -a 0.0.0.0' >/dev/null") ==
+                   "busybox ps -w | grep -v grep | grep 'filebrowser -a 0.0.0.0' >/dev/null") ==
                    0
     http_write_json(e)
 end

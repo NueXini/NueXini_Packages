@@ -27,7 +27,7 @@ start() {
 }
 
 stop() {
-	ps -w | grep -v "grep" | grep "$project_directory/filebrowser -a 0.0.0.0" | awk '{print $1}' | xargs kill -9 >/dev/null 2>&1 &
+	busybox ps -w | grep -v "grep" | grep "$project_directory/filebrowser -a 0.0.0.0" | awk '{print $1}' | xargs kill -9 >/dev/null 2>&1 &
 	rm -rf $LOG_PATH
 }
 
