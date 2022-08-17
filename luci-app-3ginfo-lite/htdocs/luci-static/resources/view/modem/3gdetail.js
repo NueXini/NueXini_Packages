@@ -679,7 +679,10 @@ return view.extend({
 					]),
 
 				E('tr', { 'id': 'csqn', 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CSQ:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [
+					_('CSQ:'),
+					E('div', { 'style': 'text-align:left;font-size:66%' }, [ _('(Signal Strength)') ]),
+					]),
 					E('td', { 'class': 'td' }, E('div', {
 							'id': 'csq',
 							'class': 'cbi-progressbar',
@@ -688,7 +691,10 @@ return view.extend({
 						))
 					]),
 				E('tr', { 'id': 'rssin', 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('RSSI:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [
+					_('RSSI:'),
+					E('div', { 'style': 'text-align:left;font-size:66%' }, [ _('(Received Signal Strength Indicator)') ]),
+					]),
 					E('td', { 'class': 'td' }, E('div', {
 							'id': 'rssi',
 							'class': 'cbi-progressbar',
@@ -697,7 +703,10 @@ return view.extend({
 						))
 					]),
 				E('tr', { 'id': 'rsrpn', 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('RSRP:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [
+					_('RSRP:'),
+					E('div', { 'style': 'text-align:left;font-size:66%' }, [ _('(Reference Signal Receive Power)') ]),
+					]),
 					E('td', { 'class': 'td' }, E('div', {
 							'id': 'rsrp',
 							'class': 'cbi-progressbar',
@@ -706,7 +715,10 @@ return view.extend({
 						))
 					]),
 				E('tr', { 'id': 'sinrn', 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('SINR:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [
+					_('SINR:'),
+					E('div', { 'style': 'text-align:left;font-size:66%' }, [ _('(Signal to Interference plus Noise Ratio)') ]),
+					]),
 					E('td', { 'class': 'td' }, E('div', {
 							'id': 'sinr',
 							'class': 'cbi-progressbar',
@@ -715,7 +727,10 @@ return view.extend({
 						))
 					]),
 				E('tr', { 'id': 'rsrqn', 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('RSRQ:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [
+					_('RSRQ:'),
+					E('div', { 'style': 'text-align:left;font-size:66%' }, [ _('(Reference Signal Received Quality)') ]),
+					]),
 					E('td', { 'class': 'td' }, E('div', {
 							'id': 'rsrq',
 							'class': 'cbi-progressbar',
