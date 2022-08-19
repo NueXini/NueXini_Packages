@@ -1,30 +1,27 @@
 #!/bin/sh /etc/rc.common
-START=50
+START=15
 
-NAME=cpufreq
+NAME="cpufreq"
 
-uci_get_by_type() {
-	local ret=$(uci get $NAME.@$1[0].$2 2>/dev/null)
-	echo ${ret:=$3}
+config_get_cpufreq()
+{
+	config_get "$NAME" "$1"
 }
 
 start()
 {
-	local min=$(cat /sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies | awk -F ' ' '{print $1 }')
-	local max=$(cat /sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies | awk -F ' ' '{print $NF }')
-	
-	config_load cpufreq
-	local governor=$(uci_get_by_type settings governor schedutil)
-	local minifreq=$(uci_get_by_type settings minifreq $min)
-	local maxfreq=$(uci_get_by_type settings maxfreq $max)
-	local upthreshold=$(uci_get_by_type settings upthreshold 50)
-	local factor=$(uci_get_by_type settings factor 10)
+	config_load "$NAME"
 
-	echo $governor > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
-	echo $minifreq > /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq
-	echo $maxfreq > /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq
-	if [ "$governor" == "ondemand" ]; then
-		echo $upthreshold > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
-		echo $factor > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
-	fi
+	for i in $(find /sys/devices/system/cpu/cpufreq/policy* -maxdepth 0 | grep -Eo '[0-9]+')
+	do
+		[ -z "$(config_get_cpufreq "governor$i")" ] && return
+
+		config_get_cpufreq "governor$i" > "/sys/devices/system/cpu/cpufreq/policy$i/scaling_governor"
+		config_get_cpufreq "minfreq$i" > "/sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq"
+		config_get_cpufreq "maxfreq$i" > "/sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq"
+		if [ "$(config_get_cpufreq "governor$i")" = "ondemand" ]; then
+			config_get_cpufreq "sdfactor$i" > "/sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor"
+			config_get_cpufreq "upthreshold$i" > "/sys/devices/system/cpu/cpufreq/ondemand/up_threshold"
+		fi
+	done
 }
