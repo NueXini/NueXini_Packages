@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 
 msgid "IP/MAC Binding"
-msgstr "IP/MAC绑定"
+msgstr "IP/MAC 绑定"
 
 msgid "IP Address"
 msgstr "IP 地址"
@@ -24,7 +24,7 @@ msgid "MAC Address"
 msgstr "MAC 地址"
 
 msgid "ARP is used to convert a network address (e.g. an IPv4 address) to a physical address such as a MAC address.Here you can add some static ARP binding rules."
-msgstr "ARP协议是用于实现网络地址到物理地址转换的协议。在这里，你可以设置静态ARP绑定规则。"
+msgstr "ARP 协议是用于实现网络地址到物理地址转换的协议。在这里，你可以设置静态 ARP 绑定规则。"
 
 msgid "Rules"
 msgstr "规则"
