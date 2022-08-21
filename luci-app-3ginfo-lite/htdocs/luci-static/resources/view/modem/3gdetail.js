@@ -498,12 +498,12 @@ return view.extend({
 					if (document.getElementById('lac')) {
 						var view = document.getElementById("lac");
 						if (json.lac_dec == '' || json.lac_hex == '') { 
-						var lc = json.lac_hex   + ' ' + json.lac_dec;
+						var lc = json.lac_dec   + ' ' + json.lac_hex;
 						var ld = lc.split(' ').join('');
 						view.textContent = ld;
 						}
 						else {
-						view.textContent = json.lac_hex   + ' (' + json.lac_dec + ')' ;
+						view.textContent = json.lac_dec   + ' (' + json.lac_hex + ')';
 						}
 
 					}
@@ -514,31 +514,25 @@ return view.extend({
 						view.textContent = '-';
 						}
 						else {
-						if (json.tac_hex == json.lac_hex) {
-						view.textContent = json.tac_hex + ' (' + json.lac_dec + ')' ;
+						if (json.tac_hex == null || json.tac_hex == '' || json.tac_hex == '-') {
+						view.textContent = json.tac_d + ' (' + json.tac_h + ')';
 						}
-						else {
-						view.textContent = json.tac_hex + ' (' + json.tac_dec + ')' ;
-						}
-						if (json.tac_dec == '' || json.tac_hex == '') {
-						view.textContent = json.lac_hex   + ' (' + json.lac_dec + ')' ;
-						}
-						else {
-						view.textContent = json.tac + ' (' + json.tac_dec + ')' ;
-						}
+							else {
+							view.textContent = json.tac_dec + ' (' + json.lac_hex + ')';
+							}
 						}
 					}
 
 					if (document.getElementById('cid')) {
 						var view = document.getElementById("cid");
 						if (json.cid_dec == '' || json.cid_hex == '') { 
-						var cc = json.cid_hex   + ' ' + json.cid_dec;
+						var cc = json.cid_dec   + ' ' + json.cid_hex;
 						var cd = cc.split(' ').join('');
 						view.textContent = cd;
 						}
 						else {
 
-						view.textContent = json.cid_hex   + ' (' + json.cid_dec + ')' ;
+						view.textContent = json.cid_dec   + ' (' + json.cid_hex + ')' ;
 						}
 					}
 
@@ -777,13 +771,39 @@ return view.extend({
 		o.onclick = function() {
 
 		return uci.load('3ginfo').then(function() {
-		var wstart = (uci.get('3ginfo', '@3ginfo[0]', 'bstart'));
-		var wend = (uci.get('3ginfo', '@3ginfo[0]', 'bend'));
-			if ( wend == '' || wend == null ) {
-			window.open(wstart + json.cid_dec);
-			} else {
-			window.open(wstart + json.cid_dec + wend);
-			};
+		var searchsite = (uci.get('3ginfo', '@3ginfo[0]', 'website'));
+
+			if (searchsite.includes('btsearch')) {
+			//http://www.btsearch.pl/szukaj.php?mode=std&search=CellID
+
+			window.open(searchsite + json.cid_dec);
+			}
+
+			if (searchsite.includes('lteitaly')) {
+			//https://lteitaly.it/internal/map.php#bts=MCCMNC.CellID
+
+			var zzmnc = json.operator_mnc;
+			var zzcid = Math.round(json.cid_dec/256);
+			if ( zzmnc.length == 3 ) {
+				var first = zzmnc.slice(0, 1);
+				var second = zzmnc.slice(1, 2);
+				if (first.includes('0') && second.includes('0')) {
+				var cutmnc = zzmnc.slice(2, 3);
+				}
+			}
+			if ( zzmnc.length == 2 ) {
+				var first = zzmnc.slice(0, 1);
+				if (first.includes('0')) {
+				var cutmnc = zzmnc.slice(1, 2);
+				}
+			}
+			if ( zzmnc.length < 2 ) {
+				var cutmnc = zzmnc;
+			}
+
+			window.open(searchsite + json.operator_mcc + cutmnc + '.' + zzcid);
+			}
+
     		});
 
 		};
@@ -795,3 +815,4 @@ return view.extend({
 	handleSave: null,
 	handleReset: null
 });
+

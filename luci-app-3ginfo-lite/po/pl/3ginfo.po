@@ -141,20 +141,15 @@ msgstr "Szukaj"
 msgid "Search BTS using Cell ID"
 msgstr "Wyszukaj BTS po Cell ID"
 
-msgid "Hint: To set up the BTS search engine, simply fill in the required fields."
-msgstr "Podpowiedź: Aby skonfigurować wyszukiwarkę BTS wystarczy uzupełnić wymagane pola."
+msgid "Hint: To set up a BTS search engine, all you have to do is select the dedicated website for your location."
+msgstr "Wskazówka: Aby skonfigurować wyszukiwarkę BTS, wystarczy wybrać stronę odpowiednią dla swojej lokalizacji."
 
 msgid "BTS search settings"
 msgstr "Ustawienia wyszukiwania stacji bazowej"
 
-msgid "Beginning of the web address"
-msgstr "Początek adresu strony www"
+msgid "Website to search for BTS"
+msgstr "Strona do wyszukiwania BTS"
 
-msgid "End of search address"
-msgstr "Koniec adresu wyszukiwania"
+msgid "Select a website for searching."
+msgstr "Wybierz stronę internetową służącą do wyszukiwania."
 
-msgid "Paste the entire site address into the Cell ID value."
-msgstr "Wklej cały adres strony do wartości Cell ID."
-
-msgid "Paste the string occurring after the Cell ID value."
-msgstr "Wklej ciąg znaków występujący za wartością Cell ID."

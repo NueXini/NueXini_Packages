@@ -32,6 +32,7 @@ case "$MODE_NUM" in
 		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			T_HEX=$(printf "%X" $T)
+			T_DEC=$T
 		fi
 
 		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $4}' | xargs)

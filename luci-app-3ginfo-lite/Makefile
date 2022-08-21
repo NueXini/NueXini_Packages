@@ -8,7 +8,7 @@ PKG_NAME:=luci-app-3ginfo-lite
 LUCI_TITLE:=LuCI panel for 3ginfo-lite
 LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+sms-tool
-PKG_VERSION:=1.0.21-20220817
+PKG_VERSION:=1.0.22-20220821
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

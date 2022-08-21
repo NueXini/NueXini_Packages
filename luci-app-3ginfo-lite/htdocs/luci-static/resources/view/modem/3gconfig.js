@@ -55,20 +55,16 @@ return view.extend({
 		o = s.taboption('bts1', form.DummyValue, '_dummy');
 			o.rawhtml = true;
 			o.default = '<div class="cbi-section-descr">' +
-				_('Hint: To set up the BTS search engine, simply fill in the required fields.') +
+				_('Hint: To set up a BTS search engine, all you have to do is select the dedicated website for your location.') +
 				'</div>';
 
-		o = s.taboption('bts1',form.Value, 'bstart', _('Beginning of the web address'),
-		_('Paste the entire site address into the Cell ID value.')
+		o = s.taboption('bts1',form.ListValue, 'website', _('Website to search for BTS'),
+		_('Select a website for searching.')
 		);
-		//o.default = 'http://www.btsearch.pl/szukaj.php?mode=std&search=';
-		o.rmempty = true;
-
-		o = s.taboption('bts1',form.Value, 'bend', _('End of search address'),
-		_('Paste the string occurring after the Cell ID value.')
-		);
-		//o.default = '';
-		o.rmempty = true;
+		o.value('http://www.btsearch.pl/szukaj.php?mode=std&search=', _('BTSearch.pl'));
+		o.value('https://lteitaly.it/internal/map.php#bts=', _('lteitaly.it'));
+		o.default = 'http://www.btsearch.pl/szukaj.php?mode=std&search=';
+		o.modalonly = true;
 
 		return m.render();
 	}
