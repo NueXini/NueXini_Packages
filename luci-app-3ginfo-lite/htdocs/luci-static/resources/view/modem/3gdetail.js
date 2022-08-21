@@ -514,11 +514,15 @@ return view.extend({
 						view.textContent = '-';
 						}
 						else {
-						if (json.tac_hex == null || json.tac_hex == '' || json.tac_hex == '-') {
-						view.textContent = json.tac_d + ' (' + json.tac_h + ')';
-						}
+							if (json.tac_hex == null || json.tac_hex == '' || json.tac_hex == '-') {
+							view.textContent = json.tac_d + ' (' + json.tac_h + ')';
+							}
 							else {
-							view.textContent = json.tac_dec + ' (' + json.lac_hex + ')';
+								view.textContent = json.tac_dec + ' (' + json.tac_hex + ')';
+								if (json.tac_hex == json.lac_hex && json.tac_dec == '') {
+									view.textContent = json.lac_dec + ' (' + json.tac_hex + ')';
+								}
+
 							}
 						}
 					}
@@ -780,24 +784,27 @@ return view.extend({
 			}
 
 			if (searchsite.includes('lteitaly')) {
-			//https://lteitaly.it/internal/map.php#bts=MCCMNC.CellID
+			//https://lteitaly.it/internal/map.php#bts=MCCMNC.CellIDdiv256
 
 			var zzmnc = json.operator_mnc;
+			var first = zzmnc.slice(0, 1);
+			var second = zzmnc.slice(1, 2);
 			var zzcid = Math.round(json.cid_dec/256);
-			if ( zzmnc.length == 3 ) {
-				var first = zzmnc.slice(0, 1);
-				var second = zzmnc.slice(1, 2);
+				if ( zzmnc.length == 3 ) {
+				if (first.includes('0')) {
+				var cutmnc = zzmnc.slice(1, 3);
+				}
 				if (first.includes('0') && second.includes('0')) {
 				var cutmnc = zzmnc.slice(2, 3);
 				}
-			}
-			if ( zzmnc.length == 2 ) {
+				}
+				if ( zzmnc.length == 2 ) {
 				var first = zzmnc.slice(0, 1);
 				if (first.includes('0')) {
 				var cutmnc = zzmnc.slice(1, 2);
 				}
-			}
-			if ( zzmnc.length < 2 ) {
+				}
+				if ( zzmnc.length < 2 || !first.includes('0') && !second.includes('0')) {
 				var cutmnc = zzmnc;
 			}
 
