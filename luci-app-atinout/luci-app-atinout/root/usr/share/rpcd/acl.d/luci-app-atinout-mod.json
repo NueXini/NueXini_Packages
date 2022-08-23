@@ -5,6 +5,9 @@
 			"uci": [ "atinout" ]
 		},
 		"write": {
+			"file": {
+				"/etc/atcommands.user": [ "write" ]
+			},
 			"uci": [ "atinout" ]
 		}
 	}

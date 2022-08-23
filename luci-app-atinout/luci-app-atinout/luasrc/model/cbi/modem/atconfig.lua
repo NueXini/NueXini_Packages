@@ -10,7 +10,7 @@ local http = require "luci.http"
 local sys = require "luci.sys"
 local uci = require "luci.model.uci".cursor()
 
-local ATC_FILE_PATH = "/etc/config/atcommands.user"
+local ATC_FILE_PATH = "/etc/atcommands.user"
 
 local m
 local s
@@ -31,7 +31,7 @@ dev1:value(node, node)
 end
 end
 
-local atc = s:option(TextValue, "user_atcommands", translate("User AT Commands"), translate("Each line must have the following format: 'AT Command name;AT Command'. Save to file '/etc/config/atcommands.user'."))
+local atc = s:option(TextValue, "user_atcommands", translate("User AT Commands"), translate("Each line must have the following format: 'AT Command name;AT Command'. Save to file '/etc/atcommands.user'."))
 atc.rows = 20
 atc.rmempty = false
 

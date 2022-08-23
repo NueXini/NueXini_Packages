@@ -37,8 +37,8 @@ function webcmd()
 end
 
 function uussd(rv)
-	local c = nixio.fs.access("/etc/config/atcommands.user") and
-		io.popen("cat /etc/config/atcommands.user")
+	local c = nixio.fs.access("/etc/atcommands.user") and
+		io.popen("cat /etc/atcommands.user")
 
 	if c then
 		for l in c:lines() do
