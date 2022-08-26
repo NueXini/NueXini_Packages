@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 PKG_ARCH_LINKEASE:=$(ARCH)
 
 PKG_NAME:=linkease
-PKG_VERSION:=0.8.7
+PKG_VERSION:=0.9.2
 PKG_RELEASE:=$(PKG_ARCH_LINKEASE)-1
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://fw.koolcenter.com/binary/LinkEase/LinuxStorage/
@@ -28,7 +28,7 @@ define Package/$(PKG_NAME)
 	CATEGORY:=Network
 	SUBMENU:=Web Servers/Proxies
 	TITLE:=LinkEase - the file cloud
-	DEPENDS:=@(arm||x86_64||aarch64)
+	DEPENDS:=@(arm||x86_64||aarch64) +ffmpeg-remux
 	PKGARCH:=all
 	URL:=https://www.ddnsto.com/linkease/
 endef
