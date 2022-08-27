@@ -105,7 +105,7 @@ case "$MODE_NUM" in
 				*"1") MODE="${MODE/LTE/LTE_A} / "$(band 1 "");;
 				*"3") MODE="${MODE/LTE/LTE_A} / "$(band 3 "");;
 				*"7") MODE="${MODE/LTE/LTE_A} / "$(band 7 "");;
-				*"8") MODE="${MODE/LTE/LTE_A} / "$(band 8 "");;
+				*"^8") MODE="${MODE/LTE/LTE_A} / "$(band 8 "");;
 				*"20") MODE="${MODE/LTE/LTE_A} / "$(band 20 "");;
 				*"28") MODE="${MODE/LTE/LTE_A} / "$(band 28 "");;
 				*"32") MODE="${MODE/LTE/LTE_A} / "$(band 32 "");;
@@ -118,7 +118,7 @@ case "$MODE_NUM" in
 					*"1") MODE="$MODE / "$(band 1 "");;
 					*"3") MODE="$MODE / "$(band 3 "");;
 					*"7") MODE="$MODE / "$(band 7 "");;
-					*"8") MODE="$MODE / "$(band 8 "");;
+					*"^8") MODE="$MODE / "$(band 8 "");;
 					*"20") MODE="$MODE / "$(band 20 "");;
 					*"28") MODE="$MODE / "$(band 28 "");;
 					*"32") MODE="$MODE / "$(band 32 "");;
@@ -133,7 +133,7 @@ case "$MODE_NUM" in
 					*"1") MODE="$MODE / "$(band 1 "");;
 					*"3") MODE="$MODE / "$(band 3 "");;
 					*"7") MODE="$MODE / "$(band 7 "");;
-					*"8") MODE="$MODE / "$(band 8 "");;
+					*"^8") MODE="$MODE / "$(band 8 "");;
 					*"20") MODE="$MODE / "$(band 20 "");;
 					*"28") MODE="$MODE / "$(band 28 "");;
 					*"32") MODE="$MODE / "$(band 32 "");;

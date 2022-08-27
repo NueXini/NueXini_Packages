@@ -13,6 +13,9 @@ band() {
 		7) echo "${2}B7 (2600 MHz)";;
 		8) echo "${2}B8 (900 MHz)";;
 		20) echo "${2}B20 (800 MHz)";;
+                28) echo "${2}B28 (700 MHz)";;
+                32) echo "${2}B32 (1500 MHz)";;
+                38) echo "${2}B38 (2600 MHz)";;		
 		*) echo "$1";;
 	esac
 }
