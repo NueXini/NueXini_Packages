@@ -46,5 +46,5 @@ msgstr "Порт подключения"
 msgid "Configuration panel for atinout."
 msgstr "Панель настроек."
 
-msgid "Each line must have the following format: 'AT Command name;AT Command'. Save to file '/etc/config/atcommands.user'."
-msgstr "Формат записи, \"Описание команды;Команда AT\". Файл со списоком пользовательских команд '/etc/config/atcommands.user'."
+msgid "Each line must have the following format: 'AT Command name;AT Command'. Save to file '/etc/atcommands.user'."
+msgstr "Формат записи: \"Описание команды;Команда AT\". Файл со списоком пользовательских команд '/etc/atcommands.user'."

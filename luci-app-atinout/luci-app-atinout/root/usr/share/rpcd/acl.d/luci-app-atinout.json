@@ -1,5 +1,5 @@
 {
-	"luci-app-atinout-mod": {
+	"luci-app-atinout": {
 		"description": "Grant UCI and file access for luci-app-atinout-mod",
 		"read": {
 			"uci": [ "atinout" ]
