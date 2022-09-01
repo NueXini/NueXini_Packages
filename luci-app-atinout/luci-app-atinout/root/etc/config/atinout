@@ -1,4 +1,0 @@
-
-config atinout 'general'
-	option atcdport ''
-
