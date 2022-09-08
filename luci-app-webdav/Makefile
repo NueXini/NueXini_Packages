@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI support for Webdav
-LUCI_DEPENDS:=+webdav-hacdias
+LUCI_DEPENDS:=+gowebdav
 LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-webdav
