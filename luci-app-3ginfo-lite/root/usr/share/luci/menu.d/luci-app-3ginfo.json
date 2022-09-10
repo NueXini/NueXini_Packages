@@ -9,7 +9,7 @@
 	},
 	
 	"admin/modem/3ginfo-lite": {
-		"title": "Information about 3G/4G connection",
+		"title": "Information about 3G/4G/5G connection",
 		"order": 10,
 		"action": {
 			"type": "alias",

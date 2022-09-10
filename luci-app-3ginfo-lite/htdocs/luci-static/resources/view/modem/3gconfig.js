@@ -61,7 +61,7 @@ return view.extend({
 		o = s.taboption('bts1',form.ListValue, 'website', _('Website to search for BTS'),
 		_('Select a website for searching.')
 		);
-		o.value('http://www.btsearch.pl/szukaj.php?mode=std&search=', _('BTSearch.pl'));
+		o.value('http://www.btsearch.pl/szukaj.php?mode=std&search=', _('btsearch.pl'));
 		o.value('https://lteitaly.it/internal/map.php#bts=', _('lteitaly.it'));
 		o.default = 'http://www.btsearch.pl/szukaj.php?mode=std&search=';
 		o.modalonly = true;

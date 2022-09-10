@@ -220,4 +220,3 @@ fi
 #if [ -n "$T" ] && [ -z "$FORCE_PLMN" ]; then
 #       COPS="$T"
 #fi
-

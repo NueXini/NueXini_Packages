@@ -11,8 +11,7 @@
 /*
 	Copyright 2021-2022 Rafał Wabik - IceG - From eko.one.pl forum
 	
-	rssi/rsrp/rsrq/sinnr formulas for percentages taken from
-	https://github.com/koshev-msk/luci-app-modeminfo
+	Thanks to https://github.com/koshev-msk for the initial progress bar calculation for rssi/rsrp/rsrq/sinnr.
 
 */
 
@@ -293,15 +292,27 @@ return view.extend({
 						view.textContent = json.registration;
 						if (json.registration == '0') { 
 							view.textContent = _('Not registered');
+							if (json.simslot.length > 0) { 
+							view.textContent =_('SIM') + ':' + json.simslot + ' | ' + _('Not registered');
+							}
 						}
 						if (json.registration == '1') { 
 							view.textContent = _('Registered');
+							if (json.simslot.length > 0) {  
+							view.textContent =_('SIM') + ':' + json.simslot + ' | ' + _('Registered');
+							}
 						}
 						if (json.registration == '2') { 
 							view.textContent = _('Searching..');
+							if (json.simslot.length > 0) {  
+							view.textContent =_('SIM') + ':' + json.simslot + ' | ' + _('Searching..');
+							}
 						}
 						if (json.registration == '3') { 
 							view.textContent = _('Registering denied');
+							if (json.simslot.length > 0) {  
+							view.textContent =_('SIM') + ':' + json.simslot + ' | ' + _('Registering denied');
+							}
 						}
 					}
 					}
@@ -497,30 +508,34 @@ return view.extend({
 
 					if (document.getElementById('lac')) {
 						var view = document.getElementById("lac");
+						var subDEC="DEC";
+						var subHEX="HEX";
 						if (json.lac_dec == '' || json.lac_hex == '') { 
 						var lc = json.lac_dec   + ' ' + json.lac_hex;
 						var ld = lc.split(' ').join('');
 						view.textContent = ld;
 						}
 						else {
-						view.textContent = json.lac_dec   + ' (' + json.lac_hex + ')';
+						view.innerHTML = json.lac_dec + subDEC.sub() + ' (' + json.lac_hex + ')'+ subHEX.sub();
 						}
 
 					}
 
 					if (document.getElementById('tac')) {
 						var view = document.getElementById("tac");
+						var subDEC="DEC";
+						var subHEX="HEX";
 						if (json.signal == 0 || json.signal == '') {
 						view.textContent = '-';
 						}
 						else {
 							if (json.tac_hex == null || json.tac_hex == '' || json.tac_hex == '-') {
-							view.textContent = json.tac_d + ' (' + json.tac_h + ')';
+							view.innerHTML = json.tac_d + subDEC.sub() + ' (' + json.tac_h + ')'+ subHEX.sub();
 							}
 							else {
-								view.textContent = json.tac_dec + ' (' + json.tac_hex + ')';
+								view.innerHTML = json.tac_dec + subDEC.sub() + ' (' + json.tac_hex + ')+ subHEX.sub()';
 								if (json.tac_hex == json.lac_hex && json.tac_dec == '') {
-									view.textContent = json.lac_dec + ' (' + json.tac_hex + ')';
+									view.innerHTML = json.lac_dec + subDEC.sub() + ' (' + json.tac_hex + ')'+ subHEX.sub();
 								}
 
 							}
@@ -529,14 +544,15 @@ return view.extend({
 
 					if (document.getElementById('cid')) {
 						var view = document.getElementById("cid");
+						var subDEC="DEC";
+						var subHEX="HEX";
 						if (json.cid_dec == '' || json.cid_hex == '') { 
-						var cc = json.cid_dec   + ' ' + json.cid_hex;
+						var cc = json.cid_hex   + ' ' + json.cid_dec;
 						var cd = cc.split(' ').join('');
 						view.textContent = cd;
 						}
 						else {
-
-						view.textContent = json.cid_dec   + ' (' + json.cid_hex + ')' ;
+						view.innerHTML = json.cid_dec + subDEC.sub() + ' (' + json.cid_hex + ')'+ subHEX.sub();
 						}
 					}
 
@@ -612,23 +628,23 @@ return view.extend({
 				E('h4', {}, [ _('General Information') ]),
 			E('table', { 'class': 'table' }, [
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Signal strength:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Signal strength')]),
 					E('td', { 'class': 'td left', 'id': 'signal' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Operator:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Operator')]),
 					E('td', { 'class': 'td left', 'id': 'operator' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('SIM status:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('SIM status')]),
 					E('td', { 'class': 'td left', 'id': 'sim' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Connection statistics:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Connection statistics')]),
 					E('td', { 'class': 'td left', 'id': 'connst' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Technology:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Technology')]),
 					E('td', { 'class': 'td left', 'id': 'mode' }, [ '-' ]),
 					]),
 			]),
@@ -636,15 +652,15 @@ return view.extend({
 			E('h4', {}, [ _('Modem Information') ]),
 			E('table', { 'class': 'table' }, [
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Modem type:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Modem type')]),
 					E('td', { 'class': 'td left', 'id': 'modem' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Revision / Firmware:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Revision / Firmware')]),
 					E('td', { 'class': 'td left', 'id': 'fw' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('IP adress / Communication Port:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('IP adress / Communication Port')]),
 					E('td', { 'class': 'td left', 'id': 'cport' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
@@ -652,7 +668,7 @@ return view.extend({
 					E('td', { 'class': 'td left', 'id': 'protocol' }, [ '-' ]),
 					]),
 				E('tr', { 'id': 'tempn', 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Chip Temperature:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Chip Temperature')]),
 					E('td', { 'class': 'td left', 'id': 'temp' }, [ '-' ]),
 					]),
 			]),
@@ -660,25 +676,25 @@ return view.extend({
 			E('h4', {}, [ _('Cell / Signal Information') ]),
 			E('table', { 'class': 'table' }, [
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('MCC MNC:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('MCC MNC')]),
 					E('td', { 'class': 'td left', 'id': 'mccmnc' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Cell ID:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Cell ID')]),
 					E('td', { 'class': 'td left', 'id': 'cid' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('TAC:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('TAC')]),
 					E('td', { 'class': 'td left', 'id': 'tac' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('LAC:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('LAC')]),
 					E('td', { 'class': 'td left', 'id': 'lac' }, [ '-' ]),
 					]),
 
 				E('tr', { 'id': 'csqn', 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [
-					_('CSQ:'),
+					_('CSQ'),
 					E('div', { 'style': 'text-align:left;font-size:66%' }, [ _('(Signal Strength)') ]),
 					]),
 					E('td', { 'class': 'td' }, E('div', {
@@ -690,7 +706,7 @@ return view.extend({
 					]),
 				E('tr', { 'id': 'rssin', 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [
-					_('RSSI:'),
+					_('RSSI'),
 					E('div', { 'style': 'text-align:left;font-size:66%' }, [ _('(Received Signal Strength Indicator)') ]),
 					]),
 					E('td', { 'class': 'td' }, E('div', {
@@ -702,7 +718,7 @@ return view.extend({
 					]),
 				E('tr', { 'id': 'rsrpn', 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [
-					_('RSRP:'),
+					_('RSRP'),
 					E('div', { 'style': 'text-align:left;font-size:66%' }, [ _('(Reference Signal Receive Power)') ]),
 					]),
 					E('td', { 'class': 'td' }, E('div', {
@@ -714,7 +730,7 @@ return view.extend({
 					]),
 				E('tr', { 'id': 'sinrn', 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [
-					_('SINR:'),
+					_('SINR'),
 					E('div', { 'style': 'text-align:left;font-size:66%' }, [ _('(Signal to Interference plus Noise Ratio)') ]),
 					]),
 					E('td', { 'class': 'td' }, E('div', {
@@ -726,7 +742,7 @@ return view.extend({
 					]),
 				E('tr', { 'id': 'rsrqn', 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [
-					_('RSRQ:'),
+					_('RSRQ'),
 					E('div', { 'style': 'text-align:left;font-size:66%' }, [ _('(Reference Signal Received Quality)') ]),
 					]),
 					E('td', { 'class': 'td' }, E('div', {
@@ -738,23 +754,23 @@ return view.extend({
 					]),
 
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Primary band | PCI & EARFCN:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Primary band | PCI & EARFCN')]),
 					E('td', { 'class': 'td left', 'id': 'pband' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CA band (S1):')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CA band (S1)')]),
 					E('td', { 'class': 'td left', 'id': 's1band' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CA band (S2):')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CA band (S2)')]),
 					E('td', { 'class': 'td left', 'id': 's2band' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CA band (S3):')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CA band (S3)')]),
 					E('td', { 'class': 'td left', 'id': 's3band' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CA band (S4):')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('CA band (S4)')]),
 					E('td', { 'class': 'td left', 'id': 's4band' }, [ '-' ]),
 					]),
 
@@ -800,10 +816,13 @@ return view.extend({
 				}
 				if ( zzmnc.length == 2 ) {
 				var first = zzmnc.slice(0, 1);
-				if (first.includes('0')) {
-				var cutmnc = zzmnc.slice(1, 2);
-				}
-				}
+					if (first.includes('0')) {
+						var cutmnc = zzmnc.slice(1, 2);
+						}
+					else {
+					var cutmnc = zzmnc;
+						}
+					}
 				if ( zzmnc.length < 2 || !first.includes('0') && !second.includes('0')) {
 				var cutmnc = zzmnc;
 			}
@@ -822,4 +841,3 @@ return view.extend({
 	handleSave: null,
 	handleReset: null
 });
-

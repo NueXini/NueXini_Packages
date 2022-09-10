@@ -1,8 +1,8 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-msgid "Information about 3G/4G connection"
-msgstr "Informacja o statusie połączenia 3G/4G"
+msgid "Information about 3G/4G/5G connection"
+msgstr "Informacja o statusie połączenia 3G/4G/5G"
 
 msgid "More information about the 3ginfo on the"
 msgstr "Więcej informacji o 3ginfo na"
@@ -28,32 +28,32 @@ msgstr "Informacje o modemie"
 msgid "Cell / Signal Information"
 msgstr "Informacje o sieci / sygnale"
 
-msgid "Technology:"
-msgstr "Technologia:"
+msgid "Technology"
+msgstr "Technologia"
 
-msgid "Operator:"
-msgstr "Operator:"
+msgid "Operator"
+msgstr "Operator"
 
-msgid "Signal strength:"
-msgstr "Siła sygnału:"
+msgid "Signal strength"
+msgstr "Siła sygnału"
 
-msgid "Connection statistics:"
-msgstr "Statystyki połączenia:"
+msgid "Connection statistics"
+msgstr "Statystyki połączenia"
 
-msgid "Modem type:"
-msgstr "Typ modemu:"
+msgid "Modem type"
+msgstr "Typ modemu"
 
 msgid "Additional information"
 msgstr "Informacje dodatkowe"
 
-msgid "Revision / Firmware:"
-msgstr "Rewizja / Wersja firmware:"
+msgid "Revision / Firmware"
+msgstr "Rewizja / Wersja firmware"
 
-msgid "IP adress / Communication Port:"
-msgstr "Adres IP / Port do komunikacji:"
+msgid "IP adress / Communication Port"
+msgstr "Adres IP / Port do komunikacji"
 
-msgid "Chip Temperature:"
-msgstr "Temperatura układu:"
+msgid "Chip Temperature"
+msgstr "Temperatura układu"
 
 msgid "Configuration 3ginfo-lite"
 msgstr "Konfiguracja 3ginfo-lite"
@@ -67,6 +67,9 @@ msgstr "Sieć"
 msgid "IP adress / Port for communication with the modem"
 msgstr "Adres IP / Port do komunikacji z modemem"
 
+msgid "Protocol"
+msgstr "Protokół"
+
 msgid ""
 "Select the appropriate settings. <br /> <br />Traditional "
 "modem. <br /> Select one of the available ttyUSBX "
@@ -77,9 +80,6 @@ msgstr ""
 "modem. <br /> Wybierz jeden z dostępnych portów "
 "ttyUSBX.<br /> <br />Modem typu HiLink. <br /> Wprowadź adres IP "
 "192.168.X.X pod którym dostępny jest modem."
-
-msgid "Protocol:"
-msgstr "Protokół:"
 
 msgid "Very good"
 msgstr "Bardzo dobry"
@@ -105,14 +105,8 @@ msgstr "Średni zasięg"
 msgid "Cell edge"
 msgstr "Na krawędzi zasięgu"
 
-msgid "Primary band: "
-msgstr "Pasmo podstawowe: "
-
-msgid "(S) band: "
-msgstr "Pasmo (S): "
-
-msgid "SIM status:"
-msgstr "Status karty SIM:"
+msgid "SIM status"
+msgstr "Status karty SIM"
 
 msgid "Not registered"
 msgstr "Nie zalogowana do sieci"
