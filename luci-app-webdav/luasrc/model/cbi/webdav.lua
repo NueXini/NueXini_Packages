@@ -21,7 +21,8 @@ s = m:section(TypedSection, "webdav")
 s.addremove = false
 s.anonymous = true
 
-view_enable = s:option(Flag,"enabled",translate("Enable"))
+view_enable = s:option(Flag, "enabled", translate("Enable"))
+
 view_cfg = s:option(TextValue, "1", nil)
 	view_cfg.rmempty = false
 	view_cfg.rows = 43
