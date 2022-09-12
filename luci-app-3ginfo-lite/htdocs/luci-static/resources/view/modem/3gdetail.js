@@ -508,34 +508,38 @@ return view.extend({
 
 					if (document.getElementById('lac')) {
 						var view = document.getElementById("lac");
-						var subDEC="DEC";
-						var subHEX="HEX";
+						//var subDEC="DEC";
+						//var subHEX="HEX";
 						if (json.lac_dec == '' || json.lac_hex == '') { 
 						var lc = json.lac_dec   + ' ' + json.lac_hex;
 						var ld = lc.split(' ').join('');
 						view.textContent = ld;
 						}
 						else {
-						view.innerHTML = json.lac_dec + subDEC.sub() + ' (' + json.lac_hex + ')'+ subHEX.sub();
+						//view.innerHTML = json.lac_dec + '|'+ subDEC.sub() + ' ' + json.lac_hex + '|'+ subHEX.sub();
+						view.innerHTML = json.lac_dec + ' (' + json.lac_hex + ')';
 						}
 
 					}
 
 					if (document.getElementById('tac')) {
 						var view = document.getElementById("tac");
-						var subDEC="DEC";
-						var subHEX="HEX";
+						//var subDEC="DEC";
+						//var subHEX="HEX";
 						if (json.signal == 0 || json.signal == '') {
 						view.textContent = '-';
 						}
 						else {
 							if (json.tac_hex == null || json.tac_hex == '' || json.tac_hex == '-') {
-							view.innerHTML = json.tac_d + subDEC.sub() + ' (' + json.tac_h + ')'+ subHEX.sub();
+							//view.innerHTML = json.tac_d + '|'+ subDEC.sub() + ' ' + json.tac_h + '|'+ subHEX.sub();
+							view.innerHTML = json.tac_d + ' (' + json.tac_h + ')';
 							}
 							else {
-								view.innerHTML = json.tac_dec + subDEC.sub() + ' (' + json.tac_hex + ')+ subHEX.sub()';
+								//view.innerHTML = json.tac_dec + subDEC.sub() + ' (' + json.tac_hex + ')+ subHEX.sub()';
+								view.innerHTML = json.tac_dec + ' (' + json.tac_hex + ')';
 								if (json.tac_hex == json.lac_hex && json.tac_dec == '') {
-									view.innerHTML = json.lac_dec + subDEC.sub() + ' (' + json.tac_hex + ')'+ subHEX.sub();
+									//view.innerHTML = json.lac_dec + '|'+ subDEC.sub() + ' ' + json.tac_hex + '|'+ subHEX.sub();
+									view.innerHTML = json.lac_dec + ' (' + json.tac_hex + ')';
 								}
 
 							}
@@ -544,15 +548,16 @@ return view.extend({
 
 					if (document.getElementById('cid')) {
 						var view = document.getElementById("cid");
-						var subDEC="DEC";
-						var subHEX="HEX";
+						//var subDEC="DEC";
+						//var subHEX="HEX";
 						if (json.cid_dec == '' || json.cid_hex == '') { 
 						var cc = json.cid_hex   + ' ' + json.cid_dec;
 						var cd = cc.split(' ').join('');
 						view.textContent = cd;
 						}
 						else {
-						view.innerHTML = json.cid_dec + subDEC.sub() + ' (' + json.cid_hex + ')'+ subHEX.sub();
+						//view.innerHTML = json.cid_dec + '|'+ subDEC.sub() + '' + json.cid_hex + '|'+ subHEX.sub();
+						view.innerHTML = json.cid_dec + ' (' + '' + json.cid_hex + ')';
 						}
 					}
 
@@ -562,7 +567,12 @@ return view.extend({
 						view.textContent = '-';
 						}
 						else {
-						view.textContent = json.pband + ' | ' +json.pci + ' ' + json.earfcn;
+							if (json.pci.length > 0 && json.earfcn.length > 0) { 
+								view.textContent = json.pband + ' | ' + json.pci + ' ' + json.earfcn;
+							}
+							else {
+								view.textContent = json.pband;
+							}
 						}
 					}
 
@@ -572,7 +582,12 @@ return view.extend({
 						view.textContent = '-';
 						}
 						else {
-						view.textContent = json.s1band + ' | ' + json.s1pci + ' ' + json.s1earfcn;
+							if (json.s1pci.length > 0 && json.s1earfcn.length > 0) { 
+								view.textContent = json.s1band + ' | ' + json.s1pci + ' ' + json.s1earfcn;
+							}
+							else {
+								view.textContent = json.s1band;
+							}
 						}
 					}
 					
@@ -582,7 +597,12 @@ return view.extend({
 						view.textContent = '-';
 						}
 						else {
-						view.textContent = json.s2band + ' | ' + json.s2pci + ' ' + json.s2earfcn;
+							if (json.s2pci.length > 0 && json.s2earfcn.length > 0) { 
+								view.textContent = json.s2band + ' | ' + json.s2pci + ' ' + json.s2earfcn;
+							}
+							else {
+								view.textContent = json.s2band;
+							}
 						}
 					}
 					
@@ -592,7 +612,12 @@ return view.extend({
 						view.textContent = '-';
 						}
 						else {
-						view.textContent = json.s3band + ' | ' + json.s3pci + ' ' + json.s3earfcn;
+							if (json.s3pci.length > 0 && json.s3earfcn.length > 0) { 
+								view.textContent = json.s3band + ' | ' + json.s3pci + ' ' + json.s3earfcn;
+							}
+							else {
+								view.textContent = json.s3band;
+							}
 						}
 					}
 					if (document.getElementById('s4band')) {
@@ -601,7 +626,12 @@ return view.extend({
 						view.textContent = '-';
 						}
 						else {
-						view.textContent = json.s4band + ' | ' + json.s4pci + ' ' + json.s4earfcn;
+							if (json.s4pci.length > 0 && json.s4earfcn.length > 0) { 
+								view.textContent = json.s4band + ' | ' + json.s4pci + ' ' + json.s4earfcn;
+							}
+							else {
+								view.textContent = json.s4band;
+							}
 						}
 					}
 
@@ -820,7 +850,7 @@ return view.extend({
 						var cutmnc = zzmnc.slice(1, 2);
 						}
 					else {
-					var cutmnc = zzmnc;
+						var cutmnc = zzmnc;
 						}
 					}
 				if ( zzmnc.length < 2 || !first.includes('0') && !second.includes('0')) {
@@ -841,3 +871,4 @@ return view.extend({
 	handleSave: null,
 	handleReset: null
 });
+

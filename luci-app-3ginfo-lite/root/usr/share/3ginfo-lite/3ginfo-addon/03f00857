@@ -1,0 +1,185 @@
+# Telit Ln940 (QMI)/Telit Ln940 (MBIM)/HP lt4220 (MBIM)/HP lt4220 (QMI)
+
+O=$(sms_tool -D -d $DEVICE at "AT^CA_INFO?;^RFSTS?;+TEMP")
+
+TR=$(echo "$O" |grep -A2 RFSTS: | awk 'NR ==2{print $0}')
+
+if [ "$MODE" = "LTE" ]; then
+	RSRP=$(echo "$TR" |awk -F [,] '{printf "%.0f\n",$3}')
+	RSSI=$(echo "$TR" |awk -F [,] '{printf "%.0f\n",$4}')
+	RSRQ=$(echo "$TR" |awk -F [,] '{printf "%.0f\n",$5}')
+	SINR=$(echo "$TR" |awk -F [,] '{printf "%.0f\n",$16/4+5}')
+else
+	SINR=$(echo "$TR" |awk -F [,] '{printf "%.0f\n",$4}')
+	RSSI=$(echo "$TR" |awk -F [,] '{printf "%.0f\n",$6}')
+fi
+
+T=$(echo "$O" | awk -F[,:] '/^\PCC info: /{print $2}' | sed 's/Band is //g')
+[ -z "$T" ] && T=$(echo "$O" | awk -F[,] '/^\PCC info: /{print $2}')
+if [ -n "$T" ]; then
+	case $T in
+		*"LTE_B1") MODE=$(band 1 "LTE ");;
+		*"LTE_B2") MODE=$(band 2 "LTE ");;
+		*"LTE_B3") MODE=$(band 2 "LTE ");;
+		*"LTE_B4") MODE=$(band 4 "LTE ");;
+		*"LTE_B5") MODE=$(band 5 "LTE ");;
+		*"LTE_B7") MODE=$(band 7 "LTE ");;
+		*"LTE_B8") MODE=$(band 8 "LTE ");;
+		*"LTE_B12") MODE=$(band 12 "LTE ");;
+		*"LTE_B13") MODE=$(band 13 "LTE ");;
+		*"LTE_B17") MODE=$(band 17 "LTE ");;
+		*"LTE_B18") MODE=$(band 18 "LTE ");;
+		*"LTE_B19") MODE=$(band 19 "LTE ");;
+		*"LTE_B20") MODE=$(band 20 "LTE ");;
+		*"LTE_B21") MODE=$(band 21 "LTE ");;
+		*"LTE_B25") MODE=$(band 25 "LTE ");;
+		*"LTE_B26") MODE=$(band 26 "LTE ");;
+		*"LTE_B28") MODE=$(band 28 "LTE ");;
+		*"LTE_B29") MODE=$(band 29 "LTE ");;
+		*"LTE_B30") MODE=$(band 30 "LTE ");;
+		*"LTE_B38") MODE=$(band 38 "LTE ");;
+		*"LTE_B39") MODE=$(band 39 "LTE ");;
+		*"LTE_B40") MODE=$(band 40 "LTE ");;
+		*"LTE_B41") MODE=$(band 41 "LTE ");;
+		*"LTE_B66") MODE=$(band 66 "LTE ");;
+		*) MODE="${T}";;
+	esac
+
+	T=$(echo "$O" | awk -F[,:] '/^\SCC1 info: /{print $2}' | sed 's/Band is //g')
+	if [ -n "$T" ]; then
+		case $T in
+			*"LTE_B1") MODE="${MODE/LTE/LTE_A} / "$(band 1 "");;
+			*"LTE_B2") MODE="${MODE/LTE/LTE_A} / "$(band 2 "");;
+			*"LTE_B3") MODE="${MODE/LTE/LTE_A} / "$(band 3 "");;
+			*"LTE_B4") MODE="${MODE/LTE/LTE_A} / "$(band 4 "");;
+			*"LTE_B5") MODE="${MODE/LTE/LTE_A} / "$(band 5 "");;
+			*"LTE_B7") MODE="${MODE/LTE/LTE_A} / "$(band 7 "");;
+			*"LTE_B8") MODE="${MODE/LTE/LTE_A} / "$(band 8 "");;
+			*"LTE_B12") MODE="${MODE/LTE/LTE_A} / "$(band 12 "");;
+			*"LTE_B13") MODE="${MODE/LTE/LTE_A} / "$(band 13 "");;
+			*"LTE_B17") MODE="${MODE/LTE/LTE_A} / "$(band 17 "");;
+			*"LTE_B18") MODE="${MODE/LTE/LTE_A} / "$(band 18 "");;
+			*"LTE_B19") MODE="${MODE/LTE/LTE_A} / "$(band 19 "");;
+			*"LTE_B20") MODE="${MODE/LTE/LTE_A} / "$(band 20 "");;
+			*"LTE_B21") MODE="${MODE/LTE/LTE_A} / "$(band 21 "");;
+			*"LTE_B25") MODE="${MODE/LTE/LTE_A} / "$(band 25 "");;
+			*"LTE_B26") MODE="${MODE/LTE/LTE_A} / "$(band 26 "");;
+			*"LTE_B28") MODE="${MODE/LTE/LTE_A} / "$(band 28 "");;
+			*"LTE_B29") MODE="${MODE/LTE/LTE_A} / "$(band 29 "");;
+			*"LTE_B30") MODE="${MODE/LTE/LTE_A} / "$(band 30 "");;
+			*"LTE_B38") MODE="${MODE/LTE/LTE_A} / "$(band 38 "");;
+			*"LTE_B39") MODE="${MODE/LTE/LTE_A} / "$(band 39 "");;
+			*"LTE_B40") MODE="${MODE/LTE/LTE_A} / "$(band 40 "");;
+			*"LTE_B41") MODE="${MODE/LTE/LTE_A} / "$(band 41 "");;
+			*"LTE_B66") MODE="${MODE/LTE/LTE_A} / "$(band 66 "");;
+			*) MODE="${MODE} / ${T}";;
+		esac
+	fi
+
+	T=$(echo "$O" | awk -F[,:] '/^\SCC2 info: /{print $2}' | sed 's/Band is //g')
+	if [ -n "$T" ]; then
+		case $T in
+			*"LTE_B1") MODE="${MODE} / "$(band 1 "");;
+			*"LTE_B2") MODE="${MODE} / "$(band 2 "");;
+			*"LTE_B3") MODE="${MODE} / "$(band 3 "");;
+			*"LTE_B4") MODE="${MODE} / "$(band 4 "");;
+			*"LTE_B5") MODE="${MODE} / "$(band 5 "");;
+			*"LTE_B7") MODE="${MODE} / "$(band 7 "");;
+			*"LTE_B8") MODE="${MODE} / "$(band 8 "");;
+			*"LTE_B12") MODE="${MODE} / "$(band 12 "");;
+			*"LTE_B13") MODE="${MODE} / "$(band 13 "");;
+			*"LTE_B17") MODE="${MODE} / "$(band 17 "");;
+			*"LTE_B18") MODE="${MODE} / "$(band 18 "");;
+			*"LTE_B19") MODE="${MODE} / "$(band 19 "");;
+			*"LTE_B20") MODE="${MODE} / "$(band 20 "");;
+			*"LTE_B21") MODE="${MODE} / "$(band 21 "");;
+			*"LTE_B25") MODE="${MODE} / "$(band 25 "");;
+			*"LTE_B26") MODE="${MODE} / "$(band 26 "");;
+			*"LTE_B28") MODE="${MODE} / "$(band 28 "");;
+			*"LTE_B29") MODE="${MODE} / "$(band 29 "");;
+			*"LTE_B30") MODE="${MODE} / "$(band 30 "");;
+			*"LTE_B38") MODE="${MODE} / "$(band 38 "");;
+			*"LTE_B39") MODE="${MODE} / "$(band 39 "");;
+			*"LTE_B40") MODE="${MODE} / "$(band 40 "");;
+			*"LTE_B41") MODE="${MODE} / "$(band 41 "");;
+			*"LTE_B66") MODE="${MODE} / "$(band 66 "");;
+			*) MODE="${MODE/LTE/LTE_A} / ${T}";;
+		esac
+	fi
+fi
+
+MODE=$(echo $MODE | sed 's,/,+,' | sed 's,LTE_A,LTE-A | ,')
+
+# Primary band
+T1=$(echo "$O" | awk '/PCC/{print $5}' | sed -e 's/LTE_//g' -e 's/.$//')
+if [ -n "$T1" ]; then
+	T2=$(echo "$O" | awk '/PCC/{print $8}' | sed -e 's/Band_width//g')
+	PBAND="$(band ${T1/B/} "") @$T2 MHz"
+	EARFCN=$(echo "$TR" |awk -F [,] '{print $2}')
+	PCI=$(echo "$TR" |awk -F [,] '{print $11}')
+fi
+
+# CA band (S1)
+T3=$(echo "$O" | awk '/SCC1/{print $5}' | sed -e 's/LTE_//g' -e 's/.$//')
+if [ -n "$T3" ]; then
+	T4=$(echo "$O" | awk '/SCC1/{print $8}' | sed -e 's/Band_width//g')
+	S1BAND="$(band ${T3/B/} "") @$T4 MHz"
+#	S1EARFCN=$(echo "$TR" |awk -F [,] '{print $2}')
+#	S1PCI=$(echo "$TR" |awk -F [,] '{print $11}')
+fi
+
+# CA band (S2)
+T5=$(echo "$O" | awk '/SCC2/{print $5}' | sed -e 's/LTE_//g' -e 's/.$//')
+if [ -n "$T5" ]; then
+	T6=$(echo "$O" | awk '/SCC2/{print $8}' | sed -e 's/Band_width//g')
+	S2BAND="$(band ${T5/B/} "") @$T6 MHz"
+#	S2EARFCN=$(echo "$TR" |awk -F [,] '{print $2}')
+#	S2PCI=$(echo "$TR" |awk -F [,] '{print $11}')
+fi
+
+# Temperature
+T=$(echo "$O" | awk -F [:] '/tsens_tz_sensor0:/ {print $2}' | xargs)
+if [ -n "$T" ]; then
+    TEMP=$(echo "$T &deg;C")
+fi
+
+# Cell ID & LAC & TAC
+LAC_HEX=$(printf "%X" $LAC_DEC)
+if [ -n "$LAC_DEC" ]; then
+	TAC_HEX=$LAC_HEX
+fi
+CID_HEX=$(printf "%X" $CID_DEC)
+
+# Protocol
+# DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
+PV=$(cat /sys/kernel/debug/usb/devices 2>/dev/null)
+PVCUT=$(echo $PV | awk -F 'Vendor=03f0 ProdID=0857' '{print $2}' | cut -c-1220)
+PVCUT=$(echo $PV | awk -F 'Vendor=03f0 ProdID=0a57' '{print $2}' | cut -c-1220)
+PVCUT=$(echo $PV | awk -F 'Vendor=1bc7 ProdID=1901' '{print $2}' | cut -c-1220)
+PVCUT=$(echo $PV | awk -F 'Vendor=1bc7 ProdID=1900' '{print $2}' | cut -c-1220)
+
+if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
+then
+    PROTO="qmi"
+elif echo "$PVCUT" | grep -q "Driver=cdc_mbim"
+then
+    PROTO="mbim"
+elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
+then
+    PROTO="ecm"
+fi
+
+# Model
+PVMODEL=$(echo $PV | awk -F 'Vendor=1bc7 ProdID=1900' '{print $2}' | cut -c-150)
+if [ -z "$MODEL" ]
+then
+	MODELBCUT=$(echo $PVMODEL | awk -F 'Manufacturer=|S: Product=' '{print $2}'| xargs)
+	MODELACUT=$(echo $PVMODEL | awk -F 'Product=|S: SerialNumber' '{print $2}'| xargs)
+	MODELC="$MODELBCUT "$MODELACUT
+	MODEL=$(echo "$MODELC" | awk '{for (i=1;i<=NF;i++) if (!a[$i]++) printf("%s%s",$i,FS)}{printf("\n")}')
+fi
+
+# FW
+OF=$(sms_tool -d $DEVICE at "ati")
+DEV2=$(echo $OF | tr -s "\n"  | xargs)
+FW=$(echo $DEV2 | awk -F 'Revision: | IMEI: ' '{print $2}' | cut -c-50)
