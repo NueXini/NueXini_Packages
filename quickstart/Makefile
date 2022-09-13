@@ -11,7 +11,7 @@ PKG_ARCH_quickstart:=$(ARCH)
 
 PKG_NAME:=quickstart
 PKG_VERSION:=0.5.4
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://fw.koolcenter.com/binary/quickstart/
 PKG_HASH:=78e69598982302e3cc1d59d1192b758b8b8d463c4bc88c6e5d0ed07242d1e9de
@@ -41,7 +41,10 @@ endef
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
 if [ -z "$${IPKG_INSTROOT}" ]; then
-	[ -f /etc/uci-defaults/quickstart ] && /etc/uci-defaults/quickstart && rm -f /etc/uci-defaults/quickstart
+	if [ -f /etc/uci-defaults/09-quickstart ]; then
+		chmod 755 /etc/uci-defaults/09-quickstart
+		/etc/uci-defaults/09-quickstart && rm -f /etc/uci-defaults/09-quickstart
+	fi
 fi
 endef
 
