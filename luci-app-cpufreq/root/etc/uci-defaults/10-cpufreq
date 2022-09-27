@@ -55,10 +55,13 @@ case "$DISTRIB_TARGET" in
 			# IPQ8071A
 			CPU_MAX_FREQ="1382400"
 		fi
-		uci_write_config 0 schedutil 1017600 $CPU_MAX_FREQ
+		uci_write_config 0 ondemand 1017600 $CPU_MAX_FREQ 10 50
 		;;
 	"mediatek/mt7622")
 		uci_write_config 0 ondemand 600000 1350000 10 50
+		;;
+	"meson/meson8b")
+		uci_write_config 0 schedutil 816000 1536000
 		;;
 	"rockchip/armv8")
 		if echo "$CPU_POLICYS" | grep -q "4"; then
@@ -69,6 +72,9 @@ case "$DISTRIB_TARGET" in
 			if echo "$CPU_FREQS" | grep -q "1992000"; then
 				# RK3568
 				CPU_MAX_FREQ="1992000"
+			elif echo "$CPU_FREQS" | grep -q "1800000"; then
+				# RK3566
+				CPU_MAX_FREQ="1800000"
 			else
 				# RK3328
 				CPU_MAX_FREQ="1512000"
