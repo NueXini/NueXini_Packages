@@ -355,7 +355,7 @@ return view.extend({
 
 		}		
 
-		var info = _('Configuration modem frequency bands. More information about the modemband application on the') + ' <a href="https://eko.one.pl/?p=openwrt-modemband" target="_blank">' + _('eko.one.pl forum') + '</a>.';
+		var info = _('Configuration modem frequency bands. More information about the modemband application on the %seko.one.pl forum%s.').format('<a href="https://eko.one.pl/?p=openwrt-modemband" target="_blank">', '</a>');
 
 		m = new form.JSONMap(this.formdata, _('Configure modem bands'), info);
 

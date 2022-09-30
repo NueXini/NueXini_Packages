@@ -10,8 +10,12 @@ msgstr "Ustawione pasma LTE:"
 msgid "Supported LTE bands:"
 msgstr "Obsługiwane pasma LTE:"
 
-msgid "Configuration modem frequency bands. More information about the modemband application on the"
-msgstr "Konfiguracja preferowanych pasm modemu. Więcej informacji o aplikacji modemband na"
+msgid ""
+"Configuration modem frequency bands. More "
+"information about the modemband application on the %seko.one.pl forum%s."
+msgstr ""
+"Konfiguracja preferowanych pasm modemu. Więcej "
+"informacji o aplikacji modemband na %sforum eko.one.pl%s."
 
 msgid "Configure modem bands"
 msgstr "Konfiguracja pasm LTE"
@@ -24,9 +28,6 @@ msgstr "Modyfikacja pasm:"
 
 msgid "Modem information"
 msgstr "Informacje o modemie"
-
-msgid "eko.one.pl forum"
-msgstr "forum eko.one.pl"
 
 msgid "The new bands settings have been sent to the modem. If the changes are not visible, a restart of the connection, modem or router may be required."
 msgstr "Nowe ustawienia pasm zostały wysłane do modemu. Jeśli zmiany nie są widoczne, może być wymagane ponowne uruchomienie połączenia, modemu lub routera."

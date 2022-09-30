@@ -174,8 +174,29 @@ pg.firstElementChild.style.animationDirection = "reverse";
 pg.setAttribute('title', '%s'.format(v) + ' | ' + tip + ' ');
 }
 
+function SIMdata(data) {
+	var sdata = JSON.parse(data);
+
+	if (sdata.simslot.length > 0) {
+		return ui.itemlist(E('span'), [
+		_('SIM Slot'), sdata.simslot,
+		_('IMEI'), sdata.imei,
+		_('IMSI'), sdata.imsi,
+		_('ICCID'), sdata.iccid
+		]);
+	}
+	else {
+		return ui.itemlist(E('span'), [
+		_('IMEI'), sdata.imei,
+		_('IMSI'), sdata.imsi,
+		_('ICCID'), sdata.iccid
+		]);
+	}
+}
+
 return view.extend({
 	formdata: { threeginfo: {} },
+	simStatusLabel     : E('span', { 'class': 'label', 'id': 'sim' }),
 
 	load: function() {
 		return L.resolveDefault(fs.exec_direct('/usr/share/3ginfo-lite/3ginfo.sh', [ 'json' ]));
@@ -225,6 +246,7 @@ return view.extend({
 					}
 					
 					var icon;
+					var regdata;
 
 					var p = (json.signal);
 					if (p < 0)
@@ -285,6 +307,7 @@ return view.extend({
 
 					if (document.getElementById('sim')) {
 						var view = document.getElementById("sim");
+						var lmod = document.querySelector('#sim')
 						if (json.registration == '') { 
 						view.textContent = '-';
 						}
@@ -292,27 +315,17 @@ return view.extend({
 						view.textContent = json.registration;
 						if (json.registration == '0') { 
 							view.textContent = _('Not registered');
-							if (json.simslot.length > 0) { 
-							view.textContent =_('SIM') + ':' + json.simslot + ' | ' + _('Not registered');
-							}
 						}
 						if (json.registration == '1') { 
 							view.textContent = _('Registered');
-							if (json.simslot.length > 0) {  
-							view.textContent =_('SIM') + ':' + json.simslot + ' | ' + _('Registered');
-							}
+							//lmod.style.background = '#2ea256';
+							//lmod.style.color = '#fff';
 						}
 						if (json.registration == '2') { 
 							view.textContent = _('Searching..');
-							if (json.simslot.length > 0) {  
-							view.textContent =_('SIM') + ':' + json.simslot + ' | ' + _('Searching..');
-							}
 						}
 						if (json.registration == '3') { 
 							view.textContent = _('Registering denied');
-							if (json.simslot.length > 0) {  
-							view.textContent =_('SIM') + ':' + json.simslot + ' | ' + _('Registering denied');
-							}
 						}
 					}
 					}
@@ -654,6 +667,7 @@ return view.extend({
 		s.anonymous = true;
 
 		s.render = L.bind(function(view, section_id) {
+
 			return E('div', { 'class': 'cbi-section' }, [
 				E('h4', {}, [ _('General Information') ]),
 			E('table', { 'class': 'table' }, [
@@ -667,8 +681,29 @@ return view.extend({
 					]),
 				E('tr', { 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [ _('SIM status')]),
-					E('td', { 'class': 'td left', 'id': 'sim' }, [ '-' ]),
+					E('td', { 'class': 'td left' }, [
+
+						E('span', {
+							'class': 'ifacebadge',
+							'title': '',
+							'style': 'vertical-align: middle; margin: auto;'
+							}, [
+						E('div', { 'class': 'ifacebox-body' }, [
+						E('div', { 'class': 'cbi-tooltip-container', 'style': 'text-align:left;font-size:80%' }, [
+									E('img', {
+										'src': L.resource('icons/sim1m.png'),
+										'width': 16,
+										'title': '',
+										'class': 'middle'
+									}),
+						E('span', { 'class': 'cbi-tooltip' }, SIMdata(data))
+							]),
+						]),
 					]),
+						E('span', { 'class': 'label', 'id': 'sim', 'style': 'font-size:88%' }, [ '-' ]),
+				]),
+
+				]),
 				E('tr', { 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Connection statistics')]),
 					E('td', { 'class': 'td left', 'id': 'connst' }, [ '-' ]),
@@ -850,7 +885,7 @@ return view.extend({
 						var cutmnc = zzmnc.slice(1, 2);
 						}
 					else {
-						var cutmnc = zzmnc;
+					var cutmnc = zzmnc;
 						}
 					}
 				if ( zzmnc.length < 2 || !first.includes('0') && !second.includes('0')) {
@@ -871,4 +906,3 @@ return view.extend({
 	handleSave: null,
 	handleReset: null
 });
-

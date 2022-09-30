@@ -170,6 +170,9 @@ then
 fi
 
 # Model
+PVMODEL=$(echo $PV | awk -F 'Vendor=03f0 ProdID=0857' '{print $2}' | cut -c-150)
+PVMODEL=$(echo $PV | awk -F 'Vendor=03f0 ProdID=0a57' '{print $2}' | cut -c-150)
+PVMODEL=$(echo $PV | awk -F 'Vendor=1bc7 ProdID=1901' '{print $2}' | cut -c-150)
 PVMODEL=$(echo $PV | awk -F 'Vendor=1bc7 ProdID=1900' '{print $2}' | cut -c-150)
 if [ -z "$MODEL" ]
 then

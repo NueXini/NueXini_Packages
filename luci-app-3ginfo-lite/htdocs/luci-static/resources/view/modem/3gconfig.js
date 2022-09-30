@@ -29,7 +29,7 @@ return view.extend({
 		o = s.option(widgets.DeviceSelect, 'network', _('Interface'),
 		_('Network interface for Internet access.')
 		);
-		o.noaliases  = true;
+		o.noaliases  = false;
 		o.default = 'wan';
 		o.rmempty = false;
 
