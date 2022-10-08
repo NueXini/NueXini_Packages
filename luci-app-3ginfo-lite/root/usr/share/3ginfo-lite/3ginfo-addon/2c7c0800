@@ -193,6 +193,9 @@ if [ "x$MODE_NUM" = "x7" ]; then
 		fi
 
 		PBAND="$(band $MAINCUT "") $DLBW $ULBW"
+		if [ "x$MODE" = "xLTE" ]; then	
+      			MODE="LTE | $(band $MAINCUT "")"
+		fi
 	fi
 fi
 

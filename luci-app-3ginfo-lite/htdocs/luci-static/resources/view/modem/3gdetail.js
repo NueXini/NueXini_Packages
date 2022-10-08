@@ -180,16 +180,16 @@ function SIMdata(data) {
 	if (sdata.simslot.length > 0) {
 		return ui.itemlist(E('span'), [
 		_('SIM Slot'), sdata.simslot,
-		_('IMEI'), sdata.imei,
-		_('IMSI'), sdata.imsi,
-		_('ICCID'), sdata.iccid
+		_('SIM IMSI'), sdata.imsi,
+		_('SIM ICCID'), sdata.iccid,
+		_('Modem IMEI'), sdata.imei
 		]);
 	}
 	else {
 		return ui.itemlist(E('span'), [
-		_('IMEI'), sdata.imei,
-		_('IMSI'), sdata.imsi,
-		_('ICCID'), sdata.iccid
+		_('SIM IMSI'), sdata.imsi,
+		_('SIM ICCID'), sdata.iccid,
+		_('Modem IMEI'), sdata.imei
 		]);
 	}
 }
@@ -245,8 +245,8 @@ return view.extend({
 					L.hideModal();
 					}
 					
-					var icon;
-					var regdata;
+					var icon, wicon;
+					var wicon = L.resource('icons/loading.gif');
 
 					var p = (json.signal);
 					if (p < 0)
@@ -282,7 +282,7 @@ return view.extend({
 						}
 						else {
 						if (json.connt == '' || json.connt == '-') { 
-						view.textContent = _('Waiting for connection data...');
+						view.innerHTML = String.format('<img style="width: 16px; height: 16px; vertical-align: middle;" src="%s"/>' + ' ' +_('Waiting for connection data...'), wicon, p);
 						}
 						else {
 						view.textContent = '⏱ '+ json.connt + ' | ↓' + json.connrx + ' ↑' + json.conntx;
@@ -307,19 +307,18 @@ return view.extend({
 
 					if (document.getElementById('sim')) {
 						var view = document.getElementById("sim");
-						var lmod = document.querySelector('#sim')
+						var sv = document.getElementById("simv");
 						if (json.registration == '') { 
 						view.textContent = '-';
 						}
 						else {
+						sv.style.visibility = "visible";
 						view.textContent = json.registration;
 						if (json.registration == '0') { 
 							view.textContent = _('Not registered');
 						}
 						if (json.registration == '1') { 
 							view.textContent = _('Registered');
-							//lmod.style.background = '#2ea256';
-							//lmod.style.color = '#fff';
 						}
 						if (json.registration == '2') { 
 							view.textContent = _('Searching..');
@@ -521,15 +520,12 @@ return view.extend({
 
 					if (document.getElementById('lac')) {
 						var view = document.getElementById("lac");
-						//var subDEC="DEC";
-						//var subHEX="HEX";
 						if (json.lac_dec == '' || json.lac_hex == '') { 
 						var lc = json.lac_dec   + ' ' + json.lac_hex;
 						var ld = lc.split(' ').join('');
 						view.textContent = ld;
 						}
 						else {
-						//view.innerHTML = json.lac_dec + '|'+ subDEC.sub() + ' ' + json.lac_hex + '|'+ subHEX.sub();
 						view.innerHTML = json.lac_dec + ' (' + json.lac_hex + ')';
 						}
 
@@ -537,21 +533,16 @@ return view.extend({
 
 					if (document.getElementById('tac')) {
 						var view = document.getElementById("tac");
-						//var subDEC="DEC";
-						//var subHEX="HEX";
 						if (json.signal == 0 || json.signal == '') {
 						view.textContent = '-';
 						}
 						else {
 							if (json.tac_hex == null || json.tac_hex == '' || json.tac_hex == '-') {
-							//view.innerHTML = json.tac_d + '|'+ subDEC.sub() + ' ' + json.tac_h + '|'+ subHEX.sub();
 							view.innerHTML = json.tac_d + ' (' + json.tac_h + ')';
 							}
 							else {
-								//view.innerHTML = json.tac_dec + subDEC.sub() + ' (' + json.tac_hex + ')+ subHEX.sub()';
 								view.innerHTML = json.tac_dec + ' (' + json.tac_hex + ')';
 								if (json.tac_hex == json.lac_hex && json.tac_dec == '') {
-									//view.innerHTML = json.lac_dec + '|'+ subDEC.sub() + ' ' + json.tac_hex + '|'+ subHEX.sub();
 									view.innerHTML = json.lac_dec + ' (' + json.tac_hex + ')';
 								}
 
@@ -561,15 +552,12 @@ return view.extend({
 
 					if (document.getElementById('cid')) {
 						var view = document.getElementById("cid");
-						//var subDEC="DEC";
-						//var subHEX="HEX";
 						if (json.cid_dec == '' || json.cid_hex == '') { 
 						var cc = json.cid_hex   + ' ' + json.cid_dec;
 						var cd = cc.split(' ').join('');
 						view.textContent = cd;
 						}
 						else {
-						//view.innerHTML = json.cid_dec + '|'+ subDEC.sub() + '' + json.cid_hex + '|'+ subHEX.sub();
 						view.innerHTML = json.cid_dec + ' (' + '' + json.cid_hex + ')';
 						}
 					}
@@ -660,7 +648,7 @@ return view.extend({
 
 		}		
 
-		var info = _('More information about the 3ginfo on the') + ' <a href="https://eko.one.pl/?p=openwrt-3ginfo" target="_blank">' + _('eko.one.pl forum') + '</a>.';
+		var info = _('More information about the 3ginfo on the %seko.one.pl forum%s.').format('<a href="https://eko.one.pl/?p=openwrt-3ginfo" target="_blank">', '</a>');
 		m = new form.JSONMap(this.formdata, _('3ginfo-lite'), info);
 
 		s = m.section(form.TypedSection, '3ginfo', '', _(''));
@@ -682,28 +670,27 @@ return view.extend({
 				E('tr', { 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [ _('SIM status')]),
 					E('td', { 'class': 'td left' }, [
-
-						E('span', {
+					E('span', {
 							'class': 'ifacebadge',
 							'title': '',
-							'style': 'vertical-align: middle; margin: auto;'
+							'id': 'simv',
+							'style': 'visibility: hidden',
 							}, [
-						E('div', { 'class': 'ifacebox-body' }, [
-						E('div', { 'class': 'cbi-tooltip-container', 'style': 'text-align:left;font-size:80%' }, [
-									E('img', {
-										'src': L.resource('icons/sim1m.png'),
-										'width': 16,
-										'title': '',
-										'class': 'middle'
-									}),
-						E('span', { 'class': 'cbi-tooltip' }, SIMdata(data))
+							E('div', { 'class': 'ifacebox-body' }, [
+							E('div', { 'class': 'cbi-tooltip-container' }, [
+							E('img', {
+								'src': L.resource('icons/sim1m.png'),
+								'width': 16,
+								'title': _(''),
+								'class': 'middle'
+							}),
+							E('span', { 'class': 'cbi-tooltip', 'style': 'text-align:left;font-size:80%' }, SIMdata(data)),
+									]),
+								]),
 							]),
+						E('normal', { 'id': 'sim', 'style': 'margin-left: 0.5em;'}, [ '-' ]),
 						]),
 					]),
-						E('span', { 'class': 'label', 'id': 'sim', 'style': 'font-size:88%' }, [ '-' ]),
-				]),
-
-				]),
 				E('tr', { 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Connection statistics')]),
 					E('td', { 'class': 'td left', 'id': 'connst' }, [ '-' ]),

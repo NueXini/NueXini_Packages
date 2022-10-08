@@ -469,6 +469,11 @@ return view.extend({
 				var mrestart = (uci.get('modemband', '@modemband[0]', 'modemrestart'));
 				var cmdrestart = (uci.get('modemband', '@modemband[0]', 'restartcmd'));
 				var wname = (uci.get('modemband', '@modemband[0]', 'iface'));
+				
+				if (wname.includes('@')) {
+					wname = wname.replace(/@/g, '')
+				};
+				
 				var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
 
 				var nuser = (uci.get('modemband', '@modemband[0]', 'notify'));

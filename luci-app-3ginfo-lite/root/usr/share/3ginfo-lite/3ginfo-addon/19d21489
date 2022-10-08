@@ -162,7 +162,7 @@ if [ -n "$NR_C" ]; then
 	NR_IMSI="$NR_C"
 fi
 
-#  Integrated Circuit Card Identifier (ICCID)
+# Integrated Circuit Card Identifier (ICCID)
 O=$(sms_tool -d $DEVICE at "AT+ICCID")
 NR_D=$(echo "$O" | awk -F [:] '/^\ICCID:/{print $2}' | xargs)
 if [ -n "$NR_D" ]; then
