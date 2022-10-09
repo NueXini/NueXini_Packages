@@ -196,7 +196,6 @@ function SIMdata(data) {
 
 return view.extend({
 	formdata: { threeginfo: {} },
-	simStatusLabel     : E('span', { 'class': 'label', 'id': 'sim' }),
 
 	load: function() {
 		return L.resolveDefault(fs.exec_direct('/usr/share/3ginfo-lite/3ginfo.sh', [ 'json' ]));
@@ -669,25 +668,25 @@ return view.extend({
 					]),
 				E('tr', { 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [ _('SIM status')]),
-					E('td', { 'class': 'td left' }, [
-					E('span', {
+					E('td', { 'class': 'td left'}, [
+						E('span', {
 							'class': 'ifacebadge',
 							'title': '',
 							'id': 'simv',
-							'style': 'visibility: hidden',
-							}, [
+							'style': 'visibility: hidden; max-width:5em; display: inline-block;',
+						}, [
 							E('div', { 'class': 'ifacebox-body' }, [
 							E('div', { 'class': 'cbi-tooltip-container' }, [
 							E('img', {
 								'src': L.resource('icons/sim1m.png'),
-								'width': 16,
+								'style': 'width:16px; height:auto',
 								'title': _(''),
-								'class': 'middle'
+								'class': 'middle',
 							}),
 							E('span', { 'class': 'cbi-tooltip', 'style': 'text-align:left;font-size:80%' }, SIMdata(data)),
-									]),
 								]),
 							]),
+						]),
 						E('normal', { 'id': 'sim', 'style': 'margin-left: 0.5em;'}, [ '-' ]),
 						]),
 					]),
