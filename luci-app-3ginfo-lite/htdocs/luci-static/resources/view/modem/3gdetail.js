@@ -715,7 +715,7 @@ return view.extend({
 					E('td', { 'class': 'td left', 'id': 'cport' }, [ '-' ]),
 					]),
 				E('tr', { 'class': 'tr' }, [
-					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Protocol:')]),
+					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Protocol')]),
 					E('td', { 'class': 'td left', 'id': 'protocol' }, [ '-' ]),
 					]),
 				E('tr', { 'id': 'tempn', 'class': 'tr' }, [
