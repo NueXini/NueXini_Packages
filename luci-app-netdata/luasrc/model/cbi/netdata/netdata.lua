@@ -1,10 +1,10 @@
--- Copyright 2018 sirpdboy (herboy2008@gmail.com)
+-- Copyright 2018-2022 sirpdboy (herboy2008@gmail.com)
+-- https://github.com/sirpdboy/luci-app-netdata
 require("luci.util")
 
 local m, s ,o
 
-local m = Map("netdata", translate("NetData"))
-
+m = Map("netdata", translate("NetData"), translate("Netdata is high-fidelity infrastructure monitoring and troubleshooting.Open-source, free, preconfigured, opinionated, and always real-time.")..translate("</br>For specific usage, see:")..translate("<a href=\'https://github.com/sirpdboy/luci-app-netdata.git' target=\'_blank\'>GitHub @https://github.com/sirpdboy/luci-app-netdata </a>") )
 s = m:section(TypedSection, "netdata", translate("Global Settings"))
 s.addremove=false
 s.anonymous=true
