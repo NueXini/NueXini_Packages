@@ -7,7 +7,7 @@ O=$(echo $OB | tr -d " \t\n\r" | xargs)
 
 case "$MODE_NUM" in
 	3*)
-		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $2}' | xargs)
+		T=$(echo "$OB" | awk -F[,:] '/^\+ZRSSI/ {print $2}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
 		RSSI="$T"
 		;;
@@ -28,28 +28,28 @@ case "$MODE_NUM" in
 
 	7*|\
 	9*)
-		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $4}' | xargs)
+		T=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $4}' | xargs)
 		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			T_HEX=$(printf "%X" $T)
 			T_DEC=$T
 		fi
 
-		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $4}' | xargs)
+		T=$(echo "$OB" | awk -F[,:] '/^\+ZRSSI/ {print $4}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
 		RSSI="$T"
 
-		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $2}' | xargs)
+		T=$(echo "$OB" | awk -F[,:] '/^\+ZRSSI/ {print $2}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
 		RSRP="$T"
 
-		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $3}' | xargs)
+		T=$(echo "$OB" | awk -F[,:] '/^\+ZRSSI/ {print $3}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
 		RSRQB="$T"
 		RSRQ=$(echo $RSRQB | tr ' ' '\n' | grep -E '^[+-]?[0-9]*\.?([0-9]+)$' | cut -f1 -d"." )
 
 
-		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $5}' | xargs)
+		T=$(echo "$OB" | awk -F[,:] '/^\+ZRSSI/ {print $5}' | xargs)
 		[ -n "$ADDON" ] && ADDON="$ADDON,"
 		SINRB="$T"
 		SINR=$(echo $SINRB | tr ' ' '\n' | grep -E '^[+-]?[0-9]*\.?([0-9]+)$' | cut -f1 -d"." )
@@ -142,7 +142,7 @@ CSQ=$(echo "$OQ" | awk -F[,\ ] '/^\+CSQ/ {print $2}')
 [ "x$CSQ" = "x" ] && CSQ=-1
 	if [ $CSQ -ge 0 -a $CSQ -le 31 ]; then
 		CSQ_PER=$(($CSQ * 100/31))
-	fi
+	fi	
 fi
 
 # Modem
@@ -169,21 +169,21 @@ fi
 DEVICE=$(cat /tmp/modem 2>/dev/null)
 
 # International Mobile Equipment Identity (IMEI)
-O=$(sms_tool -d $DEVICE at "AT+GSN" | xargs)
+O=$(sms_tool -d $_DEVICE at "AT+GSN" | xargs)
 NR_I=$(echo "$O" | cut -c 8-)
 if [ -n "$NR_I" ]; then
 	NR_IMEI="$NR_I"
 fi
 
 # International Mobile Subscriber Identity (IMSI)
-O=$(sms_tool -d $DEVICE at "AT+CIMI" | xargs)
+O=$(sms_tool -d $_DEVICE at "AT+CIMI" | xargs)
 NR_C=$(echo "$O" | cut -c 9-)
 if [ -n "$NR_C" ]; then
 	NR_IMSI="$NR_C"
 fi
 
 # Integrated Circuit Card Identifier (ICCID)
-O=$(sms_tool -d $DEVICE at "AT+ICCID")
+O=$(sms_tool -d $_DEVICE at "AT+ICCID")
 NR_D=$(echo "$O" | awk -F [:] '/^\ICCID:/{print $2}' | xargs)
 if [ -n "$NR_D" ]; then
 	NR_ICCID="$NR_D"
