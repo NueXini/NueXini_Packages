@@ -316,7 +316,7 @@ return view.extend({
 						if (json.registration == '0') { 
 							view.textContent = _('Not registered');
 						}
-						if (json.registration == '1') { 
+						if (json.registration == '1' || json.registration == '6') { 
 							view.textContent = _('Registered');
 						}
 						if (json.registration == '2') { 
@@ -324,6 +324,9 @@ return view.extend({
 						}
 						if (json.registration == '3') { 
 							view.textContent = _('Registering denied');
+						}
+						if (json.registration == '5' || json.registration == '7') { 
+							view.textContent = _('Registered (roaming)');
 						}
 					}
 					}

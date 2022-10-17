@@ -3,6 +3,7 @@
 _DEVICE=/dev/ttyACM0
 
 OB=$(sms_tool -d $_DEVICE at "at+zrssi;+zcellinfo?;+zcainfo?")
+
 O=$(echo $OB | tr -d " \t\n\r" | xargs)
 
 case "$MODE_NUM" in
@@ -33,6 +34,8 @@ case "$MODE_NUM" in
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			T_HEX=$(printf "%X" $T)
 			T_DEC=$T
+			LAC_DEC=$T_DEC
+			LAC_HEX=$T_HEX
 		fi
 
 		T=$(echo "$OB" | awk -F[,:] '/^\+ZRSSI/ {print $4}' | xargs)
@@ -54,8 +57,8 @@ case "$MODE_NUM" in
 		SINRB="$T"
 		SINR=$(echo $SINRB | tr ' ' '\n' | grep -E '^[+-]?[0-9]*\.?([0-9]+)$' | cut -f1 -d"." )
 
-		T=$(echo "$OB" | awk -F[,:] '/^\+ZCELLINFO/ {print $4}' | xargs)
-		case "$T" in
+		TU=$(echo "$OB" | awk -F[,:\;] '/^\+ZCELLINFO/ {print $4}' | xargs)
+		case "$TU" in
 			*"LTE B1") MODE=$(band 1 "LTE ");;
 			*"LTE B3") MODE=$(band 3 "LTE ");;
 			*"LTE B5") MODE=$(band 5 "LTE ");;
@@ -66,49 +69,37 @@ case "$MODE_NUM" in
 			*"LTE B38") MODE=$(band 38 "LTE ");;
 			*"LTE B40") MODE=$(band 40 "LTE ");;
 			*"LTE B41") MODE=$(band 41 "LTE ");;
-			*) MODE="${T}";;
+			*) MODE="${TU}";;
 		esac
 
 		T=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $3}' | xargs)
-		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
+		if [ -n "$T" ]; then
 			T1=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $6}' | xargs)
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			PBAND="$(band $T "") @$T1 MHz"
-
+			ADDON="$ADDON"'{"Primary band":"'$(band $T "")', '$T1' MHz"}'
 		fi
 		T=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $2}' | xargs)
-		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
+		if [ -n "$T" ]; then
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			PCI="$T"
-
+			ADDON="$ADDON"'{"PCI":"'$T'"}'
 		fi
 		T=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $5}' | xargs)
-		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
+		if [ -n "$T" ]; then
 			[ -n "$ADDON" ] && ADDON="$ADDON,"
 			EARFCN="$T"
-
+			ADDON="$ADDON"'{"EARFCN":"'$T'"}'
 		fi
 
-		if [ "x$MODE_NUM" = "x9" ]; then
-			T=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $9}' | xargs)
-			if [ -n "$T" ]; then
-				case $T in
-					*"1") MODE="${MODE/LTE/LTE_A} / "$(band 1 "");;
-					*"3") MODE="${MODE/LTE/LTE_A} / "$(band 3 "");;
-					*"5") MODE="${MODE/LTE/LTE_A} / "$(band 5 "");;
-					*"7") MODE="${MODE/LTE/LTE_A} / "$(band 7 "");;
-					*"8") MODE="${MODE/LTE/LTE_A} / "$(band 8 "");;
-					*"20") MODE="${MODE/LTE/LTE_A} / "$(band 20 "");;
-					*"28") MODE="${MODE/LTE/LTE_A} / "$(band 28 "");;
-					*"38") MODE="${MODE/LTE/LTE_A} / "$(band 38 "");;
-					*"40") MODE="${MODE/LTE/LTE_A} / "$(band 40 "");;
-					*"41") MODE="${MODE/LTE/LTE_A} / "$(band 41 "");;
-					*) MODE="${MODE/LTE/LTE_A} / B${T}";;
-				esac
-					MODE=$(echo $MODE | sed "s/LTE_A/LTE-A |/g" | sed 's,/,+,')
-			fi
+		TS=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $9}' | xargs)
+		if [ -n "$TS" ]; then
+			case $TS in				
+				*) MODE="${MODE/LTE/LTE_A} / $(band $TS "")";;
+			esac
 
 			T=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $9}' | xargs)
+
 			if [ -n "$T" ]; then
 				T2=$(echo "$OB" | awk -F[,:\;] '/^\+ZCAINFO/ {print $11}' | xargs)
 				[ -n "$ADDON" ] && ADDON="$ADDON,"
@@ -127,29 +118,39 @@ case "$MODE_NUM" in
 				[ -n "$ADDON" ] && ADDON="$ADDON,"
 				S1EARFCN="$T"
 			fi
+
 		fi
 		;;
 esac
+
+MODE=$(echo $MODE | sed "s/LTE_A/LTE-A |/g" | sed 's,/,+,')
 
 # Firmware
 FWB=$(sms_tool -d $_DEVICE at "AT+GMR")
 FW=$(echo $FWB | tr -d " \t\n\r" | xargs)
 
 if [[ "$FW" == *"MF286RA"* && "$CSQ" == *"-"* ]]; then
-OQ=$(sms_tool -D -d $DEVICE at "AT+CSQ")
+OQ=$(sms_tool -D -d $_DEVICE at "AT+CSQ")
 CSQ=$(echo "$OQ" | awk -F[,\ ] '/^\+CSQ/ {print $2}')
 
 [ "x$CSQ" = "x" ] && CSQ=-1
 	if [ $CSQ -ge 0 -a $CSQ -le 31 ]; then
 		CSQ_PER=$(($CSQ * 100/31))
-	fi	
+	fi
+	
+fi
+
+if [[ "$FW" == *"MF286RA"* && "$REG" == *"-"* ]]; then
+
+OR=$(sms_tool -D -d $_DEVICE at "AT+CREG?")
+REG=$(echo "$OR" | awk -F [:] '/^\+CREG:/{print $2}' | head -c 4 | tail -c 1)
+	
 fi
 
 # Modem
 MODELA=$(sms_tool -d $_DEVICE at "AT+CGMI" | tr -s "\n"  | xargs)
 
-SUB='ZTE'
-if [[ "$MODELA" == *"$SUB"* ]]; then
+if [[ "$MODELA" == *"ZTE"* ]]; then
 MODELACUT=$(echo $MODELA | awk -F'CGMI: ' '{print $2}' | sed 's/"//g' | sed 's/ CORPORATION//g')
 MODELO=$(echo $MODELACUT | tr -d " \t\n\r" | xargs)
 MODELB=$(sms_tool -d $_DEVICE at "AT+CGMM")
@@ -171,7 +172,12 @@ DEVICE=$(cat /tmp/modem 2>/dev/null)
 # International Mobile Equipment Identity (IMEI)
 O=$(sms_tool -d $_DEVICE at "AT+GSN" | xargs)
 NR_I=$(echo "$O" | cut -c 8-)
-if [ -n "$NR_I" ]; then
+if [ -z "NR_I" ]
+then
+	O=$(sms_tool -d $_DEVICE at "AT*MRD_IMEI?" | xargs)
+	NR_I=$(echo "$O" | awk -F [:] '/^\*MRD_IMEI:/{print $2}' | xargs)
+	NR_IMEI="$NR_I"
+else
 	NR_IMEI="$NR_I"
 fi
 
@@ -183,11 +189,7 @@ if [ -n "$NR_C" ]; then
 fi
 
 # Integrated Circuit Card Identifier (ICCID)
-O=$(sms_tool -d $_DEVICE at "AT+ICCID")
-NR_D=$(echo "$O" | awk -F [:] '/^\ICCID:/{print $2}' | xargs)
-if [ -n "$NR_D" ]; then
-	NR_ICCID="$NR_D"
-fi
+NR_D="-"
 
 # Protocol
 # DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER

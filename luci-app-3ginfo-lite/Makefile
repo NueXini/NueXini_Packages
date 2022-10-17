@@ -8,9 +8,15 @@ PKG_NAME:=luci-app-3ginfo-lite
 LUCI_TITLE:=LuCI panel for 3ginfo-lite
 LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+sms-tool +comgt
-PKG_VERSION:=1.0.27-20221008
+PKG_VERSION:=1.0.28-20221017
 
 include $(TOPDIR)/feeds/luci/luci.mk
+
+define Package/luci-app-3ginfo-lite/description
+	LuCI panel for 3ginfo-lite
+	The package allows visualization of the parameters of a 
+	mobile Internet connection.
+endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
 

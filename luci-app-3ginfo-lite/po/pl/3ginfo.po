@@ -114,6 +114,9 @@ msgstr "Nie zalogowana do sieci"
 msgid "Registered"
 msgstr "Zalogowana do sieci"
 
+msgid "Registered (roaming)"
+msgstr "Zalogowana do sieci (roaming)"
+
 msgid "Searching.."
 msgstr "Wyszukiwanie.."
 
