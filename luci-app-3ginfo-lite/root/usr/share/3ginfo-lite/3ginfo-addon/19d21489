@@ -140,13 +140,6 @@ CSQ=$(echo "$OQ" | awk -F[,\ ] '/^\+CSQ/ {print $2}')
 	
 fi
 
-if [[ "$FW" == *"MF286RA"* && "$REG" == *"-"* ]]; then
-
-OR=$(sms_tool -D -d $_DEVICE at "AT+CREG?")
-REG=$(echo "$OR" | awk -F [:] '/^\+CREG:/{print $2}' | head -c 4 | tail -c 1)
-	
-fi
-
 # Modem
 MODELA=$(sms_tool -d $_DEVICE at "AT+CGMI" | tr -s "\n"  | xargs)
 
@@ -170,26 +163,29 @@ fi
 DEVICE=$(cat /tmp/modem 2>/dev/null)
 
 # International Mobile Equipment Identity (IMEI)
-O=$(sms_tool -d $_DEVICE at "AT+GSN" | xargs)
-NR_I=$(echo "$O" | cut -c 8-)
-if [ -z "NR_I" ]
-then
-	O=$(sms_tool -d $_DEVICE at "AT*MRD_IMEI?" | xargs)
-	NR_I=$(echo "$O" | awk -F [:] '/^\*MRD_IMEI:/{print $2}' | xargs)
+OI=$(sms_tool -d $_DEVICE at "AT+GSN" | xargs)
+NR_I=$(echo "$OI" | sed 's/AT+GSN//g' | xargs)
+if [ -z "NR_I" ]; then
+	OIB=$(sms_tool -d $_DEVICE at "AT*MRD_IMEI?" | xargs)
+	NR_I=$(echo "$OIB" | awk -F [:] '/^\*MRD_IMEI:/{print $2}' | xargs)
 	NR_IMEI="$NR_I"
 else
 	NR_IMEI="$NR_I"
 fi
 
 # International Mobile Subscriber Identity (IMSI)
-O=$(sms_tool -d $_DEVICE at "AT+CIMI" | xargs)
-NR_C=$(echo "$O" | cut -c 9-)
+OS=$(sms_tool -d $_DEVICE at "AT+CIMI" | xargs)
+NR_C=$(echo "$OS" | sed 's/AT+CIMI//g' | xargs)
 if [ -n "$NR_C" ]; then
 	NR_IMSI="$NR_C"
 fi
 
 # Integrated Circuit Card Identifier (ICCID)
-NR_D="-"
+OD=$(sms_tool -d $_DEVICE at "AT*ICCID?" | xargs)
+NR_D=$(echo "$OD" | awk -F [:] '/^\*ICCID: /{print $2}' | xargs)
+if [ -n "$NR_D" ]; then
+	NR_ICCID="$NR_D"
+fi
 
 # Protocol
 # DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER

@@ -11,47 +11,43 @@ PKG_CONFIG_DEPENDS:= \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Xray_plugin \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Server \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Hysteria
-
+	
 LUCI_TITLE:=A New SS/SSR/Xray/Trojan LuCI interface
 LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+ipset +ip-full +iptables-mod-tproxy +dnsmasq-full +coreutils +coreutils-base64 +bash +pdnsd-alt +wget-ssl +lua +luasocket +lua-maxminddb +lua-cjson \
-	+shadowsocks-libev-ss-local +shadowsocks-libev-ss-redir +shadowsocksr-libev-ssr-local +shadowsocksr-libev-ssr-redir +shadowsocksr-libev-ssr-check +simple-obfs
+	+shadowsocks-libev-ss-local +shadowsocks-libev-ss-redir +shadowsocksr-libev-ssr-local +shadowsocksr-libev-ssr-redir +shadowsocksr-libev-ssr-check +simple-obfs \
+	+PACKAGE_$(PKG_NAME)_INCLUDE_Xray:xray-core \
+	+PACKAGE_$(PKG_NAME)_INCLUDE_Trojan:trojan \
+	+PACKAGE_$(PKG_NAME)_INCLUDE_Trojan:ipt2socks \
+	+PACKAGE_$(PKG_NAME)_INCLUDE_Kcptun:kcptun-client \
+	+PACKAGE_$(PKG_NAME)_INCLUDE_Xray_plugin:xray-plugin \
+	+PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Server:shadowsocksr-libev-ssr-server \
+	+PACKAGE_$(PKG_NAME)_INCLUDE_Hysteria:hysteria
 
 define Package/$(PKG_NAME)/config
-	if PACKAGE_$(PKG_NAME)
-		menu "VSSR Configuration"
-			config PACKAGE_$(PKG_NAME)_INCLUDE_Xray
-				bool "Include Xray"
-				select PACKAGE_xray-core
-				default n if i386||x86_64||arm||aarch64
+config PACKAGE_$(PKG_NAME)_INCLUDE_Xray
+	bool "Include Xray"
+	default n if i386||x86_64||arm||aarch64
 
-			config PACKAGE_$(PKG_NAME)_INCLUDE_Trojan
-				bool "Include Trojan"
-				select PACKAGE_ipt2socks
-				select PACKAGE_trojan
-				default n if i386||x86_64||arm||aarch64
+config PACKAGE_$(PKG_NAME)_INCLUDE_Trojan
+	bool "Include Trojan"
+	default n if i386||x86_64||arm||aarch64
+	
+config PACKAGE_$(PKG_NAME)_INCLUDE_Kcptun
+	bool "Include Kcptun"
+	default n
 
-			config PACKAGE_$(PKG_NAME)_INCLUDE_Kcptun
-				bool "Include Kcptun"
-				select PACKAGE_kcptun-client
-				default n
+config PACKAGE_$(PKG_NAME)_INCLUDE_Xray_plugin
+	bool "Include Shadowsocks Xray Plugin"
+	default n if i386||x86_64||arm||aarch64
+	
+config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Server
+	bool "Include ShadowsocksR Libev Server"
+	default n if i386||x86_64||arm||aarch64
 
-			config PACKAGE_$(PKG_NAME)_INCLUDE_Xray_plugin
-				bool "Include Shadowsocks Xray Plugin"
-				select PACKAGE_xray-plugin
-				default n if i386||x86_64||arm||aarch64
-
-			config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Server
-				bool "Include ShadowsocksR Libev Server"
-				select PACKAGE_shadowsocksr-libev-ssr-server
-				default n if i386||x86_64||arm||aarch64
-
-			config PACKAGE_$(PKG_NAME)_INCLUDE_Hysteria
-				bool "Include Hysteria"
-				select PACKAGE_hysteria
-				default n if i386||x86_64||arm||aarch64
-		endmenu
-	endif
+config PACKAGE_$(PKG_NAME)_INCLUDE_Hysteria
+	bool "Include Hysteria"
+	default n if i386||x86_64||arm||aarch64
 endef
 
 define Package/$(PKG_NAME)/conffiles
