@@ -1,6 +1,6 @@
 # Huawei E3272/E3372/E3276
 
-O=$(sms_tool -d $DEVICE at "at^chiptemp?;^hcsq?")
+O=$(sms_tool -d $DEVICE at "at^chiptemp?;^hcsq?;^iccid?;^hfreqinfo?")
 
 T=$(echo "$O" | awk -F[,:] '/^\^HCSQ:/ {print $2}' | xargs)
 if [ -n "$T" ]; then
@@ -61,30 +61,28 @@ then
 fi
 
 # International Mobile Equipment Identity (IMEI)
-O=$(sms_tool -d $DEVICE at "AT+GSN" | xargs)
-NR_I=$(echo "$O" | sed 's/AT+GSN//g' | xargs)
+OI=$(sms_tool -d $DEVICE at "AT+GSN" | xargs)
+NR_I=$(echo "$OI" | sed 's/AT+GSN//g' | xargs)
 if [ -n "NR_I" ]
 then
 	NR_IMEI="$NR_I"
 fi
 
 # International Mobile Subscriber Identity (IMSI)
-O=$(sms_tool -d $DEVICE at "AT+CIMI" | xargs)
-NR_C=$(echo "$O" | sed 's/AT+CIMI//g' | xargs)
+OC=$(sms_tool -d $DEVICE at "AT+CIMI" | xargs)
+NR_C=$(echo "$OC" | sed 's/AT+CIMI//g' | xargs)
 if [ -n "$NR_C" ]; then
 	NR_IMSI="$NR_C"
 fi
 
 # Integrated Circuit Card Identifier (ICCID)
-O=$(sms_tool -d $DEVICE at "AT^ICCID?")
 NR_D=$(echo "$O" | awk -F [:] '/^\^ICCID: /{print $2}' | xargs)
 if [ -n "$NR_D" ]; then
 	NR_ICCID="$NR_D"
 fi
 
 # DL / UL / Band
-OTB=$(sms_tool -d $DEVICE at "AT^HFREQINFO?")
-TBX=$(echo "$OTB" | awk -F [:] '/^\^HFREQINFO:/{print $2}' | xargs)
+TBX=$(echo "$O" | awk -F [:] '/^\^HFREQINFO:/{print $2}' | xargs)
 TB=$(echo "$TBX" | cut -d ',' -f3-3 )
 
 TDL=$(echo "$TBX" | cut -d ',' -f6-6 )
@@ -99,6 +97,10 @@ DLBW="DL: @$DL MHz"
 PBAND="$(band $TB "") $DLBW $ULBW"
 EARFCN=$(echo "$TBX" | cut -d ',' -f4-4 )
 PCI="-"
+
+if [[ "$MODE" == *"LTE"* ]] && [ -n "$TB" ]; then
+MODE="LTE | "$(band $TB "")
+fi
 
 # LAC & TAC
 T_HEX=$LAC_HEX
