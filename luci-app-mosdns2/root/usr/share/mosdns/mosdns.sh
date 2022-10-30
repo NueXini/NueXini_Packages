@@ -41,7 +41,10 @@ adlist_update() (
 	ad_source=$(uci -q get mosdns.config.ad_source)
 	[ $ad_source = "geosite.dat" ] && exit 0
 	AD_TMPDIR=$(mktemp -d) || exit 1
-	curl --connect-timeout 60 -m 90 --ipv4 -fSLo "$AD_TMPDIR/adlist.txt" "$ad_source"
+	google_status=$(curl -I -4 -m 3 -o /dev/null -s -w %{http_code} http://www.google.com/generate_204)
+	[ $google_status -ne "204" ] && mirror="https://ghproxy.com/"
+	echo -e "\e[1;32mDownloading "$mirror$ad_source\e[0m"
+	curl --connect-timeout 60 -m 90 --ipv4 -fSLo "$AD_TMPDIR/adlist.txt" "$mirror$ad_source"
 	if [ $? -ne 0 ]; then
 		rm -rf $AD_TMPDIR
 		exit 1
@@ -54,7 +57,7 @@ adlist_update() (
 geodat_update() (
 	geodat_download() (
 		google_status=$(curl -I -4 -m 3 -o /dev/null -s -w %{http_code} http://www.google.com/generate_204)
-		[ $google_status -ne "204" ] && mirror="https://github.cooluc.com/"
+		[ $google_status -ne "204" ] && mirror="https://ghproxy.com/"
 		echo -e "\e[1;32mDownloading "$mirror"https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/$1\e[0m"
 		curl --connect-timeout 60 -m 900 --ipv4 -fSLo "$TMPDIR/$1" ""$mirror"https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/$1"
 	)
@@ -62,10 +65,10 @@ geodat_update() (
 	geodat_download geoip.dat
 	geodat_download geosite.dat
 	if [ "$(grep -o CN "$TMPDIR"/geoip.dat | wc -l)" -eq "0" ]; then
-		rm -rf "$TMPDIR"/geoip.dat
+		rm -rf "$TMPDIR"
 		exit 1
 	elif [ "$(grep -o .com "$TMPDIR"/geosite.dat | wc -l)" -lt "1000" ]; then
-		rm -rf "$TMPDIR"/geosite.dat
+		rm -rf "$TMPDIR"
 		exit 1
 	fi
 	cp -f "$TMPDIR"/* /usr/share/v2ray
