@@ -2,11 +2,11 @@
 # Copyright (C) 2020 OpenWrt.org
 
 START=99
-BIN=/usr/sbin/forked-daapd
-PID=/var/run/forked-daapd.pid
+BIN=/usr/sbin/owntone
+PID=/var/run/owntone.pid
 SSD=start-stop-daemon
 
-NAME=forked-daapd
+NAME=owntone
 
 uci_get_by_name() {
 	local ret=$(uci get $NAME.$1.$2 2>/dev/null)
@@ -19,20 +19,20 @@ uci_get_by_type() {
 }
 
 gen_config_file() {
-cat <<-EOF >/var/etc/forked-daapd.conf
+cat <<-EOF >/var/etc/owntone.conf
 general {
 	uid = "root"
-	db_path = "$(uci_get_by_type forked-daapd db_path)"
-	logfile = "/var/log/forked-daapd.log"
+	db_path = "$(uci_get_by_type owntone db_path)"
+	logfile = "/var/log/owntone.log"
 	loglevel = log
 	ipv6 = no
-	cache_path = "/var/forked-daapd-cache.db"
+	cache_path = "/var/owntone-cache.db"
 }
 
 library {
 	name = "My Music on OpenWrt"
-	port = $(uci_get_by_type forked-daapd port 3689)
-	directories = { "$(uci_get_by_type forked-daapd directories)" }
+	port = $(uci_get_by_type owntone port 3689)
+	directories = { "$(uci_get_by_type owntone directories)" }
 	podcasts = { "/Podcasts" }
 	audiobooks = { "/Audiobooks" }
 	compilations = { "/Compilations" }
@@ -48,9 +48,9 @@ EOF
 
 start() {
         gen_config_file
-        local enabled=$(uci_get_by_type forked-daapd enabled 0)
+        local enabled=$(uci_get_by_type owntone enabled 0)
         [ "$enabled" == "0" ] && return 1
-        $SSD -p $PID -S -x $BIN -- -P $PID -c /var/etc/forked-daapd.conf
+        $SSD -p $PID -S -x $BIN -- -P $PID -c /var/etc/owntone.conf
 }
 	
 stop() {
