@@ -22,10 +22,10 @@ start(){
   log 127.0.0.1   local0           #[日志输出配置，所有日志都记录在本机，通过local0输出]
   log 127.0.0.1   local1 notice    #定义haproxy 日志级别[error warringinfo debug]
   daemon		                #以后台形式运行harpoxy
-  nbproc 1                         #设置进程数量
+  #nbproc 1                         #设置进程数量
   pidfile /var/run/haproxy.pid
   ulimit-n 1024                    #ulimit 的数量限制
-  maxconn 1024	                #默认最大连接数,需考虑ulimit-n限制
+  maxconn 2048	                #默认最大连接数,需考虑ulimit-n限制
   #chroot /usr/local/haproxy
 defaults
   log global
