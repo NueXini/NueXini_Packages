@@ -27,7 +27,6 @@ var BANDmagic = form.DummyValue.extend({
 				'click': ui.createHandlerFn(this, function() {
 							return handleAction('resetbandz');
 						}),
-
 			}, _('Restore'));
 
 		return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh'), 'null').then(L.bind(function(html) {
@@ -56,7 +55,6 @@ var BANDmagic = form.DummyValue.extend({
 								]),
 						),
 					]),
-
 				]);
 					}
 			}, this));
@@ -78,7 +76,6 @@ var SYSTmagic = form.DummyValue.extend({
 				'click': ui.createHandlerFn(this, function() {
 							return handleAction('rebootdev');
 						}),
-
 			}, _('Perform reboot'));
 
 		return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh'), 'null').then(L.bind(function(html) {
@@ -129,7 +126,6 @@ var UPboost = form.DummyValue.extend({
 				'click': ui.createHandlerFn(this, function() {
 							return handleAction('offupload');
 						}),
-
 			}, _('Disable'));
 
 		return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh'), 'null').then(L.bind(function(html) {
@@ -158,7 +154,6 @@ var UPboost = form.DummyValue.extend({
 								]),
 						),
 					]),
-
 				]);
 					}
 			}, this));
@@ -177,7 +172,6 @@ var cbiRichListValue = form.ListValue.extend({
 			validate: L.bind(this.validate, this, section_id),
 			disabled: (this.readonly != null) ? this.readonly : this.map.readonly
 		});
-
 		return widget.render();
 	},
 
@@ -213,9 +207,7 @@ function handleAction(ev) {
 				if ( nuser != '1' || nuser == null ) {
 				ui.addNotification(null, E('p', _('The new bands settings have been sent to the modem. If the changes are not visible, a restart of the connection, modem or router may be required.')), 'info');
 				}
-
     			});
-
 			}
 	}
 	if (ev === 'rebootdev') {
@@ -230,6 +222,10 @@ function handleAction(ev) {
 	if (ev === 'restartwan') {
 		return uci.load('modemband').then(function() {
 		var wname = (uci.get('modemband', '@modemband[0]', 'iface'));
+		
+			if (wname.includes('@')) {
+				wname = wname.replace(/@/g, '')
+			};
 
 			fs.exec('/sbin/ifdown', [ wname ]);
 			fs.exec('sleep 3');
@@ -270,6 +266,8 @@ return view.extend({
 		if(!json.hasOwnProperty('error')){
 
 		if (json.enabled == '' || json.modem == '') {
+			fs.exec('sleep 2');
+				if (json.enabled == '' || json.modem == '') {
 						L.ui.showModal(_('Modemband'), [
 						E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
 						]);
@@ -279,6 +277,7 @@ return view.extend({
 						//L.hideModal();
 						}, 25000).finally();
 					}
+				}
 					else {
 					L.hideModal();
 					}
@@ -310,13 +309,9 @@ return view.extend({
 				if ( json != null ) { 
 
 				var renderHTML = "";
-				//var strongband = "<span style=\"font-weight:bold;\">%s%s</span>";		
-
 				var view = document.getElementById("modemlteb");
-				//view.innerHTML = modemen;
 				for (var i = 0; i < json.enabled.length; i++) 
 				{
-				//renderHTML += 'B' + String.format(strongband, _(""), _(json.enabled[i]))+'  ';
 				var txtband = json.enabled[i].toString();
 				var numb = txtband.match(/\d+$/);
 				renderHTML += 'B' + numb + '  ';
@@ -328,9 +323,6 @@ return view.extend({
 				else {
 				var view = document.getElementById("modemlteb");
 				view.innerHTML = _('Waiting for device...');
-				//L.ui.showModal(_(''), [
-				//E('p', { 'class': 'spinning' }, _('Waiting for device...'))
-				//]);
 				}
 
 			});
@@ -348,11 +340,9 @@ return view.extend({
 			ui.addNotification(null, E('p', _('Port not found, quitting...')), 'error');
 			}
 		}
-
 			} catch (err) {
   				console.log('Error: ', err.message);
 			}
-
 		}		
 
 		var info = _('Configuration modem frequency bands. More information about the modemband application on the %seko.one.pl forum%s.').format('<a href="https://eko.one.pl/?p=openwrt-modemband" target="_blank">', '</a>');
@@ -426,7 +416,6 @@ return view.extend({
 
 		o = s.taboption('opt1', SYSTmagic);
 
-
 		s.tab('opt2', _('LTE band aggregation at UL (upload)'));
 		s.anonymous = true;
 
@@ -446,10 +435,8 @@ return view.extend({
 				_('No supported modem / router was found...') +
 				'</em></div>';
 		};
-
-
 		}
-
+		
 		return m.render();
 	},
 
@@ -475,7 +462,6 @@ return view.extend({
 				};
 				
 				var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
-
 				var nuser = (uci.get('modemband', '@modemband[0]', 'notify'));
 				
 				if ( nuser != '1' || nuser == null ) {
@@ -483,14 +469,12 @@ return view.extend({
 				}
 				
 				if (wrestart == '1') {
-
 				fs.exec('/sbin/ifdown', [ wname ]);
 				fs.exec('sleep 3');
 				fs.exec('/sbin/ifup', [ wname ]);
 				}
 
 				if (mrestart == '1') {
-
 				fs.exec('sleep 20');
 				//sms_tool -d $_DEVICE at "cmd"
 				fs.exec_direct('/usr/bin/sms_tool', [ '-d' , sport , 'at' , cmdrestart ]);

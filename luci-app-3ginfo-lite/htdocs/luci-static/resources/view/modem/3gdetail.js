@@ -212,14 +212,17 @@ return view.extend({
 		if(!json.hasOwnProperty('error')){
 
 					if (json.signal == '0' || json.signal == '') {
-						L.ui.showModal(_('3ginfo-lite'), [
-						E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
-						]);
+						fs.exec('sleep 1');
+							if (json.signal == '0' || json.signal == '') {	
+							L.ui.showModal(_('3ginfo-lite'), [
+							E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
+							]);
 
-						window.setTimeout(function() {
-						location.reload();
-						//L.hideModal();
-						}, 30000).finally();
+							window.setTimeout(function() {
+							location.reload();
+							//L.hideModal();
+							}, 30000).finally();
+							}
 					}
 					else {
 					L.hideModal();
@@ -231,14 +234,17 @@ return view.extend({
 				var json = JSON.parse(res);
 
 					if (json.signal == '0' || json.signal == '') {
-						L.ui.showModal(_('3ginfo-lite'), [
-						E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
-						]);
+						fs.exec('sleep 1');
+							if (json.signal == '0' || json.signal == '') {
+							L.ui.showModal(_('3ginfo-lite'), [
+							E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
+							]);
 
-						window.setTimeout(function() {
-						location.reload();
-						//L.hideModal();
-						}, 30000).finally();
+							window.setTimeout(function() {
+							location.reload();
+							//L.hideModal();
+							}, 30000).finally();
+							}
 					}
 					else {
 					L.hideModal();
@@ -343,7 +349,6 @@ return view.extend({
 						else {
 						view.textContent = json.mode;
 						}
-
 						}
 					}
 
@@ -623,6 +628,7 @@ return view.extend({
 							}
 						}
 					}
+					
 					if (document.getElementById('s4band')) {
 						var view = document.getElementById("s4band");
 						if (json.s4band == '') { 
@@ -637,7 +643,6 @@ return view.extend({
 							}
 						}
 					}
-
 			});
 		});		}		
 		else {
@@ -702,7 +707,6 @@ return view.extend({
 					E('td', { 'class': 'td left', 'id': 'mode' }, [ '-' ]),
 					]),
 			]),
-
 			E('h4', {}, [ _('Modem Information') ]),
 			E('table', { 'class': 'table' }, [
 				E('tr', { 'class': 'tr' }, [
@@ -726,7 +730,6 @@ return view.extend({
 					E('td', { 'class': 'td left', 'id': 'temp' }, [ '-' ]),
 					]),
 			]),
-
 			E('h4', {}, [ _('Cell / Signal Information') ]),
 			E('table', { 'class': 'table' }, [
 				E('tr', { 'class': 'tr' }, [
@@ -806,7 +809,6 @@ return view.extend({
 							}, E('div')
 						))
 					]),
-
 				E('tr', { 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Primary band | PCI & EARFCN')]),
 					E('td', { 'class': 'td left', 'id': 'pband' }, [ '-' ]),
@@ -861,15 +863,15 @@ return view.extend({
 			var second = zzmnc.slice(1, 2);
 			var zzcid = Math.round(json.cid_dec/256);
 				if ( zzmnc.length == 3 ) {
-				if (first.includes('0')) {
-				var cutmnc = zzmnc.slice(1, 3);
-				}
-				if (first.includes('0') && second.includes('0')) {
-				var cutmnc = zzmnc.slice(2, 3);
-				}
+					if (first.includes('0')) {
+					var cutmnc = zzmnc.slice(1, 3);
+					}
+					if (first.includes('0') && second.includes('0')) {
+					var cutmnc = zzmnc.slice(2, 3);
+					}
 				}
 				if ( zzmnc.length == 2 ) {
-				var first = zzmnc.slice(0, 1);
+					var first = zzmnc.slice(0, 1);
 					if (first.includes('0')) {
 						var cutmnc = zzmnc.slice(1, 2);
 						}
@@ -879,7 +881,7 @@ return view.extend({
 					}
 				if ( zzmnc.length < 2 || !first.includes('0') && !second.includes('0')) {
 				var cutmnc = zzmnc;
-			}
+				}
 
 			window.open(searchsite + json.operator_mcc + cutmnc + '.' + zzcid);
 			}

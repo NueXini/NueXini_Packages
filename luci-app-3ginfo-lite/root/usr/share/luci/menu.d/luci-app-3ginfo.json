@@ -1,7 +1,6 @@
 {
-	"admin/modem": {
-		"title": "Modem",
-		"order": 30,
+	"admin/services": {
+		"title": "Services",
 		"action": {
 			"type": "firstchild",
 			"recurse": true
