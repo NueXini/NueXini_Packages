@@ -3046,7 +3046,7 @@ function notifyForUpdate(force) {
         if (sha1 === null) {
             save = false;
             versionLog('<p><big>取得您的 netdata 版本失败！</big></p>');
-        } else {
+        else {
             save = true;
             versionLog('<p><big>您已经是最新版本的 netdata！</big></p>');
         }
