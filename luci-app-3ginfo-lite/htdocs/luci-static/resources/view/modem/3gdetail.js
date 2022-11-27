@@ -540,17 +540,39 @@ return view.extend({
 
 					if (document.getElementById('tac')) {
 						var view = document.getElementById("tac");
+						var tac_dh, tac_dec_hex, lac_dec_hex;
 						if (json.signal == 0 || json.signal == '') {
 						view.textContent = '-';
 						}
 						else {
 							if (json.tac_hex == null || json.tac_hex == '' || json.tac_hex == '-') {
-							view.innerHTML = json.tac_d + ' (' + json.tac_h + ')';
+							var tac_dh =  json.tac_d + ' (' + json.tac_h + ')';
+								if (tac_dh.includes(' ()') && json.tac_d == null || json.tac_d == '') {
+									view.textContent = '-';
+								} else {
+									view.textContent = tac_dh;
+								};
 							}
 							else {
-								view.innerHTML = json.tac_dec + ' (' + json.tac_hex + ')';
+								var tac_dec_hex = json.tac_dec + ' (' + json.tac_hex + ')';
+									if (tac_dec_hex.includes(' ()') && json.tac_dec == null || json.tac_dec == '') {
+										view.textContent = '-';
+									} else {
+										view.textContent = tac_dec_hex;
+									};
+								var lac_dec_hex = json.tac_dec + ' (' + json.tac_hex + ')';
+									if (lac_dec_hex.includes(' ()') && json.tac_dec == null || json.tac_dec == '') {
+										view.textContent = '-';
+									} else {
+										view.textContent = lac_dec_hex;
+									};
 								if (json.tac_hex == json.lac_hex && json.tac_dec == '') {
-									view.innerHTML = json.lac_dec + ' (' + json.tac_hex + ')';
+								var lac_dec_hex = json.lac_dec + ' (' + json.tac_hex + ')';
+									if (lac_dec_hex.includes(' ()') && json.tac_hex == null || json.tac_hex == '' && json.lac_hex == null || json.lac_hex == '') {
+										view.textContent = '-';
+									} else {
+										view.textContent= lac_dec_hex;
+									};
 								}
 
 							}
