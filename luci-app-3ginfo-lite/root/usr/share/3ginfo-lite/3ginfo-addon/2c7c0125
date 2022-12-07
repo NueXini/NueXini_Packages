@@ -19,11 +19,11 @@ if [ -n "$T" ]; then
 		*"LTE BAND 7") MODE=$(band 7 "LTE ");;
 		*"LTE BAND 8") MODE=$(band 8 "LTE ");;
 		*"LTE BAND 20") MODE=$(band 20 "LTE ");;
-		*"LTE BAND 20") MODE=$(band 28 "LTE ");;
-		*"LTE BAND 20") MODE=$(band 32 "LTE ");;
-		*"LTE BAND 20") MODE=$(band 38 "LTE ");;
-		*"LTE BAND 20") MODE=$(band 40 "LTE ");;
-		*"LTE BAND 20") MODE=$(band 41 "LTE ");;
+		*"LTE BAND 28") MODE=$(band 28 "LTE ");;
+		*"LTE BAND 32") MODE=$(band 32 "LTE ");;
+		*"LTE BAND 38") MODE=$(band 38 "LTE ");;
+		*"LTE BAND 40") MODE=$(band 40 "LTE ");;
+		*"LTE BAND 41") MODE=$(band 41 "LTE ");;
 		*) MODE="$T";;
 	esac
 fi
@@ -34,8 +34,8 @@ if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
 #	PCID=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $9}' | xargs)
 #	EARFCN=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $10}' | xargs)
 #	FREQ_BAND_IND=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $11}' | xargs)
-#	UL_BANDWIDTH=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $12}' | xargs)
-#	DL_BANDWIDTH=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $13}' | xargs)
+	ULBW=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $12}' | xargs)
+	DLBW=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $13}' | xargs)
 #	TAC=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}' | xargs)
 	RSRP=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $15}' | xargs)
 	RSRQ=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $16}' | xargs)
@@ -73,6 +73,35 @@ if [ -n "$T" ]; then
 	COPS="$T"
 fi
 
+QO=$(sms_tool -d $DEVICE at "at+qnwinfo;")
+PBAND=$(echo "$QO" | awk -F[,:] '/^\+QNWINFO:/ {print $4}' | xargs)
+MAINCUT=$(echo $PBAND | sed 's/LTE BAND //g')
+
+PBAND="$(band $MAINCUT "") $DLBW $ULBW"
+if [ "x$MODE" = "xLTE" ]; then	
+      	MODE="LTE | $(band $MAINCUT "")"
+fi
+
+# International Mobile Equipment Identity (IMEI)
+O=$(sms_tool -d $DEVICE at "AT+GSN" | xargs)
+NR_I=$(echo "$O" | cut -c 8-)
+if [ -n "$NR_I" ]; then
+	NR_IMEI="$NR_I"
+fi
+
+# International Mobile Subscriber Identity (IMSI)
+O=$(sms_tool -d $DEVICE at "AT+CIMI" | xargs)
+NR_C=$(echo "$O" | cut -c 9-)
+if [ -n "$NR_C" ]; then
+	NR_IMSI="$NR_C"
+fi
+
+#  Integrated Circuit Card Identifier (ICCID)
+O=$(sms_tool -d $DEVICE at "AT+QCCID")
+NR_D=$(echo "$O" | awk -F [:] '/^\+QCCID/{print $2}' | xargs)
+if [ -n "$NR_D" ]; then
+	NR_ICCID="$NR_D"
+fi
 
 # Modem
 OF=$(sms_tool -d $DEVICE at "ati")
@@ -87,7 +116,7 @@ fi
 # Protocol
 # DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
 PV=$(cat /sys/kernel/debug/usb/devices)
-PVCUT=$(echo $PV | awk -F 'Vendor=05c6 ProdID=9215' '{print $2}' | cut -c-1220)
+PVCUT=$(echo $PV | awk -F 'Vendor=2c7c ProdID=0125' '{print $2}' | cut -c-1220)
 if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
 then
     PROTO="qmi"
