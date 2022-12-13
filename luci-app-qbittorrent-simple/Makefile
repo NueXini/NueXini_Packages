@@ -26,7 +26,7 @@ define Package/$(PKG_NAME)/config
 
 		config PACKAGE_luci-app-qbittorrent-simple_dynamic
 			bool "Dynamic Build"
-			
+
 	endchoice
 endef
 
