@@ -5,30 +5,29 @@
 [luci-app-netdata可控制的实时监控 ](https://github.com/sirpdboy/luci-app-netdata)
 ======================
 
-git clone https://github.com/sirpdboy/luci-app-netdata.git
+### 下载源码方法:
 
-cd openwrt
-
-echo "src-git cups https://github.com/sirpdboy/luci-app-netdata" >> feeds.conf.default
-
-./scripts/feeds update -a
-
-./scripts/feeds install -a
-
-
-make menuconfig
-
-LuCI  --->
-
-	1. Collections  --->
+ ```Brach
+ 
+    # 下载源码
 	
-		<*> luci
-		
-	3. Applications  --->
+    git clone https://github.com/sirpdboy/luci-app-netdata package/luci-app-netdata
+    make menuconfig
 	
-		<*> luci-app-netdata.........................LuCI support for Netdata
+ ``` 
+### 配置菜单
 
-make package/luci-app-netdata/compile V=s
+ ```Brach
+    make menuconfig
+	# 找到 LuCI -> Applications, 选择 luci-app-netdata, 保存后退出。
+ ``` 
+ 
+### 编译
+
+ ```Brach 
+    # 编译固件
+    make package/luci-app-netdata/compile V=s
+ ```
 
 
 ## 界面
