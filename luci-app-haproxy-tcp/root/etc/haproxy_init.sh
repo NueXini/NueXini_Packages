@@ -24,8 +24,8 @@ start(){
   daemon		                #以后台形式运行harpoxy
   #nbproc 1                         #设置进程数量
   pidfile /var/run/haproxy.pid
-  ulimit-n 1024                    #ulimit 的数量限制
-  maxconn 2048	                #默认最大连接数,需考虑ulimit-n限制
+  #ulimit-n 1024                    #ulimit 的数量限制
+  #maxconn 2048	                #默认最大连接数,需考虑ulimit-n限制
   #chroot /usr/local/haproxy
 defaults
   log global
