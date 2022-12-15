@@ -6,7 +6,7 @@ logfile_path() (
 		uci -q get mosdns.config.logfile
 	else
 		[ ! -f /etc/mosdns/config_custom.yaml ] && exit 1
-		cat /etc/mosdns/config_custom.yaml | grep -A 4 log | grep file | awk -F ":" '{print $2}' | sed 's/\"//g;s/ //g'
+		awk -F'"' '/^log:/{f=1}f==1&&/file:/{print$2;exit}' /etc/mosdns/config_custom.yaml
 	fi
 )
 
