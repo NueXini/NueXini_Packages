@@ -439,17 +439,17 @@ MODE=$(echo $MODE | sed 's,/,+,')
 # Modem
 OF=$(sms_tool -d $DEVICE at "ati")
 DEVV=$(echo $OF | tr -s "\n"  | xargs)
-FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n"  | xargs)
+FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n" | xargs)
 FW=$(echo $FWA | cut -c 8-)
 
-MODELA=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n"  | xargs)
-MODELB=$(sms_tool -d $DEVICE at "AT+CGMI" | tr -s "\n"  | xargs)
+MODELA=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n" | xargs)
+MODELB=$(sms_tool -d $DEVICE at "AT+CGMI" | tr -s "\n" | xargs)
 MODELACUT=$(echo $MODELA | cut -c 9-)
 MODELBCUT=$(echo $MODELB | cut -c 9-)
 MODEL="$MODELBCUT "$MODELACUT
 if [ -z "$MODEL" ]
 then
-      MODEL=$(echo $DEVV | awk -F 'ati|Revision:' '{print $2}'| xargs)
+      MODEL=$(echo $DEVV | awk -F 'ati|Revision:' '{print $2}' | xargs)
 fi
 
 # Slot SIM

@@ -10,7 +10,7 @@ if [ -n "$T" ]; then
 	ADDON="$ADDON"'{"Temperatura":"'$T' &deg;C"}'
 fi
 
-T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO/ {print $2"/"$4}' | xargs)
+T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO:/ {print $4}' | xargs)
 if [ -n "$T" ]; then
 	case "$T" in
 		*"LTE BAND 1") MODE=$(band 1 "LTE ");;
@@ -71,15 +71,6 @@ fi
 T=$(echo "$O" | awk -F[,:] '/^\+QSPN/ {print $4}' | xargs)
 if [ -n "$T" ]; then
 	COPS="$T"
-fi
-
-QO=$(sms_tool -d $DEVICE at "at+qnwinfo;")
-PBAND=$(echo "$QO" | awk -F[,:] '/^\+QNWINFO:/ {print $4}' | xargs)
-MAINCUT=$(echo $PBAND | sed 's/LTE BAND //g')
-
-PBAND="$(band $MAINCUT "") $DLBW $ULBW"
-if [ "x$MODE" = "xLTE" ]; then	
-      	MODE="LTE | $(band $MAINCUT "")"
 fi
 
 # International Mobile Equipment Identity (IMEI)
