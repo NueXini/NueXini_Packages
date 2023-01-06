@@ -1,6 +1,6 @@
 # Huawei E3272/E3372/E3276
 
-O=$(sms_tool -d $DEVICE at "at^chiptemp?;^hcsq?;^iccid?;^hfreqinfo?")
+O=$(sms_tool -d $DEVICE at "at^chiptemp?;^hcsq?;^iccid?")
 
 T=$(echo "$O" | awk -F[,:] '/^\^HCSQ:/ {print $2}' | xargs)
 if [ -n "$T" ]; then
@@ -81,8 +81,14 @@ if [ -n "$NR_D" ]; then
 	NR_ICCID="$NR_D"
 fi
 
+XFR=$(sms_tool -d $DEVICE at "at^hfreqinfo?")
+if [ -z "$XFR" ]
+then
+      # Huawei E3272 
+else
+      
 # DL / UL / Band
-TBX=$(echo "$O" | awk -F [:] '/^\^HFREQINFO:/{print $2}' | xargs)
+TBX=$(echo "$XFR" | awk -F [:] '/^\^HFREQINFO:/{print $2}' | xargs)
 TB=$(echo "$TBX" | cut -d ',' -f3-3 )
 
 TDL=$(echo "$TBX" | cut -d ',' -f6-6 )
@@ -100,6 +106,8 @@ PCI="-"
 
 if [[ "$MODE" == *"LTE"* ]] && [ -n "$TB" ]; then
 MODE="LTE | "$(band $TB "")
+fi
+      
 fi
 
 # LAC & TAC
