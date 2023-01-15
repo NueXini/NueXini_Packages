@@ -6,7 +6,7 @@ local m,s,e
 
 m=Map("autotimeset",translate("Scheduled Setting"),translate("Timing settings include: timing restart, timing shutdown, timing restart network, all functions can be used together."))
 
-s=m:section(TypedSection,"login","")
+s=m:section(TypedSection,"stime","")
 s.addremove=true
 s.anonymous=true
 s.template = "cbi/tblsection"
@@ -19,6 +19,11 @@ e=s:option(ListValue,"stype",translate("Scheduled Type"))
 e:value(1,translate("Scheduled Reboot"))
 e:value(2,translate("Scheduled Poweroff"))
 e:value(3,translate("Scheduled ReNetwork"))
+e:value(4,translate("Scheduled RestartSamba"))
+e:value(5,translate("Scheduled Restartwan"))
+e:value(6,translate("Scheduled Closewan"))
+e:value(7,translate("Scheduled Clearmem"))
+e:value(8,translate("Scheduled Sysfree"))
 e.default=2
 
 e=s:option(ListValue,"week",translate("Week Day"))
@@ -42,4 +47,8 @@ e.datatype = "range(0,59)"
 e.rmempty = false
 e.default = 0
 
+m.apply_on_parse = true
+m.on_after_apply = function(self,map)
+  io.popen("/etc/init.d/autotimeset start")
+end
 return m
