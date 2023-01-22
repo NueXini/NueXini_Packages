@@ -2,28 +2,28 @@ msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8\n"
 
 msgid "DiskMan"
-msgstr "DiskMan 磁盘管理"
+msgstr "DiskMan 硬碟管理"
 
 msgid "Manage Disks over LuCI."
-msgstr "通过 LuCI 管理磁盘"
+msgstr "通过 LuCI 管理硬碟"
 
 msgid "Rescan Disks"
-msgstr "重新扫描磁盘"
+msgstr "重新掃描硬碟"
 
 msgid "Disks"
-msgstr "磁盘"
+msgstr "硬碟"
 
 msgid "Path"
-msgstr "路径"
+msgstr "路徑"
 
 msgid "Serial Number"
-msgstr "序列号"
+msgstr "序列號"
 
 msgid "Temp"
-msgstr "温度"
+msgstr "溫度"
 
 msgid "Partition Table"
-msgstr "分区表"
+msgstr "分割區表"
 
 msgid "SATA Version"
 msgstr "SATA 版本"
@@ -32,19 +32,19 @@ msgid "Health"
 msgstr "健康"
 
 msgid "File System"
-msgstr "文件系统"
+msgstr "文件系統"
 
 msgid "Mount Options"
-msgstr "挂载选项"
+msgstr "掛載選項"
 
 msgid "Mount"
-msgstr "挂载"
+msgstr "掛載"
 
 msgid "Umount"
-msgstr "卸载"
+msgstr "卸載"
 
 msgid "Eject"
-msgstr "弹出"
+msgstr "彈出"
 
 msgid "New"
 msgstr "新建"
@@ -56,10 +56,10 @@ msgid "Format"
 msgstr "格式化"
 
 msgid "Start Sector"
-msgstr "起始扇区"
+msgstr "起始磁區"
 
 msgid "End Sector"
-msgstr "中止扇区"
+msgstr "結束磁區"
 
 msgid "Usage"
 msgstr "用量"
@@ -68,88 +68,88 @@ msgid "Used"
 msgstr "已使用"
 
 msgid "Free Space"
-msgstr "空闲空间"
+msgstr "空閒空間"
 
 msgid "Model"
-msgstr "型号"
+msgstr "型號"
 
 msgid "Size"
 msgstr "容量"
 
 msgid "Status"
-msgstr "状态"
+msgstr "狀態"
 
 msgid "Mount Point"
-msgstr "挂载点"
+msgstr "掛載點"
 
 msgid "Sector Size"
-msgstr "扇区/物理扇区大小"
+msgstr "磁區/物理磁區大小"
 
 msgid "Rotation Rate"
-msgstr "转速"
+msgstr "轉速"
 
 msgid "RAID Devices"
-msgstr "RAID 设备"
+msgstr "RAID 裝置"
 
 msgid "RAID mode"
 msgstr "RAID 模式"
 
 msgid "Members"
-msgstr "成员"
+msgstr "成員"
 
 msgid "Active"
-msgstr "活动"
+msgstr "活躍"
 
 msgid "RAID Creation"
-msgstr "RAID 创建"
+msgstr "RAID 創建"
 
 msgid "Raid Name"
-msgstr "RAID 名称"
+msgstr "RAID 名稱"
 
 msgid "Raid Level"
-msgstr "RAID 级别"
+msgstr "RAID 等級"
 
 msgid "Raid Member"
-msgstr "磁盘阵列成员"
+msgstr "硬碟陣列成員"
 
 msgid "Create Raid"
-msgstr "创建 RAID"
+msgstr "創建 RAID"
 
 msgid "Partition Management"
-msgstr "分区管理"
+msgstr "分割區管理"
 
 msgid "Partition Disk over LuCI."
-msgstr "通过LuCI分区磁盘。"
+msgstr "通過 LuCI 分割硬碟。"
 
 msgid "Device Info"
-msgstr "设备信息"
+msgstr "裝置信息"
 
 msgid "Disk Man"
-msgstr "磁盘管理"
+msgstr "硬碟管理"
 
 msgid "Partitions Info"
-msgstr "分区信息"
+msgstr "分割區信息"
 
 msgid "Default 2048 sector alignment, support +size{b,k,m,g,t} in End Sector"
-msgstr "默认2048扇区对齐，【中止扇区】支持 +容量{b,k,m,g,t} 格式，例：+500m +10g +1t"
+msgstr "默認 2048 磁區對齊，【結束磁區】支持 +容量{b,k,m,g,t} 格式，例：+500m +10g +1t"
 
 msgid "Multiple Devices Btrfs Creation"
-msgstr "Btrfs 阵列创建"
+msgstr "Btrfs 陣列創建"
 
 msgid "Label"
-msgstr "卷标"
+msgstr "卷標"
 
 msgid "Btrfs Label"
-msgstr "Btrfs 卷标"
+msgstr "Btrfs 卷標"
 
 msgid "Btrfs Raid Level"
-msgstr "Btrfs Raid 级别"
+msgstr "Btrfs Raid 等級"
 
 msgid "Btrfs Member"
-msgstr "Btrfs 阵列成员"
+msgstr "Btrfs 陣列成員"
 
 msgid "Create Btrfs"
-msgstr "创建 Btrfs"
+msgstr "創建 Btrfs"
 
 msgid "New Snapshot"
 msgstr "新建快照"
@@ -158,82 +158,82 @@ msgid "SubVolumes"
 msgstr "子卷"
 
 msgid "Top Level"
-msgstr "父ID"
+msgstr "父 ID"
 
 msgid "Manage Btrfs"
 msgstr "Btrfs 管理"
 
 msgid "Otime"
-msgstr "创建时间"
+msgstr "創建時間"
 
 msgid "Snapshots"
 msgstr "快照"
 
 msgid "Set Default"
-msgstr "默认子卷"
+msgstr "默認子卷"
 
 msgid "Source Path"
-msgstr "源目录"
+msgstr "源目錄"
 
 msgid "Readonly"
-msgstr "只读"
+msgstr "只讀"
 
 msgid "Delete"
-msgstr "删除"
+msgstr "刪除"
 
 msgid "Create"
-msgstr "创建"
+msgstr "創建"
 
 msgid "Destination Path (optional)"
-msgstr "目标目录（可选）"
+msgstr "目標目錄（可選）"
 
 msgid "Metadata"
-msgstr "元数据"
+msgstr "元數據"
 
 msgid "Data"
-msgstr "数据"
+msgstr "數據"
 
 msgid "Btrfs Info"
 msgstr "Btrfs 信息"
 
 msgid "The source path for create the snapshot"
-msgstr "创建快照的源数据目录"
+msgstr "創建快照的源數據目錄"
 
 msgid "The path where you want to store the snapshot"
-msgstr "存放快照数据目录"
+msgstr "存放快照的數據目錄"
 
 msgid "Please input Source Path of snapshot, Source Path must start with '/'"
-msgstr "请输入快照源路径，源路径必须以'/'开头"
+msgstr "請輸入快照源路径，源路径必須以'/'開頭"
 
 msgid "Please input Subvolume Path, Subvolume must start with '/'"
-msgstr "请输入子卷路径，子卷路径必须以'/'开头"
+msgstr "請輸入子卷路径，子卷路径必須以'/'開頭"
 
 msgid "is in use! please unmount it first!"
-msgstr "正在被使用！请先卸载！"
+msgstr "正在被使用！請先卸載！"
 
 msgid "Partition NOT found!"
-msgstr "分区未找到！"
+msgstr "分割區未找到！"
 
 msgid "Filesystem NOT support!"
-msgstr "文件系统不支持！"
+msgstr "文件系統不支持！"
 
 msgid "Invalid Start Sector!"
-msgstr "无效的起始扇区！"
+msgstr "無效的起始磁區！"
 
 msgid "Invalid End Sector"
-msgstr "无效的终止扇区！"
+msgstr "無效的結束磁區！"
 
 msgid "Partition not exists!"
-msgstr "分区不存在！"
+msgstr "分割區不存在！"
 
 msgid "Creation"
-msgstr "创建"
+msgstr "創建"
 
 msgid "Please select file system!"
-msgstr "请选择文件系统！"
+msgstr "請選擇文件系統！"
 
 msgid "Format partation:"
-msgstr "格式化分区："
+msgstr "格式化分割區："
 
 msgid "Warnning !! \nTHIS WILL OVERWRITE EXISTING PARTITIONS!! \nModify the partition table?"
-msgstr "警告！！\n此操作会覆盖现有分区\n确定修改分区表？"
+msgstr "警告！！\n此操作会覆蓋現有分割區\n確定修改分割區表？"
