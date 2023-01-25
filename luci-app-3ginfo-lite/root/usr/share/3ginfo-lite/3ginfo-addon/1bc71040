@@ -1,4 +1,4 @@
-# Telit LM940-CP
+# Telit LN940-CP
 
 O=$(sms_tool -d $DEVICE at "at#servinfo;#cainfo?")
 

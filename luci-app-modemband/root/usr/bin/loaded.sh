@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright 2022 Rafał Wabik (IceG) - From eko.one.pl forum
+# Copyright 2022-2023 Rafał Wabik (IceG) - From eko.one.pl forum
 # MIT License
 
 RES="/usr/share/modemband"
@@ -8,13 +8,22 @@ RES="/usr/share/modemband"
 # modem type
 getmodem() {
 
-_DEVS=$(awk '/Vendor=/{gsub(/.*Vendor=| ProdID=| Rev.*/,"");print}' /sys/kernel/debug/usb/devices | sort -u)
-for _DEV in $_DEVS; do
-	if [ -e "$RES/$_DEV" ]; then
-		echo "$_DEV"
-		break
-	fi
-done
+MDM=$(uci -q get modemband.@modemband[0].modemid)
+
+if [ "${MDM}" == "" ]; then
+
+		_DEVS=$(awk '/Vendor=/{gsub(/.*Vendor=| ProdID=| Rev.*/,"");print}' /sys/kernel/debug/usb/devices | sort -u)
+			for _DEV in $_DEVS; do
+				if [ -e "$RES/$_DEV" ]; then
+					echo "$_DEV"
+					break
+				fi
+		done
+
+else
+  		echo "$MDM"
+fi
+
 }
 
 case $1 in
@@ -30,3 +39,4 @@ case $1 in
 esac
 
 exit 0
+

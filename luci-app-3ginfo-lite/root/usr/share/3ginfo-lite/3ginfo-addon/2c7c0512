@@ -1,6 +1,6 @@
 # Quectel EM12-G
 
-O=$(sms_tool -d $DEVICE at "at+qtemp;+qnwinfo;+qcainfo;;+qeng=\"servingcell\";")
+O=$(sms_tool -d $DEVICE at "at+qtemp;+qnwinfo;+qcainfo;+qeng=\"servingcell\";")
 
 # Temperature
 T=$(echo $O | grep -o "+QTEMP: [0-9]\{1,3\}")

@@ -1,15 +1,14 @@
 # Quectel EP06
 
-O=$(sms_tool -d $DEVICE at "at+qtemp;+qnwinfo;+qeng=\"servingcell\";+qspn")
+O=$(sms_tool -d $DEVICE at "at+qtemp;+qnwinfo;+qcainfo;+qeng=\"servingcell\";+qspn")
 
 T=$(echo "$O" | awk -F[,:] '/^\+QTEMP/ {t=$2*1;if($3*1>t)t=$3*1;if($4*1>t)t=$4*1;printf "%d", t}')
 if [ -n "$T" ]; then
 	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	TEMP="$T &deg;C"
-	ADDON="$ADDON"'{"Temperatura":"'$T' &deg;C"}'
+	ADDON="$ADDON"'{"Temperature":"'$T' &deg;C"}'
 fi
 
-T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO:/ {print $4}' | xargs)
+T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO/ {print $2"/"$4}' | xargs)
 if [ -n "$T" ]; then
 	case "$T" in
 		*"LTE BAND 1") MODE=$(band 1 "LTE ");;
@@ -25,13 +24,17 @@ if [ -n "$T" ]; then
 		*"LTE BAND 41") MODE=$(band 41 "LTE ");;
 		*) MODE="$T";;
 	esac
+
+PBO=$(echo "$O" | awk -F[,:] '/^\+QNWINFO:/ {print $4}' | xargs)
+MAINC=$(echo $PBO | sed 's/LTE BAND //g')
+MODE="LTE | $(band $MAINC "")"
 fi
 
 T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $4}' | xargs)
 if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
 
-	QO=$(sms_tool -d $DEVICE at "at+qnwinfo;")
-	PBAND=$(echo "$QO" | awk -F[,:] '/^\+QNWINFO:/ {print $4}' | xargs)
+	# O=$(sms_tool -d $DEVICE at "at+qnwinfo;")
+	PBAND=$(echo "$O" | awk -F[,:] '/^\+QNWINFO:/ {print $4}' | xargs)
 	MAINCUT=$(echo $PBAND | sed 's/LTE BAND //g')
 	
 	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $12}' | xargs)
@@ -64,11 +67,7 @@ if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
 				DLBW="DL: @$T1 MHz"
 			fi
 		fi
-
 	PBAND="$(band $MAINCUT "") $DLBW $ULBW"
-	if [ "x$MODE" = "xLTE" ]; then	
-      			MODE="LTE | $(band $MAINCUT "")"
-	fi
 
 #	CELLID=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $8}' | xargs)
 	PCI=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $9}' | xargs)
@@ -80,7 +79,7 @@ if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
 	RSRP=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $15}' | xargs)
 	RSRQ=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $16}' | xargs)
 	RSSI=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $17}' | xargs)
-	SINR=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | xargs | awk '{printf "%.1f\n", $1*0.2-20}')
+	SINR=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | xargs)
 #	SRXLEV=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $19}' | xargs)
 #	[ -n "$ADDON" ] && ADDON="$ADDON,"
 #	ADDON="$ADDON"'{"CELLID":"'$CELLID'"}'
@@ -108,14 +107,10 @@ if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
 #	ADDON="$ADDON"'{"SRXLEV":"'$SRXLEV'"}'
 fi
 
-T=$(echo "$O" | awk -F[,:] '/^\+QSPN/ {print $4}' | xargs)
-if [ -n "$T" ]; then
-	COPS="$T"
-fi
+if echo "$O" | grep -q "scc"; then
 
-OA=$(sms_tool -d $DEVICE at "AT+QCAINFO")
-T=$(echo "$OA" | awk -F[,] '/^\+QCAINFO: "pss"/{print $4}')
-[ -z "$T" ] && T=$(echo "$OA" | awk -F[,] '/^\+QCAINFO: "pcc"/{print $4}')
+T2=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "pss"/{print $4}')
+[ -z "$T2" ] && T=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "pcc"/{print $4}')
 if [ -n "$T" ]; then
 	case $T in
 		*"LTE BAND 1") MODE=$(band 1 "LTE ");;
@@ -129,11 +124,40 @@ if [ -n "$T" ]; then
 		*"LTE BAND 38") MODE=$(band 38 "LTE ");;
 		*"LTE BAND 40") MODE=$(band 40 "LTE ");;
 		*"LTE BAND 41") MODE=$(band 41 "LTE ");;
-		*) MODE="${T}";;
+		*) T2="${T}";;
 	esac
 
-	T=$(echo "$OA" | awk -F[,] '/^\+QCAINFO: "sss"/{print $4}')
-	[ -z "$T" ] && T=$(echo "$OA" | awk -F[,] '/^\+QCAINFO: "scc"/{print $4}')
+	T2=$(echo $T2 | sed 's/"//g')
+	MAINCUT=$(echo $T2 | sed 's/LTE BAND //g')
+	T2="$(band $MAINCUT "")"
+
+	T3=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $4}')
+	case $T3 in
+		6*) T4="1.4";;
+		15*) T4="3";;
+		25*) T4="5";;
+		50*) T4="10";;
+		75*) T4="15";;
+		100*) T4="20";;
+		*) T4="";;
+	esac
+	[ -n "$ADDON" ] && ADDON="$ADDON,"
+	if [ -z "$T4" ]; then
+		PBAND="$T2" 
+	else
+		PBAND="$T2 @$T4 MHz"
+	fi
+	T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $3}')
+	if [ -n "$T" ]; then
+		EARFCN=$T
+	fi
+	T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $7}')
+	if [ -n "$T" ]; then
+		PCI=$T
+	fi
+
+	T=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "sss"/{print $4}')
+	[ -z "$T" ] && T=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{print $4}')
 	if [ -n "$T" ]; then
 		case $T in
 			*"LTE BAND 1") MODE="${MODE/LTE/LTE_A} / "$(band 1 "");;
@@ -147,12 +171,59 @@ if [ -n "$T" ]; then
 			*"LTE BAND 38") MODE="${MODE/LTE/LTE_A} / "$(band 38 "");;
 			*"LTE BAND 40") MODE="${MODE/LTE/LTE_A} / "$(band 40 "");;
 			*"LTE BAND 41") MODE="${MODE/LTE/LTE_A} / "$(band 41 "");;
-			*) MODE="${MODE/LTE/LTE_A} / ${T}";;
+			*) SS="${T}";;
 		esac
+		
+		SSCUT=$(echo $SS | sed 's/LTE BAND //g')
+		SSCUT=$(echo $SSCUT | sed 's/"//g')
+		SEC="$(band $SSCUT "")"
+
+		T3=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $4}')
+		case $T3 in
+			6*) T4="1.4";;
+			15*) T4="3";;
+			25*) T4="5";;
+			50*) T4="10";;
+			75*) T4="15";;
+			100*) T4="20";;
+			*) T4="";;
+		esac
+		if [ -z "$T4" ]; then
+
+					S1BAND="$SEC"
+
+		else
+					S1BAND="$SEC @$T4 MHz"
+
+		fi
+
+		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $3}')
+		if [ -n "$T" ]; then
+
+					S1EARFCN="$T"
+
+		fi
+		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
+		if [ -n "$T" ]; then
+
+					S1PCI="$T"
+
+		fi
+		
+		MODE="LTE-A | $(echo $T2 | sed 's/"//g') / $SEC"
+
 	fi
+
+fi
+
 fi
 
 MODE=$(echo $MODE | sed 's,/,+,')
+
+T=$(echo "$O" | awk -F[,:] '/^\+QSPN/ {print $2}' | xargs)
+if [ -n "$T" ] && [ -z "$FORCE_PLMN" ]; then
+	COPS="$T"
+fi
 
 # Modem
 OF=$(sms_tool -d $DEVICE at "ati")

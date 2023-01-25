@@ -3,10 +3,11 @@
 'require fs';
 'require form';
 'require ui';
+'require uci';
 'require tools.widgets as widgets';
 
 /*
-	Copyright 2022 Rafał Wabik - IceG - From eko.one.pl forum
+	Copyright 2022-2023 Rafał Wabik - IceG - From eko.one.pl forum
 */
 
 return view.extend({
@@ -19,36 +20,71 @@ return view.extend({
 
 		var json = JSON.parse(data);
 
-		if (json.modem == '') {
-						L.ui.showModal(_('Modemband'), [
-						E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
-						]);
-
-						window.setTimeout(function() {
-						location.reload();
-						//L.hideModal();
-						}, 25000).finally();
-					}
-					else {
-					L.hideModal();
-					}
-
 		m = new form.Map('modemband', _('Modemband configuration'), _('Settings panel for the modemband application that allows you to customize the package for your modem.'));
 
 		s = m.section(form.TypedSection, 'modemband', '', _(''));
 		s.anonymous = true;
 
 		s.tab('general',  _('General Settings'));
-		s.tab('template', _('Edit script'), _('modemband / '+json.modem));
+		if (json.modem.length > 1) {
+			s.tab('template', _('Edit script'), _());
+			o = s.taboption('template', form.DummyValue, json.modem, _('Template loaded'));
+			o.default = '' || _('modemband / '+json.modem);
+		}
+		else {
 
-		o = s.taboption('template', form.TextValue, '_tmpl', null,
-			_('Supported bands depend on the region in which the modem operates. By modifying the DEFAULT_LTE_BANDS variable, you can easily adapt the package to your modem.'));
-		o.rows = 10;
-		o.cfgvalue = function(section_id) {
-			return fs.trimmed('/usr/share/modemband/'+json.modem);
+			s.tab('template', _('Edit script'), _());
+			o = s.taboption('template', form.DummyValue, '', _('Template loaded'));
+			o.default = '' || _('modemband / ');
+		}
+
+		o = s.taboption('template', form.Button, '_search');
+		o.title      = _('Refresh the view');
+		o.inputtitle = _('Reload');
+		o.onclick = function() {
+			window.location.reload();
 		};
+
+		o = s.taboption('template', form.TextValue, '_tmpl', _('Edit'),
+			_('Supported bands depend on the region in which the modem operates. By modifying the DEFAULT_LTE_BANDS variable, you can easily adapt the package to your modem.'));
+		o.rows = 7;
+		o.cfgvalue = function(section_id) {
+		if (json.modem.length > 1) {
+			return fs.trimmed('/usr/share/modemband/'+json.modem);
+		}
+
+		};
+
 		o.write = function(section_id, formvalue) {
 			return fs.write('/usr/share/modemband/'+json.modem, formvalue.trim().replace(/\r\n/g, '\n') + '\n');
+		};
+
+		o = s.taboption('template', form.ListValue, 'modemid',_('Select the modem settings file'),
+			_("Select the template assigned to the VID and PID of the modem IDs on the USB bus."));
+		o.load = function(section_id) {
+			return L.resolveDefault(fs.list('/usr/share/modemband'), []).then(L.bind(function(modems) {
+				if(modems.length > 0) {
+				modems.sort((a, b) => a.name > b.name);
+					modems.forEach(function(element) {
+        				if (element !== modems[0]) {
+						if (!isNaN(element.name.charAt(0))){
+ 							 o.value(element.name);
+						}
+        				}
+    				});
+				}
+				return this.super('load', [section_id]);
+			}, this));
+		};
+		o.rmempty = false;
+		o.default = '' || json.modem;
+		o.cfgvalue = function(section_id) {
+			return uci.get('modemband', section_id, 'modemid');
+		};
+		o.write = function(section_id, value) {
+			uci.set('modemband', '@modemband[0]', 'modemid', L.toArray(value).join(' '));
+			uci.save();
+			uci.apply();
 		};
 
 		return m.render();

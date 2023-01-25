@@ -8,6 +8,7 @@
 				"/usr/bin/loaded.sh": [ "exec" ],
 				"/usr/bin/sms_tool": [ "exec" ],
 				"/etc/modemband": [ "read" ],
+				"/usr/share/modemband": [ "read" ],
 				"/usr/share/modemband/*": [ "read" ]
 			},
 			"uci": [ "modemband", "luci-app-modemband" ]
@@ -21,3 +22,4 @@
 		}
 	}
 }
+

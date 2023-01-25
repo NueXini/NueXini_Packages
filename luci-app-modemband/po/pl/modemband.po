@@ -179,3 +179,21 @@ msgstr "Obsługiwane pasma zależą od regionu w którym pracuje modem. Modyfiku
 msgid "Waiting to read data from the modem..."
 msgstr "Oczekiwanie na odczyt danych z modemu..."
 
+msgid "Edit"
+msgstr "Edycja"
+
+msgid "Template loaded"
+msgstr "Wczytany szablon"
+
+msgid "Refresh the view"
+msgstr "Odśwież widok"
+
+msgid "Reload"
+msgstr "Wczytaj ponownie"
+
+msgid "Select the modem settings file"
+msgstr "Wybierz plik ustawień modemu"
+
+msgid "Select the template assigned to the VID and PID of the modem IDs on the USB bus."
+msgstr "Wybierz szablon przypisany do VID i PID identyfikatorów modemu na magistrali USB."
+

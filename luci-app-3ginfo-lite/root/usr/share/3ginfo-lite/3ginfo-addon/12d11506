@@ -82,11 +82,9 @@ if [ -n "$NR_D" ]; then
 fi
 
 XFR=$(sms_tool -d $DEVICE at "at^hfreqinfo?")
-if [ -z "$XFR" ]
-then
-      # Huawei E3272 
-else
-      
+
+if [ -n "$XFR" ]; then
+
 # DL / UL / Band
 TBX=$(echo "$XFR" | awk -F [:] '/^\^HFREQINFO:/{print $2}' | xargs)
 TB=$(echo "$TBX" | cut -d ',' -f3-3 )
