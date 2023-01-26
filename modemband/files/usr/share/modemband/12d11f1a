@@ -10,22 +10,22 @@ getinfo() {
 
 getsupportedbands() {
 	O=$(sms_tool -d $_DEVICE at "at+cgmm")
-	_NAME=$(echo "$O" | awk '/^[a-zA-Z0-9]/ && !/at\+cgmm/{print $0}' | xargs)
+	_NAME=$(echo "$O" | awk '/^[a-zA-Z0-9]/ && !/at\+cgmm/{print tolower($0)}' | xargs)
 	case "$_NAME" in
-	"ME906E"* | \
-	"ME909u-521")
+	"me906e"* | \
+	"me909u-521")
 		echo "1 2 3 5 7 8 20"
 		;;
-	"ME906s"*)
+	"me906s"*)
 		echo "1 2 3 5 7 8 20 28"
 		;;
-	"ME909s-120")
+	"me909s-120")
 		echo "1 2 3 4 5 7 8 20"
 		;;
-	"ME909s-821")
+	"me909s-821")
 		echo "1 3 8 38 39 40 41"
 		;;
-	"ME909s-821a")
+	"me909s-821a")
 		echo "1 3 5 8 38 39 40 41"
 		;;
 	*)
