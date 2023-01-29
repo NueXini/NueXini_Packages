@@ -277,7 +277,7 @@ return view.extend({
 						view.textContent = '-';
 						}
 						else {
-						view.innerHTML = String.format('<medium>%d%%</medium></br>' + '<img style="padding-left: 10px;" src="%s"/>', p, icon);
+						view.innerHTML = String.format('<medium>%d%%</medium><br/>' + '<img style="padding-left: 10px;" src="%s"/>', p, icon);
 						}
 					}
 
