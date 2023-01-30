@@ -3,6 +3,14 @@ local m, s, o
 m = Map("homeconnect", translate("Home Connect"))
 m.description = translate(
                     "HomeConnect is a simple and easy-to-use VPN Server(based on softethervpn5) customized for HomeLede firmware. HomeConnect provides L2TP over IPSec service, 0 configuration, out of the box. You can use the built-in VPN client for ios, android, mac, and windows to connect directly.")
+    .. "<br/>"
+	.. [[<a href="javascript:void" onclick="javascript:window.open('https://github.com/xiaoqingfengATGH/HomeLede/wiki/%E7%8E%A9%E8%BD%ACHomeLede-HomeConnect%E5%9B%9E%E5%AE%B6','_blank')">]]
+	.. ">> 使用说明"
+	.. [[</a>]]
+	.. "&nbsp;&nbsp;&nbsp;&nbsp;"
+	.. [[<a href="javascript:void" onclick="javascript:window.open('https://github.com/xiaoqingfengATGH/HomeLede/wiki/%E5%85%B3%E4%BA%8EWindows11-%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8HomeConnect%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88','_blank')">]]
+	.. ">> Windows 11 连接说明"
+	.. [[</a>]]
 m.template = "homeconnect/index"
 s = m:section(TypedSection, "softether")
 s.anonymous = true
