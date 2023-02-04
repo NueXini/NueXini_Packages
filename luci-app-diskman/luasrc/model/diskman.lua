@@ -74,7 +74,9 @@ local get_smart_info = function(device)
     elseif attrib == "Serial Number" then
       smart_info.sn = val
     elseif attrib == "194" or attrib == "Temperature" then
-      smart_info.temp = val:match("(%d+)") .. "°C"
+      if val ~= "-" then
+        smart_info.temp = (val:match("(%d+)") or "?") .. "°C"
+      end
     elseif attrib == "Rotation Rate" then
       smart_info.rota_rate = val
     elseif attrib == "SATA Version is" then
