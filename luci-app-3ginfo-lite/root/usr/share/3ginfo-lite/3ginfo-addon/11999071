@@ -1,0 +1,100 @@
+# Sierra Wireless EM7455
+# DW5811e Snapdragon X7 LTE (EM7455B)
+
+O=$(sms_tool -d $DEVICE at "at!gstatus?")
+
+T=$(echo "$O" | awk '/^LTE band:/ {print $3}' | xargs)
+if [ -n "$T" ]; then
+	case "$T" in
+		*"B1") MODE=$(band 1 "LTE ");;
+		*"B2") MODE=$(band 2 "LTE ");;
+		*"B3") MODE=$(band 3 "LTE ");;
+		*"B4") MODE=$(band 4 "LTE ");;
+		*"B5") MODE=$(band 5 "LTE ");;
+		*"B7") MODE=$(band 7 "LTE ");;
+		*"B8") MODE=$(band 8 "LTE ");;
+		*"B12") MODE=$(band 12 "LTE ");;
+		*"B13") MODE=$(band 13 "LTE ");;
+		*"B20") MODE=$(band 20 "LTE ");;
+		*"B25") MODE=$(band 25 "LTE ");;
+		*"B26") MODE=$(band 26 "LTE ");;
+		*"B29") MODE=$(band 29 "LTE ");;
+		*"B30") MODE=$(band 30 "LTE ");;
+		*"B41") MODE=$(band 41 "LTE ");;
+		*) MODE="LTE ${T}";;
+	esac
+
+	T=$(echo "$O" | awk -F: '/^LTE CA state:.*ACTIVE/ {print $3}' | xargs)
+	if [ -n "$T" ]; then
+		case $T in
+			*"B1") MODE="${MODE/LTE/LTE_A} / "$(band 1 "");;
+			*"B2") MODE="${MODE/LTE/LTE_A} / "$(band 2 "");;
+			*"B3") MODE="${MODE/LTE/LTE_A} / "$(band 3 "");;
+			*"B4") MODE="${MODE/LTE/LTE_A} / "$(band 4 "");;
+			*"B5") MODE="${MODE/LTE/LTE_A} / "$(band 5 "");;
+			*"B7") MODE="${MODE/LTE/LTE_A} / "$(band 7 "");;
+			*"B8") MODE="${MODE/LTE/LTE_A} / "$(band 8 "");;
+			*"B12") MODE="{MODE/LTE/LTE_A} / "$(band 12 "");;
+			*"B13") MODE="{MODE/LTE/LTE_A} / "$(band 13 "");;
+			*"B20") MODE="{MODE/LTE/LTE_A} / "$(band 20 "");;
+			*"B25") MODE="{MODE/LTE/LTE_A} / "$(band 25 "");;
+			*"B26") MODE="{MODE/LTE/LTE_A} / "$(band 26 "");;
+			*"B29") MODE="{MODE/LTE/LTE_A} / "$(band 29 "");;
+			*"B30") MODE="{MODE/LTE/LTE_A} / "$(band 30 "");;
+			*"B41") MODE="{MODE/LTE/LTE_A} / "$(band 41 "");;
+			*) MODE="${MODE/LTE/LTE_A} / ${T}";;
+		esac
+		
+	fi
+fi
+
+T=$(echo "$O" | awk '/^PCC.*RSSI/ {print $4}' | xargs)
+if [ -n "$T" ]; then
+	RSSI="${T// //}"
+	[ -n "$ADDON" ] && ADDON="$ADDON,"
+	ADDON="$ADDON"'{"RSSI":"'${T// //}' dBm"}'
+fi
+
+T=$(echo "$O" | awk '/^PCC.*RSRP/ {print $7}' | xargs)
+if [ -n "$T" ]; then
+	RSRP="${T// //}"
+	[ -n "$ADDON" ] && ADDON="$ADDON,"
+	ADDON="$ADDON"'{"RSRP":"'${T// //}' dBm"}'
+fi
+T=$(echo "$O" | awk '/^RSRQ/ {print $3}' | xargs)
+if [ -n "$T" ]; then
+	RSRQ="$T"
+	[ -n "$ADDON" ] && ADDON="$ADDON,"
+	ADDON="$ADDON"'{"RSRQ":"'$T' dB"}'
+fi
+T=$(echo "$O" | awk '/^SINR/ {print $3}' | xargs)
+if [ -n "$T" ]; then
+	SINR="$T"
+	[ -n "$ADDON" ] && ADDON="$ADDON,"
+	ADDON="$ADDON"'{"SINR":"'$T' dB"}'
+fi
+
+T=$(echo "$O" | awk -F: '/Temperature:/ {print $3}' | xargs)
+if [ -n "$T" ]; then
+	TEMP="$T &deg;C"
+	[ -n "$ADDON" ] && ADDON="$ADDON,"
+	ADDON="$ADDON"'{"Temperatura":"'$T' &deg;C"}'
+fi
+
+# Modem
+
+
+# Protocol
+# DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
+PV=$(cat /sys/kernel/debug/usb/devices)
+PVCUT=$(echo $PV | awk -F 'Vendor=1199 ProdID=9071' '{print $2}' | cut -c-1100)
+if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
+then
+    PROTO="qmi"
+elif echo "$PVCUT" | grep -q "Driver=cdc_mbim"
+then
+    PROTO="mbim"
+elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
+then
+    PROTO="ecm"
+fi
