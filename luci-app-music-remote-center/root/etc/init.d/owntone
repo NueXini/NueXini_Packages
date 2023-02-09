@@ -50,7 +50,7 @@ start() {
         gen_config_file
         local enabled=$(uci_get_by_type owntone enabled 0)
         [ "$enabled" == "0" ] && return 1
-        $SSD -p $PID -S -x $BIN -- -P $PID -c /var/etc/owntone.conf
+        $SSD -p $PID -S -b -x $BIN -- -P $PID -c /var/etc/owntone.conf
 }
 	
 stop() {
