@@ -5,12 +5,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=CloudflareSpeedTest
-PKG_VERSION:=2.2.0
+PKG_VERSION:=2.2.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/XIU2/CloudflareSpeedTest/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=89fea0443b1501331526d95b3a827d93df3da3e3cd693310627fd80b53a46ee8
+PKG_HASH:=138def3ebab9257d73eab05cb395494f75405d30114d25be0c118d580a446249
 
 PKG_LICENSE:=GPL-3.0-only
 PKG_LICENSE_FILE:=LICENSE
@@ -33,6 +33,8 @@ define Package/cdnspeedtest
   URL:=https://github.com/XIU2/CloudflareSpeedTest
   DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle
 endef
+
+GO_PKG_TARGET_VARS:=$(filter-out CGO_ENABLED=%,$(GO_PKG_TARGET_VARS)) CGO_ENABLED=0
 
 define Package/cdnspeedtest/install
 	$(call GoPackage/Package/Install/Bin,$(PKG_INSTALL_DIR))
