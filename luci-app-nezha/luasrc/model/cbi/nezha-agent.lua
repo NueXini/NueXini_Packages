@@ -21,6 +21,9 @@ s.anonymous = true
 enable = s:option(Flag, "enabled", translate("启用"))
 enable.rmempty = false
 
+tls = s:option(Flag, "tls", translate("使用TLS"))
+tls.rmempty = false
+
 o = s:option(Value, "host", translate("面板RPC Host:Port"))
 o.datatype = "hostport"
 o.placeholder = "localhost:5555"
