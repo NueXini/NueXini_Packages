@@ -82,8 +82,9 @@ if [ -n "$NR_D" ]; then
 fi
 
 XFR=$(sms_tool -d $DEVICE at "at^hfreqinfo?")
+XFRCOUNT=$(echo -n "$XFR" | wc -c)
 
-if [ -n "$XFR" ]; then
+if [ -n "$XFR" ] && [ "$XFRCOUNT" -gt "15" ]; then
 
 # DL / UL / Band
 TBX=$(echo "$XFR" | awk -F [:] '/^\^HFREQINFO:/{print $2}' | xargs)

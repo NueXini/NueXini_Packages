@@ -3,7 +3,7 @@
 #
 # (c) 2010-2022 Cezary Jackiewicz <cezary@eko.one.pl>
 #
-# (c) 2021-2022 modified by Rafał Wabik - IceG - From eko.one.pl forum
+# (c) 2021-2023 modified by Rafał Wabik - IceG - From eko.one.pl forum
 #
 
 band() {
@@ -152,7 +152,7 @@ if [ -n "$NETUP" ]; then
 
 fi
 
-O=$(sms_tool -D -d $DEVICE at "AT+CSQ;+CPIN?;+COPS=3,0;+COPS?;+COPS=3,2;+COPS?;+CREG=2;+CREG?")
+O=$(sms_tool -D -d $DEVICE at "AT+CPIN?;+CSQ;+COPS=3,0;+COPS?;+COPS=3,2;+COPS?;+CREG=2;+CREG?")
 
 # CSQ
 CSQ=$(echo "$O" | awk -F[,\ ] '/^\+CSQ/ {print $2}')
