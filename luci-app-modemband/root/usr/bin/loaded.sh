@@ -1,7 +1,10 @@
 #!/bin/sh
 
+#
 # Copyright 2022-2023 Rafał Wabik (IceG) - From eko.one.pl forum
+#
 # MIT License
+#
 
 RES="/usr/share/modemband"
 
@@ -39,4 +42,3 @@ case $1 in
 esac
 
 exit 0
-

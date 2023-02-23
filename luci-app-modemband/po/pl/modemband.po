@@ -194,6 +194,6 @@ msgstr "Wczytaj ponownie"
 msgid "Select the modem settings file"
 msgstr "Wybierz plik ustawień modemu"
 
-msgid "Select the template assigned to the VID and PID of the modem IDs on the USB bus."
-msgstr "Wybierz szablon przypisany do VID i PID identyfikatorów modemu na magistrali USB."
+msgid "Select the template assigned to the Vendor and ProdID of the modem."
+msgstr "Wybierz szablon przypisany do dostawcy i ProdID modemu."
 

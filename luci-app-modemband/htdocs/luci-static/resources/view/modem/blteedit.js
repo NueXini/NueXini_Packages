@@ -8,7 +8,10 @@
 
 /*
 	Copyright 2022-2023 Rafał Wabik - IceG - From eko.one.pl forum
+	
+	MIT License
 */
+
 
 return view.extend({
 	load: function() {
@@ -38,12 +41,29 @@ return view.extend({
 			o.default = '' || _('modemband / ');
 		}
 
+		function handleIDChange(ev, section_id, value) {
+			var mid = this.section.getUIElement(section_id, 'modemid');
+
+			uci.set('modemband', '@modemband[0]', 'modemid', L.toArray(mid.getValue()).join(' '));
+			uci.save();
+			uci.apply();
+
+			window.setTimeout(function() {
+			location.reload();
+			}, 2000).finally();
+
+		}
+
+/*		
+
 		o = s.taboption('template', form.Button, '_search');
 		o.title      = _('Refresh the view');
 		o.inputtitle = _('Reload');
 		o.onclick = function() {
 			window.location.reload();
 		};
+
+*/
 
 		o = s.taboption('template', form.TextValue, '_tmpl', _('Edit'),
 			_('Supported bands depend on the region in which the modem operates. By modifying the DEFAULT_LTE_BANDS variable, you can easily adapt the package to your modem.'));
@@ -60,7 +80,7 @@ return view.extend({
 		};
 
 		o = s.taboption('template', form.ListValue, 'modemid',_('Select the modem settings file'),
-			_("Select the template assigned to the VID and PID of the modem IDs on the USB bus."));
+			_("Select the template assigned to the Vendor and ProdID of the modem."));
 		o.load = function(section_id) {
 			return L.resolveDefault(fs.list('/usr/share/modemband'), []).then(L.bind(function(modems) {
 				if(modems.length > 0) {
@@ -86,6 +106,7 @@ return view.extend({
 			uci.save();
 			uci.apply();
 		};
+		o.onchange = handleIDChange;
 
 		return m.render();
 	},
