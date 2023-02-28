@@ -86,7 +86,7 @@ start_service()
 	cmd_arg="$cmd_arg --logsize 4194304 --logpath $log_path --logmask $log_mask"
 	cmd_arg="$cmd_arg --orayslpath $oraysl_filename --oraysllogpath $oraysl_logpath --orayslstatusfilename $oraysl_statusfilename --orayslpidfilename $oraysl_pidfilename"
 	[ -n "$script_p2pinit" ] && cmd_arg="$cmd_arg -n $script_p2pinit"
-	[ -n "$script_vncinit" ] && cmd_arg="$cmd_arg -n $script_vncinit"
+	[ -n "$script_vncinit" ] && cmd_arg="$cmd_arg -C $script_vncinit"
 	# [ -n "$script_progress" ] && cmd_arg="$cmd_arg -n $script_progress"
 	[ -n "$script_progress" ] && cmd_arg="$cmd_arg -N $script_progress"
 	[ -n "$local_ip" ] && cmd_arg="$cmd_arg --localip $local_ip"
