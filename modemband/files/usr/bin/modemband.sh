@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# (c) 2022 Cezary Jackiewicz <cezary@eko.one.pl>
+# (c) 2022-2023 Cezary Jackiewicz <cezary@eko.one.pl>
 #
 
 hextobands() {
@@ -85,8 +85,6 @@ bandtxt() {
 	"31") echo "$BAND: FDD  450 MHz";;
 	"32") echo "$BAND: SDL 1500 MHz";;
 	"34") echo "$BAND: TDD 2000 MHz";;
-	"35") echo "$BAND: TDD 1900 MHz";;
-	"36") echo "$BAND: TDD 1900 MHz";;
 	"37") echo "$BAND: TDD 1900 MHz";;
 	"38") echo "$BAND: TDD 2600 MHz";;
 	"39") echo "$BAND: TDD 1900 MHz";;
@@ -94,20 +92,15 @@ bandtxt() {
 	"41") echo "$BAND: TDD 2500 MHz";;
 	"42") echo "$BAND: TDD 3500 MHz";;
 	"43") echo "$BAND: TDD 3700 MHz";;
-	"44") echo "$BAND: TDD  700 MHz";;
-	"45") echo "$BAND: TDD 1500 MHz";;
 	"46") echo "$BAND: TDD 5200 MHz";;
 	"47") echo "$BAND: TDD 5900 MHz";;
 	"48") echo "$BAND: TDD 3500 MHz";;
-	"49") echo "$BAND: TDD 3500 MHz";;
 	"50") echo "$BAND: TDD 1500 MHz";;
 	"51") echo "$BAND: TDD 1500 MHz";;
-	"52") echo "$BAND: TDD 3300 MHz";;
 	"53") echo "$BAND: TDD 2400 MHz";;
 	"65") echo "$BAND: FDD 2100 MHz";;
 	"66") echo "$BAND: FDD 1700 MHz";;
 	"67") echo "$BAND: SDL  700 MHz";;
-	"68") echo "$BAND: FDD  700 MHz";;
 	"69") echo "$BAND: SDL 2600 MHz";;
 	"70") echo "$BAND: FDD 1700 MHz";;
 	"71") echo "$BAND: FDD  600 MHz";;
@@ -119,6 +112,7 @@ bandtxt() {
 	"85") echo "$BAND: FDD  700 MHz";;
 	"87") echo "$BAND: FDD  410 MHz";;
 	"88") echo "$BAND: FDD  410 MHz";;
+	"103") echo "$BAND: FDD  700 MHz";;
 	esac
 }
 
