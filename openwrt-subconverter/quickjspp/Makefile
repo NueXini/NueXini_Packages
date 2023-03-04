@@ -35,6 +35,7 @@ define Package/quickjspp/description
   Javascript engine into your program.
 endef
 
+TARGET_CFLAGS += -DONLY_FE_TONEAREST
 define Build/Install
 	$(INSTALL_DIR) $(PKG_INSTALL_DIR)/usr/lib/
 	$(CP) $(PKG_BUILD_DIR)/quickjs/libquickjs.a $(PKG_INSTALL_DIR)/usr/lib/

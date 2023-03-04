@@ -1,0 +1,80 @@
+ quickjs/quickjs.c | 36 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 33 insertions(+), 3 deletions(-)
+
+diff --git a/quickjs/quickjs.c b/quickjs/quickjs.c
+index 1984561..6ea01a1 100644
+--- a/quickjs/quickjs.c
++++ b/quickjs/quickjs.c
+@@ -11358,12 +11358,27 @@ static int js_ecvt(double d, int n_digits, int *decpt, int *sign, char *buf,
+         rounding_mode = FE_TONEAREST;
+ #ifdef CONFIG_PRINTF_RNDN
+         {
+-            char buf1[JS_DTOA_BUF_SIZE], buf2[JS_DTOA_BUF_SIZE];
+-            int decpt1, sign1, decpt2, sign2;
+             /* The JS rounding is specified as round to nearest ties away
+                from zero (RNDNA), but in printf the "ties" case is not
+                specified (for example it is RNDN for glibc, RNDNA for
+                Windows), so we must round manually. */
++ #ifdef ONLY_FE_TONEAREST
++            char buf1[JS_DTOA_BUF_SIZE];
++            int decpt1, sign1;
++            double d1;
++            js_ecvt1(d, n_digits, decpt, sign, buf, FE_TONEAREST, buf_tmp, sizeof(buf_tmp));
++            js_ecvt1(d, n_digits + 1, &decpt1, &sign1, buf1, FE_TONEAREST, buf_tmp, sizeof(buf_tmp));
++            if (buf1[n_digits] == '5' && buf1[n_digits - 1] == buf[n_digits - 1]) {
++                if (strtod(buf_tmp, NULL) == d) { // atof(buf_tmp)
++                    buf_tmp[n_digits + 2]++; // = '6';
++                    d1 = strtod(buf_tmp, NULL); // atof(buf_tmp);
++                    js_ecvt1(d, n_digits, decpt, sign, buf, FE_TONEAREST, buf_tmp, sizeof(buf_tmp));
++                }
++            }
++            return n_digits;
++ #else
++            char buf1[JS_DTOA_BUF_SIZE], buf2[JS_DTOA_BUF_SIZE];
++            int decpt1, sign1, decpt2, sign2;
+             js_ecvt1(d, n_digits + 1, &decpt1, &sign1, buf1, FE_TONEAREST,
+                      buf_tmp, sizeof(buf_tmp));
+             /* XXX: could use 2 digits to reduce the average running time */
+@@ -11380,6 +11395,7 @@ static int js_ecvt(double d, int n_digits, int *decpt, int *sign, char *buf,
+                         rounding_mode = FE_UPWARD;
+                 }
+             }
++ #endif /* ONLY_FE_TONEAREST */
+         }
+ #endif /* CONFIG_PRINTF_RNDN */
+     }
+@@ -11409,12 +11425,25 @@ static void js_fcvt(char *buf, int buf_size, double d, int n_digits)
+     {
+         int n1, n2;
+         char buf1[JS_DTOA_BUF_SIZE];
+-        char buf2[JS_DTOA_BUF_SIZE];
+ 
+         /* The JS rounding is specified as round to nearest ties away from
+            zero (RNDNA), but in printf the "ties" case is not specified
+            (for example it is RNDN for glibc, RNDNA for Windows), so we
+            must round manually. */
++ #ifdef ONLY_FE_TONEAREST
++        double d1;
++        n1 = js_fcvt1(buf1, sizeof(buf1), d, n_digits + 1, FE_TONEAREST);
++        n2 = js_fcvt1(buf, buf_size, d, n_digits, FE_TONEAREST);
++        if (buf1[n1 - 1] == '5' && buf1[n1 - 2] == buf[n2 - 1]) {
++            if (strtod(buf1, NULL) == d) { // atof(buf1)
++                buf1[n1 - 1]++;
++                d1 = strtod(buf1, NULL); // atof(buf1);
++                js_fcvt1(buf, buf_size, d1, n_digits, FE_TONEAREST);
++            }
++        }
++        return;
++ #else
++        char buf2[JS_DTOA_BUF_SIZE];
+         n1 = js_fcvt1(buf1, sizeof(buf1), d, n_digits + 1, FE_TONEAREST);
+         rounding_mode = FE_TONEAREST;
+         /* XXX: could use 2 digits to reduce the average running time */
+@@ -11429,6 +11458,7 @@ static void js_fcvt(char *buf, int buf_size, double d, int n_digits)
+                     rounding_mode = FE_UPWARD;
+             }
+         }
++ #endif /* ONLY_FE_TONEAREST */
+     }
+ #endif /* CONFIG_PRINTF_RNDN */
+     js_fcvt1(buf, buf_size, d, n_digits, rounding_mode);
