@@ -3,6 +3,7 @@
 # MIT License
 
 chmod +x /usr/share/3ginfo-lite/3ginfo.sh 2>&1 &
+chmod +x /usr/share/3ginfo-lite/detect.sh 2>&1 &
 chmod +x /usr/share/3ginfo-lite/3ginfo-hilink/alcatel_hilink.sh 2>&1 &
 chmod +x /usr/share/3ginfo-lite/3ginfo-hilink/huawei_hilink.sh 2>&1 &
 chmod +x /usr/share/3ginfo-lite/3ginfo-hilink/zte.sh 2>&1 &
