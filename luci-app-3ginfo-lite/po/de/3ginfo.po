@@ -152,15 +152,3 @@ msgstr "Webseite für dir Suche auswählen."
 
 msgid "SIM Slot"
 msgstr "SIM-Slot"
-
-msgid "Customizing the appearance of the package"
-msgstr "Aussehen des Pakets anpassen"
-
-msgid "Hint: The settings below allow you to customize the appearance of the progress bars."
-msgstr "Hinweis: Die Einstellungen unterhalb erlauben die Anpassung der Fortschrittsbalken."
-
-msgid "The width of the progress bars"
-msgstr "Die Breite der Fortschrittsbalken"
-
-msgid "Select the width of the progress bars."
-msgstr "Breite der Fortschrittsbalken auswählen."

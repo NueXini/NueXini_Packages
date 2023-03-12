@@ -19,6 +19,7 @@ Supported devices:
 - Quectel EP06-E
 - Quectel RG502Q-EA
 - Quectel RM520N-GL
+- Telit LM940
 - Telit LN940 (Foxconn T77W676)
 - Telit LN940 (Foxconn T77W676) in mbim mode
 - Telit LN960 (Foxconn T77W968)

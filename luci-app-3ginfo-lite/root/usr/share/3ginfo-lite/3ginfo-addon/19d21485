@@ -127,7 +127,7 @@ case "$MODE_NUM" in
 					*"38") MODE="$MODE / "$(band 38 "");;					
 					*) MODE="$MODE / B${T}";;
 				esac
-				MODE=$(echo $MODE | sed "s/LTE_A/LTE-A |/g" | sed 's,/,+,')
+		
 			fi
 			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $19}' | xargs)
 			if [ -n "$T" ]; then
@@ -228,6 +228,8 @@ case "$MODE_NUM" in
 
 		;;
 esac
+
+MODE=$(echo $MODE | sed "s/LTE_A/LTE-A |/g" | sed 's,/,+,')
 
 # Firmware
 OF=$(sms_tool -d $DEVICE at "ati")

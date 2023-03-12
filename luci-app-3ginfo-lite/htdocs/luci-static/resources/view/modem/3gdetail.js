@@ -210,49 +210,71 @@ return view.extend({
 
 		var json = JSON.parse(data);
 
-		if(!json.hasOwnProperty('error')){
+			if(!json.hasOwnProperty('error')){
+				
+				if (json.registration == 'SIM not inserted' || json.registration == '-') { 
+					ui.addNotification(null, E('p', _('Problem with registering to the network, check the SIM card.')), 'info');
+				}
+				if (json.registration == 'SIM PIN required') { 
+					ui.addNotification(null, E('p', _('SIM PIN required')), 'info');
+				}
+				if (json.registration == 'SIM PUK required') { 
+					ui.addNotification(null, E('p', _('SIM PUK required')), 'info');
+				}
+				if (json.registration == 'SIM failure') { 
+					ui.addNotification(null, E('p', _('SIM failure')), 'info');
+				}
+				if (json.registration == 'SIM busy') { 
+					ui.addNotification(null, E('p', _('SIM busy')), 'info');
+				}
+				if (json.registration == 'SIM wrong') { 
+					ui.addNotification(null, E('p', _('SIM wrong')), 'info');
+				}
+				if (json.registration == 'SIM PIN2 required') { 
+					ui.addNotification(null, E('p', _('SIM PIN2 required')), 'info');
+				}
+				if (json.registration == 'SIM PUK2 required') { 
+					ui.addNotification(null, E('p', _('SIM PUK2 required')), 'info');
+				}
+				if (json.signal == '0' || json.signal == '' || json.signal == '-') {
+					ui.addNotification(null, E('p', _('There is a problem reading data from the modem. \
+										<br /><br /><b>Please check:</b> \
+										<ul><li>1. Modem availability in the system.</li><li>2. The correct installation of the SIM card in the modem.</li><li> \
+										3. Port for communication with the modem.</li><li><ul>')), 'info');
+				}
+				else {
+					if (json.connt == '' || json.connt == '-') {
+						ui.addNotification(null, E('p', _('There is a problem reading connection data. \
+											<br /><br /><b>Please check:</b> \
+											<ul><li>1. Connection of the modem to the internet, the correctness of the entered APN. Some modems need to force the APN on the modem using at commands to connect to internet.</li><li> \
+											2. Check that the correct interface assigned to the modem is selected. The default name of the interface in the package is wan.</li><li><ul>')), 'info');
+					}
+
+
+			pollData: poll.add(function() {
+				return L.resolveDefault(fs.exec_direct('/usr/share/3ginfo-lite/3ginfo.sh', 'json'))
+					.then(function(res) {
+					var json = JSON.parse(res);
 
 					if (json.signal == '0' || json.signal == '') {
 						fs.exec('sleep 1');
-							if (json.signal == '0' || json.signal == '') {	
+							if (json.signal == '0' || json.signal == '' || json.signal == '-') {
 							L.ui.showModal(_('3ginfo-lite'), [
 							E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
 							]);
 
 							window.setTimeout(function() {
 							location.reload();
-							//L.hideModal();
-							}, 30000).finally();
-							}
-					}
-					else {
-					L.hideModal();
-					}
-		
-		pollData: poll.add(function() {
-			return L.resolveDefault(fs.exec_direct('/usr/share/3ginfo-lite/3ginfo.sh', 'json'))
-			.then(function(res) {
-				var json = JSON.parse(res);
-
-					if (json.signal == '0' || json.signal == '') {
-						fs.exec('sleep 1');
-							if (json.signal == '0' || json.signal == '') {
-							L.ui.showModal(_('3ginfo-lite'), [
-							E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
-							]);
-
-							window.setTimeout(function() {
-							location.reload();
-							//L.hideModal();
-							}, 30000).finally();
+							}, 5000).finally();
 							}
 					}
 					else {
 					L.hideModal();
 					}
 					
-					var icon, wicon;
+					var icon, wicon, ticon, t;
 					var wicon = L.resource('icons/loading.gif');
+					var ticon = L.resource('icons/ctime.png');
 
 					var p = (json.signal);
 					if (p < 0)
@@ -287,11 +309,11 @@ return view.extend({
 						view.textContent = '-';
 						}
 						else {
-						if (json.connt == '' || json.connt == '-') { 
+						if (json.connt == '' || json.connt == '-') {
 						view.innerHTML = String.format('<img style="width: 16px; height: 16px; vertical-align: middle;" src="%s"/>' + ' ' +_('Waiting for connection data...'), wicon, p);
 						}
 						else {
-						view.textContent = '⏱ '+ json.connt + ' | ↓' + json.connrx + ' ↑' + json.conntx;
+						view.innerHTML = String.format('<img style="width: 16px; height: 16px; vertical-align: middle;" src="%s"/>' + ' ' + json.connt + ' ' + ' | \u25bc\u202f' + json.connrx + ' \u25b2\u202f' + json.conntx, ticon, t);
 						}
 						}
 					}
@@ -666,15 +688,17 @@ return view.extend({
 							}
 						}
 					}
-			});
-		});		}		
-		else {
-			// Error
-		}
+					});
+				});	
 
-			} catch (err) {
-  				console.log('Error: ', err.message);
-			}
+				}
+
+			}	
+
+
+		} catch (err) {
+				ui.addNotification(null, E('p', _('Error: ') + err.message), 'error');
+				}
 
 		}		
 
@@ -704,13 +728,13 @@ return view.extend({
 							'class': 'ifacebadge',
 							'title': '',
 							'id': 'simv',
-							'style': 'visibility: hidden; max-width:5em; display: inline-block;',
+							'style': 'visibility: hidden; max-width:3em; display: inline-block;',
 						}, [
 							E('div', { 'class': 'ifacebox-body' }, [
 							E('div', { 'class': 'cbi-tooltip-container' }, [
 							E('img', {
 								'src': L.resource('icons/sim1m.png'),
-								'style': 'width:16px; height:auto',
+								'style': 'width:24px; height:auto',
 								'title': _(''),
 								'class': 'middle',
 							}),

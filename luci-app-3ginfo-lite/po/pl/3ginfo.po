@@ -153,14 +153,44 @@ msgstr "Wybierz stronę internetową służącą do wyszukiwania."
 msgid "SIM Slot"
 msgstr "Slot SIM"
 
-msgid "Customizing the appearance of the package"
-msgstr "Dostosowanie wyglądu pakietu"
+msgid "Problem with registering to the network, check the SIM card."
+msgstr "Problem z rejestracją do sieci, sprawdź kartę SIM."
 
-msgid "Hint: The settings below allow you to customize the appearance of the progress bars."
-msgstr "Podpowiedź: Poniższe ustawienia pozwalają dostosować wygląd pasków postępu."
+msgid "SIM PIN required"
+msgstr "Wymagany jest kod PIN dla karty SIM"
 
-msgid "The width of the progress bars"
-msgstr "Szerokość pasków postępu"
+msgid "SIM PUK required"
+msgstr "Wymagany jest kod PUK dla karty SIM"
 
-msgid "Select the width of the progress bars."
-msgstr "Wybierz szerokość pasków postępu."
+msgid "SIM failure"
+msgstr "Awaria karty SIM"
+
+msgid "SIM busy"
+msgstr "Karta SIM jest zajęta"
+
+msgid "SIM wrong"
+msgstr "Nieprawidłowa karta SIM"
+
+msgid "SIM PIN2 required"
+msgstr "Wymagany jest kod PIN2 dla karty SIM"
+
+msgid "SIM PUK2 required"
+msgstr "Wymagany jest kod PUK2 dla karty SIM"
+
+msgid ""
+"There is a problem reading data from the modem. <br /><br /><b>Please "
+"check:</b> <ul><li>1. Modem availability in the system.</li><li>2. The correct "
+"installation of the SIM card in the modem.</li><li> 3. Port for communication with the modem.</li><li><ul>"
+msgstr ""
+"Wystąpił problem z odczytem danych z modemu. <br /><br /><b>Proszę "
+"sprawdzić:</b> <ul><li>1. Dostępność modemu w systemie.</li><li>2. Poprawność "
+"montażu karty SIM w modemie.</li><li> 3. Port do komunikacji z modemem.</li><li><ul>"
+
+msgid ""
+"There is a problem reading connection data. <br /><br /><b>Please "
+"check:</b> <ul><li>1. Connection of the modem to the internet, the correctness of the entered APN. Some modems need to force the APN on the modem using at commands "
+"to connect to internet.</li><li> 2. Check that the correct interface assigned to the modem is selected. The default name of the interface in the package is wan.</li><li><ul>"
+msgstr ""
+"Wystąpił problem z odczytem danych połączenia. <br /><br /><b>Proszę "
+"sprawdzić:</b> <ul><li>1. Połączenie modemu z internetem, poprawność wprowadzonego APN. Niektóre modemy wymagają wymuszenia APN w modemie za pomocą komend at, aby "
+"połączyć się z internetem.</li><li> 2. Sprawdź, czy wybrany został właściwy interfejs przypisany do modemu. Domyślną nazwą interfejsu w pakiecie jest wan.</li><li><ul>"
