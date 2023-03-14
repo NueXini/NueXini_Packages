@@ -86,7 +86,7 @@ msgstr ""
 
 #: applications/luci-app-cifsd/htdocs/luci-static/resources/view/cifsd.js:35
 msgid ""
-"This is the content of the file '/etc/cifs/smb.conf.template' from which "
+"This is the content of the file '/etc/cifs/ksmbd.conf.template' from which "
 "your cifsd configuration will be generated. Values enclosed by pipe symbols "
 "('|') should not be changed. They get their values from the 'General "
 "Settings' tab."

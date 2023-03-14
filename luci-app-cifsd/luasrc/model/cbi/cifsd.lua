@@ -21,17 +21,17 @@ a.rmempty = false
 a.default = "0"
 
 tmpl = s:taboption("template", Value, "_tmpl", translate("Edit the template that is used for generating the cifsd configuration."))
-tmpl.description = translate("This is the content of the file '/etc/ksmbd/smb.conf.template' from which your cifsd configuration will be generated. Values enclosed by pipe symbols ('|') should not be changed. They get their values from the 'General Settings' tab.")
+tmpl.description = translate("This is the content of the file '/etc/ksmbd/ksmbd.conf.template' from which your cifsd configuration will be generated. Values enclosed by pipe symbols ('|') should not be changed. They get their values from the 'General Settings' tab.")
 tmpl.template = "cbi/tvalue"
 tmpl.rows = 20
 
 function tmpl.cfgvalue(self, section)
-	return nixio.fs.readfile("/etc/ksmbd/smb.conf.template")
+	return nixio.fs.readfile("/etc/ksmbd/ksmbd.conf.template")
 end
 
 function tmpl.write(self, section, value)
 	value = value:gsub("\r\n?", "\n")
-	nixio.fs.writefile("/etc/ksmbd/smb.conf.template", value)
+	nixio.fs.writefile("/etc/ksmbd/ksmbd.conf.template", value)
 end
 
 
