@@ -326,13 +326,13 @@ fi
 CONF_DEVICE=$(uci -q get 3ginfo.@3ginfo[0].device)
 if echo "x$CONF_DEVICE" | grep -q "192.168."; then
 	if grep -q "Vendor=1bbb" /sys/kernel/debug/usb/devices; then
-		. $RES/3ginfo-hilink/alcatel_hilink.sh $DEVICE
+		. $RES/hilink/alcatel_hilink.sh $DEVICE
 	fi
 	if grep -q "Vendor=12d1" /sys/kernel/debug/usb/devices; then
-		. $RES/3ginfo-hilink/huawei_hilink.sh $DEVICE
+		. $RES/hilink/huawei_hilink.sh $DEVICE
 	fi
 	if grep -q "Vendor=19d2" /sys/kernel/debug/usb/devices; then
-		. $RES/3ginfo-hilink/zte.sh $DEVICE
+		. $RES/hilink/zte.sh $DEVICE
 	fi
 	SEC=$(uci -q get 3ginfo.@3ginfo[0].network)
 	SEC=${SEC:-wan}
@@ -342,13 +342,13 @@ if [ -e /usr/bin/sms_tool ]; then
 	REGOK=0
 	[ "x$REG" = "x1" ] || [ "x$REG" = "x5" ] && REGOK=1
 	VIDPID=$(getdevicevendorproduct $DEVICE)
-	if [ -e "$RES/3ginfo-addon/$VIDPID" ]; then
+	if [ -e "$RES/modem/$VIDPID" ]; then
 		case $(cat /tmp/sysinfo/board_name) in
 			"zte,mf289f")
-				. "$RES/3ginfo-addon/19d21485"
+				. "$RES/modem/19d21485"
 				;;
 			*)
-				. "$RES/3ginfo-addon/$VIDPID"
+				. "$RES/modem/$VIDPID"
 				;;
 		esac
 	fi

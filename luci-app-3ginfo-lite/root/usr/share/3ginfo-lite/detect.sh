@@ -3,6 +3,8 @@
 #
 # (c) 2023 Cezary Jackiewicz <cezary@eko.one.pl>
 #
+# (c) 2023 modified by Rafał Wabik - IceG - From eko.one.pl forum
+#
 
 getdevicepath() {
 	devname="$(basename $1)"

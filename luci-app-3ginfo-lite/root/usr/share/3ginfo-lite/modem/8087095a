@@ -49,6 +49,7 @@ if [ -n "$T" ]; then
 		*"18"*) MODE="${MODE} "$(band 18 "");;
 		*"19"*) MODE="${MODE} "$(band 19 "");;
 		*"20"*) MODE="${MODE} "$(band 20 "");;
+		*"21"*) MODE="${MODE} "$(band 21 "");;
 		*"25"*) MODE="${MODE} "$(band 25 "");;
 		*"26"*) MODE="${MODE} "$(band 26 "");;
 		*"28"*) MODE="${MODE} "$(band 28 "");;

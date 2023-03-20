@@ -1,39 +1,5 @@
 # Quectel RM520N-GL
 
-band5g() {
-	case "$1" in
-		1) echo "${2}n1 (2100 MHz)";;
-		2) echo "${2}n2 (1900 MHz)";;
-		3) echo "${2}n3 (1800 MHz)";;
-		5) echo "${2}n5 (850 MHz)";;
-		7) echo "${2}n7 (2600 MHz)";;
-		8) echo "${2}n8 (900 MHz)";;
-		12) echo "${2}n12 (700 MHz)";;
-		13) echo "${2}n13 (700 MHz)";;
-		14) echo "${2}n14 (700 MHz)";;
-		18) echo "${2}n18 (850 MHz)";;
-		20) echo "${2}n20 (800 MHz)";;
-		25) echo "${2}n25 (1900 MHz)";;
-		26) echo "${2}n26 (850 MHz)";;
-		28) echo "${2}n28 (700 MHz)";;
-		29) echo "${2}n29 (700 MHz)";;
-		30) echo "${2}n30 (2300 MHz)";;
-		38) echo "${2}n38 (2600 MHz)";;
-		40) echo "${2}n40 (2300 MHz)";;
-		41) echo "${2}n41 (2500 MHz)";;
-		48) echo "${2}n48 (3500 MHz)";;
-		66) echo "${2}n66 (1700 2100 MHz)";;
-		70) echo "${2}n70 (2000 MHz)";;
-		71) echo "${2}n71 (600 MHz)";;
-		75) echo "${2}n75 (1500 MHz)";;
-		76) echo "${2}n76 (1500 MHz)";;
-		77) echo "${2}n77 (3700 MHz)";;
-		78) echo "${2}n78 (3500 MHz)";;
-		79) echo "${2}n79 (4700 MHz)";;
-		*) echo "$1";;
-	esac
-}
-
 O=$(sms_tool -d $DEVICE at "at+qtemp;+qnwinfo;+qcainfo;+qeng=\"servingcell\";+qspn")
 
 T=$(echo "$O" | awk -F[,:] '/^\+QTEMP/ {print $3}' | sort -r | head -n1 | xargs)
