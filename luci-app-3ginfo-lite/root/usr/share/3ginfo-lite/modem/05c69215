@@ -14,8 +14,7 @@ T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO/ {print $2"/"$4}' | xargs)
 if [ -n "$T" ]; then
 	if [ "x$MODE_NUM" = "x7" ]; then
 		B=$(echo $T | sed 's/.*LTE BAND \(.*\)/\1/')
-		addon 30 "Band" "$(band4g ${B})"
-		MODE="LTE | $(band ${B})"
+		MODE="LTE $(band ${B})"
 		MAINCUT="$(band ${B})"
 	fi
 fi
@@ -60,7 +59,7 @@ if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
 	RSRP=$T
 	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $16}')
 	RSRQ=$T
-	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", $1*0.2-20}')
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}')
 	SINR=$T
 fi
 
