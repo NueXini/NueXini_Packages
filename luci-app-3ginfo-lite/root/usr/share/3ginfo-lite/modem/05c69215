@@ -59,7 +59,7 @@ if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
 	RSRP=$T
 	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $16}')
 	RSRQ=$T
-	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}')
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", $1*0.2-20}')
 	SINR=$T
 fi
 

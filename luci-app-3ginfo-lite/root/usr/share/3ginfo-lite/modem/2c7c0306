@@ -2,6 +2,8 @@
 
 . "$RES/modem/05c69215"
 
+O=$(sms_tool -d $DEVICE at "AT+QCAINFO")
+
 if [ "x$MODE_NUM" = "x7" ]; then
 	T=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{print $4}' | xargs)
 	if [ -n "$T" ]; then
@@ -29,7 +31,7 @@ if [ "x$MODE_NUM" = "x7" ]; then
 		RSRP=$T
 		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "scc"/ {print $9}')
 		RSRQ=$T
-		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "scc"/ {print $11}')
+		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "scc"/ {print $11}' | awk '{printf "%.1f\n", $1*0.2-20}')
 		SINR=$T
 	fi
 fi
