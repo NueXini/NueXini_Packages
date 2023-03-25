@@ -1,15 +1,16 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-mosdns2
-PKG_VERSION:=1.4.4
-PKG_RELEASE:=2
+PKG_VERSION:=1.5.1
+PKG_RELEASE:=1
 
 LUCI_TITLE:=LuCI Support for mosdns
 LUCI_PKGARCH:=all
-LUCI_DEPENDS:=+mosdns +jsonfilter +luci-compat +curl +v2ray-geoip +v2ray-geosite
+LUCI_DEPENDS:=+mosdns +jsonfilter +luci-compat +curl +v2ray-geoip +v2ray-geosite +v2dat
 
 define Package/$(PKG_NAME)/conffiles
 /etc/config/mosdns
+/etc/mosdns/cache.dump
 /etc/mosdns/config_custom.yaml
 /etc/mosdns/rule
 endef

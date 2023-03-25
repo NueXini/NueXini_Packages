@@ -1,5 +1,10 @@
+if nixio.fs.access("/usr/bin/mosdns") then
+    mosdns_version=luci.sys.exec("/usr/share/mosdns/mosdns.sh version")
+else
+    mosdns_version="Unknown Version"
+end
 m = Map("mosdns")
-m.title = translate("MosDNS")
+m.title = translate("MosDNS") .. " " .. mosdns_version
 m.description = translate("MosDNS is a 'programmable' DNS forwarder.")
 
 m:section(SimpleSection).template = "mosdns/mosdns_status"
@@ -40,26 +45,14 @@ redirect.default = true
 custom_local_dns = s:option(Flag, "custom_local_dns", translate("Local DNS"), translate("Follow WAN interface DNS if not enabled"))
 custom_local_dns:depends( "configfile", "/etc/mosdns/config.yaml")
 custom_local_dns.default = false
-
 custom_local_dns = s:option(DynamicList, "local_dns", translate("Upstream DNS servers"))
-custom_local_dns:value("119.29.29.29", "119.29.29.29 (DNSPod Primary)")
-custom_local_dns:value("119.28.28.28", "119.28.28.28 (DNSPod Secondary)")
+custom_local_dns:value("tls://1.12.12.12", "1.12.12.12 (DNSPod DoT Primary)")
+custom_local_dns:value("tls://120.53.53.53", "120.53.53.53 (DNSPod DoT Secondary)")
 custom_local_dns:value("223.5.5.5", "223.5.5.5 (AliDNS Primary)")
 custom_local_dns:value("223.6.6.6", "223.6.6.6 (AliDNS Secondary)")
 custom_local_dns:value("114.114.114.114", "114.114.114.114 (114DNS Primary)")
 custom_local_dns:value("114.114.115.115", "114.114.115.115 (114DNS Secondary)")
 custom_local_dns:value("180.76.76.76", "180.76.76.76 (Baidu DNS)")
-custom_local_dns:depends("custom_local_dns", "1")
-
-custom_local_dns = s:option(ListValue, "bootstrap_dns", translate("Bootstrap DNS servers"), translate("Bootstrap DNS servers are used to resolve IP addresses of the DoH/DoT resolvers you specify as upstreams"))
-custom_local_dns:value("119.29.29.29", "119.29.29.29 (DNSPod Primary)")
-custom_local_dns:value("119.28.28.28", "119.28.28.28 (DNSPod Secondary)")
-custom_local_dns:value("223.5.5.5", "223.5.5.5 (AliDNS Primary)")
-custom_local_dns:value("223.6.6.6", "223.6.6.6 (AliDNS Secondary)")
-custom_local_dns:value("114.114.114.114", "114.114.114.114 (114DNS Primary)")
-custom_local_dns:value("114.114.115.115", "114.114.115.115 (114DNS Secondary)")
-custom_local_dns:value("180.76.76.76", "180.76.76.76 (Baidu DNS)")
-custom_local_dns.default = "119.29.29.29"
 custom_local_dns:depends("custom_local_dns", "1")
 
 remote_dns = s:option(DynamicList, "remote_dns", translate("Remote DNS"))
@@ -74,20 +67,41 @@ remote_dns:value("tls://208.67.222.222", "208.67.222.222 (Open DNS)")
 remote_dns:value("tls://208.67.220.220", "208.67.220.220 (Open DNS)")
 remote_dns:depends( "configfile", "/etc/mosdns/config.yaml")
 
-remote_dns_pipeline = s:option(Flag, "enable_pipeline", translate("Remote DNS Connection Multiplexing"), translate("Enable TCP/DoT RFC 7766 new Query Pipelining connection multiplexing mode"))
+bootstrap_dns = s:option(ListValue, "bootstrap_dns", translate("Bootstrap DNS servers"), translate("Bootstrap DNS servers are used to resolve IP addresses of the DoH/DoT resolvers you specify as upstreams"))
+bootstrap_dns:value("119.29.29.29", "119.29.29.29 (DNSPod Primary)")
+bootstrap_dns:value("119.28.28.28", "119.28.28.28 (DNSPod Secondary)")
+bootstrap_dns:value("223.5.5.5", "223.5.5.5 (AliDNS Primary)")
+bootstrap_dns:value("223.6.6.6", "223.6.6.6 (AliDNS Secondary)")
+bootstrap_dns:value("114.114.114.114", "114.114.114.114 (114DNS Primary)")
+bootstrap_dns:value("114.114.115.115", "114.114.115.115 (114DNS Secondary)")
+bootstrap_dns:value("180.76.76.76", "180.76.76.76 (Baidu DNS)")
+bootstrap_dns.default = "119.29.29.29"
+bootstrap_dns:depends( "configfile", "/etc/mosdns/config.yaml")
+
+remote_dns_pipeline = s:option(Flag, "enable_pipeline", translate("TCP/DoT Connection Multiplexing"), translate("Enable TCP/DoT RFC 7766 new Query Pipelining connection multiplexing mode"))
 remote_dns_pipeline.rmempty = false
 remote_dns_pipeline.default = false
 remote_dns_pipeline:depends( "configfile", "/etc/mosdns/config.yaml")
 
 cache_size = s:option(Value, "cache_size", translate("DNS Cache Size"))
 cache_size.datatype = "and(uinteger,min(0))"
-cache_size.default = "200000"
+cache_size.default = "20000"
 cache_size:depends( "configfile", "/etc/mosdns/config.yaml")
 
 cache_size = s:option(Value, "cache_survival_time", translate("Cache Survival Time"))
 cache_size.datatype = "and(uinteger,min(0))"
-cache_size.default = "259200"
+cache_size.default = "86400"
 cache_size:depends( "configfile", "/etc/mosdns/config.yaml")
+
+cache_dump = s:option(Flag, "dump_file", translate("Cache Dump"), translate("Save the cache locally and reload the cache dump on the next startup"))
+cache_dump.rmempty = false
+cache_dump.default = false
+cache_dump:depends( "configfile", "/etc/mosdns/config.yaml")
+
+cache_dump = s:option(Value, "dump_interval", translate("Auto Save Cache Interval"))
+cache_dump.datatype = "and(uinteger,min(0))"
+cache_dump.default = "600"
+cache_dump:depends("dump_file", "1")
 
 minimal_ttl = s:option(Value, "minimal_ttl", translate("Minimum TTL"))
 minimal_ttl.datatype = "and(uinteger,min(0))"

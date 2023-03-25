@@ -13,7 +13,7 @@ logfile_path() (
 )
 
 interface_dns() (
-	if [ "$(uci -q get mosdns.config.custom_local_dns)" -eq 1 ]; then
+	if [ "$(uci -q get mosdns.config.custom_local_dns)" = 1 ]; then
 		uci -q get mosdns.config.local_dns
 	else
 		peerdns=$(uci -q get network.wan.peerdns)
@@ -25,21 +25,21 @@ interface_dns() (
 			echo $interface_status | jsonfilter -e "@['dns-server'][0]"
 			echo $interface_status | jsonfilter -e "@['dns-server'][1]"
 		fi
-		[ $? -ne 0 ] && echo "119.29.29.29"
+		[ $? -ne 0 ] && echo "119.29.29.29 223.5.5.5"
 	fi
 )
 
 ad_block() (
 	adblock=$(uci -q get mosdns.config.adblock)
-	if [ "$adblock" -eq 1 ]; then
+	if [ "$adblock" = 1 ]; then
 		ad_source=$(uci -q get mosdns.config.ad_source)
 		if [ "$ad_source" = "geosite.dat" ]; then
-			echo "provider:geosite:category-ads-all"
+			echo "/var/mosdns/geosite_category-ads-all.txt"
 		else
-			echo "provider:adlist"
+			echo "/etc/mosdns/rule/adlist.txt"
 		fi
 	else
-		echo "full:disable-category-ads-all.null"
+		touch /var/disable-ads.txt ; echo "/var/disable-ads.txt"
 	fi
 )
 
@@ -80,6 +80,10 @@ geodat_update() (
 	rm -rf "$TMPDIR"
 )
 
+restart_service() {
+	service mosdns restart
+}
+
 case $script_action in
 	"dns")
 		interface_dns
@@ -88,13 +92,16 @@ case $script_action in
 		ad_block
 	;;
 	"geodata")
-		geodat_update && adlist_update
+		geodat_update && adlist_update && restart_service
 	;;
 	"logfile")
 		logfile_path
 	;;
 	"adlist_update")
-		adlist_update
+		adlist_update && restart_service
+	;;
+	"version")
+		mosdns version
 	;;
 	*)
 		exit 0
