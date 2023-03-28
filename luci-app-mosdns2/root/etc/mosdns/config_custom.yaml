@@ -203,10 +203,10 @@ plugins:
       - exec: jump has_resp_sequence
       - exec: $redirect
       - exec: jump has_resp_sequence
+      - exec: $cache
       - exec: $query_is_whitelist_domain
       - exec: jump has_resp_sequence
       - exec: $query_is_reject_domain
-      - exec: $cache
       - exec: jump has_resp_sequence
       - exec: $query_is_greylist_domain
       - exec: jump has_resp_sequence
