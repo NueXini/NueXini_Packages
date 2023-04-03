@@ -147,6 +147,11 @@ band5g() {
 getdevicevendorproduct() {
 	devname="$(basename $1)"
 	case "$devname" in
+		'ttyACM'*)
+			devpath="$(readlink -f /sys/class/tty/$devname/device)"
+			T=${devpath%/*}
+			echo "$(cat $T/idVendor)$(cat $T/idProduct)"
+			;;
 		'tty'*)
 			devpath="$(readlink -f /sys/class/tty/$devname/device)"
 			T=${devpath%/*/*}

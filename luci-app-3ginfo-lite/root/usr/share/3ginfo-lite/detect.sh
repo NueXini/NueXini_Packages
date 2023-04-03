@@ -9,6 +9,10 @@
 getdevicepath() {
 	devname="$(basename $1)"
 	case "$devname" in
+	'ttyACM'*)
+		devpath="$(readlink -f /sys/class/tty/$devname/device)"
+		echo ${devpath%/*}
+		;;
 	'tty'*)
 		devpath="$(readlink -f /sys/class/tty/$devname/device)"
 		echo ${devpath%/*/*}
