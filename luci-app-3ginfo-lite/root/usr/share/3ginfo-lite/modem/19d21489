@@ -37,19 +37,20 @@ case "$MODE_NUM" in
 
 		T=$(echo "$O" | awk -F[,:] '/^\+ZCELLINFO/ {print $4}' | xargs)
 		MODE="LTE $(band ${T/LTE B/})"
-
+		
 		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $3}' | xargs)
 		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
 			T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $6}' | xargs)
 			PBAND="$(band $T "") @$T1 MHz"
-		fi
-		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $2}' | xargs)
-		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
-			PCI="$T"
-		fi
-		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $5}' | xargs)
-		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
-			EARFCN="$T"
+
+			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $2}' | xargs)
+			if [ -n "$T" ] && [ "x$T" != "x0" ]; then
+				PCI="$T"
+			fi
+			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $5}' | xargs)
+			if [ -n "$T" ] && [ "x$T" != "x0" ]; then
+				EARFCN="$T"
+			fi
 		fi
 
 		if [ "x$MODE_NUM" = "x9" ]; then

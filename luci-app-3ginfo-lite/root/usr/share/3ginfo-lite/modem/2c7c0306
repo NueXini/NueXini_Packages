@@ -1,10 +1,74 @@
 # Quectel EP06
+# Quectel EG06
 
-. "$RES/modem/05c69215"
+O=$(sms_tool -d $DEVICE at "at+qtemp")
 
-O=$(sms_tool -d $DEVICE at "AT+QCAINFO")
+T=$(echo "$O" | awk -F[,:] '/^\+QTEMP/ {t=$2*1;if($3*1>t)t=$3*1;if($4*1>t)t=$4*1;printf "%d", t}')
+[ -n "$T" ] && TEMP="$T &deg;C"
+
+O=$(sms_tool -d $DEVICE at "at+qnwinfo;+qeng=\"servingcell\";+qspn")
+
+T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO/ {print $2"/"$4}' | xargs)
+if [ -n "$T" ]; then
+	if [ "x$MODE_NUM" = "x7" ]; then
+		B=$(echo $T | sed 's/.*LTE BAND \(.*\)/\1/')
+		MODE="LTE $(band ${B})"
+		MAINCUT="$(band ${B})"
+	fi
+fi
+
+T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $4}' | xargs)
+if [ "x$T" = "xLTE" ] || [ "x$T" = "x4G" ]; then
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
+	T_DEC=$(printf "%d" "0x$T")
+	T_HEX=$T
+
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $12}')
+	case $T in
+		0) T1="1.4";;
+		1) T1="3";;
+		2) T1="5";;
+		3) T1="10";;
+		4) T1="15";;
+		5) T1="20";;
+		*) T1="?";;
+	esac
+	ULBW="UL: @$T1 MHz"
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $13}')
+	case $T in
+		0) T1="1.4";;
+		1) T1="3";;
+		2) T1="5";;
+		3) T1="10";;
+		4) T1="15";;
+		5) T1="20";;
+		*) T1="?";;
+	esac
+	DLBW="DL: @$T1 MHz"
+	PBAND="$MAINCUT $DLBW $ULBW"
+	
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $9}')
+	PCI=$T
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $10}')
+	EARFCN=$T
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $17}')
+	RSSI=$T
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $15}')
+	RSRP=$T
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $16}')
+	RSRQ=$T
+	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.1f\n", $1*0.2-20}')
+	SINR=$T
+fi
+
+T=$(echo "$O" | awk -F[,:] '/^\+QSPN/ {print $2}' | xargs)
+if [ -n "$T" ] && [ -z "$FORCE_PLMN" ]; then
+	COPS="$T"
+fi
 
 if [ "x$MODE_NUM" = "x7" ]; then
+	O=$(sms_tool -d $DEVICE at "AT+QCAINFO")
+	
 	T=$(echo "$O" | awk -F[,] '/^\+QCAINFO: "scc"/{print $4}' | xargs)
 	if [ -n "$T" ]; then
 		B=$(echo $T | sed 's/.*LTE BAND \(.*\)/\1/')
