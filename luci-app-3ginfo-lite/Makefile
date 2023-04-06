@@ -11,7 +11,7 @@ LUCI_TITLE:=LuCI JS Support for 3ginfo-lite
 LUCI_DESCRIPTION:=LuCI JS interface for the 3ginfo-lite. The package allows you to view the parameters of the mobile internet connection.
 LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+sms-tool +comgt
-PKG_VERSION:=1.0.43-20230406
+PKG_VERSION:=1.0.44-20230406
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
