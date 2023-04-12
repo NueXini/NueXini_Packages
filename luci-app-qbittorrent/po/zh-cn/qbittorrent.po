@@ -155,9 +155,6 @@ msgstr "使用路由器的 UPnP/NAT-PMP 端口自动转发。"
 msgid "Use different port on each startup voids the first"
 msgstr "在每次启动时使用随机的端口，可能会使第一个启动无效"
 
-msgid "Generate Randomly"
-msgstr "默认端口：8999"
-
 msgid "Global Download Speed"
 msgstr "全局下载速度限制"
 
