@@ -33749,6 +33749,8 @@ full:officecdn-microsoft-com.akamaized.net
 full:oneocsp.microsoft.com
 full:ood.opsource.net
 full:openaiapi-site.azureedge.net
+full:openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net
+full:openaicomproductionae4b.blob.core.windows.net
 full:opgg-static.akamaized.net
 full:origin-a.akamaihd.net
 full:p-events-delivery.akamaized.net
@@ -33763,6 +33765,7 @@ full:practivate.adobe.ipp
 full:practivate.adobe.newoa
 full:practivate.adobe.ntp
 full:prd-priconne-redive.akamaized.net
+full:production-openaicom-storage.azureedge.net
 full:psg-int-centralus.cloudapp.net
 full:psg-int-eastus.cloudapp.net
 full:push-apple.com.akadns.net
