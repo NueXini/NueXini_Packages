@@ -18,7 +18,7 @@ o.default = o.disabled
 
 o = s:option(Value, "Locale", translate("Locale Language"))
 o:value("en", translate("English"))
-o:value("zh", translate("Chinese"))
+o:value("zh_CN", translate("Chinese"))
 o.default = "en"
 
 o = s:option(Flag, "CSRFProtection", translate("CSRF Protection"))

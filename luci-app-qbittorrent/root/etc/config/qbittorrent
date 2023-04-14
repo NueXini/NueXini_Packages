@@ -1,7 +1,7 @@
 
 config qbittorrent 'main'
 	option user 'root'
-	option Locale 'zh'
+	option Locale 'zh_CN'
 	option BTProtocol 'Both'
 	option DisableAutoTMMByDefault 'true'
 	option CategoryChanged 'false'
