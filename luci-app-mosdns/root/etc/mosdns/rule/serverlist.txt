@@ -6378,6 +6378,7 @@ ads-api.twitter.com
 ads-api.videojj.com
 ads-delivery.b-cdn.net
 ads-go.adroi.com.cn
+ads-img-al.xhscdn.com
 ads-pixiv.net
 ads-sdk-cn.upltv.com
 ads-sdk.upltv.com
@@ -6439,6 +6440,7 @@ ads.mobilityware.com
 ads.mopub.com
 ads.mp.mydas.mobi
 ads.msn.com
+ads.music.126.net
 ads.mydas.mobi
 ads.nexage.com
 ads.oneway.mobi
@@ -9420,6 +9422,7 @@ app-link.inkl.com
 app-link.republik.gg
 app-link.smartvid.io
 app-lon07.marketo.com
+app-measurement-cn.com
 app-measurement.com
 app-monitor.ele.me
 app-redirect.wearephlo.com
@@ -20132,6 +20135,7 @@ darneluretic.com
 darren01.oss-cn-beijing.aliyuncs.com
 dartg665moetyor.com
 dartonim.com
+dartsearch-cn.net
 darvorn.com
 darwk.com
 darzkrx.cn
@@ -28279,6 +28283,7 @@ ggle.lywf.me
 gglscr.online
 gglx.me
 ggmm777.com
+ggpht.cn
 ggqnre.xyz
 ggr.yxdown.com
 ggrhsx.cn
@@ -28951,6 +28956,7 @@ goneviral.com
 gonews2.com
 gongwuyuan.name
 gongxifc.com
+gongyichuangyi.net
 goniforas.com
 gonpc.com
 gooblesdd.com
@@ -28980,12 +28986,18 @@ googleanalysis.mobi
 googleanalytcs.com
 googleapi.club
 googlecommerce.com
+googleflights-cn.net
+googleminiapps.cn
 googleoptimize-cn.com
 googleoptimize.com
 googlerank.info
+googlers-cn.com
+googlesandbox-cn.com
+googlesyndication-cn.com
 googlesyndication.com
 googletagmanager-cn.com
 googletagmanager.com
+googletagservices-cn.com
 googletagservices.com
 googlevads-cn.com
 googlevideoads.com
@@ -29529,6 +29541,7 @@ gvisit.com
 gvmojhugkiud.com
 gvqrclx.cn
 gvsivx.multinet.com.tr
+gvt1-cn.com
 gw.365you.com
 gw.d.ywopt.com
 gw5.push.mcp.weibo.cn
@@ -30305,7 +30318,6 @@ heylink.com
 heylywxcmbsqbgb.com
 heymatic.com
 heystaks.com
-heytapimage.com
 heyux.cn
 heyzap.com
 hf.soulplp.com
@@ -32222,6 +32234,7 @@ imediacrew.club
 imeijiajia.com
 imetrix.it
 img-ad.oupeng.com
+img-c.heytapimage.com
 img-cdn-spot.ymcdn.cn
 img-dsp.oss-cn-beijing.aliyuncs.com
 img-x.jd.com
@@ -36410,7 +36423,6 @@ ldimnveryldgitwe.xyz
 ldinry.drinks.ch
 ldisgmftfxanwb.com
 ldk.ruiyufangchan.cn
-ldmnq.com
 ldnlyap.com
 ldpgl.code.mytanwan.com
 ldpiecesonth.xyz
@@ -40389,6 +40401,7 @@ mb38.com
 mb4a.com
 mb57.com
 mbaco.actonservice.com
+mbads.paas.cmbchina.com
 mbai.cn
 mbainfo.ust.hk
 mbaobao.com
@@ -41788,6 +41801,7 @@ mobaders.oss-cn-beijing.aliyuncs.com
 mobadme.jp
 mobads-logs.baidu.cn
 mobads-logs.baidu.com
+mobads-pre-config.cdn.bcebos.com
 mobads.baidu.cn
 mobads.baidu.com
 mobalert.net
@@ -57087,7 +57101,6 @@ statics.3987.com
 statics.9669.com
 statics.woozooo.com
 staticsfs.host
-staticsns.cdn.bcebos.com
 statictapcdn-a.akamaihd.net
 staticxx.facebook.com
 staticxz.com
