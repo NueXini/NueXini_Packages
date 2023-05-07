@@ -1,6 +1,5 @@
 # Copyright (C) 2016 Openwrt.org
-# Copyright (C) 2020-2021 sirpdboy <herboy2008@gmail.com>
-# https://github.com/sirpdboy/luci-app-netdata for  v 1.33.1 cn
+#
 # This is free software, licensed under the Apache License, Version 2.0 .
 #
 
@@ -11,14 +10,9 @@ LUCI_DEPENDS:=+netdata
 LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-netdata
-PKG_VERSION:=1.1
-PKG_RELEASE:=20221124
-
-define Build/Compile
-endef
-
+PKG_VERSION:=1.0
+PKG_RELEASE:=3
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
-
