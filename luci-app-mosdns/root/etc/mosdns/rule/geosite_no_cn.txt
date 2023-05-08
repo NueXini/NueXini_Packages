@@ -24,6 +24,7 @@
 110xnxx.com
 112263.com
 114av.xyz
+11jav.com
 123-hp.com
 123hplaserjet.com
 123rf.com
@@ -738,6 +739,7 @@ airwatchqa.com
 airwick.com
 airwick.net
 airwickarabia.com
+aisejushi.com
 aisex.com
 aishegw.com
 aiv-cdn.net
@@ -9089,6 +9091,7 @@ javakiba.org
 javbabe.net
 javbangers.com
 javbobo.com
+javbooks.com
 javbraze.com
 javbus.com
 javbus22.com
@@ -9198,7 +9201,6 @@ javynow.com
 javzoo.com
 jayspov.net
 jbe-platform.com
-jbk005.com
 jbtalks.cc
 jbtalks.com
 jcb
@@ -18931,11 +18933,13 @@ full:www-cdn.icloud.com.akadns.net
 full:zeenews-fonts.s3.amazonaws.com
 regexp:(^|\.)69bag[0-1][1-9]?\.com$
 regexp:(^|\.)783([a-z][a-z]?)?\.tv$
+regexp:(^|\.)7mm0([0-1][0-9]?)?\.com$
 regexp:(^|\.)8dgo[1-57-9]\.com$
 regexp:(^|\.)91porn[0-9]{3}\.me$
 regexp:(^|\.)91p[0-9][0-9]?\.com$
 regexp:(^|\.)989[a-z]?\.tv$
 regexp:(^|\.)99pp[1-9][0-9]\.com$
+regexp:(^|\.)aisejushi(2|3|5|6)\.com$
 regexp:(^|\.)avcc1[0-9]\.com$
 regexp:(^|\.)avstar0[1-9]\.(com|me)$
 regexp:(^|\.)banyinjia[0-9]?\.com$
@@ -18953,6 +18957,7 @@ regexp:(^|\.)gaogediao\.(com|me|net|org)$
 regexp:(^|\.)h5ccav[1-5]\.com$
 regexp:(^|\.)hkfg[1-7]\.xyz$
 regexp:(^|\.)jav777\.(cc|tv|work)$
+regexp:(^|\.)jbk0([0-1][0-9]?)?\.com$
 regexp:(^|\.)jdyy[1-9]?\.me$
 regexp:(^|\.)kimoav([1-9][0-9]?)?\.com$
 regexp:(^|\.)ksyp0[1-9]\.com$
