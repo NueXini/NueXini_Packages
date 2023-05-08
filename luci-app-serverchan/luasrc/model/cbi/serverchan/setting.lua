@@ -17,12 +17,13 @@ m:section(SimpleSection).template  = "serverchan/serverchan_status"
 s = m:section(NamedSection, "serverchan", "serverchan", translate(""))
 s:tab("basic", translate("基本设置"))
 s:tab("content", translate("推送内容"))
+s:tab("ipset", translate("自动封禁"))
 s:tab("crontab", translate("定时推送"))
 s:tab("disturb", translate("免打扰"))
 s.addremove = false
 s.anonymous = true
 
---基本设置
+-- 基本设置
 a = s:taboption("basic", Flag, "serverchan_enable", translate("启用"))
 a.rmempty = true
 
@@ -35,89 +36,89 @@ a.default = nil
 a.optional = true
 
 a = s:taboption("basic", ListValue, "jsonpath", translate("推送模式"))
-a.default = "/usr/bin/serverchan/api/serverchan.json"
+a.default = "/usr/share/serverchan/api/serverchan.json"
 a.rmempty = true
-a:value("/usr/bin/serverchan/api/serverchan.json", translate("微信 Server酱"))
-a:value("/usr/bin/serverchan/api/qywx_mpnews.json", translate("企业微信 图文消息"))
-a:value("/usr/bin/serverchan/api/qywx_markdown.json", translate("企业微信 markdown版（不支持公众号）"))
-a:value("/usr/bin/serverchan/api/wxpusher.json", translate("微信 wxpusher"))
-a:value("/usr/bin/serverchan/api/pushplus.json", translate("微信 pushplus"))
-a:value("/usr/bin/serverchan/api/telegram.json", translate("Telegram"))
-a:value("/usr/bin/serverchan/api/diy.json", translate("自定义推送"))
+a:value("/usr/share/serverchan/api/serverchan.json", translate("微信 Server酱"))
+a:value("/usr/share/serverchan/api/qywx_mpnews.json", translate("企业微信 图文消息"))
+a:value("/usr/share/serverchan/api/qywx_markdown.json", translate("企业微信 markdown版（不支持公众号）"))
+a:value("/usr/share/serverchan/api/wxpusher.json", translate("微信 wxpusher"))
+a:value("/usr/share/serverchan/api/pushplus.json", translate("微信 pushplus"))
+a:value("/usr/share/serverchan/api/telegram.json", translate("Telegram"))
+a:value("/usr/share/serverchan/api/diy.json", translate("自定义推送"))
 
 a = s:taboption("basic", Value, "sckey", translate('微信推送/新旧共用'), translate("").."Server酱 sendkey <a href='https://sct.ftqq.com/' target='_blank'>点击这里</a><br>")
 a.rmempty = true
-a:depends("jsonpath", "/usr/bin/serverchan/api/serverchan.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/serverchan.json")
 
 a = s:taboption("basic", Value, "corpid", translate('企业ID(corpid)'), translate("").."获取说明 <a href='https://work.weixin.qq.com/api/doc/10013' target='_blank'>点击这里</a>")
 a.rmempty = true
-a:depends("jsonpath", "/usr/bin/serverchan/api/qywx_mpnews.json")
-a:depends("jsonpath", "/usr/bin/serverchan/api/qywx_markdown.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/qywx_mpnews.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/qywx_markdown.json")
 
 a = s:taboption("basic", Value, "userid", translate('帐号(userid)'))
 a.rmempty = true
 a.description = translate("群发到应用请填入 @all ")
-a:depends("jsonpath", "/usr/bin/serverchan/api/qywx_mpnews.json")
-a:depends("jsonpath", "/usr/bin/serverchan/api/qywx_markdown.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/qywx_mpnews.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/qywx_markdown.json")
 
 a = s:taboption("basic", Value, "agentid", translate('应用id(agentid)'))
 a.rmempty = true
-a:depends("jsonpath", "/usr/bin/serverchan/api/qywx_mpnews.json")
-a:depends("jsonpath", "/usr/bin/serverchan/api/qywx_markdown.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/qywx_mpnews.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/qywx_markdown.json")
 
 a = s:taboption("basic", Value, "corpsecret", translate('应用密钥(Secret)'))
 a.rmempty = true
-a:depends("jsonpath", "/usr/bin/serverchan/api/qywx_mpnews.json")
-a:depends("jsonpath", "/usr/bin/serverchan/api/qywx_markdown.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/qywx_mpnews.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/qywx_markdown.json")
 
 a = s:taboption("basic", Value, "mediapath", translate('图片缩略图文件路径'))
 a.rmempty = true
-a.default = "/usr/bin/serverchan/api/logo.jpg"
-a:depends("jsonpath", "/usr/bin/serverchan/api/qywx_mpnews.json")
+a.default = "/usr/share/serverchan/api/logo.jpg"
+a:depends("jsonpath", "/usr/share/serverchan/api/qywx_mpnews.json")
 a.description = translate("只支持 2MB 以内 JPG,PNG 格式 <br> 900*383 或 2.35:1 为佳 ")
 
 a = s:taboption("basic", Value, "wxpusher_apptoken", translate('appToken'), translate("").."获取 appToken <a href='https://wxpusher.zjiecode.com/docs/#/?id=%e5%bf%ab%e9%80%9f%e6%8e%a5%e5%85%a5' target='_blank'>点击这里</a><br>")
 a.rmempty = true
-a:depends("jsonpath", "/usr/bin/serverchan/api/wxpusher.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/wxpusher.json")
 
 a = s:taboption("basic", Value,"wxpusher_uids",translate('uids'))
 a.rmempty = true
-a:depends("jsonpath", "/usr/bin/serverchan/api/wxpusher.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/wxpusher.json")
 
 a = s:taboption("basic", Value, "wxpusher_topicIds", translate('topicIds(群发)'), translate("").."接口说明 <a href='https://wxpusher.zjiecode.com/docs/#/?id=%e5%8f%91%e9%80%81%e6%b6%88%e6%81%af-1'target='_blank'>点击这里</a><br>")
 a.rmempty = true
-a:depends("jsonpath", "/usr/bin/serverchan/api/wxpusher.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/wxpusher.json")
 
 a = s:taboption("basic", Value, "pushplus_token", translate('pushplus_token'), translate("").."获取pushplus_token <a href='http://www.pushplus.plus/' target='_blank'>点击这里</a><br>")
 a.rmempty = true
-a:depends("jsonpath", "/usr/bin/serverchan/api/pushplus.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/pushplus.json")
 
 a = s:taboption("basic", Value, "tg_token", translate("TG_token"), translate("").."获取机器人<a href='https://t.me/BotFather' target='_blank'>点击这里</a><br>与创建的机器人发一条消息，开启对话<br>")
 a.rmempty = true
-a:depends("jsonpath", "/usr/bin/serverchan/api/telegram.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/telegram.json")
 
 a = s:taboption("basic", Value, "chat_id", translate('TG_chatid'), translate("").."获取 chat_id <a href='https://t.me/getuserIDbot' target='_blank'>点击这里</a>")
 a.rmempty = true
-a:depends("jsonpath", "/usr/bin/serverchan/api/telegram.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/telegram.json")
 
 a = s:taboption("basic", TextValue, "diy_json", translate("自定义推送"))
 a.optional = false
 a.rows = 28
 a.wrap = "soft"
 a.cfgvalue = function(self, section)
-	return fs.readfile("/usr/bin/serverchan/api/diy.json")
+	return fs.readfile("/usr/share/serverchan/api/diy.json")
 end
 a.write = function(self, section, value)
-	fs.writefile("/usr/bin/serverchan/api/diy.json", value:gsub("\r\n", "\n"))
+	fs.writefile("/usr/share/serverchan/api/diy.json", value:gsub("\r\n", "\n"))
 end
-a:depends("jsonpath", "/usr/bin/serverchan/api/diy.json")
+a:depends("jsonpath", "/usr/share/serverchan/api/diy.json")
 
 a = s:taboption("basic", Button, "__add", translate("发送测试"))
 a.inputtitle = translate("发送")
 a.inputstyle = "apply"
 function a.write(self, section)
 	luci.sys.call("cbi.apply")
-	luci.sys.call("/usr/bin/serverchan/serverchan test &")
+	luci.sys.call("/usr/share/serverchan/serverchan test &")
 end
 
 a = s:taboption("basic", Value, "device_name", translate('本设备名称'))
@@ -129,7 +130,7 @@ a.rmempty = true
 a.optional = false
 a.default = "60"
 a.datatype = "and(uinteger,min(10))"
-a.description = translate("越短的时间时间响应越及时，但会占用更多的系统资源")
+a.description = translate("越短的时间响应越及时，但会占用更多的系统资源")
 
 a = s:taboption("basic", ListValue, "oui_data", translate("MAC设备信息数据库"))
 a.rmempty = true
@@ -156,7 +157,7 @@ a = s:taboption("basic", DynamicList, "device_aliases", translate("设备别名"
 a.rmempty = true
 a.description = translate("<br/> 请输入设备 MAC 和设备别名，用“-”隔开，如：<br/> XX:XX:XX:XX:XX:XX-我的手机")
 
---设备状态
+-- 设备状态
 a = s:taboption("content", ListValue, "serverchan_ipv4", translate("IPv4 变动通知"))
 a.rmempty = true
 a.default = ""
@@ -185,10 +186,10 @@ a.optional = false
 a.rows = 8
 a.wrap = "soft"
 a.cfgvalue = function(self, section)
-	return fs.readfile("/usr/bin/serverchan/api/ipv4.list")
+	return fs.readfile("/usr/share/serverchan/api/ipv4.list")
 end
 a.write = function(self, section, value)
-	fs.writefile("/usr/bin/serverchan/api/ipv4.list", value:gsub("\r\n", "\n"))
+	fs.writefile("/usr/share/serverchan/api/ipv4.list", value:gsub("\r\n", "\n"))
 end
 a.description = translate("<br/>会因服务器稳定性、连接频繁等原因导致获取失败<br/>如接口可以正常获取 IP，不推荐使用<br/>从以上列表中随机地址访问")
 a:depends({serverchan_ipv4 = "2"})
@@ -221,10 +222,10 @@ a.optional = false
 a.rows = 8
 a.wrap = "soft"
 a.cfgvalue = function(self, section)
-	return fs.readfile("/usr/bin/serverchan/api/ipv6.list")
+	return fs.readfile("/usr/share/serverchan/api/ipv6.list")
 end
 a.write = function(self, section, value)
-	fs.writefile("/usr/bin/serverchan/api/ipv6.list", value:gsub("\r\n", "\n"))
+	fs.writefile("/usr/share/serverchan/api/ipv6.list", value:gsub("\r\n", "\n"))
 end
 a.description = translate("<br/>会因服务器稳定性、连接频繁等原因导致获取失败<br/>如接口可以正常获取 IP，不推荐使用<br/>从以上列表中随机地址访问")
 a:depends({serverchan_ipv6 = "2"})
@@ -300,22 +301,23 @@ a.default = "3"
 a.datatype = "and(uinteger,min(1))"
 a:depends("web_login_failed", "1")
 a:depends("ssh_login_failed", "1")
-a.description = translate("超过次数后推送提醒")
+a.description = translate("超过次数后推送提醒，并可选自动拉黑")
 
-a = s:taboption("content", Flag, "web_login_black", translate("自动拉黑"))
+-- 自动封禁
+
+a = s:taboption("ipset", Flag, "web_login_black", translate("自动拉黑非法登录设备"))
 a.default = 0
 a.rmempty = true
 a:depends("web_login_failed", "1")
 a:depends("ssh_login_failed", "1")
-a.description = translate("直到重启前都不会重置次数，请先添加白名单")
 
-a = s:taboption("content", Value, "ip_black_timeout", "拉黑时间(秒)")
+a = s:taboption("ipset", Value, "ip_black_timeout", "拉黑时间(秒)")
 a.default = "86400"
 a.datatype = "and(uinteger,min(0))"
 a:depends("web_login_black", "1")
 a.description = translate("0 为永久拉黑，慎用<br>如不幸误操作，请更改设备 IP 进入 LUCI 界面清空规则")
 
-a = s:taboption("content", DynamicList, "ip_white_list", translate("白名单 IP 列表"))
+a = s:taboption("ipset", DynamicList, "ip_white_list", translate("白名单 IP 列表"))
 a.datatype = "ipaddr"
 a.rmempty = true
 luci.ip.neighbors({family = 4}, function(entry)
@@ -327,21 +329,47 @@ a:depends("web_logged", "1")
 a:depends("ssh_logged", "1")
 a:depends("web_login_failed", "1")
 a:depends("ssh_login_failed", "1")
-a.description = translate("忽略白名单登陆提醒和拉黑操作，暂不支持掩码位表示")
+a.description = translate("忽略推送，仅在日志中记录，并忽略拉黑操作，暂不支持掩码位表示")
 
-a = s:taboption("content", TextValue, "ip_black_list", translate("IP 黑名单列表"))
+a = s:taboption("ipset", Flag, "port_knocking", translate("端口敲门"))
+a.default = 0
+a.rmempty = true
+a.description = translate("登录成功后开放端口")
+a.description = translate("如在 防火墙 - 区域设置 中禁用了 LAN 口入站和转发，将不起作用<br/>写起来太鸡儿麻烦了，告辞")
+
+a = s:taboption("ipset", Value, "ip_port_white", "端口")
+a.default = ""
+a.rmempty = true
+a.description = translate("例：'22'、'21:25'、'21:25,135:139'")
+a:depends("port_knocking", "1")
+
+a = s:taboption("ipset", DynamicList, "port_forward_list", "端口转发")
+a.default = ""
+a.rmempty = true
+a.description = translate("例：将本机(10.0.0.1)的 13389 端口转发到 10.0.0.2 的3389：<br/>'10.0.0.1,13389,10.0.0.2,3389'<br/>IPv6 未测试")
+a:depends("port_knocking", "1")
+
+a = s:taboption("ipset", Value, "ip_white_timeout", "放行时间(秒)")
+a.default = "600"
+a.rmempty = true
+a.datatype = "and(uinteger,min(0))"
+a.description = translate("0 为永久放行，慎用<br/>连接成功后不断开就不需要重新连接，故不需要设置太大<br/>注：响应时间与检测间隔和每一次检测所需的时间相关，故反应不是很快，将就用吧")
+a:depends("port_knocking", "1")
+
+a = s:taboption("ipset", TextValue, "ip_black_list", translate("IP 黑名单列表"))
 a.optional = false
 a.rows = 8
 a.wrap = "soft"
 a.cfgvalue = function(self, section)
-    return fs.readfile("/usr/bin/serverchan/api/ip_blacklist")
+    return fs.readfile("/usr/share/serverchan/api/ip_blacklist")
 end
 a.write = function(self, section, value)
-    fs.writefile("/usr/bin/serverchan/api/ip_blacklist", value:gsub("\r\n", "\n"))
+    fs.writefile("/usr/share/serverchan/api/ip_blacklist", value:gsub("\r\n", "\n"))
 end
 a:depends("web_login_black", "1")
+a.description = translate("可在此处添加或删除，timeout 后的数字为剩余时间(秒)，添加时只需要输入 IP")
 
---定时推送
+-- 定时推送
 a = s:taboption("crontab", ListValue, "crontab", translate("定时任务设定"))
 a.rmempty = true
 a.default = ""
@@ -422,10 +450,10 @@ e:depends("crontab", "2")
 e.inputstyle = "apply"
 function e.write(self, section)
 luci.sys.call("cbi.apply")
-		luci.sys.call("/usr/bin/serverchan/serverchan send &")
+		luci.sys.call("/usr/share/serverchan/serverchan send &")
 end
 
---免打扰
+-- 免打扰
 a = s:taboption("disturb", ListValue, "serverchan_sheep", translate("免打扰时段设置"), translate("在指定整点时间段内，暂停推送消息<br/>免打扰时间中，定时推送也会被阻止。"))
 a.rmempty = true
 a:value("", translate("关闭"))
