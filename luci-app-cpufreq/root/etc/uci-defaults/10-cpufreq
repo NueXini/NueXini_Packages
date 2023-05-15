@@ -9,92 +9,51 @@ uci_write_config() {
 	uci -q commit cpufreq
 }
 
-CPU_FREQS="$(cat '/sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies')"
-CPU_POLICYS="$(find '/sys/devices/system/cpu/cpufreq/policy'* -maxdepth 0 | grep -Eo '[0-9]+')"
+CPUFREQ_PATH="/sys/devices/system/cpu/cpufreq"
+CPU_FREQS=$(cat "$CPUFREQ_PATH"/policy0/scaling_available_frequencies)
+CPU_POLICYS=$(find "$CPUFREQ_PATH"/policy* -maxdepth 0 | grep -Eo '[0-9]+')
+[ ! -d "$CPUFREQ_PATH/policy0" ] || \
+	CPU_MAX_FREQ=$(cat "$CPUFREQ_PATH"/policy0/scaling_max_freq)
+[ ! -d "$CPUFREQ_PATH/policy4" ] || \
+	CPU4_MAX_FREQ=$(cat "$CPUFREQ_PATH"/policy4/scaling_max_freq)
+[ ! -d "$CPUFREQ_PATH/policy6" ] || \
+	CPU6_MAX_FREQ=$(cat "$CPUFREQ_PATH"/policy6/scaling_max_freq)
 source "/etc/openwrt_release"
 case "$DISTRIB_TARGET" in
-	"bcm27xx/bcm2710")
-		uci_write_config 0 ondemand 600000 1200000 10 50
-		;;
-	"bcm27xx/bcm2711")
-		uci_write_config 0 ondemand 600000 1500000 10 50
+	"bcm27xx/bcm2710"|\
+	"bcm27xx/bcm2711"|\
+	"mediatek/mt7622")
+		uci_write_config 0 ondemand 600000 $CPU_MAX_FREQ 10 50
 		;;
 	"ipq40xx/generic")
-		uci_write_config 0 ondemand 200000 716000 10 50
+		uci_write_config 0 ondemand 200000 $CPU_MAX_FREQ 10 50
 		;;
 	"ipq60xx/generic")
-		if echo "$CPU_FREQS" | grep -q "1800000"; then
-			# IPQ6010/18/28
-			CPU_MAX_FREQ="1800000"
-		else
-			# IPQ6000
-			CPU_MAX_FREQ="1200000"
-		fi
 		uci_write_config 0 ondemand 864000 $CPU_MAX_FREQ 10 50
 		;;
 	"ipq806x/generic")
-		if echo "$CPU_FREQS" | grep -q "1725000"; then
-			# IPQ8065
-			CPU_MAX_FREQ="1725000"
-		elif echo "$CPU_FREQS" | grep -q "1400000"; then
-			# IPQ8064
-			CPU_MAX_FREQ="1400000"
-		else
-			# IPQ8062
-			CPU_MAX_FREQ="1000000"
-		fi
 		uci_write_config 0 ondemand 600000 $CPU_MAX_FREQ 10 50
-		# IPQ8064/5
-		echo "$CPU_POLICYS" | grep -q "1" && uci_write_config 1 ondemand 600000 1200000 10 50
+		echo "$CPU_POLICYS" | grep -q "1" && \
+			uci_write_config 1 ondemand 600000 1200000 10 50
 		;;
 	"ipq807x/generic")
-		if echo "$CPU_FREQS" | grep -q "2208000"; then
-			# IPQ8072/4/6/8A
-			CPU_MAX_FREQ="2208000"
-		else
-			# IPQ8071A
-			CPU_MAX_FREQ="1382400"
-		fi
 		uci_write_config 0 ondemand 1017600 $CPU_MAX_FREQ 10 50
 		;;
-	"mediatek/mt7622")
-		uci_write_config 0 ondemand 600000 1350000 10 50
+	"ipq95xx/generic")
+		uci_write_config 0 ondemand 936000 $CPU_MAX_FREQ 10 50
 		;;
 	"meson/meson8b")
-		uci_write_config 0 schedutil 816000 1536000
+		uci_write_config 0 schedutil 816000 $CPU_MAX_FREQ
 		;;
 	"rockchip/armv8")
-		if echo "$CPU_POLICYS" | grep -q "6"; then
-			# RK3588
-			uci_write_config 0 schedutil 600000 $(cat '/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq')
-			uci_write_config 4 schedutil 600000 $(cat '/sys/devices/system/cpu/cpufreq/policy4/scaling_max_freq')
-			uci_write_config 6 schedutil 600000 $(cat '/sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq')
-		elif echo "$CPU_POLICYS" | grep -q "4"; then
-			# RK3399
-			uci_write_config 0 schedutil 600000 1608000
-			uci_write_config 4 schedutil 600000 2016000
-		else
-			if echo "$CPU_FREQS" | grep -q "1992000"; then
-				# RK3568
-				CPU_MAX_FREQ="1992000"
-			elif echo "$CPU_FREQS" | grep -q "1800000"; then
-				# RK3566
-				CPU_MAX_FREQ="1800000"
-			else
-				# RK3328
-				CPU_MAX_FREQ="1512000"
-			fi
-			uci_write_config 0 schedutil 816000 $CPU_MAX_FREQ
-		fi
+		uci_write_config 0 schedutil 600000 $CPU_MAX_FREQ
+		echo "$CPU_POLICYS" | grep -q "4" && \
+			uci_write_config 4 schedutil 600000 $CPU4_MAX_FREQ
+		echo "$CPU_POLICYS" | grep -q "6" && \
+			uci_write_config 6 schedutil 600000 $CPU6_MAX_FREQ
 		;;
 	"sunxi/cortexa53")
-		if echo "$CPU_FREQS" | grep -q "1800000"; then
-			# H6
-			uci_write_config 0 schedutil 816000 1800000
-		else
-			# H5
-			uci_write_config 0 ondemand 648000 1200000 10 50
-		fi
+		uci_write_config 0 ondemand 816000 $CPU_MAX_FREQ 10 50
 		;;
 esac
 
