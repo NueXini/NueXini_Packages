@@ -5347,6 +5347,7 @@ ad.doubleclick.net
 ad.dqwjzm.com
 ad.duapps.com
 ad.dumedia.ru
+ad.duoduo.link
 ad.duomi.com
 ad.dzwindows.com
 ad.dzwww.com
@@ -6363,12 +6364,15 @@ ads-api.videojj.com
 ads-delivery.b-cdn.net
 ads-go.adroi.com.cn
 ads-img-al.xhscdn.com
+ads-img-qc.xhscdn.com
 ads-pixiv.net
 ads-sdk-cn.upltv.com
 ads-sdk.upltv.com
 ads-trk.vidible.tv
 ads-twitter.com
 ads-union.jd.com
+ads-video-al.xhscdn.com
+ads-video-qc.xhscdn.com
 ads-west-colo.adsymptotic.com
 ads-yallo-production.imgix.net
 ads.979799777.com
@@ -6409,6 +6413,7 @@ ads.flurry.com
 ads.genieessp.com
 ads.gionee.com
 ads.gmodules.com
+ads.google.cn
 ads.google.com
 ads.heyzap.com
 ads.house365.com
@@ -6545,6 +6550,7 @@ adsehera.ximalaya.com
 adsemirate.com
 adsemo.com
 adsence.sogou.com
+adsense.google.cn
 adsense.html5.qq.com
 adsensecamp.com
 adsensedetective.com
@@ -6943,6 +6949,7 @@ advertise.com
 advertisement.glb.qnniu.com
 advertisementafterthought.com
 advertisemisuseequipment.com
+advertiseonbing.azureedge.net
 advertiserurl.com
 advertiseserve.com
 advertisespace.com

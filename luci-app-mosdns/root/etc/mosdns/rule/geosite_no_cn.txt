@@ -10363,6 +10363,7 @@ md-t.org
 mdhcdn.com
 mdialog.com
 mdlf.xyz
+mdn.dev
 mdn.mozit.cloud
 mdnkids.com
 mdpi.com
@@ -10566,6 +10567,7 @@ miitomo.com
 miiverse.com
 mike.cz.cc
 mikesoltys.com
+mikrotik.com
 miktex.org
 mikuexpo.com
 mil
@@ -13871,6 +13873,7 @@ rosemarydoll.com
 rotten.com
 rou.video
 roughman.net
+routerboard.com
 routledgehandbooks.com
 royalcams.com
 royalsocietypublishing.org
