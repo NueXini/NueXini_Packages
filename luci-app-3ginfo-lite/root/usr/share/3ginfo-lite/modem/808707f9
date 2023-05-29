@@ -1,4 +1,6 @@
 # Fibocom L860-GL
+# Thanks to https://github.com/koshev-msk
+# Modem support based on luci-app-modeminfo package
 
 convertchannel() {
   if [ $1 -ge 0 ] && [ $1 -le 599 ]; then
@@ -72,8 +74,31 @@ if [ -n "$T" ]; then
 fi
 
 RSRP=$(echo "$O" | awk -F [:,] '/\+RSRP:/{printf "%.0f\n", $4}')
+
+BWDL=$(echo "$O" | awk -F [:,] '/\+XLEC:/{gsub("\r","",$4); print $4}')
+		case $BWDL in
+			1) NP=15 ;;
+			2) NP=25 ;;
+			3) NP=50 ;;
+			4) NP=75 ;;
+			5) NP=100 ;;
+			*) NP=0 ;;
+		esac
+		
+CSQ=$(echo $RSRP $NP | awk '{printf "%.0f\n", (($1+10*log(12*$2)/log(10))+113)/2}')
+[ "x$CSQ" = "x" ] && CSQ=-1                                                                    
+if [ $CSQ -ge 0 -a $CSQ -le 31 ]; then                                                         
+	CSQ_PER=$(($CSQ * 100/31))                                                                                            
+	RSSI=$((2 * CSQ - 113))                                                
+	# Fibocom RSSI up -51dBm. Thanks to TSA74 at 4pda.to                       
+elif [ $CSQ -ge 32 -a $CSQ -le 50 ]; then                                                                              
+	RSSI=$((2 * CSQ - 113))
+	CSQ_PER="100"
+else                                                        
+	CSQ_PER="0"                                                                              
+fi
+
 RSRQ=$(echo "$O" | awk -F [:,] '/\+RSRQ:/{printf "%.0f\n", $4}')
-RSSI=$((2 * CSQ - 113))  
 SINR=$(echo "$O" | awk -F [:,] '/\+XMCI: 4/{gsub(/"/,""); printf "%.0f\n", $13/4+5}')
 
 LTE_Cx=$(echo "$O" | awk -F [:,] '/\+XLEC:/{print $3}')
@@ -145,19 +170,29 @@ T2=$(echo "$O" | awk -F [:,] '/\+XLEC:/{gsub("\r",""); print $4" "}')
 
 	if [ -n "$T4" ]; then
 		PBAND="$(band $T "") @$T4 MHz"
+		PCI=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $2}')
+		EARFCN=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $3}')
 	fi
 
 if [ -n "$S1" ]; then
 S1BAND="$(band $S1 "") @$BW1 MHz"
+S1PCI=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $5}')
+S1EARFCN=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $6}')
 fi
 if [ -n "$S2" ]; then
 S2BAND="$(band $S2 "") @$BW2 MHz"
+S2PCI=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $8}')
+S2EARFCN=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $9}')
 fi
 if [ -n "$S3" ]; then
 S3BAND="$(band $S3 "") @$BW3 MHz"
+S3PCI=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $11}')
+S3EARFCN=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $12}')
 fi
 if [ -n "$S4" ]; then
 S4BAND="$(band $S4 "") @$BW4 MHz"
+S4PCI=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $14}')
+S4EARFCN=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $15}')
 fi
 
 
@@ -179,6 +214,8 @@ if [[ "$MODE" != *"LTE-A"* ]]; then
 
 	if [ -n "$T4" ]; then
 		PBAND="$(band $T "") @$T4 MHz"
+		PCI=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $2}')
+		EARFCN=$(echo "$O" | awk -F[,:] '/^\+RSRP:/ {print $3}')
 	fi
   fi
 fi
