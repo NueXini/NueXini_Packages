@@ -65,72 +65,8 @@ document.addEventListener('luci-loaded', function(ev) {
 			return true;
 		}
 
-		$(".main > .main-left > .nav > .slide > .menu").each(function () {
-			var ulNode = $(this);
-			ulNode.next().find("a").each(function () {
-				var that = $(this);
-				var href = that.attr("href");
-
-				if (href.indexOf(nodeUrl) != -1) {
-					ulNode.click();
-					ulNode.next(".slide-menu").stop(true, true);
-					lastNode = that.parent();
-					lastNode.addClass("active");
-					ret = true;
-					return true;
-				}
-			});
-		});
 		return ret;
 	}
-
-	/**
-	 * menu click
-	 */
-	/**
-	 * menu click
-	 */
-	$(".main > .main-left > .nav > .slide > .menu").click(function () {
-		var ul = $(this).next(".slide-menu");
-		var menu = $(this);
-		$(".main > .main-left > .nav > .slide > .menu").each(function () {
-			var ulNode = $(this);
-			ulNode.removeClass("active");
-			ulNode.next(".slide-menu").stop(true).slideUp("fast")
-		});
-		if (!ul.is(":visible")) {
-			menu.addClass("active");
-			ul.addClass("active");
-			ul.stop(true).slideDown("fast");
-		} else {
-			ul.stop(true).slideUp("fast", function () {
-				menu.removeClass("active");
-				ul.removeClass("active");
-			});
-		}
-		return false;
-	});
-
-	/**
-	 * hook menu click and add the hash
-	 */
-	$(".main > .main-left > .nav > .slide > .slide-menu > li > a").click(function () {
-		if (lastNode != undefined) lastNode.removeClass("active");
-		$(this).parent().addClass("active");
-		$(".main > .loading").fadeIn("fast");
-		return true;
-	});
-
-	/**
-	 * fix menu click
-	 */
-	$(".main > .main-left > .nav > .slide > .slide-menu > li").click(function () {
-		if (lastNode != undefined) lastNode.removeClass("active");
-		$(this).addClass("active");
-		$(".main > .loading").fadeIn("fast");
-		window.location = $($(this).find("a")[0]).attr("href");
-		return false;
-	});
 
 	/**
 	 * get current node and open it

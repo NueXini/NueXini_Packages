@@ -28,6 +28,7 @@
 	// thanks for Jo-Philipp Wich <jow@openwrt.org>
 	var luciLocation = <%= luci.http.write_json(luci.dispatcher.context.path) %>;
 </script>
+<script type="text/javascript">L.require('menu-edge')</script>
 <script src="<%=media%>/js/script.js?v=2.1"></script>
      
 </body>
