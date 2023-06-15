@@ -926,8 +926,8 @@ function down(){
 	local ip_name=`getname ${1} ${ip_mac}`
 	local ip_interface=`getinterface ${ip_mac}`
 
-	tmp_timeout=10 && tmp_retry_count=2
-	[ -n "$only_timeout_push" ] && blackwhitelist ${ip_mac};local ip_blackwhite=$? && [ "$ip_blackwhite" -eq "0" ] && tmp_timeout=$down_timeout && tmp_retry_count=$timeout_retry_count
+	tmp_timeout=$down_timeout && tmp_retry_count=$timeout_retry_count
+	[ -n "$only_timeout_push" ] && blackwhitelist ${ip_mac};local ip_blackwhite=$? && [ "$ip_blackwhite" -ne "0" ] && tmp_timeout=10 && tmp_retry_count=2
 	getping ${1} ${ip_mac} ${tmp_timeout} ${tmp_retry_count};local ping_online=$?
 	# 离线，置入二次验证区
 	if [ "$ping_online" -eq "1" ]; then
