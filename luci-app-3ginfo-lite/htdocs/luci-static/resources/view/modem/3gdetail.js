@@ -53,22 +53,22 @@ var mn = parseInt(m) || 100;
 if (vn > -50) { vn = -50 };
 if (vn < -110) { vn = -110 };
 var pc =  Math.floor(100*(1-(-50 - vn)/(-50 - mn)));
-		if (vn >= -74) 
+		if (vn > -70) 
 			{
 			pg.firstElementChild.style.background = 'lime';
 			var tip = _('Very good');
 			};
-		if (vn >= -85 && vn <= -75) 
+		if (vn >= -85 && vn <= -70) 
 			{
 			pg.firstElementChild.style.background = 'yellow';
 			var tip = _('Good');
 			};
-		if (vn >= -93 && vn <= -86) 
+		if (vn >= -100 && vn <= -86) 
 			{
 			pg.firstElementChild.style.background = 'darkorange';
 			var tip = _('Weak');
 			};
-		if (vn < -94) 
+		if (vn < -100) 
 			{
 			pg.firstElementChild.style.background = 'red';
 			var tip = _('Very weak');
@@ -86,17 +86,17 @@ var mn = parseInt(m) || 100;
 if (vn > -50) { vn = -50 };
 if (vn < -140) { vn = -140 };
 var pc =  Math.floor(120*(1-(-50 - vn)/(-50 - mn)));
-		if (vn >= -79 ) 
+		if (vn >= -80 ) 
 			{
 			pg.firstElementChild.style.background = 'lime';
 			var tip = _('Very good');
 			};
-		if (vn >= -90 && vn <= -80) 
+		if (vn >= -90 && vn <= -79) 
 			{
 			pg.firstElementChild.style.background = 'yellow';
 			var tip = _('Good');
 			};
-		if (vn >= -100 && vn <= -91) 
+		if (vn >= -100 && vn <= -89) 
 			{
 			pg.firstElementChild.style.background = 'darkorange';
 			var tip = _('Weak');
@@ -117,7 +117,7 @@ var pg = document.querySelector('#sinr')
 var vn = parseInt(v) || 0;
 var mn = parseInt(m) || 100;
 var pc = Math.floor(100-(100*(1-((mn - vn)/(mn - 31)))));
-		if (vn >= 21 ) 
+		if (vn > 20 ) 
 			{
 			pg.firstElementChild.style.background = 'lime';
 			var tip = _('Excellent');
@@ -149,17 +149,17 @@ var vn = parseInt(v) || 0;
 var mn = parseInt(m) || 100;
 var pc = Math.floor(115-(100/mn)*vn);
 if (vn > 0) { vn = 0; };
-		if (vn >= -9 ) 
+		if (vn >= -10 ) 
 			{
 			pg.firstElementChild.style.background = 'lime';
 			var tip = _('Excellent');
 			};
-		if (vn >= -15 && vn <= -10) 
+		if (vn >= -15 && vn <= -9) 
 			{
 			pg.firstElementChild.style.background = 'yellow';
 			var tip = _('Good');
 			};
-		if (vn >= -20 && vn <= -16) 
+		if (vn >= -20 && vn <= -14) 
 			{
 			pg.firstElementChild.style.background = 'darkorange';
 			var tip = _('Mid cell');
