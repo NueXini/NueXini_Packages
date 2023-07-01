@@ -23,7 +23,7 @@ return view.extend({
 
 		var json = JSON.parse(data);
 
-		m = new form.Map('modemband', _('Modemband configuration'), _('Settings panel for the modemband application that allows you to customize the package for your modem.'));
+		m = new form.Map('modemband', _('Modem template configuration'), _('Settings panel for the modemband application that allows you to customize the package for your modem.'));
 
 		s = m.section(form.TypedSection, 'modemband', '', _(''));
 		s.anonymous = true;

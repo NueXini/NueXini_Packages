@@ -550,6 +550,11 @@ return view.extend({
 
 					if (document.getElementById('lac')) {
 						var view = document.getElementById("lac");
+						
+						if (json.lac_dec == 0 || json.lac_hex == 0) {
+						view.textContent = '-';
+						}
+						
 						if (json.lac_dec == '' || json.lac_hex == '') { 
 						var lc = json.lac_dec   + ' ' + json.lac_hex;
 						var ld = lc.split(' ').join('');
@@ -564,9 +569,11 @@ return view.extend({
 					if (document.getElementById('tac')) {
 						var view = document.getElementById("tac");
 						var tac_dh, tac_dec_hex, lac_dec_hex;
-						if (json.signal == 0 || json.signal == '') {
+						
+						if (json.signal == 0 || json.signal == '' || json.tac_dec == 0 || json.tac_hex == 0) {
 						view.textContent = '-';
 						}
+						
 						else {
 							if (json.tac_hex == null || json.tac_hex == '' || json.tac_hex == '-') {
 							var tac_dh =  json.tac_d + ' (' + json.tac_h + ')';
@@ -705,7 +712,7 @@ return view.extend({
 		var info = _('More information about the 3ginfo on the %seko.one.pl forum%s.').format('<a href="https://eko.one.pl/?p=openwrt-3ginfo" target="_blank">', '</a>');
 		m = new form.JSONMap(this.formdata, _('3ginfo-lite'), info);
 
-		s = m.section(form.TypedSection, '3ginfo', '', _(''));
+		s = m.section(form.TypedSection, '3ginfo', '', null);
 		s.anonymous = true;
 
 		s.render = L.bind(function(view, section_id) {
@@ -881,7 +888,7 @@ return view.extend({
 			]);
 		}, o, this);
 
-		s = m.section(form.TypedSection, 'threeginfo', _(''));
+		s = m.section(form.TypedSection, 'threeginfo', null);
 		s.anonymous = true;
 		s.addremove = false;
 

@@ -357,17 +357,17 @@ return view.extend({
 				E('h3', _('Modem information')),
 					E('table', { 'class': 'table' }, [
 						E('tr', { 'class': 'tr' }, [
-						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Modem:')]),
+						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Modem')]),
 						E('td', { 'class': 'td left', 'id': 'modem' }, [ modem || '-' ]),
 					]),
 
 						E('tr', { 'class': 'tr' }, [
-						E('td', { 'class': 'td left', 'width': '33%' }, [ _('LTE bands:')]),
+						E('td', { 'class': 'td left', 'width': '33%' }, [ _('LTE bands')]),
 						E('td', { 'class': 'td left', 'id': 'modemlteb' }, [ modemen || '-' ]),
 					]),
 
 						E('tr', { 'class': 'tr' }, [
-						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Supported LTE bands:')]),
+						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Supported LTE bands')]),
 						E('td', { 'class': 'td left', 'id': 'sbands' }, [ sbands || '-' ]),
 					]),
 				])
@@ -382,7 +382,7 @@ return view.extend({
 		s.tab('bandset', _('Preferred bands settings'));
  
 		o = s.taboption('bandset', cbiRichListValue, 'set_bands',
-		_('Modification of the bands:'), 
+		_('Modification of the bands'), 
 		_("Select the preferred band(s) for the modem."));
 
 		for (var i = 0; i < json.supported.length; i++) 

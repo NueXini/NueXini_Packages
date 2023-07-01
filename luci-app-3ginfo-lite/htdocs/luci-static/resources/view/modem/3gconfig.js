@@ -25,7 +25,7 @@ return view.extend({
 		var m, s, o;
 		m = new form.Map('3ginfo', _('Configuration 3ginfo-lite'), _('Configuration panel for the 3ginfo-lite application.'));
 
-		s = m.section(form.TypedSection, '3ginfo', '', _(''));
+		s = m.section(form.TypedSection, '3ginfo', '', null);
 		s.anonymous = true;
 		
 		o = s.option(widgets.DeviceSelect, 'network', _('Interface'),
@@ -47,7 +47,7 @@ return view.extend({
 		o.placeholder = _('Please select a port');
 		o.rmempty = false
 
-		s = m.section(form.TypedSection, '3ginfo', _(''));
+		s = m.section(form.TypedSection, '3ginfo', null);
 		s.anonymous = true;
 		s.addremove = false;
 

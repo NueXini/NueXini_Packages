@@ -4,11 +4,11 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 msgid "Preferred LTE Bands"
 msgstr "Preferowane pasma LTE"
 
-msgid "LTE bands:"
-msgstr "Ustawione pasma LTE:"
+msgid "LTE bands"
+msgstr "Ustawione pasma LTE"
 
-msgid "Supported LTE bands:"
-msgstr "Obsługiwane pasma LTE:"
+msgid "Supported LTE bands"
+msgstr "Obsługiwane pasma LTE"
 
 msgid ""
 "Configuration modem frequency bands. More "
@@ -23,8 +23,8 @@ msgstr "Konfiguracja pasm LTE"
 msgid "Preferred bands settings"
 msgstr "Ustawienia preferowanych pasm"
 
-msgid "Modification of the bands:"
-msgstr "Modyfikacja pasm:"
+msgid "Modification of the bands"
+msgstr "Modyfikacja pasm"
 
 msgid "Modem information"
 msgstr "Informacje o modemie"
@@ -83,8 +83,8 @@ msgstr "Preferowane pasma"
 msgid "Configuration"
 msgstr "Konfiguracja"
 
-msgid "Configuration luci-app-modemband"
-msgstr "Konfiguracja luci-app-modemband"
+msgid "Configuration modemband"
+msgstr "Konfiguracja modemband"
 
 msgid "Configuration panel for modemband and gui application."
 msgstr "Panel ustawień dla aplikacji modemband oraz dla interfejsu użytkownika."
@@ -158,14 +158,17 @@ msgstr "Włącz"
 msgid "Turn off notifications"
 msgstr "Wyłącz powiadomienia"
 
+msgid "Appearance and action settings"
+msgstr "Ustawienia wyglądu i działania"
+
 msgid "Checking this option disables the notification that appears every time the bands are changed."
 msgstr "Zaznaczenie tej opcji wyłącza powiadomienie pojawiające się przy każdej zmianie pasm."
 
 msgid "Modem settings template"
 msgstr "Szablon ustawień modemu"
 
-msgid "Modemband configuration"
-msgstr "Konfiguracja modemband"
+msgid "Modem template configuration"
+msgstr "Konfiguracja szablonu modemu"
 
 msgid "Settings panel for the modemband application that allows you to customize the package for your modem."
 msgstr "Panel ustawień dla aplikacji modemband umożliwiający dostosowanie pakietu do posiadanego modemu."

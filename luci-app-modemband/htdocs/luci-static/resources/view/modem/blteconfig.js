@@ -21,9 +21,9 @@ return view.extend({
 
 	render: function(devs) {
 		var m, s, o;
-		m = new form.Map('modemband', _('Configuration luci-app-modemband'), _('Configuration panel for modemband and gui application.'));
+		m = new form.Map('modemband', _('Configuration modemband'), _('Configuration panel for modemband and gui application.'));
 
-		s = m.section(form.TypedSection, 'modemband', '', _(''));
+		s = m.section(form.TypedSection, 'modemband', '', null);
 		s.anonymous = true;
 
 		o = s.option(widgets.DeviceSelect, 'iface', _('Interface'),
@@ -57,7 +57,14 @@ return view.extend({
 		o.depends("modemrestart", "1");
 		o.rmempty = false;
 
-		o = s.option(form.Flag, 'notify',	_('Turn off notifications'),
+		s = m.section(form.TypedSection, 'modemband', null);
+		s.anonymous = true;
+		s.addremove = false;
+
+		s.tab('opt', _('Appearance and action settings'));
+		s.anonymous = true;
+
+		o = s.taboption('opt', form.Flag, 'notify', _('Turn off notifications'),
 		_('Checking this option disables the notification that appears every time the bands are changed.')
 		);
 		o.rmempty = false;
@@ -65,4 +72,3 @@ return view.extend({
 		return m.render();
 	}
 });
-
