@@ -36,13 +36,12 @@ end
 
 local f = SimpleForm("customize",
 	translate("Backup Configuration - Custom List"),
-	translate(
-		"Please maintain the format of the backup list. Except for the last line, each line should end with ' \\' character."))
+	translate("Please maintain the format of the backup list. Except for the last line, each line should end with ' \\' character."))
 
 local o = f:field(Value, "_custom")
 
 o.template = "cbi/tvalue"
-o.rows = 20
+o.rows = 30
 
 function o.cfgvalue(self, section)
 	local readconf = fs.readfile(backup_list_conf)
