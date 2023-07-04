@@ -19,6 +19,7 @@ function index()
 	entry({ "admin", "system", "amlogic", "upload" }, cbi("amlogic/amlogic_upload"), _("Manually Upload Update"), 3).leaf = true
 	entry({ "admin", "system", "amlogic", "check" }, cbi("amlogic/amlogic_check"), _("Online Download Update"), 4).leaf = true
 	entry({ "admin", "system", "amlogic", "backup" }, cbi("amlogic/amlogic_backup"), _("Backup Firmware Config"), 5).leaf = true
+	entry({ "admin", "system", "amlogic", "backuplist" }, cbi("amlogic/amlogic_backuplist")).leaf = true
 	if (string.find(platfrom, "qemu")) == nil then
 		entry({ "admin", "system", "amlogic", "armcpu" }, cbi("amlogic/amlogic_armcpu"), _("CPU Settings"), 6).leaf = true
 	end
