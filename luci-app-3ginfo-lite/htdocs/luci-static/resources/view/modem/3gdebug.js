@@ -12,7 +12,7 @@
 return view.extend({
 	load: function() {
 		return fs.read_direct('/sys/kernel/debug/usb/devices', [ '-r' ]).catch(function(err) {
-			ui.addNotification(null, E('p', {}, _('Unable to load log data: ' + err.message)));
+			ui.addNotification(null, E('p', {}, _('Unable to load data: ' + err.message)));
 			return '';
 		});
 	},
@@ -27,12 +27,11 @@ return view.extend({
 		return E([], [
 			E('h2', {}, [ _('3ginfo-lite') ]),
 			E('div', { class: 'cbi-section-descr' }, info),
-			E('h4', {}, [ _('cat /sys/kernel/debug/usb/devices') ]),
 			E('div', { 'id': 'content_syslog' }, [
-				E('pre', {
+				E('textarea', {
 					'id': 'syslog',
-					'style': 'font-size:12px',
-					'readonly': 'readonly',
+					'style':'border: 1px solid var(--border-color-medium); border-radius: 5px; font-family: monospace; font-size:12px; white-space:pre; width: 100%; resize: none;',
+					'readonly': true,
 					'wrap': 'off',
 					'rows': dlines.length + 1
 				}, [ dlines.join('\n') ])

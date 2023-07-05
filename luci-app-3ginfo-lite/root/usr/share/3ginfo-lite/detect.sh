@@ -6,6 +6,13 @@
 # (c) 2023 modified by Rafał Wabik - IceG - From eko.one.pl forum
 #
 
+# from config modemdefine
+DEVICE=$(uci -q get modemdefine.@modemdefine[0].comm_port)
+if [ -n "$DEVICE" ]; then
+	echo $DEVICE
+	exit 0
+fi
+
 getdevicepath() {
 	devname="$(basename $1)"
 	case "$devname" in

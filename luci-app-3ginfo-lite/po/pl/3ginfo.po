@@ -194,3 +194,12 @@ msgstr ""
 "Wystąpił problem z odczytem danych połączenia. <br /><br /><b>Proszę "
 "sprawdzić:</b> <ul><li>1. Połączenie modemu z internetem, poprawność wprowadzonego APN. Niektóre modemy wymagają wymuszenia APN w modemie za pomocą komend at, aby "
 "połączyć się z internetem.</li><li> 2. Sprawdź, czy wybrany został właściwy interfejs przypisany do modemu. Domyślną nazwą interfejsu w pakiecie jest wan.</li><li><ul>"
+
+msgid "Defined modems"
+msgstr "Zdefiniowane modemy"
+
+msgid "Interface for selecting user defined modems."
+msgstr "Interfejs wyboru modemów zdefiniowanych przez użytkownika."
+
+msgid "Modem selection menu"
+msgstr "Menu wyboru modemu"

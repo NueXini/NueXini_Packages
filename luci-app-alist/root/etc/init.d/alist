@@ -81,9 +81,6 @@ start_service() {
 	cat > $data_dir/config.json <<EOF
 {
   "force": false,
-  "address": "$listen_addr",
-  "port": $port,
-  "https_port": $port,
   "site_url": "$site_url",
   "cdn": "",
   "jwt_secret": "",
@@ -91,7 +88,7 @@ start_service() {
   "database": {
     "type": "$database",
     "host": "$mysql_host",
-    "port": "$mysql_port",
+    "port": $mysql_port,
     "user": "$mysql_username",
     "password": "$mysql_password",
     "name": "$mysql_database",

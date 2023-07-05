@@ -8,6 +8,7 @@
 				"/usr/share/3ginfo-lite/detect.sh": [ "exec" ],
 				"/usr/share/3ginfo-lite/check.gcom": [ "exec" ],
 				"/usr/share/3ginfo-lite/info.gcom": [ "exec" ],
+				"/etc/modemdefine": [ "read" ],
 				"/etc/3ginfo": [ "read" ],
 				"/sys/kernel/debug/usb/devices": [ "read" ]
 			},
@@ -16,6 +17,7 @@
 		"write": {
 			"file": {
 				"/bin/cat": [ "exec" ],
+				"/etc/modemdefine": [ "write" ],
 				"/etc/3ginfo": [ "write" ]
 			},
 			"uci": [ "3ginfo", "luci-app-3ginfo-lite" ]

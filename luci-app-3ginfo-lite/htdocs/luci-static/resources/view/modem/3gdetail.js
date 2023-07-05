@@ -1,4 +1,5 @@
 'use strict';
+'require baseclass';
 'require form';
 'require fs';
 'require view';
@@ -85,7 +86,7 @@ var vn = parseInt(v) || 0;
 var mn = parseInt(m) || 100;
 if (vn > -50) { vn = -50 };
 if (vn < -140) { vn = -140 };
-var pc =  Math.floor(120*(1-(-50 - vn)/(-50 - mn)));
+var pc =  Math.floor(120*(1-(-50 - vn)/(-70 - mn)));
 		if (vn >= -80 ) 
 			{
 			pg.firstElementChild.style.background = 'lime';
@@ -116,7 +117,7 @@ function sinr_bar(v, m) {
 var pg = document.querySelector('#sinr')
 var vn = parseInt(v) || 0;
 var mn = parseInt(m) || 100;
-var pc = Math.floor(100-(100*(1-((mn - vn)/(mn - 31)))));
+var pc = Math.floor(100-(100*(1-((mn - vn)/(mn - 40)))));
 		if (vn > 20 ) 
 			{
 			pg.firstElementChild.style.background = 'lime';
@@ -195,15 +196,141 @@ function SIMdata(data) {
 	}
 }
 
-return view.extend({
-	formdata: { threeginfo: {} },
+function active_select() {
+	uci.load('modemdefine').then(function() {
+		var modemz = (uci.get('modemdefine', '@modemdefine[1]', 'comm_port'));
+		if (!modemz) {
+			document.getElementById("modc").disabled = true;
+		}
+		else {
+			document.getElementById("modc").disabled = false;
+		}
+	});
+}
 
+
+return view.extend({
+
+
+modemDialog: baseclass.extend({
+		__init__: function(title, description, callback) {
+			this.title       = title;
+			this.description = description;
+			this.callback    = callback;
+		},
+
+		load: function() {
+			return uci.load('modemdefine');
+		},
+
+		render: function(content) {
+
+			var sections = uci.sections('modemdefine');
+			var portM = sections.length;
+
+    			var result = "";
+    			for (var i = 1; i < portM; i++) {
+       			result += sections[i].comm_port + '#' + sections[i].modem + ' (' + sections[i].user_desc + ');';
+    			}
+			var result = result.slice(0, -1);
+			var result = result.replace("(undefined)", "");
+
+			ui.showModal(this.title, [
+				E('div', { 'class': 'cbi-section' }, [
+					E('div', { 'class': 'cbi-section-descr' }, this.description),
+					E('div', { 'class': 'cbi-section' },
+						E('p', {},
+							E('div', { 'class': 'cbi-value' }, [
+							E('p'),
+							E('label', { 'class': 'cbi-value-title' }, [ _('Modem') ]),
+							E('div', { 'class': 'cbi-value-field' }, [
+								E('select', { 'class': 'cbi-input-select',
+										'id': 'mselect',
+										'style': 'margin:0px 0; width:100%;',
+										},
+									(result || "").trim().split(/;/).map(function(cmd) {
+										var fields = cmd.split(/#/);
+										var name = fields[1];
+										var code = fields[0];
+									return E('option', { 'value': code }, name ) })
+
+								)
+							]) 
+						]),
+						)
+					),
+				]),
+				E('div', { 'class': 'right' }, [
+					E('button', {
+						'class': 'btn',
+						'click': ui.createHandlerFn(this, this.handleDissmis),
+					}, _('Cancel')),
+
+					' ',
+					E('button', {
+						'id': 'btn_save',
+						'class': 'btn cbi-button-positive important',
+						'click': ui.createHandlerFn(this, this.handleSave),
+					}, _('Save')),
+
+				]),
+			]);
+		},
+
+		handleSave: function(ev) {
+
+			return uci.load('3ginfo').then(function() {
+
+				var vx = document.getElementById('mselect').value; 
+
+				uci.set('3ginfo', '@3ginfo[0]', 'device', vx.toString());
+
+				uci.save();
+				uci.apply();
+
+				window.setTimeout(function() {
+					if (!poll.active()) poll.start();
+					location.reload();
+				}, 2000).finally();
+			});
+
+		},
+
+		handleDissmis: function(ev) {
+				ui.hideModal();
+				if (!poll.active()) poll.start();
+		},
+
+		show: function() {
+			ui.showModal(null,
+				E('p', { 'class': 'spinning' }, _('Loading'))
+			);
+			poll.stop();
+			this.load().then(content => {
+				ui.hideModal();
+				return this.render(content);
+			}).catch(e => {
+				ui.hideModal();
+				return this.error(e);
+			})
+		},
+	}),
+
+	formdata: { threeginfo: {} },
+	
 	load: function() {
 		return L.resolveDefault(fs.exec_direct('/usr/share/3ginfo-lite/3ginfo.sh', [ 'json' ]));
 	},
 
 	render: function(data) {
 		var m, s, o;
+
+		active_select();
+
+		var upModemDialog = new this.modemDialog(
+			_('Defined modems'),
+			_('Interface for selecting user defined modems.'),
+		);
 
 		if (data != null){
 		try {
@@ -718,7 +845,20 @@ return view.extend({
 		s.render = L.bind(function(view, section_id) {
 
 			return E('div', { 'class': 'cbi-section' }, [
-				E('h4', {}, [ _('General Information') ]),
+
+			E('div', { 'class': 'right' }, [
+				E('button', {
+					'id': 'modc',
+					'style': 'position:relative; display:block; margin:0 !important; margin-top:-3% !important; left:95%; top:',
+					'data-tooltip': _('Modem selection menu'),
+					'class': 'cbi-button cbi-button-save',
+					'click': ui.createHandlerFn(this, function() {
+							return upModemDialog.show();
+					}),
+				}, _('☰')),
+			]),
+
+			E('h4', {}, [ _('General Information') ]),
 			E('table', { 'class': 'table' }, [
 				E('tr', { 'class': 'tr' }, [
 					E('td', { 'class': 'td left', 'width': '33%' }, [ _('Signal strength')]),
@@ -733,7 +873,7 @@ return view.extend({
 					E('td', { 'class': 'td left'}, [
 						E('span', {
 							'class': 'ifacebadge',
-							'title': '',
+							'title': null,
 							'id': 'simv',
 							'style': 'visibility: hidden; max-width:3em; display: inline-block;',
 						}, [
@@ -741,7 +881,7 @@ return view.extend({
 							E('div', { 'class': 'cbi-tooltip-container' }, [
 							E('img', {
 								'src': L.resource('icons/sim1m.png'),
-								'style': 'width:24px; height:auto',
+								'style': 'width:24px; height:auto; padding: 0px',
 								'title': _(''),
 								'class': 'middle',
 							}),
