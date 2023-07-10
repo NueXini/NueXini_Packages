@@ -15,7 +15,7 @@ if [ -n "$T" ] && [ -z "$FORCE_PLMN" ]; then
 fi
 
 if [ "x$MODE_NUM" = "x7" ]; then
-	echo "$O" | grep -q -i "+QCAINFO.*SCC" && MODE="LTE-A | "
+	echo "$O" | grep -q -i "+QCAINFO.*SCC" && MODE="LTE-A |"
 fi
 
 T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $5}')
@@ -133,7 +133,6 @@ if [ -n "$T" ]; then
 	IDX=1
 	LINES=$(echo "$O" | grep -E "^\+QCAINFO: \"(scc|SCC)\"")
 	for LINE in $LINES; do
-		POS=$(((IDX + 4) * 10))
 
 		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $5}')
 		B=$(echo $T | sed 's/"LTE BAND \(.*\)"/\1/')
@@ -203,12 +202,12 @@ MODE=$(echo $MODE | sed 's,/,+,')
 
 # Modem
 FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n" | xargs)
-FW=$(echo $FWA | sed s/"AT+GMR"//)
+FW=$(echo $FWA | sed s/"AT+GMR "//)
 
 MODELA=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n" | xargs)
 MODELB=$(sms_tool -d $DEVICE at "AT+CGMI" | tr -s "\n" | xargs)
-MODELACUT=$(echo $MODELA | sed s/"AT+CGMM"//)
-MODELBCUT=$(echo $MODELB | sed s/"AT+CGMI"//)
+MODELACUT=$(echo $MODELA | sed s/"AT+CGMM "//)
+MODELBCUT=$(echo $MODELB | sed s/"AT+CGMI "//)
 MODEL="$MODELBCUT "$MODELACUT
 
 # Slot SIM

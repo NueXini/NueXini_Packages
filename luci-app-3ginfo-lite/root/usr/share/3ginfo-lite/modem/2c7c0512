@@ -19,7 +19,7 @@ fi
 case "$MODE_NUM" in
 	7*)
 		if echo "$O" | grep -q -i "+QCAINFO.*SCC"; then
-			MODE="LTE-A | "
+			MODE="LTE-A |"
 		fi
 		;;
 esac

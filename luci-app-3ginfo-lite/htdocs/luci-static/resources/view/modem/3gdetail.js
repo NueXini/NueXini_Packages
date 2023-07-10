@@ -229,7 +229,7 @@ modemDialog: baseclass.extend({
 			var portM = sections.length;
 
     			var result = "";
-    			for (var i = 1; i < portM; i++) {
+    			for (let i = 1; i < portM; i++) {
        			result += sections[i].comm_port + '#' + sections[i].modem + ' (' + sections[i].user_desc + ');';
     			}
 			var result = result.slice(0, -1);
@@ -826,14 +826,11 @@ modemDialog: baseclass.extend({
 				});	
 
 				}
-
 			}	
-
 
 		} catch (err) {
 				ui.addNotification(null, E('p', _('Error: ') + err.message), 'error');
 				}
-
 		}		
 
 		var info = _('More information about the 3ginfo on the %seko.one.pl forum%s.').format('<a href="https://eko.one.pl/?p=openwrt-3ginfo" target="_blank">', '</a>');

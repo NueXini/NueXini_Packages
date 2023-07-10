@@ -16,12 +16,35 @@ fi
 case "$MODE_NUM" in
 	7*)
 		if echo "$O" | grep -q -i "+QCAINFO.*SCC"; then
-			MODE="LTE-A | "
+			MODE="LTE-A |"
 		fi
 		;;
 	13*)
 		if echo "$O" | grep -q -i "+QCAINFO.*NR5G"; then
-			MODE="5G NSA | "
+			MODE="5G-NSA |"
+		else
+			if echo "$O" | grep -q -i "+QCAINFO.*PCC.*LTE"; then
+				MODE="LTE |"
+
+					OTS=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
+					SINR=$OTS
+
+					TDX=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
+					TAC_DEC=$(printf "%d" "0x$TDX")
+					TAC_HEX=$TDX
+
+				if echo "$O" | grep -q -i "+QCAINFO.*SCC"; then
+					MODE="LTE-A |"
+
+						OTS=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
+						SINR=$OTS
+
+						TDX=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
+						TAC_DEC=$(printf "%d" "0x$TDX")
+						TAC_HEX=$TDX
+						
+				fi
+			fi
 		fi
 		;;
 esac
@@ -60,10 +83,11 @@ if [ "x$MODE_NUM" = "x7" ]; then
 	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $4}' | xargs)
 	if [ "x$T" = "xLTE" ]; then
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
-			TAC_DEC=$(printf "%d" "0x$T")
-			TAC_HEX=$T
+			T_DEC=$(printf "%d" "0x$T")
+			T_HEX=$T
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
 		SINR=$T
+
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $12}')
 		case $T in
 			0*) T1="1.4";;
@@ -86,6 +110,7 @@ if [ "x$MODE_NUM" = "x7" ]; then
 			*) T1="?";;
 		esac
 		DLBW="DL: @$T1 MHz"
+
 	fi
 fi
 
@@ -195,68 +220,65 @@ if [ -n "$T" ]; then
 		esac
 		if [ -z "$T4" ]; then
 
-				if [ $IDX == 1 ]; then
-					S1BAND="$T2"
-				fi
-				if [ $IDX == 2 ]; then
-					S2BAND="$T2"
-				fi
-				if [ $IDX == 3 ]; then
-					S3BAND="$T2"
-				fi
-				if [ $IDX == 4 ]; then
-					S4BAND="$T2"
-				fi
+			case $IDX in
+				1) S1BAND="$T2";;
+				2) S2BAND="$T2";;
+				3) S3BAND="$T2";;
+				4) S4BAND="$T2";;
+				*) ;;
+			esac
+
 		else
-				if [ $IDX == 1 ]; then
-					S1BAND="$T2 @$T4 MHz"
-				fi
-				if [ $IDX == 2 ]; then
-					S2BAND="$T2 @$T4 MHz"
-				fi
-				if [ $IDX == 3 ]; then
-					S3BAND="$T2 @$T4 MHz"
-				fi
-				if [ $IDX == 4 ]; then
-					S4BAND="$T2 @$T4 MHz"
-				fi
+
+			case $IDX in
+				1) S1BAND="$T2 @$T4 MHz";;
+				2) S2BAND="$T2 @$T4 MHz";;
+				3) S3BAND="$T2 @$T4 MHz";;
+				4) S4BAND="$T2 @$T4 MHz";;
+				*) ;;
+			esac
 
 		fi
 
 		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $3}')
 		if [ -n "$T" ]; then
 
-				if [ $IDX == 1 ]; then
-					S1EARFCN="$T"
-				fi
-				if [ $IDX == 2 ]; then
-					S2EARFCN="$T"
-				fi
-				if [ $IDX == 3 ]; then
-					S3EARFCN="$T"
-				fi
-				if [ $IDX == 4 ]; then
-					S4EARFCN="$T"
-				fi
+			case $IDX in
+				1) S1EARFCN="$T";;
+				2) S2EARFCN="$T";;
+				3) S3EARFCN="$T";;
+				4) S4EARFCN="$T";;
+				*) ;;
+			esac
 
 		fi
+
+		TL=$(echo "$LINE" | grep -Eo '[0-9]+' | tail -1)
+		if [ -n "$TL" ]; then
+
+			case $IDX in
+				1) S1PCI="$TL";;
+				2) S2PCI="$TL";;
+				3) S3PCI="$TL";;
+				4) S4PCI="$TL";;
+				*) ;;
+			esac
+
+		fi
+
 		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
 		if [ -n "$T" ]; then
 
-				if [ $IDX == 1 ]; then
-					S1PCI="$T"
-				fi
-				if [ $IDX == 2 ]; then
-					S2PCI="$T"
-				fi
-				if [ $IDX == 3 ]; then
-					S3PCI="$T"
-				fi
-				if [ $IDX == 4 ]; then
-					S4PCI="$T"
-				fi
+			case $IDX in
+				1) S1PCI="$T";;
+				2) S2PCI="$T";;
+				3) S3PCI="$T";;
+				4) S4PCI="$T";;
+				*) ;;
+			esac
 
 		fi
+
 #		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $3}')
 #		[ -n "$T" ] && addon $((POS + 4)) "(S${IDX}) EARFCN" "$T"
 #		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
@@ -275,12 +297,12 @@ MODE=$(echo $MODE | sed 's,/,+,')
 
 # Modem
 FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n" | xargs)
-FW=$(echo $FWA | sed s/"AT+GMR"//)
+FW=$(echo $FWA | sed s/"AT+GMR "//)
 
 MODELA=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n" | xargs)
 MODELB=$(sms_tool -d $DEVICE at "AT+CGMI" | tr -s "\n" | xargs)
-MODELACUT=$(echo $MODELA | sed s/"AT+CGMM"//)
-MODELBCUT=$(echo $MODELB | sed s/"AT+CGMI"//)
+MODELACUT=$(echo $MODELA | sed s/"AT+CGMM "//)
+MODELBCUT=$(echo $MODELB | sed s/"AT+CGMI "//)
 MODEL="$MODELBCUT "$MODELACUT
 
 # Slot SIM
@@ -292,14 +314,14 @@ fi
 
 # International Mobile Equipment Identity (IMEI)
 O=$(sms_tool -d $DEVICE at "AT+GSN" | xargs)
-NR_I=$(echo "$O" | cut -c 8-)
+NR_I=$(echo "$O" | sed s/"AT+GSN "//)
 if [ -n "$NR_I" ]; then
 	NR_IMEI="$NR_I"
 fi
 
 # International Mobile Subscriber Identity (IMSI)
 O=$(sms_tool -d $DEVICE at "AT+CIMI" | xargs)
-NR_C=$(echo "$O" | cut -c 9-)
+NR_C=$(echo "$O" | sed s/"AT+CIMI "//)
 if [ -n "$NR_C" ]; then
 	NR_IMSI="$NR_C"
 fi
@@ -325,4 +347,3 @@ elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
 then
     PROTO="ecm"
 fi
-
