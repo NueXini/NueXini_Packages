@@ -229,7 +229,7 @@ modemDialog: baseclass.extend({
 			var portM = sections.length;
 
     			var result = "";
-    			for (let i = 1; i < portM; i++) {
+    			for (var i = 1; i < portM; i++) {
        			result += sections[i].comm_port + '#' + sections[i].modem + ' (' + sections[i].user_desc + ');';
     			}
 			var result = result.slice(0, -1);
@@ -279,11 +279,11 @@ modemDialog: baseclass.extend({
 
 		handleSave: function(ev) {
 
-			return uci.load('3ginfo').then(function() {
+			return uci.load('modemdefine').then(function() {
 
 				var vx = document.getElementById('mselect').value; 
 
-				uci.set('3ginfo', '@3ginfo[0]', 'device', vx.toString());
+				uci.set('modemdefine', '@general[0]', 'main_modem', vx.toString());
 
 				uci.save();
 				uci.apply();

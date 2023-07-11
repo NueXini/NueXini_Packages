@@ -83,8 +83,8 @@ if [ "x$MODE_NUM" = "x7" ]; then
 	T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $4}' | xargs)
 	if [ "x$T" = "xLTE" ]; then
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
-			T_DEC=$(printf "%d" "0x$T")
-			T_HEX=$T
+			TAC_DEC=$(printf "%d" "0x$T")
+			TAC_HEX=$T
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
 		SINR=$T
 
