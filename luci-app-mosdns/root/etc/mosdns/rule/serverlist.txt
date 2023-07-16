@@ -23604,7 +23604,6 @@ eco.chng5.xyz
 eco.hn765f.xyz
 eco.myt7th.xyz
 eco.qasdw3.xyz
-eco.taobao.com
 eco.vcbn65.xyz
 eco.vng25.xyz
 ecomgxh.kuwo.cn
@@ -54755,6 +54754,7 @@ sdk.api.bjshcw.com
 sdk.api.oaid.wocloud.cn
 sdk.appadhoc.com
 sdk.appadhoc.com.bsclink.cn
+sdk.beizi.biz
 sdk.cdnmaster.com
 sdk.cferw.com
 sdk.conf.igexin.com
@@ -54795,6 +54795,7 @@ sdkrec.tf.360.cn
 sdksitter.m.sjzhushou.com
 sdksp.video.qq.com
 sdktm.w.inmobi.cn
+sdktmp.hubcloud.com.cn
 sdl.domob.cn
 sdlmaf.bestsecret.at
 sdlmhb.com
@@ -59549,7 +59550,6 @@ sq2.chinacsky.com
 sq59.cn
 sqate.io
 sqd.jstdjq.com
-sqdd.myapp.com
 sqdgwx.jobrapido.com
 sqdljj.kijiji.ca
 sqfg002.xyz
