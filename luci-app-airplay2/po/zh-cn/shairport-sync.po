@@ -47,7 +47,7 @@ msgid "Alsa Mixer Control Name"
 msgstr "硬件音量控制器名称"
 
 msgid "default (software volume)"
-msgstr "缺省（使用软件音量调整）
+msgstr "缺省（使用软件音量调整）"
 
 msgid "1st Soundcard (hw:0)"
 msgstr "第 1 张声卡 (hw:0)"
