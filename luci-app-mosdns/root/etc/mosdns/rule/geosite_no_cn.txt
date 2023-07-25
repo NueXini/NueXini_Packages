@@ -536,7 +536,6 @@ adanaatikhaber.com
 adbecrsl.com
 adbkm.com
 adblockplus.org
-adcdownload.apple.com.akadns.net
 adcex.com
 addthis.com
 addthiscdn.com
@@ -765,9 +764,11 @@ akacrypto.net
 akadeem.net
 akademiye.org
 akadns.com
+akadns.net
 akadns6.net
 akaeai.com
 akafms.net
+akagtm.org
 akahost.net
 akaint.net
 akam.net
@@ -787,6 +788,7 @@ akamai-thailand.net
 akamai-trials.com
 akamai.com
 akamai.net
+akamaiedge.net
 akamaientrypoint.net
 akamaietpcnctest.com
 akamaietpcompromisedcnctest.com
@@ -801,6 +803,7 @@ akamainewzealand.com
 akamaiphillipines.com
 akamaiphillipines.net
 akamaisingapore.net
+akamaistream.net
 akamaitech.com
 akamaitech.net
 akamaitechnologies.com
@@ -1641,6 +1644,7 @@ avinin.com
 avizoon.site
 avizoone.com
 avjb.com
+avjoy.me
 avlulu.cc
 avmo.pw
 avmoo.click
@@ -3419,7 +3423,6 @@ cdpeu.org
 cdpusa.org
 cdpweb.org
 cdpwu.org
-cds.apple.com.akadns.net
 cdw.com
 ceb
 cebay.com
@@ -3765,10 +3768,6 @@ ckck.fun
 ckss98.com
 cl
 cl.d0z.net
-cl1-cdn.origin-apple.com.akadns.net
-cl3-cdn.origin-apple.com.akadns.net
-cl4-cdn.origin-apple.com.akadns.net
-cl5-cdn.origin-apple.com.akadns.net
 claravenger.com
 clarionproject.org
 clarivate.com
@@ -3788,7 +3787,6 @@ clementine-player.org
 click-url.com
 clickserve.cc-dt.com
 clickserver.googleads.com
-clientflow.apple.com.akadns.net
 clinical-videos.com
 clinicalkey.com
 clinique
@@ -3985,7 +3983,6 @@ computer.org
 computingreviews.com
 comsoc.org
 conair.me
-configuration.apple.com.akadns.net
 conlogne
 connect-in-canada.com
 connectcommerce.info
@@ -4351,7 +4348,6 @@ dcard.link
 dclk
 dcmilitary.com
 dctbeatsbydre.com
-dd-cdn.origin-apple.com.akadns.net
 ddd-smart.net
 ddg.co
 ddhw.info
@@ -4689,6 +4685,7 @@ dlsitenews.com
 dlsitestudio.com
 dlyoutube.com
 dm
+dm-event.net
 dm530.net
 dmcdn.net
 dmed.technology
@@ -4742,6 +4739,7 @@ dnset.com
 dnsrd.com
 dnssec.net
 dnsvisa.com
+dnvodcdn.me
 do
 do.co
 dobbyporn.com
@@ -7433,8 +7431,6 @@ gscanada.info
 gsccdn.com
 gsearch.media
 gsp4-cn.ls.apple.com.edgekey.net
-gsp4-cn.ls.apple.com.edgekey.net.globalredir.akadns.net
-gspe19-cn.ls-apple.com.akadns.net
 gstatic-cn.com
 gstatic.com
 gsuite.com
@@ -8429,6 +8425,7 @@ iamremarkable.org
 iamtopone.com
 iana.org
 iav19.com
+iavnight.com
 ibb.co
 ibeats-uk.com
 ibeatsbydre.cc
@@ -8459,7 +8456,6 @@ ichigocandy.com
 ichineseporn.com
 icij.org
 icl-fi.org
-icloud-cdn.icloud.com.akadns.net
 icloud-content.com
 icloud-isupport.com
 icloud.com
@@ -8630,8 +8626,6 @@ imageflea.com
 imagepost.com
 images-amazon.com
 images-gaytube.com
-images.apple.com.akadns.net
-images.apple.com.edgekey.net.globalredir.akadns.net
 imageshack.com
 imagetwist.com
 imagevenue.com
@@ -8727,9 +8721,6 @@ ingkacentres.com
 ingyenszexvideo.top
 inhumanity.com
 inikesneakers.com
-init-p01md-lb.push-apple.com.akadns.net
-init-p01st-lb.push-apple.com.akadns.net
-init-s01st-lb.push-apple.com.akadns.net
 init.shop
 initiativesforchina.org
 initproducts.com
@@ -8905,7 +8896,6 @@ ipfs.runfission.com
 iphine.com
 iphone-cd.com
 iphone-cn.com
-iphone-ld.origin-apple.com.akadns.net
 iphone-sh.com
 iphone-vip1.com
 iphone-vip2.com
@@ -9048,7 +9038,6 @@ itsoc.org
 itu.int
 itunbes.com
 ituneas.com
-itunes-apple.com.akadns.net
 itunes-radio.net
 itunes.co
 itunes.com
@@ -10533,8 +10522,6 @@ mesotw.com
 messenger.com
 messengerdevelopers.com
 messytube.com
-mesu-cdn.apple.com.akadns.net
-mesu-china.apple.com.akadns.net
 met-nude.com
 meta.com
 metacafe.com
@@ -11168,6 +11155,7 @@ muncloud.dog
 muryouav.net
 muscdn.com
 musclegirlflix.com
+mushroomtrack.com
 musicade.net
 musicbay.net
 musickit.net
@@ -12070,7 +12058,6 @@ occupytiananmen.com
 ocreampies.com
 ocry.com
 ocsp-certum.com
-ocsp-lb.apple.com.akadns.net
 ocsp-responder.com
 october-review.org
 oculus-china.com
@@ -12142,6 +12129,7 @@ oldnavy
 olehd.com
 olehdtv.com
 olelive.com
+olemovienews.com
 olevod.com
 olevodtv.com
 oli-school.com
@@ -12331,7 +12319,6 @@ orzqwq.com
 osaka
 osakamotion.net
 osapublishing.org
-oscdn.origin-apple.com.akadns.net
 osdn.net
 osfoora.com
 osiri-suki-club.com
@@ -12461,7 +12448,6 @@ paltalk.com
 pamperedchef
 panasonic
 panasonic.com
-pancake.cdn-apple.com.akadns.net
 pandamovies.pw
 pandanet-igs.com
 pandapow.co
@@ -13411,7 +13397,6 @@ privatevpn.com
 privoxy.org
 procopytips.com
 proctoscopeexam.com
-prod-support.apple-support.akadns.net
 prodrive-japan.com
 profreeporno.com
 progressive
@@ -13907,7 +13892,6 @@ rexroth
 rexxx.org
 rfa.org
 rfachina.com
-rfalive1.akacast.akamaistream.net
 rfamobile.org
 rfaweb.org
 rferl.org
@@ -14761,12 +14745,10 @@ skybet.com
 skydrive
 skyoceanrescue.com
 skype
-skype-edf.akadns.net
 skype.com
 skype.net
 skypeassets.com
 skypeassets.net
-skypedata.akadns.net
 skyporn.online
 skysports.com
 skysportsonline.com
@@ -15208,7 +15190,6 @@ stockagainstphotography.com
 stockholm
 stocking-tease.com
 stockingfetishvideo.com
-stocks-sparkline-lb.apple.com.akadns.net
 stonefoxlingerie.com
 stonefoxproductions.com
 stoporganharvesting.org
@@ -15216,8 +15197,6 @@ stoptibetcrisis.net
 storagenewsletter.com
 store-bridgestonesports.com
 store.apple.com.edgekey.net
-store.apple.com.edgekey.net.globalredir.akadns.net
-store.storeimages.apple.com.akadns.net
 storesense.com
 storiesonline.net
 storify.com
@@ -15333,7 +15312,6 @@ superzooi.com
 supjav.com
 suppig.net
 supplybestjerseys.com
-support-china.apple-support.akadns.net
 supportfacebook.com
 supremacy.com
 supremacy.net
@@ -15369,8 +15347,6 @@ swapsmut.com
 swatch
 sway-cdn.com
 sway.com
-swcatalog-cdn.apple.com.akadns.net
-swdist.apple.com.akadns.net
 sweetadult-tube.com
 sweetmlif.net
 sweetsext.com
@@ -15404,7 +15380,6 @@ swjedifallenorder.com
 swjfo.com
 swoosh.com
 swpr.livedoor.blog
-swscan-cdn.apple.com.akadns.net
 swtor.com
 swtor.net
 sx
@@ -15825,6 +15800,7 @@ thongdreams.com
 thottok.com
 thotvids.com
 threadreaderapp.com
+threads.net
 threatchaos.com
 thrixxx.com
 throughnightsfire.com
@@ -16535,7 +16511,6 @@ uol
 up.gcp.googlers.com
 up01.cc
 update.crashlytics.com
-updates-http.cdn-apple.com.akadns.net
 updatetube.com
 upghsbc.com
 upholdjustice.org
@@ -16651,7 +16626,6 @@ vaginapics.pro
 vagrantcloud.com
 vagrantup.com
 valeursactuelles.com
-valid.origin-apple.com.akadns.net
 valoryirene.com
 valuegb.com
 valvesoftware.com
@@ -16984,7 +16958,6 @@ vn
 vn.hao123.com
 vnet.link
 vnware.net
-voa-11.akacast.akamaistream.net
 voaafaanoromoo.com
 voaafrique.com
 voabambara.com
@@ -17236,7 +17209,6 @@ weareebay.com
 wearehairy.com
 wearn.com
 weather
-weather-data.apple.com.akadns.net
 weatherchannel
 weav.xyz
 web-instagram.net
@@ -17628,7 +17600,6 @@ www.ajsands.com
 www.antd.org
 www.aolnews.com
 www.apple.com.edgekey.net
-www.apple.com.edgekey.net.globalredir.akadns.net
 www.cmoinc.org
 www.destinationurl.com
 www.dwheeler.com
