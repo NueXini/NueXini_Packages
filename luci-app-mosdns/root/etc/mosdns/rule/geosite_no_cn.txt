@@ -993,6 +993,7 @@ amazon-jp-recruiting.com
 amazon-lantern.com
 amazon-launchpad.com
 amazon.com
+amazon.dev
 amazon.jobs
 amazon.red
 amazonalexavoxcon.com
@@ -1752,6 +1753,7 @@ azuredns-prd.info
 azuredns-prd.org
 azureedge-test.net
 azureedge.net
+azurefd.net
 azureiotcentral.com
 azureiotsolutions.com
 azureiotsuite.com
@@ -3552,6 +3554,8 @@ cheapshoesvip.com
 cheapwireless04.com
 cheapwirelessbeats.com
 checkgfw.com
+chegg.com
+cheggcdn.com
 chemequations.com
 chemnetbase.com
 chengjuanseo.com
@@ -3830,6 +3834,7 @@ cloudflarestorage.com
 cloudflarestream.com
 cloudflaretest.com
 cloudflarewarp.com
+cloudfront.com
 cloudfront.net
 cloudfunctions.net
 cloudhealthtech.com
@@ -3846,6 +3851,7 @@ cloudyzgirl.com
 cloupia.com
 cloupia.net
 club1069.com
+clubhouse.com
 clubhouseapi.com
 clubmed
 clubseventeen.com
@@ -5258,6 +5264,7 @@ edgecastcdn.net
 edgedatg.com
 edgefonts.net
 edgemeplease.com
+edgesuite.net
 edicypages.com
 edisebay.com
 editorx.com
@@ -5398,6 +5405,7 @@ entrust.net
 entrustdatacard.com
 epicbrowser.com
 epicgames.com
+epicgames.dev
 epicreads.com
 epigeum.com
 epikporn.com
@@ -6336,6 +6344,7 @@ food
 foodnetwork
 foofle.com
 fooooo.com
+footprintdns.com
 footseen.com
 footstockings.com
 forbes.com
@@ -7592,7 +7601,6 @@ hbg.com
 hbo
 hbo.com
 hbo.com.c.footprint.net
-hbo.com.edgesuite.net
 hboasia.com
 hbogo.com
 hbogoasia.com
@@ -9475,6 +9483,8 @@ kagyumonlam.org
 kagyuoffice.org
 kairakudoujin.net
 kakao.com
+kakaocdn.net
+kakaocorp.com
 kaktuz.com
 kalachakralugano.org
 kali.org
@@ -10389,6 +10399,7 @@ matsushimakaede.com
 mattel
 matters.news
 matters.one
+matters.town
 mattwilcox.net
 mature-amateur-sex.com
 mature-porn-flix.com
@@ -13566,6 +13577,7 @@ qmov.com
 qmov.net
 qmttqg3k.me
 qombol.com
+qooqlevideo.com
 qoos.com
 qorno.com
 qpoe.com
@@ -13683,6 +13695,7 @@ rarbgprx.org
 rarbgto.org
 rarbgunblock.com
 rarbgunblock.org
+rarbgunblocked.org
 rarbgway.org
 raremovie.cc
 raremovie.net
@@ -16318,7 +16331,6 @@ twilightsex.com
 twilog.org
 twimbow.com
 twimg.com
-twimg.edgesuite.net
 twindexx.com
 twinkspornos.com
 twinkybf.com
