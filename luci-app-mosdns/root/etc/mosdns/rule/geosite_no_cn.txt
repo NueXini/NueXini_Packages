@@ -544,6 +544,7 @@ addtoany.com
 addyoutube.com
 adelaidebbs.com
 adgoogle.net
+adguard-dns.com
 adguard-vpn.com
 adguard.com
 adhelpnews.com
@@ -1410,6 +1411,7 @@ aramco
 arcadewank.com
 arcgis.com
 arcgisonline.com
+archive-it.org
 archive.org
 archive.today
 archiveofourown.com
@@ -12263,6 +12265,7 @@ opengw.net
 openid.net
 openjsf.org
 openleaks.org
+openlibrary.org
 openmaps.org
 openmidas.com
 openresty.org
