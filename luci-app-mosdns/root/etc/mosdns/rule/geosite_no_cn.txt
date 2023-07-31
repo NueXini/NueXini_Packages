@@ -12191,6 +12191,8 @@ onefifteen.net
 onefifteen.org
 onejapanese.com
 onejav.com
+onekey-asset.com
+onekeycn.com
 onenote.com
 onenote.net
 onepornlist.com
@@ -18838,6 +18840,7 @@ full:nurofensk-prod-env.eu-west-1.elasticbeanstalk.com
 full:nvidia.tt.omtrdc.net
 full:ocsp.microsoft.com
 full:officecdn-microsoft-com.akamaized.net
+full:onekey.zendesk.com
 full:oneocsp.microsoft.com
 full:ood.opsource.net
 full:openaiapi-site.azureedge.net
