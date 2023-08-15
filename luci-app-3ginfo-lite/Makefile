@@ -10,9 +10,9 @@ PKG_NAME:=luci-app-3ginfo-lite
 LUCI_TITLE:=LuCI JS Support for 3ginfo-lite
 MAINTAINER:=Rafał Wabik <4Rafal@gmail.com>
 LUCI_DESCRIPTION:=LuCI JS interface for the 3ginfo-lite. The package allows you to view the parameters of the mobile internet connection.
-LUCI_DEPENDS:=+sms-tool +comgt
+LUCI_DEPENDS:=+sms-tool +comgt +kmod-usb-serial-option
 LUCI_PKGARCH:=all
-PKG_VERSION:=1.0.52-20230711
+PKG_VERSION:=1.0.53-20230815
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

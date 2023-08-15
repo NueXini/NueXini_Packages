@@ -195,7 +195,6 @@ if [ -n "$T" ]; then
 	IDX=1
 	LINES=$(echo "$O" | grep -E "^\+QCAINFO: \"(scc|SCC)\"")
 	for LINE in $LINES; do
-		POS=$(((IDX + 4) * 10))
 
 		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $5}')
 		case $T in
@@ -210,6 +209,7 @@ if [ -n "$T" ]; then
 		esac
 		T3=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $4}')
 		case $T3 in
+			2*) T4="?";;
 			6*) T4="1.4";;
 			15*) T4="3";;
 			25*) T4="5";;

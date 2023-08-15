@@ -291,6 +291,7 @@ modemDialog: baseclass.extend({
 				window.setTimeout(function() {
 					if (!poll.active()) poll.start();
 					location.reload();
+					//ev.target.blur();
 				}, 2000).finally();
 			});
 
@@ -697,41 +698,23 @@ modemDialog: baseclass.extend({
 						var view = document.getElementById("tac");
 						var tac_dh, tac_dec_hex, lac_dec_hex;
 						
-						if (json.signal == 0 || json.signal == '' || json.tac_dec == 0 || json.tac_hex == 0) {
+						if (json.signal == 0 || json.signal == '') {
 						view.textContent = '-';
 						}
 						
 						else {
-							if (json.tac_hex == null || json.tac_hex == '' || json.tac_hex == '-') {
+							if (json.tac_d.length > 1 || json.tac_h.length > 1) {
 							var tac_dh =  json.tac_d + ' (' + json.tac_h + ')';
-								if (tac_dh.includes(' ()') && json.tac_d == null || json.tac_d == '') {
-									view.textContent = '-';
-								} else {
 									view.textContent = tac_dh;
-								};
 							}
 							else {
-								var tac_dec_hex = json.tac_dec + ' (' + json.tac_hex + ')';
-									if (tac_dec_hex.includes(' ()') && json.tac_dec == null || json.tac_dec == '') {
-										view.textContent = '-';
-									} else {
-										view.textContent = tac_dec_hex;
-									};
-								var lac_dec_hex = json.tac_dec + ' (' + json.tac_hex + ')';
-									if (lac_dec_hex.includes(' ()') && json.tac_dec == null || json.tac_dec == '') {
-										view.textContent = '-';
-									} else {
-										view.textContent = lac_dec_hex;
-									};
-								if (json.tac_hex == json.lac_hex && json.tac_dec == '') {
-								var lac_dec_hex = json.lac_dec + ' (' + json.tac_hex + ')';
-									if (lac_dec_hex.includes(' ()') && json.tac_hex == null || json.tac_hex == '' && json.lac_hex == null || json.lac_hex == '') {
-										view.textContent = '-';
-									} else {
-										view.textContent= lac_dec_hex;
-									};
+								if (json.tac_dec.length > 1 || json.tac_hex.length > 1) {
+									var tac_dh =  json.tac_dec + ' (' + json.tac_hex + ')';
+									view.textContent = tac_dh;
 								}
-
+								else {
+									view.textContent = '-';
+								}
 							}
 						}
 					}
@@ -847,8 +830,9 @@ modemDialog: baseclass.extend({
 				E('button', {
 					'id': 'modc',
 					'style': 'position:relative; display:block; margin:0 !important; margin-top:-3% !important; left:95%; top:',
+ 					'disabled': 'true',
 					'data-tooltip': _('Modem selection menu'),
-					'class': 'cbi-button cbi-button-save',
+					'class': 'btn cbi-button',
 					'click': ui.createHandlerFn(this, function() {
 							return upModemDialog.show();
 					}),
