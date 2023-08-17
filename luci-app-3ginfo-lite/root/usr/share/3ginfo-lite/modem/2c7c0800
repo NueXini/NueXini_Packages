@@ -42,6 +42,7 @@ case "$MODE_NUM" in
 						TDX=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
 						TAC_DEC=$(printf "%d" "0x$TDX")
 						TAC_HEX=$TDX
+						
 				fi
 			fi
 		fi
@@ -191,32 +192,52 @@ if [ -n "$T" ]; then
 	T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $9}')
 	RSRQ=$T
 
-	IDX=1
+IDX=1
 	LINES=$(echo "$O" | grep -E "^\+QCAINFO: \"(scc|SCC)\"")
 	for LINE in $LINES; do
+		POS=$(((IDX + 4) * 10))
 
 		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $5}')
+		T3=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $4}')
+		T4=""
 		case $T in
 			*"LTE BAND"*)
 				B=$(echo $T | sed 's/"LTE BAND \(.*\)"/\1/')
 				T2=$(band ${B})
+				case $T3 in
+					6*) T4="1.4";;
+					15*) T4="3";;
+					25*) T4="5";;
+					50*) T4="10";;
+					75*) T4="15";;
+					100*) T4="20";;
+					*) T4="";;
+				esac
 				;;
 			*"NR5G BAND"*)
 				B=$(echo $T | sed 's/"NR5G BAND \(.*\)"/\1/')
 				T2=$(band5g ${B})
+				case $T3 in
+					0*) T4="5";;
+					1*) T4="10";;
+					2*) T4="15";;
+					3*) T4="20";;
+					4*) T4="25";;
+					5*) T4="30";;
+					6*) T4="40";;
+					7*) T4="50";;
+					8*) T4="60";;
+					9*) T4="70";;
+					10*) T4="80";;
+					11*) T4="90";;
+					12*) T4="100";;
+					13*) T4="200";;
+					14*) T4="400";;
+					*) T4="";;
+				esac
 				;;
 		esac
-		T3=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $4}')
-		case $T3 in
-			2*) T4="?";;
-			6*) T4="1.4";;
-			15*) T4="3";;
-			25*) T4="5";;
-			50*) T4="10";;
-			75*) T4="15";;
-			100*) T4="20";;
-			*) T4="";;
-		esac
+
 		if [ -z "$T4" ]; then
 
 			case $IDX in
