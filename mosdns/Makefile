@@ -70,7 +70,14 @@ endef
 
 GO_PKG_TARGET_VARS:=$(filter-out CGO_ENABLED=%,$(GO_PKG_TARGET_VARS)) CGO_ENABLED=0
 
+define Build/UpdateDependencies
+	cd $(PKG_BUILD_DIR) && \
+		go get -u && \
+		go mod tidy
+endef
+
 define Build/Compile
+	$(call Build/UpdateDependencies)
 	$(call GoPackage/Build/Compile)
 ifneq ($(CONFIG_MOSDNS_COMPRESS_UPX),)
 	$(STAGING_DIR_HOST)/bin/upx --lzma --best $(GO_PKG_BUILD_BIN_DIR)/mosdns
