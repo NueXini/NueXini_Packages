@@ -9267,7 +9267,6 @@ api-luckycoinsdk.doglobal.net
 api-mcp.adsp.xunlei.com
 api-push.com
 api-push.meizu.com
-api-secure.solvemedia.com
 api-shoulei-ssl.xunlei.com
 api-u-ssl.xunlei.com
 api-z.weidian.com
@@ -15308,7 +15307,6 @@ cclw.xyz
 ccm1.dlr.de
 ccm19.de
 ccmd.coveredca.com
-ccmeng.com
 ccn08sth.de
 ccnim.xyz
 ccoybmnjw.com
@@ -19009,7 +19007,6 @@ cunoff.com
 cuntador.com
 cunyiesus.com
 cupbiologicaljourney.com
-cupfox.app
 cupid.iqiyi.com
 cupid.jebe.renren.com
 cupidonmedia.com
@@ -39372,7 +39369,6 @@ logicanalytics.io
 logicdate.com
 logicsfort.com
 logilyavie.digital
-loginfra.com
 loginhood.io
 logitepic.com
 loglabitrufly.top
@@ -78096,6 +78092,7 @@ zxcvb23.com
 zxfas56.com
 zxgko.cn
 zxh.bzshzx.com
+zxid-m.mobileservice.cn
 zxl.qzbxfs.com
 zxnexus.com
 zxod.b54ah.cn
