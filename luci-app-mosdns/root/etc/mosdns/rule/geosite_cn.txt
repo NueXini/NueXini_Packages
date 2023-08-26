@@ -6296,7 +6296,6 @@
 91fifa.com
 91fyt.com
 91game.com
-91gaoding.com
 91goodschool.com
 91guzhi.com
 91haiju.com
@@ -7003,7 +7002,6 @@ a5idc.net
 a632079.me
 a67dy.com
 a7.com
-a745.xyz
 a8.com
 a8f947.com
 a8tg.com
@@ -10714,7 +10712,6 @@ biquge.info
 biquge.la
 biquge.vip
 biquge11.com
-biquge5200.cc
 biquge5200.com
 biquge8.com
 biquge9.cc
@@ -12644,7 +12641,6 @@ ccqyj.com
 ccrgt.com
 ccrjw.com
 ccschy.com
-ccshao.com
 ccshenghuo.com
 ccsph.com
 ccssmm.com
@@ -19048,7 +19044,6 @@ doumobtech.online
 doumpaq.com
 doupai.cc
 doupir.com
-doupobook.com
 doupocangqiong1.com
 douqi.com
 douquyyds.com
@@ -20941,7 +20936,6 @@ evewan.com
 evfchina.com
 evget.com
 evhui.com
-evideocloud.net
 evideostb.com
 evilbinary.org
 evileyesaint.com
@@ -29668,7 +29662,6 @@ imagelol.com
 imagepy.org
 images-cache.com
 images-huoshan.com
-images.benchmarkemail.com
 images.samsung.com
 imageter.com
 imagetotxt.com
@@ -31483,7 +31476,6 @@ jiarenvip.com
 jiasale.com
 jiashuangkuaizi.com
 jiashule.com
-jiasn.com
 jiasu.work
 jiasuba.com
 jiasubook.com
@@ -33070,7 +33062,6 @@ jxetv.com
 jxexpressway.com
 jxg1.com
 jxgdw.com
-jxggcm.com
 jxgxbd.com
 jxhyshiye.com
 jxiaolan.com
@@ -33362,7 +33353,6 @@ kaiyanapp.com
 kaiygame.com
 kaiyuan.me
 kaiyuangroup.cc
-kaiyuanhi.com
 kaiyuanhotels.com
 kaiyun.com
 kajicam.com
@@ -34878,6 +34868,7 @@ landroads.com
 landscapecn.com
 landtu.com
 landui.com
+landunxiaofang.com
 landzestate.com
 lanecn.com
 lanfanapp.com
@@ -40623,7 +40614,6 @@ nipei.com
 nipic.com
 nishuoa.com
 nitaitag.com
-nitianxieshen.com
 nitutu.com
 niu-ba.com
 niu.com
@@ -43023,7 +43013,6 @@ pp63.com
 pp66.cc
 pp8.com
 pp9l.com
-ppaikd.com
 ppbizon.com
 ppcall.com
 ppchuguan.com
@@ -60619,7 +60608,6 @@ yingpaigame.com
 yingshe.com
 yingsheng.com
 yingshevip.com
-yingshixiaoshuo.com
 yingshiyou.com
 yingsoo.com
 yingsun.net
@@ -61613,6 +61601,7 @@ ypfph.com
 ypgyyq.com
 yph-shop.com
 yphuifu.com
+ypiao.com
 ypicw.com
 ypjiameng.com
 ypk.cc
@@ -62204,6 +62193,7 @@ yunshuxie.com
 yunsiya.com
 yunsom.com
 yunsong.com
+yunsou168.com
 yunstu.net
 yunsuan.org
 yunsuanzi.com
@@ -63955,6 +63945,7 @@ zhuayou.com
 zhuayoukong.com
 zhuazi.com
 zhubai.love
+zhubai.pub
 zhubaijia.com
 zhubajie.com
 zhubajie.la
@@ -65377,7 +65368,6 @@ full:beacons3.gvt2.com
 full:bg.v4.a.dl.ws.microsoft.com
 full:bg4.v4.a.dl.ws.microsoft.com
 full:bj1.api.bing.com
-full:blz.nosdn.127.net
 full:bookkeeper.itunes.apple.com
 full:borgmon.adz.google.com
 full:c.admob.com
@@ -65421,7 +65411,6 @@ full:clientflow.apple.com
 full:clientflow.apple.com.akadns.net
 full:clientservices.googleapis.com
 full:cma.itunes.apple.com
-full:cn.actual.battle.net
 full:cn.widevine.com
 full:cn.windowssearch.com
 full:cnappinstall.googleadapis.com
@@ -65445,8 +65434,6 @@ full:dartsearch-cn.net
 full:dd-cdn.origin-apple.com.akadns.net
 full:developer.microsoft.com
 full:dg-meta.video.google.com
-full:di.res.netease.com
-full:diablo3.nosdn.127.net
 full:discussionschinese.apple.com
 full:distribution.qatp1.net
 full:distribution.qcpp1.net
@@ -65531,10 +65518,8 @@ full:guzzoni-apple-com.v.aaplimg.com
 full:guzzoni.apple.com
 full:gvt1-cn.com
 full:gvt2-cn.com
-full:hearthstone.nosdn.127.net
 full:hellofontpreview.oss-cn-beijing.aliyuncs.com
 full:hellowebfonts.oss-cn-beijing.aliyuncs.com
-full:heroes.nos.netease.com
 full:hospital.pku.edu.cn
 full:iadsdk.apple.com
 full:icloud-cdn.icloud.com.akadns.net
@@ -65597,7 +65582,6 @@ full:opencourse.pku.edu.cn
 full:oscdn.apple.com
 full:oscdn.origin-apple.com.akadns.net
 full:osxapps.itunes.apple.com
-full:overwatch.nosdn.127.net
 full:p1-juejin.byteimg.com
 full:p2-juejin.byteimg.com
 full:p3-juejin.byteimg.com
@@ -65653,7 +65637,6 @@ full:regioninfo-pa.googleapis.com
 full:reserve-prime.apple.com
 full:s.mzstatic.com
 full:safebrowsing.googleapis.com
-full:sc2.nosdn.127.net
 full:scanservice1.qatp1.net
 full:scanservice1.qcpp1.net
 full:scanservice1.qpdp1.net
@@ -65723,7 +65706,6 @@ full:valid.origin-apple.com.akadns.net
 full:wear.googleapis.com
 full:weather-data.apple.com
 full:wl.dlservice.microsoft.com
-full:wow.nosdn.127.net
 full:wscont1.apps.microsoft.com
 full:wscont2.apps.microsoft.com
 full:www-google-analytics.l.google.com
