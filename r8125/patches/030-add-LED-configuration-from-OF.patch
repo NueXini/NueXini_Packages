@@ -1,7 +1,5 @@
-diff --git a/r8125_n.c b/r8125_n.c
-index 6079c6c..e1e97db 100644
---- a/r8125_n.c
-+++ b/r8125_n.c
+--- a/src/r8125_n.c
++++ b/src/r8125_n.c
 @@ -43,6 +43,7 @@
  #include <linux/etherdevice.h>
  #include <linux/delay.h>
