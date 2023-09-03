@@ -96,9 +96,9 @@ if [ "x$MODE_NUM" = "x7" ]; then
 			3*) T1="10";;
 			4*) T1="15";;
 			5*) T1="20";;
-			*) T1="?";;
+			*) T1="";;
 		esac
-		ULBW="UL: @$T1 MHz"
+		[ -n "$T1" ] && ULBW="UL: @$T1 MHz"
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $13}')
 		case $T in
 			0*) T1="1.4";;
@@ -107,9 +107,9 @@ if [ "x$MODE_NUM" = "x7" ]; then
 			3*) T1="10";;
 			4*) T1="15";;
 			5*) T1="20";;
-			*) T1="?";;
+			*) T1="";;
 		esac
-		DLBW="DL: @$T1 MHz"
+		[ -n "$T1" ] && DLBW="DL: @$T1 MHz"
 
 	fi
 fi
@@ -138,7 +138,7 @@ if [ "x$MODE_NUM" = "x13" ]; then
 				5*) T1="20";;
 				*) T1="";;
 			esac
-			ULBW="UL: @$T1 MHz"
+			[ -n "$T1" ] && ULBW="UL: @$T1 MHz"
 			T=$(echo "$LINE" | awk -F[,:] '/^\+QENG:/ {print $11}')
 			case $T in
 				0*) T1="1.4";;
@@ -149,7 +149,7 @@ if [ "x$MODE_NUM" = "x13" ]; then
 				5*) T1="20";;
 				*) T1="";;
 			esac
-			DLBW="DL: @$T1 MHz"
+			[ -n "$T1" ] && DLBW="DL: @$T1 MHz"
 		fi
 	done
 fi
@@ -192,10 +192,9 @@ if [ -n "$T" ]; then
 	T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $9}')
 	RSRQ=$T
 
-IDX=1
+	IDX=1
 	LINES=$(echo "$O" | grep -E "^\+QCAINFO: \"(scc|SCC)\"")
 	for LINE in $LINES; do
-		POS=$(((IDX + 4) * 10))
 
 		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $5}')
 		T3=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $4}')
@@ -213,7 +212,19 @@ IDX=1
 					100*) T4="20";;
 					*) T4="";;
 				esac
+				
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $3}')
+#				[ -n "$T5" ] && addon $((POS + 4)) "(S${IDX}) EARFCN" "$T5"
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
+#				[ -n "$T5" ] && addon $((POS + 3)) "(S${IDX}) PCI" "$T5"
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $10}')
+#				[ -n "$T5" ] && addon $((POS + 5)) "(S${IDX}) RSSI" "$T5 dBm"
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
+#				[ -n "$T5" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $9}')
+#				[ -n "$T5" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
 				;;
+				
 			*"NR5G BAND"*)
 				B=$(echo $T | sed 's/"NR5G BAND \(.*\)"/\1/')
 				T2=$(band5g ${B})
@@ -235,9 +246,17 @@ IDX=1
 					14*) T4="400";;
 					*) T4="";;
 				esac
+				
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $3}')
+#				[ -n "$T5" ] && addon $((POS + 4)) "(S${IDX}) EARFCN" "$T5"
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $6}')
+#				[ -n "$T5" ] && addon $((POS + 3)) "(S${IDX}) PCI" "$T5"
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
+#				[ -n "$T5" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
+#				[ -n "$T5" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
 				;;
 		esac
-
 		if [ -z "$T4" ]; then
 
 			case $IDX in
@@ -299,20 +318,10 @@ IDX=1
 
 		fi
 
-#		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $3}')
-#		[ -n "$T" ] && addon $((POS + 4)) "(S${IDX}) EARFCN" "$T"
-#		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
-#		[ -n "$T" ] && addon $((POS + 3)) "(S${IDX}) PCI" "$T"
-#		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $10}')
-#		[ -n "$T" ] && addon $((POS + 5)) "(S${IDX}) RSSI" "$T dBm"
-#		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
-#		[ -n "$T" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T dBm"
-#		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $9}')
-#		[ -n "$T" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T dB"
-
 		IDX=$((IDX + 1))
 	done
 fi
+
 MODE=$(echo $MODE | sed 's,/,+,')
 
 # Modem
