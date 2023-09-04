@@ -17,8 +17,8 @@ Supported devices:
 - Quectel EM12-G
 - Quectel EM160R-GL
 - Quectel EP06-E
-- Quectel RG502Q-EA
 - Quectel RM500Q-GL
+- Quectel RG502Q-EA
 - Quectel RM520N-GL
 - Telit LM940
 - Telit LN940 (Foxconn T77W676)
