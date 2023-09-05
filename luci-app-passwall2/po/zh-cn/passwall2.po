@@ -703,6 +703,9 @@ msgstr "启用自定义规则地址"
 msgid "Rule status"
 msgstr "规则版本"
 
+msgid "Manually update"
+msgstr "手动更新"
+
 msgid "Enable auto update rules"
 msgstr "开启自动更新规则"
 
@@ -1008,9 +1011,6 @@ msgstr "使用TLS"
 
 msgid "Naiveproxy Protocol"
 msgstr "Naiveproxy协议"
-
-msgid "V2ray Protocol"
-msgstr "V2ray协议"
 
 msgid "User Level"
 msgstr "用户等级(level)"
