@@ -1,4 +1,4 @@
-Setting LTE bands for selected modems.
+Setting LTE/5G bands for selected modems.
 
 Supported devices:
 - BroadMobi BM806U
@@ -42,6 +42,13 @@ Available commands:
  /usr/bin/modemband.sh setbands "<band list>"
  /usr/bin/modemband.sh json
  /usr/bin/modemband.sh help
+
+ only for 5G modem
+ /usr/bin/modemband.sh getsupportedbands5g
+ /usr/bin/modemband.sh getsupportedbandsext5g
+ /usr/bin/modemband.sh getbands5g
+ /usr/bin/modemband.sh getbandsext5g
+ /usr/bin/modemband.sh setbands5g "<band list>"
 
 root@MiFi:~# # modemband.sh
 Modem: Quectel EC25

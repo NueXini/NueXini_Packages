@@ -199,7 +199,7 @@ function handleAction(ev) {
 	if (ev === 'resetbandz') {		
 		if (confirm(_('Do you really want to set up all possible bands for the modem?')))
 			{
-			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands', 'default' ]);
+			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands5g', 'default' ]);
 
 			return uci.load('modemband').then(function() {
 				var nuser = (uci.get('modemband', '@modemband[0]', 'notify'));
@@ -232,19 +232,6 @@ function handleAction(ev) {
 			fs.exec('/sbin/ifup', [ wname ]);
     		});
 	}
-	if (ev === 'onupload') {
-		return uci.load('modemband').then(function() {
-		//var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
-		fs.exec_direct('/usr/bin/sms_tool', [ '-d' , '/dev/ttyUSB1' , 'at' , 'AT+ZULCA=1' ]);
-    		});
- 
-	}
-	if (ev === 'offupload') {
-		return uci.load('modemband').then(function() {
-		//var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
-		fs.exec_direct('/usr/bin/sms_tool', [ '-d' , '/dev/ttyUSB1' , 'at' , 'AT+ZULCA=0' ]);
-    		});
-	}
 }
 
 return view.extend({
@@ -265,38 +252,28 @@ return view.extend({
 
 		if(!json.hasOwnProperty('error')){
 
-		if (json.enabled == '' || json.modem == '') {
-			fs.exec('sleep 2');
-				if (json.enabled == '' || json.modem == '') {
-						L.ui.showModal(_('Modemband'), [
-						E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
-						]);
+		if (json.supported5g.length < 1) {
+			ui.addNotification(null, E('p', _('5G bands cannot be read. Check if your modem supports this technology and if it is in the list of supported modems.')), 'info');
+			modemen = '-';
+			sbands = '-';
+		}
 
-						window.setTimeout(function() {
-						location.reload();
-						//L.hideModal();
-						}, 25000).finally();
-					}
-				}
-					else {
-					L.hideModal();
-					}
 
 		var modem = json.modem;
-		for (var i = 0; i < json.enabled.length; i++) 
+		for (var i = 0; i < json.enabled5g.length; i++) 
 		{
-				var txtband = json.enabled[i].toString();
+				var txtband = json.enabled5g[i].toString();
 				var numb = txtband.match(/\d+$/);
-				modemen += 'B' + numb + '  ';
+				modemen += 'n' + numb + '  ';
 				modemen = modemen.replace('undefined', '');
 		}
 		modemen = modemen.trim();
 
-		for (var i = 0; i < json.supported.length; i++) 
+		for (var i = 0; i < json.supported5g.length; i++) 
 		{
-				var txtband = json.supported[i].band.toString();
+				var txtband = json.supported5g[i].band.toString();
 				var numb = txtband.match(/\d+$/);
-				sbands += 'B' + numb + '  ';
+				sbands += 'n' + numb + '  ';
 				sbands = sbands.replace('undefined', '');
 		}
 		sbands = sbands.trim();
@@ -310,11 +287,11 @@ return view.extend({
 
 				var renderHTML = "";
 				var view = document.getElementById("modemlteb");
-				for (var i = 0; i < json.enabled.length; i++) 
+				for (var i = 0; i < json.enabled5g.length; i++) 
 				{
-				var txtband = json.enabled[i].toString();
+				var txtband = json.enabled5g[i].toString();
 				var numb = txtband.match(/\d+$/);
-				renderHTML += 'B' + numb + '  ';
+				renderHTML += 'n' + numb + '  ';
 				view.innerHTML  = '';
   				view.innerHTML  = renderHTML.trim();
 				}
@@ -347,7 +324,7 @@ return view.extend({
 
 		var info = _('Configuration modem frequency bands. More information about the modemband application on the %seko.one.pl forum%s.').format('<a href="https://eko.one.pl/?p=openwrt-modemband" target="_blank">', '</a>');
 
-		m = new form.JSONMap(this.formdata, _('LTE Bands Configuration'), info);
+		m = new form.JSONMap(this.formdata, _('5G Bands Configuration'), info);
 
 		s = m.section(form.TypedSection, 'modemband', '', _(''));
 		s.anonymous = true;
@@ -362,12 +339,12 @@ return view.extend({
 					]),
 
 						E('tr', { 'class': 'tr' }, [
-						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Currently set LTE bands')]),
+						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Currently set 5G bands')]),
 						E('td', { 'class': 'td left', 'id': 'modemlteb' }, [ modemen || '-' ]),
 					]),
 
 						E('tr', { 'class': 'tr' }, [
-						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Supported LTE bands')]),
+						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Supported 5G bands')]),
 						E('td', { 'class': 'td left', 'id': 'sbands' }, [ sbands || '-' ]),
 					]),
 				])
@@ -381,20 +358,20 @@ return view.extend({
 		if(!("error" in json)) {
 		s.tab('bandset', _('Preferred bands settings'));
  
-		o = s.taboption('bandset', cbiRichListValue, 'set_bands',
+		o = s.taboption('bandset', cbiRichListValue, 'set_5gbands',
 		_('Modification of the bands'), 
 		_("Select the preferred band(s) for the modem."));
 
-		for (var i = 0; i < json.supported.length; i++) 
+		for (var i = 0; i < json.supported5g.length; i++) 
 		{
-			o.value(json.supported[i].band, _('B')+json.supported[i].band,json.supported[i].txt);
+			o.value(json.supported5g[i].band, _('n')+json.supported5g[i].band,json.supported5g[i].txt);
 		}
 		
 		o.multiple = true;
 		o.placeholder = _('Please select a band(s)');
 
 		o.cfgvalue = function(section_id) {
-			return L.toArray((json.enabled).join(' '));
+			return L.toArray((json.enabled5g).join(' '));
 		};
 
 		s = m.section(form.TypedSection);
@@ -415,26 +392,6 @@ return view.extend({
 				'</div>';
 
 		o = s.taboption('opt1', SYSTmagic);
-
-		s.tab('opt2', _('LTE band aggregation at UL (upload)'));
-		s.anonymous = true;
-
-		o = s.taboption('opt2', form.DummyValue, '_dummy');
-			o.rawhtml = true;
-			o.default = '<div class="cbi-section-descr">' +
-				_('Hint: Option dedicated to the ZTE MF286D router.') +
-				'</div>';
-
-		if (modem.includes('MF286D')) {
-		o = s.taboption('opt2', UPboost);
-
-		} else {
-			o = s.taboption('opt2', form.DummyValue, '_dummy');
-			o.rawhtml = true;
-			o.default = '<div class="cbi-value-field"><em>' +
-				_('No supported modem / router was found...') +
-				'</em></div>';
-		};
 		}
 		
 		return m.render();
@@ -449,7 +406,7 @@ return view.extend({
 			args.push(data.modemband.set_bands);
 			var ax = args.toString();
 			ax = ax.replace(/,/g, ' ')
-			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands', ax ]);
+			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands5g', ax ]);
 
 			return uci.load('modemband').then(function() {
 				var wrestart = (uci.get('modemband', '@modemband[0]', 'wanrestart'));
@@ -492,4 +449,3 @@ return view.extend({
 		]);
 	}
 });
-

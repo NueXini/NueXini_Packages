@@ -98,6 +98,7 @@ bandtxt() {
 	"50") echo "$BAND: TDD 1500 MHz";;
 	"51") echo "$BAND: TDD 1500 MHz";;
 	"53") echo "$BAND: TDD 2400 MHz";;
+	"54") echo "$BAND: TDD 1600 MHz";;
 	"65") echo "$BAND: FDD 2100 MHz";;
 	"66") echo "$BAND: FDD 1700 MHz";;
 	"67") echo "$BAND: SDL  700 MHz";;
@@ -113,11 +114,92 @@ bandtxt() {
 	"87") echo "$BAND: FDD  410 MHz";;
 	"88") echo "$BAND: FDD  410 MHz";;
 	"103") echo "$BAND: FDD  700 MHz";;
+	"106") echo "$BAND: FDD  900 MHz";;
+	esac
+}
+
+bandtxt5g() {
+	BAND=$1
+
+# see https://en.wikipedia.org/wiki/5G_NR_frequency_bands
+
+	case "$BAND" in
+	"1") echo " $BAND: FDD 2100 MHz";;
+	"2") echo " $BAND: FDD 1900 MHz";;
+	"3") echo " $BAND: FDD 1800 MHz";;
+	"5") echo " $BAND: FDD  850 MHz";;
+	"7") echo " $BAND: FDD 2600 MHz";;
+	"8") echo " $BAND: FDD  900 MHz";;
+	"12") echo "$BAND: FDD  700 MHz";;
+	"13") echo "$BAND: FDD  700 MHz";;
+	"14") echo "$BAND: FDD  700 MHz";;
+	"18") echo "$BAND: FDD  850 MHz";;
+	"20") echo "$BAND: FDD  800 MHz";;
+	"24") echo "$BAND: FDD 1600 MHz";;
+	"25") echo "$BAND: FDD 1900 MHz";;
+	"26") echo "$BAND: FDD  850 MHz";;
+	"28") echo "$BAND: FDD  700 MHz";;
+	"29") echo "$BAND: SDL  700 MHz";;
+	"30") echo "$BAND: TDD 2300 MHz";;
+	"34") echo "$BAND: TDD 2100 MHz";;
+	"38") echo "$BAND: TDD 2600 MHz";;
+	"39") echo "$BAND: TDD 1900 MHz";;
+	"40") echo "$BAND: TDD 2300 MHz";;
+	"41") echo "$BAND: TDD 2500 MHz";;
+	"46") echo "$BAND: TDD 5200 MHz";;
+	"47") echo "$BAND: TDD 5900 MHz";;
+	"48") echo "$BAND: TDD 3500 MHz";;
+	"50") echo "$BAND: TDD 1500 MHz";;
+	"51") echo "$BAND: TDD 1500 MHz";;
+	"53") echo "$BAND: TDD 2400 MHz";;
+	"54") echo "$BAND: TDD 1600 MHz";;
+	"65") echo "$BAND: FDD 2100 MHz";;
+	"66") echo "$BAND: FDD 1700/2100 MHz";;
+	"67") echo "$BAND: SDL  700 MHz";;
+	"70") echo "$BAND: FDD 2000 MHz";;
+	"71") echo "$BAND: FDD  600 MHz";;
+	"74") echo "$BAND: FDD 1500 MHz";;
+	"75") echo "$BAND: SDL 1500 MHz";;
+	"76") echo "$BAND: SDL 1500 MHz";;
+	"77") echo "$BAND: TDD 3700 MHz";;
+	"78") echo "$BAND: TDD 3500 MHz";;
+	"79") echo "$BAND: TDD 4700 MHz";;
+	"80") echo "$BAND: SUL 1800 MHz";;
+	"81") echo "$BAND: SUL  900 MHz";;
+	"82") echo "$BAND: SUL  800 MHz";;
+	"83") echo "$BAND: SUL  700 MHz";;
+	"84") echo "$BAND: SUL 2100 MHz";;
+	"85") echo "$BAND: FDD  700 MHz";;
+	"86") echo "$BAND: SUL 1700 MHz";;
+	"89") echo "$BAND: SUL  850 MHz";;
+	"90") echo "$BAND: TDD 2500 MHz";;
+	"91") echo "$BAND: FDD  800/1500 MHz";;
+	"92") echo "$BAND: FDD  800/1500 MHz";;
+	"93") echo "$BAND: FDD  900/1500 MHz";;
+	"94") echo "$BAND: FDD  900/1500 MHz";;
+	"95") echo "$BAND: SUL 2100 MHz";;
+	"96") echo "$BAND: TDD 6000 MHz";;
+	"97") echo "$BAND: SUL 2300 MHz";;
+	"98") echo "$BAND: SUL 1900 MHz";;
+	"99") echo "$BAND: SUL 1600 MHz)";;
+	"100") echo "$BAND: FDD  900 MHz";;
+	"101") echo "$BAND: TDD 1900 MHz";;
+	"102") echo "$BAND: TDD 6200 MHz";;
+	"104") echo "$BAND: TDD 6700 MHz";;
+	"105") echo "$BAND: FDD  600 MHz";;
+	"257") echo "$BAND: 28 GHz";;
+	"258") echo "$BAND: 26 GHz";;
+	"259") echo "$BAND: 41 GHz";;
+	"260") echo "$BAND: 39 GHz";;
+	"261") echo "$BAND: 28 GHz";;
+	"262") echo "$BAND: 47 GHz";;
+	"263") echo "$BAND: 60 GHz";;
 	esac
 }
 
 _DEVICE=""
 _DEFAULT_LTE_BANDS=""
+_DEFAULT_5G_BANDS=""
 
 # default templates
 
@@ -154,6 +236,37 @@ getbandsext() {
 
 # set bands
 setbands() {
+	echo "Unsupported"
+}
+
+# get supported band - 5G
+getsupportedbands5g() {
+	echo "Unsupported"
+}
+
+getsupportedbandsext5g() {
+	T=$(getsupportedbands5g)
+	[ "x$T" = "xUnsupported" ] && return
+	for BAND in $T; do
+		bandtxt5g "$BAND"
+	done
+}
+
+# get current configured bands - 5G
+getbands5g() {
+	echo "Unsupported"
+}
+
+getbandsext5g() {
+	T=$(getbands5g)
+	[ "x$T" = "xUnsupported" ] && return
+	for BAND in $T; do
+		bandtxt5g "$BAND"
+	done
+}
+
+# set bands - 5G
+setbands5g() {
 	echo "Unsupported"
 }
 
@@ -212,6 +325,21 @@ case $1 in
 	"setbands")
 		[ -n "$2" ] && setbands "$2"
 		;;
+	"getsupportedbands5g")
+		getsupportedbands5g
+		;;
+	"getsupportedbandsext5g")
+		getsupportedbandsext5g
+		;;
+	"getbands5g")
+		getbands5g
+		;;
+	"getbandsext5g")
+		getbandsext5g
+		;;
+	"setbands5g")
+		[ -n "$2" ] && setbands5g "$2"
+		;;
 	"json")
 		. /usr/share/libubox/jshn.sh
 		json_init
@@ -236,6 +364,26 @@ case $1 in
 			done
 		fi
 		json_close_array
+		T=$(getsupportedbands5g)
+		if [ "x$T" != "xUnsupported" ]; then
+			json_add_array supported5g
+			for BAND in $T; do
+				json_add_object ""
+				json_add_int band $BAND
+				TXT="$(bandtxt5g $BAND)"
+				json_add_string txt "${TXT##*: }"
+				json_close_object
+			done
+			json_close_array
+			json_add_array enabled5g
+			T=$(getbands5g)
+			if [ "x$T" != "xUnsupported" ]; then
+				for BAND in $T; do
+					json_add_int "" $BAND
+				done
+			fi
+			json_close_array
+		fi
 		json_dump
 		;;
 	"help")
@@ -248,6 +396,13 @@ case $1 in
 		echo " $0 setbands \"<band list>\""
 		echo " $0 json"
 		echo " $0 help"
+		echo ""
+		echo " only for 5G modem"
+		echo " $0 getsupportedbands5g"
+		echo " $0 getsupportedbandsext5g"
+		echo " $0 getbands5g"
+		echo " $0 getbandsext5g"
+		echo " $0 setbands5g \"<band list>\""
 		;;
 	*)
 		echo -n "Modem: "
@@ -258,6 +413,15 @@ case $1 in
 		getbands
 		echo ""
 		getsupportedbandsext
+		T=$(getsupportedbands5g)
+		if [ "x$T" != "xUnsupported" ]; then
+			echo -n "Supported 5G bands: "
+			getsupportedbands5g
+			echo -n "5G bands: "
+			getbands5g
+			echo ""
+			getsupportedbandsext5g
+		fi
 		;;
 esac
 
