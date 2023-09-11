@@ -358,7 +358,7 @@ return view.extend({
 		if(!("error" in json)) {
 		s.tab('bandset', _('Preferred bands settings'));
  
-		o = s.taboption('bandset', cbiRichListValue, 'set_5gbands',
+		o = s.taboption('bandset', cbiRichListValue, 'set_5bands',
 		_('Modification of the bands'), 
 		_("Select the preferred band(s) for the modem."));
 
@@ -403,7 +403,7 @@ return view.extend({
 
 		return dom.callClassMethod(map, 'save').then(function() {
 			var args = [];
-			args.push(data.modemband.set_bands);
+			args.push(data.modemband.set_5bands);
 			var ax = args.toString();
 			ax = ax.replace(/,/g, ' ')
 			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands5g', ax ]);
