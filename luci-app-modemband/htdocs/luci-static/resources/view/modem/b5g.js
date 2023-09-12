@@ -111,54 +111,6 @@ var SYSTmagic = form.DummyValue.extend({
 	}
 });
 
-var UPboost = form.DummyValue.extend({
-
-	load: function() {
-		var onuploadbtn = E('button', {
-				'class': 'btn cbi-button cbi-button-neutral',
-				'click': ui.createHandlerFn(this, function() {
-							return handleAction('onupload');
-						}),
-			}, _('Enable'));
-
-		var offuploadbtn = E('button', {
-				'class': 'btn cbi-button cbi-button-neutral',
-				'click': ui.createHandlerFn(this, function() {
-							return handleAction('offupload');
-						}),
-			}, _('Disable'));
-
-		return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh'), 'null').then(L.bind(function(html) {
-				if (html == null) {
-					this.default = E('em', {}, [ _('The modemband error.') ]);
-				}
-				else {
-					this.default = E([
-					E('div', { 'class': 'cbi-value' }, [
-						E('label', { 'class': 'cbi-value-title' },
-							_('Enable aggregation')
-						),
-						E('div', { 'class': 'cbi-value-field', 'style': 'width:25vw' },
-								E('div', { 'class': 'cbi-section-node' }, [
-									onuploadbtn,
-								]),
-						),
-					]),
-					E('div', { 'class': 'cbi-value' }, [
-						E('label', { 'class': 'cbi-value-title' },
-							_('Disable aggregation')
-						),
-						E('div', { 'class': 'cbi-value-field', 'style': 'width:25vw' },
-								E('div', { 'class': 'cbi-section-node' }, [
-									offuploadbtn,
-								]),
-						),
-					]),
-				]);
-					}
-			}, this));
-	}
-});
 
 var cbiRichListValue = form.ListValue.extend({
 	renderWidget: function(section_id, option_index, cfgvalue) {
@@ -252,12 +204,13 @@ return view.extend({
 
 		if(!json.hasOwnProperty('error')){
 
-		if (json.supported5g.length < 1) {
+		if (json.supported5g === undefined && json.enabled5g === undefined) {
+
 			ui.addNotification(null, E('p', _('5G bands cannot be read. Check if your modem supports this technology and if it is in the list of supported modems.')), 'info');
 			modemen = '-';
 			sbands = '-';
 		}
-
+		else {
 
 		var modem = json.modem;
 		for (var i = 0; i < json.enabled5g.length; i++) 
@@ -304,6 +257,7 @@ return view.extend({
 
 			});
 		});
+		}
 		}		
 		else {
 			if (json.error.includes('No supported') == true) {
@@ -316,6 +270,7 @@ return view.extend({
 			sbands = '-';
 			ui.addNotification(null, E('p', _('Port not found, quitting...')), 'error');
 			}
+
 		}
 			} catch (err) {
   				console.log('Error: ', err.message);
@@ -355,13 +310,17 @@ return view.extend({
 		s.anonymous = true;
 		s.addremove = false;
 
-		if(!("error" in json)) {
+		if (json.supported5g === undefined && json.enabled5g === undefined) {
+			modemen = '-';
+			sbands = '-';
+		}
+		else {
+
 		s.tab('bandset', _('Preferred bands settings'));
  
 		o = s.taboption('bandset', cbiRichListValue, 'set_5bands',
 		_('Modification of the bands'), 
 		_("Select the preferred band(s) for the modem."));
-
 		for (var i = 0; i < json.supported5g.length; i++) 
 		{
 			o.value(json.supported5g[i].band, _('n')+json.supported5g[i].band,json.supported5g[i].txt);
@@ -369,7 +328,6 @@ return view.extend({
 		
 		o.multiple = true;
 		o.placeholder = _('Please select a band(s)');
-
 		o.cfgvalue = function(section_id) {
 			return L.toArray((json.enabled5g).join(' '));
 		};
