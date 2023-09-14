@@ -151,7 +151,7 @@ function handleAction(ev) {
 	if (ev === 'resetbandz') {		
 		if (confirm(_('Do you really want to set up all possible bands for the modem?')))
 			{
-			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands5g', 'default' ]);
+			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands5gnsa', 'default' ]);
 
 			return uci.load('modemband').then(function() {
 				var nuser = (uci.get('modemband', '@modemband[0]', 'notify'));
@@ -204,7 +204,7 @@ return view.extend({
 
 		if(!json.hasOwnProperty('error')){
 
-		if (json.supported5g === undefined && json.enabled5g === undefined) {
+		if (json.supported5gnsa === undefined && json.enabled5gnsa === undefined) {
 
 			ui.addNotification(null, E('p', _('5G bands cannot be read. Check if your modem supports this technology and if it is in the list of supported modems.')), 'info');
 			modemen = '-';
@@ -213,18 +213,18 @@ return view.extend({
 		else {
 
 		var modem = json.modem;
-		for (var i = 0; i < json.enabled5g.length; i++) 
+		for (var i = 0; i < json.enabled5gnsa.length; i++)
 		{
-				var txtband = json.enabled5g[i].toString();
+				var txtband = json.enabled5gnsa[i].toString();
 				var numb = txtband.match(/\d+$/);
 				modemen += 'n' + numb + '  ';
 				modemen = modemen.replace('undefined', '');
 		}
 		modemen = modemen.trim();
 
-		for (var i = 0; i < json.supported5g.length; i++) 
+		for (var i = 0; i < json.supported5gnsa.length; i++) 
 		{
-				var txtband = json.supported5g[i].band.toString();
+				var txtband = json.supported5gnsa[i].band.toString();
 				var numb = txtband.match(/\d+$/);
 				sbands += 'n' + numb + '  ';
 				sbands = sbands.replace('undefined', '');
@@ -240,9 +240,9 @@ return view.extend({
 
 				var renderHTML = "";
 				var view = document.getElementById("modemlteb");
-				for (var i = 0; i < json.enabled5g.length; i++) 
+				for (var i = 0; i < json.enabled5gnsa.length; i++) 
 				{
-				var txtband = json.enabled5g[i].toString();
+				var txtband = json.enabled5gnsa[i].toString();
 				var numb = txtband.match(/\d+$/);
 				renderHTML += 'n' + numb + '  ';
 				view.innerHTML  = '';
@@ -279,7 +279,7 @@ return view.extend({
 
 		var info = _('Configuration modem frequency bands. More information about the modemband application on the %seko.one.pl forum%s.').format('<a href="https://eko.one.pl/?p=openwrt-modemband" target="_blank">', '</a>');
 
-		m = new form.JSONMap(this.formdata, _('5G Bands Configuration'), info);
+		m = new form.JSONMap(this.formdata, _('5G NSA Bands Configuration'), info);
 
 		s = m.section(form.TypedSection, 'modemband', '', _(''));
 		s.anonymous = true;
@@ -294,12 +294,12 @@ return view.extend({
 					]),
 
 						E('tr', { 'class': 'tr' }, [
-						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Currently set 5G bands')]),
+						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Currently set 5G NSA bands')]),
 						E('td', { 'class': 'td left', 'id': 'modemlteb' }, [ modemen || '-' ]),
 					]),
 
 						E('tr', { 'class': 'tr' }, [
-						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Supported 5G bands')]),
+						E('td', { 'class': 'td left', 'width': '33%' }, [ _('Supported 5G NSA bands')]),
 						E('td', { 'class': 'td left', 'id': 'sbands' }, [ sbands || '-' ]),
 					]),
 				])
@@ -310,7 +310,7 @@ return view.extend({
 		s.anonymous = true;
 		s.addremove = false;
 
-		if (json.supported5g === undefined && json.enabled5g === undefined) {
+		if (json.supported5gnsa === undefined && json.enabled5gnsa === undefined) {
 			modemen = '-';
 			sbands = '-';
 		}
@@ -318,18 +318,18 @@ return view.extend({
 
 		s.tab('bandset', _('Preferred bands settings'));
  
-		o = s.taboption('bandset', cbiRichListValue, 'set_5bands',
+		o = s.taboption('bandset', cbiRichListValue, 'set_5gnsabands',
 		_('Modification of the bands'), 
 		_("Select the preferred band(s) for the modem."));
-		for (var i = 0; i < json.supported5g.length; i++) 
+		for (var i = 0; i < json.supported5gnsa.length; i++) 
 		{
-			o.value(json.supported5g[i].band, _('n')+json.supported5g[i].band,json.supported5g[i].txt);
+			o.value(json.supported5gnsa[i].band, _('n')+json.supported5gnsa[i].band,json.supported5gnsa[i].txt);
 		}
 		
 		o.multiple = true;
 		o.placeholder = _('Please select a band(s)');
 		o.cfgvalue = function(section_id) {
-			return L.toArray((json.enabled5g).join(' '));
+			return L.toArray((json.enabled5gnsa).join(' '));
 		};
 
 		s = m.section(form.TypedSection);
@@ -361,10 +361,10 @@ return view.extend({
 
 		return dom.callClassMethod(map, 'save').then(function() {
 			var args = [];
-			args.push(data.modemband.set_5bands);
+			args.push(data.modemband.set_5gnsabands);
 			var ax = args.toString();
 			ax = ax.replace(/,/g, ' ')
-			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands5g', ax ]);
+			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands5gnsa', ax ]);
 
 			return uci.load('modemband').then(function() {
 				var wrestart = (uci.get('modemband', '@modemband[0]', 'wanrestart'));

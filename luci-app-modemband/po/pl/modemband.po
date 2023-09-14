@@ -4,14 +4,20 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 msgid "Preferred LTE bands"
 msgstr "Preferowane pasma LTE"
 
-msgid "Preferred 5G bands"
-msgstr "Preferowane pasma 5G"
+msgid "Preferred 5G SA bands"
+msgstr "Preferowane pasma 5G SA"
+
+msgid "Preferred 5G NSA bands"
+msgstr "Preferowane pasma 5G NSA"
 
 msgid "Currently set LTE bands"
 msgstr "Aktualnie ustawione pasma LTE"
 
-msgid "Currently set 5G bands"
-msgstr "Aktualnie ustawione pasma 5G"
+msgid "Currently set 5G SA bands"
+msgstr "Aktualnie ustawione pasma 5G SA"
+
+msgid "Currently set 5G NSA bands"
+msgstr "Aktualnie ustawione pasma 5G NSA"
 
 msgid "Preferred LTE/5G Bands"
 msgstr "Preferowane pasma LTE/5G"
@@ -19,8 +25,11 @@ msgstr "Preferowane pasma LTE/5G"
 msgid "Supported LTE bands"
 msgstr "Obsługiwane pasma LTE"
 
-msgid "Supported 5G bands"
-msgstr "Obsługiwane pasma 5G"
+msgid "Supported 5G SA bands"
+msgstr "Obsługiwane pasma 5G SA"
+
+msgid "Supported 5G NSA bands"
+msgstr "Obsługiwane pasma 5G NSA"
 
 msgid "5G bands cannot be read. Check if your modem supports this technology and if it is in the list of supported modems."
 msgstr "Nie można odczytać pasm 5G. Sprawdź czy twój modem wspiera tą technologię i czy jest na liście obsługiwanych modemów."
@@ -35,8 +44,11 @@ msgstr ""
 msgid "LTE Bands Configuration"
 msgstr "Konfiguracja pasm LTE"
 
-msgid "5G Bands Configuration"
-msgstr "Konfiguracja pasm 5G"
+msgid "5G SA Bands Configuration"
+msgstr "Konfiguracja pasm 5G SA"
+
+msgid "5G NSA Bands Configuration"
+msgstr "Konfiguracja pasm 5G NSA"
 
 msgid "Preferred bands settings"
 msgstr "Ustawienia preferowanych pasm"

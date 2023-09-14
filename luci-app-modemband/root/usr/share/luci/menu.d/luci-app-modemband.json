@@ -30,18 +30,28 @@
 		}
 	},
 	
-	"admin/modem/luci-app-modemband/b5g": {
-		"title": "Preferred 5G bands",
+	"admin/modem/luci-app-modemband/b5gsa": {
+		"title": "Preferred 5G SA bands",
 		"order": 20,
 		"action": {
 			"type": "view",
-			"path": "modem/b5g"
+			"path": "modem/b5gsa"
+		}
+	},
+	
+	"admin/modem/luci-app-modemband/b5gnsa": {
+		"title": "Preferred 5G NSA bands",
+
+		"order": 30,
+		"action": {
+			"type": "view",
+			"path": "modem/b5gnsa"
 		}
 	},
 
 	"admin/modem/luci-app-modemband/blteconfig": {
 		"title": "Configuration",
-		"order": 30,
+		"order": 40,
 		"action": {
 			"type": "view",
 			"path": "modem/blteconfig"
@@ -50,7 +60,7 @@
 
 	"admin/modem/luci-app-modemband/blteedit": {
 		"title": "Modem settings template",
-		"order": 40,
+		"order": 50,
 		"action": {
 			"type": "view",
 			"path": "modem/blteedit"

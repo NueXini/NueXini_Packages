@@ -199,7 +199,8 @@ bandtxt5g() {
 
 _DEVICE=""
 _DEFAULT_LTE_BANDS=""
-_DEFAULT_5G_BANDS=""
+_DEFAULT_5GNSA_BANDS=""
+_DEFAULT_5GSA_BANDS=""
 
 # default templates
 
@@ -208,7 +209,7 @@ getinfo() {
 	echo "Unsupported"
 }
 
-# get supported band
+# get supported band - 4G
 getsupportedbands() {
 	echo "Unsupported"
 }
@@ -221,7 +222,7 @@ getsupportedbandsext() {
 	done
 }
 
-# get current configured bands
+# get current configured bands - 4G
 getbands() {
 	echo "Unsupported"
 }
@@ -234,41 +235,73 @@ getbandsext() {
 	done
 }
 
-# set bands
+# set bands - 4G
 setbands() {
 	echo "Unsupported"
 }
 
-# get supported band - 5G
-getsupportedbands5g() {
+# get supported band - 5G NSA
+getsupportedbands5gnsa() {
 	echo "Unsupported"
 }
 
-getsupportedbandsext5g() {
-	T=$(getsupportedbands5g)
+getsupportedbandsext5gnsa() {
+	T=$(getsupportedbands5gnsa)
 	[ "x$T" = "xUnsupported" ] && return
 	for BAND in $T; do
 		bandtxt5g "$BAND"
 	done
 }
 
-# get current configured bands - 5G
-getbands5g() {
+# get current configured bands - 5G NSA
+getbands5gnsa() {
 	echo "Unsupported"
 }
 
-getbandsext5g() {
-	T=$(getbands5g)
+getbandsext5gnsa() {
+	T=$(getbands5gnsa)
 	[ "x$T" = "xUnsupported" ] && return
 	for BAND in $T; do
 		bandtxt5g "$BAND"
 	done
 }
 
-# set bands - 5G
-setbands5g() {
+# set bands - 5G NSA
+setbands5gnsa() {
 	echo "Unsupported"
 }
+
+# get supported band - 5G SA
+getsupportedbands5gsa() {
+	echo "Unsupported"
+}
+
+getsupportedbandsext5gsa() {
+	T=$(getsupportedbands5gsa)
+	[ "x$T" = "xUnsupported" ] && return
+	for BAND in $T; do
+		bandtxt5g "$BAND"
+	done
+}
+
+# get current configured bands - 5G SA
+getbands5gsa() {
+	echo "Unsupported"
+}
+
+getbandsext5gsa() {
+	T=$(getbands5gsa)
+	[ "x$T" = "xUnsupported" ] && return
+	for BAND in $T; do
+		bandtxt5g "$BAND"
+	done
+}
+
+# set bands - 5G SA
+setbands5gsa() {
+	echo "Unsupported"
+}
+
 
 RES="/usr/share/modemband"
 
@@ -325,20 +358,35 @@ case $1 in
 	"setbands")
 		[ -n "$2" ] && setbands "$2"
 		;;
-	"getsupportedbands5g")
-		getsupportedbands5g
+	"getsupportedbands5gnsa")
+		getsupportedbands5gnsa
 		;;
-	"getsupportedbandsext5g")
-		getsupportedbandsext5g
+	"getsupportedbandsext5gnsa")
+		getsupportedbandsext5gnsa
 		;;
-	"getbands5g")
-		getbands5g
+	"getbands5gnsa")
+		getbands5gnsa
 		;;
-	"getbandsext5g")
-		getbandsext5g
+	"getbandsext5gnsa")
+		getbandsext5gnsa
 		;;
-	"setbands5g")
-		[ -n "$2" ] && setbands5g "$2"
+	"setbands5gnsa")
+		[ -n "$2" ] && setbands5gnsa "$2"
+		;;
+	"getsupportedbands5gsa")
+		getsupportedbands5gsa
+		;;
+	"getsupportedbandsext5gsa")
+		getsupportedbandsext5gsa
+		;;
+	"getbands5gsa")
+		getbands5gsa
+		;;
+	"getbandsext5gsa")
+		getbandsext5gsa
+		;;
+	"setbands5gsa")
+		[ -n "$2" ] && setbands5gsa "$2"
 		;;
 	"json")
 		. /usr/share/libubox/jshn.sh
@@ -364,9 +412,10 @@ case $1 in
 			done
 		fi
 		json_close_array
-		T=$(getsupportedbands5g)
+
+		T=$(getsupportedbands5gnsa)
 		if [ "x$T" != "xUnsupported" ]; then
-			json_add_array supported5g
+			json_add_array supported5gnsa
 			for BAND in $T; do
 				json_add_object ""
 				json_add_int band $BAND
@@ -375,8 +424,28 @@ case $1 in
 				json_close_object
 			done
 			json_close_array
-			json_add_array enabled5g
-			T=$(getbands5g)
+			json_add_array enabled5gnsa
+			T=$(getbands5gnsa)
+			if [ "x$T" != "xUnsupported" ]; then
+				for BAND in $T; do
+					json_add_int "" $BAND
+				done
+			fi
+			json_close_array
+		fi
+		T=$(getsupportedbands5gsa)
+		if [ "x$T" != "xUnsupported" ]; then
+			json_add_array supported5gsa
+			for BAND in $T; do
+				json_add_object ""
+				json_add_int band $BAND
+				TXT="$(bandtxt5g $BAND)"
+				json_add_string txt "${TXT##*: }"
+				json_close_object
+			done
+			json_close_array
+			json_add_array enabled5gsa
+			T=$(getbands5gsa)
 			if [ "x$T" != "xUnsupported" ]; then
 				for BAND in $T; do
 					json_add_int "" $BAND
@@ -389,38 +458,56 @@ case $1 in
 	"help")
 		echo "Available commands:"
 		echo " $0 getinfo"
+		echo " $0 json"
+		echo " $0 help"
+		echo ""
+		echo "for LTE modem"
 		echo " $0 getsupportedbands"
 		echo " $0 getsupportedbandsext"
 		echo " $0 getbands"
 		echo " $0 getbandsext"
 		echo " $0 setbands \"<band list>\""
-		echo " $0 json"
-		echo " $0 help"
 		echo ""
-		echo " only for 5G modem"
-		echo " $0 getsupportedbands5g"
-		echo " $0 getsupportedbandsext5g"
-		echo " $0 getbands5g"
-		echo " $0 getbandsext5g"
-		echo " $0 setbands5g \"<band list>\""
+		echo "for 5G NSA modem"
+		echo " $0 getsupportedbands5gnsa"
+		echo " $0 getsupportedbandsext5gnsa"
+		echo " $0 getbands5gnsa"
+		echo " $0 getbandsext5gnsa"
+		echo " $0 setbands5gnsa \"<band list>\""
+		echo ""
+		echo "for 5G SA modem"
+		echo " $0 getsupportedbands5gsa"
+		echo " $0 getsupportedbandsext5gsa"
+		echo " $0 getbands5gsa"
+		echo " $0 getbandsext5gsa"
+		echo " $0 setbands5gsa \"<band list>\""
 		;;
 	*)
 		echo -n "Modem: "
 		getinfo
 		echo -n "Supported LTE bands: "
 		getsupportedbands
-		echo -n "LTE bands: "
+		echo -n "Enabled LTE bands: "
 		getbands
 		echo ""
 		getsupportedbandsext
-		T=$(getsupportedbands5g)
+		T=$(getsupportedbands5gnsa)
 		if [ "x$T" != "xUnsupported" ]; then
-			echo -n "Supported 5G bands: "
-			getsupportedbands5g
-			echo -n "5G bands: "
-			getbands5g
+			echo -n "Supported 5G NSA bands: "
+			getsupportedbands5gnsa
+			echo -n "Enabled 5G NSA bands: "
+			getbands5gnsa
 			echo ""
-			getsupportedbandsext5g
+			getsupportedbandsext5gnsa
+		fi
+		T=$(getsupportedbands5gsa)
+		if [ "x$T" != "xUnsupported" ]; then
+			echo -n "Supported 5G SA bands: "
+			getsupportedbands5gsa
+			echo -n "Enabled 5G SA bands: "
+			getbands5gsa
+			echo ""
+			getsupportedbandsext5gsa
 		fi
 		;;
 esac
