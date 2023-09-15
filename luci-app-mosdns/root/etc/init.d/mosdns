@@ -94,11 +94,6 @@ start_service() {
   # Reading config
   inital_conf
   if [ "$enabled" -eq 0 ]; then
-    firstblood=$(uci -q get mosdns.mosdns.not_first_start)
-    [ "${firstblood}" = "0" ] && restore_setting
-    [ "${firstblood}" = "0" ] && restart_others
-    uci set mosdns.mosdns.not_first_start='1'
-    uci commit mosdns
     echo "MosDNS has turned off"
     return 1
   fi
