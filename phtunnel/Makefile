@@ -3,28 +3,37 @@ include $(INCLUDE_DIR)/target.mk
 
 ifeq ($(ARCH),arm)
   ifneq ($(findstring $(CPU_SUBTYPE), neon neon-vfpv4 vfpv3),)
-	PKG_ARCH_PHT:=arm_$(CPU_TYPE)_$(CPU_SUBTYPE)-musl-unknown
+	PKG_ARCH_PHT:=arm_$(CPU_TYPE)_$(CPU_SUBTYPE)-$(LIBC)-unknown
+  else ifneq ($(findstring $(CPU_TYPE), cortex-a9),)
+	PKG_ARCH_PHT:=arm_cortex-a9-$(LIBC)-unknown
   else
-	PKG_ARCH_PHT:=arm_cortex-a7-musl-unknown
+	PKG_ARCH_PHT:=arm_cortex-a7-$(LIBC)-unknown
   endif
 endif
 ifeq ($(ARCH),aarch64)
-  ifeq ($(CPU_TYPE),cortex-a53) # To do: add a72 etc.
-	PKG_ARCH_PHT:=aarch64_$(CPU_TYPE)-musl-unknown
+  ifneq ($(findstring $(CPU_TYPE), cortex-a53 cortex-a72),)
+	PKG_ARCH_PHT:=aarch64_$(CPU_TYPE)-$(LIBC)-unknown
   else
-	PKG_ARCH_PHT:=aarch64_generic-musl-unknown
+	PKG_ARCH_PHT:=aarch64_generic-$(LIBC)-unknown
   endif
 endif
+ifeq ($(ARCH),mips)
+	PKG_ARCH_PHT:=mips_24kc-$(LIBC)-unknown
+endif
 ifeq ($(ARCH),mipsel)
-	PKG_ARCH_PHT:=mipsel_24kc-musl-unknown
+  ifneq ($(findstring $(CPU_TYPE), 24kec 74kc 1004kc),)
+	PKG_ARCH_PHT:=$(ARCH)_$(CPU_TYPE)-$(LIBC)-unknown
+  else
+	PKG_ARCH_PHT:=mipsel_24kc-$(LIBC)-unknown
+  endif
 endif
 ifeq ($(BOARD),x86)
   ifeq ($(ARCH),x86_64)
-	PKG_ARCH_PHT:=x86_64-musl-unknown
+	PKG_ARCH_PHT:=x86_64-$(LIBC)-unknown
   else ifeq ($(CPU_TYPE),pentium4)
-	PKG_ARCH_PHT:=i386_pentium4-musl-unknown
+	PKG_ARCH_PHT:=i386_pentium4-$(LIBC)-unknown
   else
-	PKG_ARCH_PHT:=i386_pentium-mmx-musl-unknown
+	PKG_ARCH_PHT:=i386_pentium-mmx-$(LIBC)-unknown
   endif
 endif
 
@@ -45,7 +54,7 @@ define Package/phtunnel
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=Web Servers/Proxies
-  DEPENDS:=@(arm||aarch64||mipsel||i386||x86_64) \
+  DEPENDS:=@(arm||aarch64||mips||mipsel||i386||x86_64) \
 	+libc +libpthread +librt
   TITLE:=HSK Intranet penetration
   URL:=https://hsk.oray.com/
