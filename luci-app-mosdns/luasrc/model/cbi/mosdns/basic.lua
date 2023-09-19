@@ -35,7 +35,7 @@ logfile.default = "/tmp/mosdns.txt"
 logfile:depends( "configfile", "./def_config.yaml")
 
 remote_dns = s:option(Value, "remote_dns1", translate("Remote DNS"))
-remote_dns.default = "tls://8.8.4.4"
+remote_dns.default = "tls://1.0.0.1"
 remote_dns:value("tls://8.8.8.8", "8.8.8.8 (Google DNS)")
 remote_dns:value("tls://8.8.4.4", "8.8.4.4 (Google DNS)")
 remote_dns:value("tls://1.1.1.1", "1.1.1.1 (CloudFlare DNS)")
