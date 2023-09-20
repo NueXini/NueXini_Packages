@@ -29,6 +29,7 @@
 123hplaserjet.com
 123rf.com
 123sex.top
+126728.net
 128100.xyz
 12bet.com
 12diasdepresentesdeitunes.com
@@ -379,6 +380,7 @@
 91porn.work
 91porny.com
 91qk41rf.com
+91quanji.com
 91rb.com
 91rb.net
 91se.fun
@@ -2252,6 +2254,7 @@ beijing2022.art
 beijingnike.com
 beijingspring.com
 beijingzx.org
+beiyongzhan1.com
 bejav.net
 bejeweledstars.com
 bejewled-stars.com
@@ -6116,6 +6119,7 @@ fececbook.com
 fedex
 fedoraforum.org
 fedoramagazine.org
+fedorapeople.org
 fedoraproject.org
 feedburner.com
 feeder.co
@@ -6865,6 +6869,7 @@ gannett-cdn.com
 gannett.com
 gannettdigital.com
 gao1.cc
+gaofuwu.cc
 gaoming.net
 gaopi.net
 gaozhisheng.net
@@ -7387,6 +7392,7 @@ govforce.com
 gp
 gpstheseries.com
 gputechconf.com
+gqzmnav.cc
 gr
 gr-assets.com
 gr8domain.biz
@@ -8336,6 +8342,7 @@ huffpostarabi.com
 huffpostbrasil.com
 huffpostmaghreb.com
 hugedildo.com
+huggingface.co
 hughes
 huhaitai.com
 huhamhire.com
@@ -9369,6 +9376,7 @@ jmcomic2.moe
 jmlr.org
 jmp
 jmscult.com
+jmvbt.com
 jneurosci.org
 jnj
 jo
@@ -14613,6 +14621,7 @@ sheshaft.com
 shia
 shianyuanfang.com
 shiatv.net
+shibashuwu.net
 shicheng.org
 shikorina.net
 shiksha.com
@@ -19154,7 +19163,7 @@ regexp:(^|\.)ksyp0[1-9]\.com$
 regexp:(^|\.)lianren[1-7]\.cc$
 regexp:(^|\.)loibus(100|101|202|505|606)\.top$
 regexp:(^|\.)loibus\.(cc|com|link)$
-regexp:(^|\.)maa18[1-2][0-9]\.com$
+regexp:(^|\.)maa18[0-2][0-9]\.com$
 regexp:(^|\.)mdyy[0-1][0-9]\.com$
 regexp:(^|\.)mdyy[0-9][0-9]\.cc$
 regexp:(^|\.)mimi[0-9]{3}\.com$
