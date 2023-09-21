@@ -5,7 +5,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mosdns
-PKG_VERSION:=f147d37
+PKG_VERSION:=6fd76cb
 PKG_RELEASE:=$(AUTORELEASE)
 
 PKG_SOURCE:=mosdns-$(PKG_VERSION).tar.gz
