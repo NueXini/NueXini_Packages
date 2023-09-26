@@ -52,16 +52,16 @@ o.write = function()
 end
 
 o = s:option(DynamicList, "subscribe_url", translate("Anti-AD Rules Subscribe"))
-o:value("https://cdn.jsdelivr.net/gh/cjx82630/cjxlist/cjx-annoyance.txt", translate("CJX-Annoyance"))
-o:value("https://cdn.jsdelivr.net/gh/kongfl888/ad-rules/lazy.txt", translate("lazy"))
-o:value("https://cdn.jsdelivr.net/gh/kongfl888/ad-rules/video.txt", translate("video"))
-o:value("https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt", translate("easylistchina+easylist"))
+o:value("https://cdn.jsdelivr.net/gh/cjx82630/cjxlist/cjx-annoyance.txt", translate("cjx-annoyance"))
+o:value("https://easylist-downloads.adblockplus.org/easylistchina.txt", translate("easylistchina"))
+o:value("https://easylist-downloads.adblockplus.org/easyprivacy.txt", translate("easyprivacy"))
+o:value("https://easylist-downloads.adblockplus.org/easylist.txt", translate("easylist"))
+o:value("https://raw.githubusercontent.com/Spam404/lists/master/adblock-list.txt", translate("adblock-list"))
+o:value("https://raw.githubusercontent.com/bongochong/CombinedPrivacyBlockLists/master/cpbl-abp-list.txt", translate("cpbl-abp-list"))
+o:value("https://anti-ad.net/easylist.txt", translate("anti-ad"))
+o:value("https://anti-ad.net/anti-ad-for-dnsmasq.conf", translate("anti-ad-for-dnsmasq"))
+o:value("https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/nocoin.txt", translate("nocoin"))
 o:value("https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt", translate("abp-filters-anti-cv"))
-o:value("https://easylist-downloads.adblockplus.org/fanboy-notifications.txt", translate("fanboy-notifications"))
-o:value("https://easylist-downloads.adblockplus.org/fanboy-social.txt", translate("fanboy-social"))
-o:value("https://easylist-downloads.adblockplus.org/i_dont_care_about_cookies.txt", translate("i_dont_care_about_cookies"))
-o:value("https://anti-ad.net/easylist.txt", translate("easylist"))
-o:value("https://gitee.com/xinggsf/Adblock-Rule/raw/master/rule.txt", translate("rule"))
 o.rmempty = true
 
 return m
