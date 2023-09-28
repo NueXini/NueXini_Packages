@@ -9827,7 +9827,6 @@ appcdn03.xyz
 appchannel.html5.qq.com
 appcloud.appyreward.com
 appcloud2.in.zhihu.com
-appcloud2.zhihu.com
 appcloudactive.com
 appcloudcore.com
 appcloudgroup.com
@@ -49412,6 +49411,8 @@ p0y.cn
 p1-jx.adukwai.com
 p1-lm.adkwai.com
 p1-lm.adukwai.com
+p1-play.edge4k.com
+p1-play.kgslb.com
 p1.adkwai.com
 p1.chinakaoyan.com
 p1.danskebank.dk
@@ -49426,6 +49427,7 @@ p188.cn
 p1corn.com
 p2-jx.adukwai.com
 p2-lm.adukwai.com
+p2-play.edge4k.com
 p2.danskebank.dk
 p2.danskebank.fi
 p2.danskebank.se
@@ -51360,6 +51362,7 @@ play.feesocrald.com
 play.flowplayer.space
 play.gramombird.com
 play.istlandoll.com
+play.kakao.com
 play.malictuiar.com
 play.mine.gay-hotvideo.net
 play.mix.kinostuff.com
