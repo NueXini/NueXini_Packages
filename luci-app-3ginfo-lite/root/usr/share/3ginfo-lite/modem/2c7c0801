@@ -163,7 +163,7 @@ if [ "x$MODE_NUM" = "x11" ]; then
 			14) BW="400";;
 			*) BW="";;
 		esac
-		[ -n "$BW" ] && addon 32 "Bandwidth" "$BW MHz"
+		[ -n "$BW" ] && DBW="@$BW MHz"
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
 		if [ -n "$T" ]; then
 			RSRP=$T
@@ -248,7 +248,10 @@ if [ -n "$T" ]; then
 		*) T4="";;
 	esac
 	if [ -z "$T4" ]; then
-		PBAND="$T2" 
+		PBAND="$T2"
+			if [ -n "$DBW" ]; then
+			PBAND="$T2 $DBW"
+		fi
 	else
 		PBAND="$T2 @$T4 MHz"
 	fi
@@ -273,7 +276,6 @@ if [ -n "$T" ]; then
 	IDX=1
 	LINES=$(echo "$O" | grep -E "^\+QCAINFO: \"(scc|SCC)\"")
 	for LINE in $LINES; do
-		POS=$(((IDX + 4) * 10))
 
 		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $5}')
 		T3=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $4}')
@@ -316,12 +318,12 @@ if [ -n "$T" ]; then
 				esac
 
 				fi
-				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $10}')
-				[ -n "$T5" ] && addon $((POS + 5)) "(S${IDX}) RSSI" "$T5 dBm"
-				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
-				[ -n "$T5" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
-				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $9}')
-				[ -n "$T5" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $10}')
+#				[ -n "$T5" ] && addon $((POS + 5)) "(S${IDX}) RSSI" "$T5 dBm"
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
+#				[ -n "$T5" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
+#				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $9}')
+#				[ -n "$T5" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
 				;;
 			*"NR5G BAND"*)
 				B=$(echo $T | sed 's/"NR5G BAND \(.*\)"/\1/')
@@ -348,18 +350,36 @@ if [ -n "$T" ]; then
 				[ -n "$T5" ] && addon $((POS + 4)) "(S${IDX}) EARFCN" "$T5"
 				if [ "x$MODE_NUM" = "x11" ]; then
 					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
-					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 3)) "(S${IDX}) PCI" "$T5"
-					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
-					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
-					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $9}')
-					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
+					if [ -n "$T5" ] && [ "$T5" != "-" ]; then
+						case $IDX in
+							1) S1PCI="$T5";;
+							2) S2PCI="$T5";;
+							3) S3PCI="$T5";;
+							4) S4PCI="$T5";;
+							*) ;;
+						esac
+					fi
+
+#					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
+#					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
+#					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $9}')
+#					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
 				else
 					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $6}')
-					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 3)) "(S${IDX}) PCI" "$T5"
-					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
-					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
-					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
-					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
+					if [ -n "$T5" ] && [ "$T5" != "-" ]; then
+						case $IDX in
+							1) S1PCI="$T5";;
+							2) S2PCI="$T5";;
+							3) S3PCI="$T5";;
+							4) S4PCI="$T5";;
+							*) ;;
+						esac
+					fi
+
+#					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
+#					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
+#					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
+#					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
 				fi
 				;;
 		esac

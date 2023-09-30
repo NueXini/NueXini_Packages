@@ -4,7 +4,7 @@
 
 O=$(sms_tool -d $DEVICE at "at!gstatus?")
 
-T=$(echo "$O" | awk -F: '/Temperature:/ {print $3}')
+T=$(echo "$O" | awk -F: '/Temperature:/ {print $3}' | grep -oE "\d+\.?\d{0,2}")
 [ -n "$T" ] && TEMP="$T &deg;C"
 
 if [ "x$MODE_NUM" = "x7" ]; then
@@ -57,7 +57,36 @@ fi
 MODE=$(echo $MODE | sed "s/LTE_A/LTE-A |/g" | sed 's,/,+,')
 
 # Modem
+FWA=$(sms_tool -d $DEVICE at "AT+CGMR" | tr -s "\n" | xargs)
+FW=$(echo $FWA | sed s/"AT+CGMR "//)
 
+MODELA=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n" | xargs)
+MODELB=$(sms_tool -d $DEVICE at "AT+CGMI" | tr -s "\n" | xargs)
+
+MODELACUT=$(echo $MODELA | sed s/"AT+CGMM "//)
+MODELBCUT=$(echo $MODELB | sed s/"AT+CGMI "// | cut -f1 -d",")
+MODEL="$MODELBCUT "$MODELACUT
+
+# International Mobile Equipment Identity (IMEI)
+O=$(sms_tool -d $DEVICE at "AT+CGSN" | xargs)
+NR_I=$(echo "$O" | sed s/"AT+CGSN "//)
+if [ -n "$NR_I" ]; then
+        NR_IMEI="$NR_I"
+fi
+
+# International Mobile Subscriber Identity (IMSI)
+O=$(sms_tool -d $DEVICE at "AT+CIMI" | xargs)
+NR_C=$(echo "$O" | sed s/"AT+CIMI "//)
+if [ -n "$NR_C" ]; then
+        NR_IMSI="$NR_C"
+fi
+
+#  Integrated Circuit Card Identifier (ICCID)
+O=$(sms_tool -d $DEVICE at "AT+ICCID")
+NR_D=$(echo "$O" | awk -F[,:] '/^ICCID: /{print $2}' | xargs)
+if [ -n "$NR_D" ]; then
+        NR_ICCID="$NR_D"
+fi
 
 # Protocol
 # DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
