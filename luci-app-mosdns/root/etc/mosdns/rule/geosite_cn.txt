@@ -64988,6 +64988,7 @@ full:corp.google.com
 full:corp.googleapis.com
 full:crashlyticsreports-pa.googleapis.com
 full:crl-lb.apple.com.akadns.net
+full:crl.alphassl.com
 full:crl.apple.com
 full:crl.pki.goog
 full:crl2.alphassl.com
@@ -65033,6 +65034,7 @@ full:g2.gstatic.com
 full:g3.gstatic.com
 full:gcpnode.com
 full:geetest.datasink.sensorsdata.cn
+full:global.prd.cdn.globalsign.com
 full:gog.qtlglb.com
 full:gogalaxy.gog-statics.com
 full:gonglchuangl.net
