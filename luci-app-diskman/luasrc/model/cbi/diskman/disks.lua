@@ -46,36 +46,36 @@ d:option(DummyValue, "sata_ver", translate("SATA Version"))
 d:option(DummyValue, "health_status", translate("Health") .. "<br/>" .. translate("Status"))
 -- d:option(DummyValue, "status", translate("Status"))
 
-local btn_eject = d:option(Button, "_eject")
-btn_eject.template = "diskman/cbi/disabled_button"
-btn_eject.inputstyle = "remove"
-btn_eject.inputtitle = translate("Eject")
-btn_eject.forcewrite = true
-btn_eject.write = function(self, section, value)
-  local dev = section
-  local disk_info = dm.get_disk_info(dev, true)
-  if disk_info.p_table:match("Raid") then
-    m.errmessage = translate("Unsupported raid reject!")
-    return
-  end
-  for i, p in ipairs(disk_info.partitions) do
-    if p.mount_point ~= "-" then
-      m.errmessage = p.name .. translate("is in use! please unmount it first!")
-      return
-    end
-  end
-  if disk_info.type:match("md") then
-    luci.util.exec(dm.command.mdadm .. " --stop /dev/" .. dev)
-    luci.util.exec(dm.command.mdadm .. " --remove /dev/" .. dev)
-    for _, disk in ipairs(disk_info.members) do
-      luci.util.exec(dm.command.mdadm .. " --zero-superblock " .. disk)
-    end
-    dm.gen_mdadm_config()
-  else
-    luci.util.exec("echo 1 > /sys/block/" .. dev .. "/device/delete")
-  end
-  luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman"))
-end
+-- local btn_eject = d:option(Button, "_eject")
+-- btn_eject.template = "diskman/cbi/disabled_button"
+-- btn_eject.inputstyle = "remove"
+-- btn_eject.inputtitle = translate("Eject")
+-- btn_eject.forcewrite = true
+-- btn_eject.write = function(self, section, value)
+--   local dev = section
+--   local disk_info = dm.get_disk_info(dev, true)
+--   if disk_info.p_table:match("Raid") then
+--     m.errmessage = translate("Unsupported raid reject!")
+--     return
+--   end
+--   for i, p in ipairs(disk_info.partitions) do
+--     if p.mount_point ~= "-" then
+--       m.errmessage = p.name .. translate("is in use! please unmount it first!")
+--       return
+--     end
+--   end
+--   if disk_info.type:match("md") then
+--     luci.util.exec(dm.command.mdadm .. " --stop /dev/" .. dev)
+--     luci.util.exec(dm.command.mdadm .. " --remove /dev/" .. dev)
+--     for _, disk in ipairs(disk_info.members) do
+--       luci.util.exec(dm.command.mdadm .. " --zero-superblock " .. disk)
+--     end
+--     dm.gen_mdadm_config()
+--   else
+--     luci.util.exec("echo 1 > /sys/block/" .. dev .. "/device/delete")
+--   end
+--   luci.http.redirect(luci.dispatcher.build_url("admin/system/diskman"))
+-- end
 
 d.extedit = luci.dispatcher.build_url("admin/system/diskman/partition/%s")
 
