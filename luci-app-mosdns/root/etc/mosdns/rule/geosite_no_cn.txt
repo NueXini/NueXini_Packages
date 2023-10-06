@@ -1601,6 +1601,7 @@ auricularesbeatsmarkt.com
 auroraoss.com
 ausbeatsbydrdre.com
 auspost
+auth0.com
 authorizeddns.net
 authorizeddns.org
 authorxml.com
@@ -1877,6 +1878,7 @@ barrons-conferences.com
 barrons.com
 baselinestudy.com
 baselinestudy.org
+basilisk-browser.org
 bastillepost.com
 bastropfirestone.com
 baterias-hp.com
@@ -3034,6 +3036,7 @@ bronto.com
 brother
 brotli.org
 brourou.com
+browser.kagi.com
 browserleaks.com
 brucewang.net
 brussels
@@ -4123,6 +4126,7 @@ crit-staging.com
 crmdynint-gcc.com
 crmdynint.com
 crocotube.com
+cromite.org
 crossborderexpansion.com
 crossfitfirestone.com
 crossmediapanel.com
@@ -4388,6 +4392,7 @@ debank.com
 debian.org
 debug.com
 debugproject.com
+decentr.net
 dechamora.com
 decodet.co
 decorativemodels.com
@@ -4818,6 +4823,7 @@ dotfacebook.com
 dotfacebook.net
 dotfreesex.com
 dotherex.com
+dothq.org
 dotplane.com
 dotsub.com
 dotvpn.com
@@ -5654,6 +5660,8 @@ exxxtrasmall1.com
 eyny.com
 ezpeer.com
 ezua.com
+f-dro1d.org
+f-droid.com
 f-droid.org
 f6988.com
 f8.com
@@ -6110,6 +6118,7 @@ fcww0.com
 fdacebook.info
 fdc64.org
 fdiintelligence.com
+fdroid.org
 feacboo.com
 feacbook.com
 feacbooke.com
@@ -6314,6 +6323,7 @@ flitto.com
 fljmh.com
 fljmh1.com
 flnet.org
+floorp.app
 floppy-tits.com
 flow.dev
 flow.org
@@ -7879,6 +7889,7 @@ hibdontire.com
 hiccears.com
 hidden-advent.org
 hiddenvoyeurspy.com
+hiddify.com
 hide.me
 hidecloud.com
 hidein.net
@@ -9633,6 +9644,7 @@ kismia.com
 kisscos.net
 kissjav.com
 kiwi
+kiwibrowser.com
 kk.stream
 kkbox.com
 kkfcc03.com
@@ -9644,6 +9656,7 @@ klik.me
 km
 kmc-av.com
 kmdhyy.com
+kmeleonbrowser.org
 kmff17.com
 kn
 knovel.com
@@ -9906,6 +9919,7 @@ libgen.me
 liboggirls.net
 librarylovefest.com
 libraryofthumbs.com
+librewolf.net
 libsolutions.app
 libsolutions.net
 licdn.com
@@ -10715,6 +10729,7 @@ mimi22.top
 mimiai.net
 mimivip.com
 mimivv.com
+minbrowser.org
 mindgeek.com
 mindmeld.com
 mindrolling.org
@@ -11581,6 +11596,7 @@ netpornsex.net
 netsarang.com
 netsneak.com
 netsolssl.com
+netsurf-browser.org
 nettyinternet.com
 netvideogirls.com
 netvigator.com
@@ -12493,6 +12509,7 @@ pakistanporntube.net
 palacemoon.com
 palcomix.com
 paldengyal.com
+palemoon.org
 palestineremix.com
 pali.ltd
 paljorpublications.com
@@ -12540,6 +12557,7 @@ partypoker.com
 pascherbeatsmonster.com
 pashtovoa.com
 pasionmujeres.com
+paskoocheh.com
 passion-hd.com
 passion.com
 passport.net
@@ -13535,6 +13553,7 @@ pugpig-stage.com
 pugpig.com
 pullfolio.com
 pullstring.net
+pulsebrowser.app
 punishbang.com
 punishworld.com
 punyu.com
@@ -13680,6 +13699,7 @@ quovadisglobal.com
 quran.com
 quranexplorer.com
 qusi8.net
+qutebrowser.org
 qvc
 qvodzy.org
 qwant.com
