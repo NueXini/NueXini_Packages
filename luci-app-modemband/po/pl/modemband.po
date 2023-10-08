@@ -34,6 +34,9 @@ msgstr "Obsługiwane pasma 5G NSA"
 msgid "5G bands cannot be read. Check if your modem supports this technology and if it is in the list of supported modems."
 msgstr "Nie można odczytać pasm 5G. Sprawdź czy twój modem wspiera tą technologię i czy jest na liście obsługiwanych modemów."
 
+msgid "LTE bands cannot be read. Check if your modem supports this technology and if it is in the list of supported modems."
+msgstr "Nie można odczytać pasm LTE. Sprawdź czy twój modem wspiera tą technologię i czy jest na liście obsługiwanych modemów."
+
 msgid ""
 "Configuration modem frequency bands. More "
 "information about the modemband application on the %seko.one.pl forum%s."

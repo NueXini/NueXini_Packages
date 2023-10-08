@@ -290,8 +290,8 @@ modemDialog: baseclass.extend({
 
 				window.setTimeout(function() {
 					if (!poll.active()) poll.start();
-					//location.reload();
-					ev.target.blur();
+					location.reload();
+					//ev.target.blur();
 				}, 2000).finally();
 			});
 

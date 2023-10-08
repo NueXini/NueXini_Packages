@@ -14,7 +14,7 @@ return view.extend({
 	load: function() {
 		return fs.list('/dev').then(function(devs) {
 			return devs.filter(function(dev) {
-				return dev.name.match(/^ttyUSB/) || dev.name.match(/^cdc-wdm/) || dev.name.match(/^ttyACM/);
+				return dev.name.match(/^ttyUSB/) || dev.name.match(/^cdc-wdm/) || dev.name.match(/^ttyACM/) || dev.name.match(/^mhi_/);
 			});
 		});
 	},

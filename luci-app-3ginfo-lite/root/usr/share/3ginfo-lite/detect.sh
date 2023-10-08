@@ -6,18 +6,39 @@
 # (c) 2023 modified by Rafał Wabik - IceG - From eko.one.pl forum
 #
 
+
+#
 # from config modemdefine
-DEVICE=$(uci -q get modemdefine.@general[0].main_modem)
-if [ -n "$DEVICE" ]; then
-	echo $DEVICE
-	exit 0
+#
+CONFIG=modemdefine
+MODEMZ=$(uci show $CONFIG | grep -o "@modemdefine\[[0-9]*\]\.modem" | wc -l | xargs)
+if [ -n "$MODEMZ" ]; then
+
+	if [[ $MODEMZ = 0 ]]; then
+    		DEVICE=$(uci -q get 3ginfo.@3ginfo[0].device)
+		if [ -n "$DEVICE" ]; then
+			echo $DEVICE
+			exit 0
+		fi
+    	fi
+
+	if [[ $MODEMZ = 1 ]]; then
+    		DEVICE=$(uci -q get modemdefine.@modemdefine[0].comm_port)
+		if [ -n "$DEVICE" ]; then
+			echo $DEVICE
+			exit 0
+		fi
+	fi
+
+	if [[ $MODEMZ > 1 ]]; then
+		DEVICE=$(uci -q get modemdefine.@general[0].main_modem)
+		if [ -n "$DEVICE" ]; then
+			echo $DEVICE
+			exit 0
+		fi
+	fi
 fi
 
-DEVICE=$(uci -q get modemdefine.@modemdefine[0].comm_port)
-if [ -n "$DEVICE" ]; then
-	echo $DEVICE
-	exit 0
-fi
 
 getdevicepath() {
 	devname="$(basename $1)"

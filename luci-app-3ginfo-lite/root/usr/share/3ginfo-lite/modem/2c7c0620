@@ -198,7 +198,7 @@ if [ -n "$T" ]; then
 	done
 fi
 
-MODE=$(echo $MODE | sed 's,/,+,')
+MODE=$(echo $MODE | sed 's,/,+,'| sed 's,LTE B,LTE | B,')
 
 # Modem
 FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n" | xargs)

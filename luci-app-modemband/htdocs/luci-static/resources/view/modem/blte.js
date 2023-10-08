@@ -265,22 +265,15 @@ return view.extend({
 
 		if(!json.hasOwnProperty('error')){
 
-		if (json.enabled == '' || json.modem == '') {
-			fs.exec('sleep 2');
-				if (json.enabled == '' || json.modem == '') {
-						L.ui.showModal(_('Modemband'), [
-						E('p', { 'class': 'spinning' }, _('Waiting to read data from the modem...'))
-						]);
+		if (json.enabled == '' || json.modem == '' || json.modem === undefined || json.enabled === undefined) {
 
-						window.setTimeout(function() {
-						location.reload();
-						//L.hideModal();
-						}, 25000).finally();
-					}
-				}
-					else {
-					L.hideModal();
-					}
+			ui.addNotification(null, E('p', _('LTE bands cannot be read. Check if your modem supports this technology and if it is in the list of supported modems.')), 'info');
+			modemen = '-';
+			modem = '-';
+			sbands = '-';
+
+		}
+		else {
 
 		var modem = json.modem;
 		for (var i = 0; i < json.enabled.length; i++) 
@@ -327,7 +320,8 @@ return view.extend({
 
 			});
 		});
-		}		
+		}
+}		
 		else {
 			if (json.error.includes('No supported') == true) {
 			modemen = '-';
@@ -378,7 +372,13 @@ return view.extend({
 		s.anonymous = true;
 		s.addremove = false;
 
-		if(!("error" in json)) {
+		if (json.enabled == '' || json.modem == '' || json.modem === undefined || json.enabled === undefined) {
+
+			modemen = '-';
+			modem = '-';
+			sbands = '-';
+		}
+		else {
 		s.tab('bandset', _('Preferred bands settings'));
  
 		o = s.taboption('bandset', cbiRichListValue, 'set_bands',
