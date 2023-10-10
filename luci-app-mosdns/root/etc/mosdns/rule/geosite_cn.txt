@@ -6172,6 +6172,7 @@
 91ceshi.com
 91cha.com
 91chang.com
+91changxie.com
 91chuxue.com
 91cpm.com
 91cps.com
@@ -6982,6 +6983,7 @@ abd007.com
 abdstem.com
 abe-tech.com
 abeacon.com
+abesmoke.com
 abhouses.com
 abiechina.com
 abiestem.com
@@ -8992,6 +8994,7 @@ atmbox.com
 atmlimited.com
 atmob.com
 atobo.com
+atomgit.com
 atomhike-en.com
 atomhike.com
 atomic-art.com
@@ -13984,6 +13987,7 @@ chinametro.net
 chinameyer.com
 chinamfi.net
 chinamining.com
+chinamishu.net
 chinamission.be
 chinamlmcc.com
 chinamobile.com
@@ -14249,6 +14253,7 @@ chipcoo.com
 chipcreation.com
 chipdance.com
 chiphell.com
+chiphometek.com
 chiplayout.net
 chipmanufacturing.org
 chiponeic.com
@@ -16553,8 +16558,10 @@ ctfmall.com
 ctfo.com
 ctfund.com
 ctg75.com
+ctgapp.com
 ctghealthy.com
 ctghr.com
+ctghro.com
 cthhmu.com
 cthuwork.com
 cthuwork.net
@@ -33656,7 +33663,6 @@ kkkd.com
 kkkwww.com
 kklishi.com
 kklxj.com
-kkmaoyi.com
 kkmh.com
 kkminer.com
 kkmop.com
@@ -40518,6 +40524,7 @@ novel-supertv.com
 noveless.com
 novelfm.com
 novelfmpic.com
+novelfmstatic.com
 novelfmvod.com
 novell.me
 novemideas.com
@@ -42383,7 +42390,6 @@ plaidc.com
 plalzhang.com
 planckled.com
 planetmeican.com
-plantextra.com
 plantname.xyz
 plantower.com
 plateno.cc
@@ -47256,6 +47262,7 @@ shouxieti.com
 shouxintec.com
 shouyao.com
 shouye-wang.com
+shouyihuo.com
 shouyou.com
 shouyoubus.com
 shouyoucdn.com
@@ -48632,7 +48639,6 @@ sowu.com
 soxsok.com
 soyim.com
 soyiyuan.com
-soyobo.com
 soyohui.com
 soyoung.com
 soyouso.com
@@ -50017,6 +50023,7 @@ taian.com
 taianmedia.com
 taiantang.net
 taibumall.com
+taichi-maker.com
 taichyfood.com
 taicihome.com
 taidao.net
@@ -54742,6 +54749,7 @@ weiqinfang.com
 weiqingbao.cc
 weiqitv.com
 weiqudao.net
+weiqundaquan.com
 weiquyx.com
 weiren.com
 weisanyun.com
@@ -56578,7 +56586,6 @@ wyptk.com
 wypxj.com
 wyq9.com
 wyr.me
-wys.net
 wysaid.org
 wysap.com
 wysfgc.com
@@ -57879,6 +57886,7 @@ xiniuz.com
 xinjiadiy.com
 xinjiance.com
 xinjianggou.com
+xinjidian.com
 xinjimo.com
 xinjingks.com
 xinjisuan.net
@@ -59425,6 +59433,7 @@ yba120.com
 ybaby.com
 ybao.org
 ybaobx.com
+ybask.com
 ybbdzp.com
 ybbgd.com
 ybbxkj.com
