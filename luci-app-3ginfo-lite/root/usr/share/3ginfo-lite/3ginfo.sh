@@ -246,23 +246,21 @@ else
 fi
 
 # COPS numeric
+COPS=""
+COPS_MCC=""
+COPS_MNC=""
 COPS_NUM=$(echo "$O" | awk -F[\"] '/^\+COPS: .,2/ {print $2}')
-if [ "x$COPS_NUM" = "x" ]; then
-	COPS_NUM=""
-	COPS_MCC=""
-	COPS_MNC=""
-else
+if [ -n "$COPS_NUM" ]; then
 	COPS_MCC=${COPS_NUM:0:3}
 	COPS_MNC=${COPS_NUM:3:3}
-	COPS=$(awk -F[\;] '/'$COPS_NUM'/ {print $2}' $RES/mccmnc.dat)
 fi
-[ "x$COPS" = "x" ] && COPS=$COPS_NUM
 
 if [ -z "$FORCE_PLMN" ]; then
-	# COPS alphanumeric
-	T=$(echo "$O" | awk -F[\"] '/^\+COPS: .,0/ {print $2}')
-	[ "x$T" != "x" ] && COPS="$T"
+	COPS=$(echo "$O" | awk -F[\"] '/^\+COPS: .,0/ {print $2}')
+else
+	[ -n "$COPS_NUM" ] && COPS=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' $RES/mccmnc.dat)
 fi
+[ -z "$COPS" ] && COPS=$COPS_NUM
 
 COPZ=$(echo $COPS | sed ':s;s/\(\<\S*\>\)\(.*\)\<\1\>/\1\2/g;ts')
 COPS=$(echo $COPZ | awk '{for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) }}1')
