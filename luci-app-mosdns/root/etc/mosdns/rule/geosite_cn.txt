@@ -47957,6 +47957,7 @@ skyzms.com
 sl-360.com
 sl.al
 sl153.com
+sl916.com
 sl91d.com
 slamtec.com
 slanissue.com
@@ -64604,6 +64605,9 @@ full:adcdownload.apple.com.akadns.net
 full:admob-cn.com
 full:adservice.google.com
 full:ai.ytimg.com
+full:amp-api-edge-lb-cn.itunes-apple.com.akadns.net
+full:amp-api-edge-lb.itunes-apple.com.akadns.net
+full:amp-api-edge.apps.apple.com
 full:amp-api-search-edge.apps.apple.com
 full:amp-api.apps.apple.com
 full:aod.itunes.apple.com
@@ -64791,17 +64795,23 @@ full:images.apple.com
 full:images.apple.com.akadns.net
 full:images.apple.com.edgekey.net.globalredir.akadns.net
 full:imasdk.googleapis.com
+full:inappcheck-cn.itunes-apple.com.akadns.net
+full:inappcheck-lb.itunes-apple.com.akadns.net
+full:inappcheck.itunes.apple.com
 full:init-p01md-lb.push-apple.com.akadns.net
 full:init-p01md.apple.com
 full:init-p01st-lb.push-apple.com.akadns.net
 full:init-p01st.push.apple.com
 full:init-s01st-lb.push-apple.com.akadns.net
 full:init-s01st.push.apple.com
+full:init.gc-lb.apple.com.akadns.net
+full:init.gc.apple.com
 full:init.itunes.apple.com
 full:iosapps.itunes.apple.com
 full:iosapps.itunes.g.aaplimg.com
 full:ipcdn.apple.com
 full:iphone-ld.apple.com
+full:iphone-ld.origin-apple.com.akadns.net
 full:is1-ssl.mzstatic.com
 full:is1.mzstatic.com
 full:is2-ssl.mzstatic.com
@@ -64843,6 +64853,7 @@ full:opencourse.pku.edu.cn
 full:oscdn.apple.com
 full:oscdn.origin-apple.com.akadns.net
 full:osxapps.itunes.apple.com
+full:osxapps.itunes.g.aaplimg.com
 full:p1-juejin.byteimg.com
 full:p2-juejin.byteimg.com
 full:p3-juejin.byteimg.com
@@ -64938,6 +64949,7 @@ full:su.itunes.apple.com
 full:support-china.apple-support.akadns.net
 full:support.1ucrs.com
 full:support.apple.com
+full:swallow-apple-com.v.aaplimg.com
 full:swallow.apple.com
 full:swcatalog-cdn.apple.com.akadns.net
 full:swcatalog.apple.com
@@ -64968,6 +64980,9 @@ full:valid.apple.com
 full:valid.origin-apple.com.akadns.net
 full:wear.googleapis.com
 full:weather-data.apple.com
+full:weather-data.apple.com.akadns.net
+full:weather-map.apple.com
+full:weather-map2.apple.com
 full:wl.dlservice.microsoft.com
 full:wscont1.apps.microsoft.com
 full:wscont2.apps.microsoft.com
