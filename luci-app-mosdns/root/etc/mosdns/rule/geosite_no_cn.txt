@@ -67,6 +67,9 @@
 18avx.com
 18board.com
 18board.info
+18comic-god.cc
+18comic-god.club
+18comic-god.xyz
 18comic.cc
 18comic.company
 18comic.org
@@ -551,7 +554,12 @@ adelaidebbs.com
 adgoogle.net
 adguard-dns.com
 adguard-vpn.com
+adguard-vpn.online
+adguard.app
 adguard.com
+adguard.info
+adguard.org
+adguardvpn.com
 adhelpnews.com
 adidas.com
 admeld.com
@@ -599,6 +607,8 @@ adorable-teens.net
 adorevids.com
 ads-twitter.com
 adsense.com
+adtidy.net
+adtidy.org
 adult
 adult-h.com
 adult-home-videos.com
@@ -8942,6 +8952,7 @@ ipfs.anonymize.com
 ipfs.eth.aragon.network
 ipfs.fleek.co
 ipfs.runfission.com
+ipfs.tech
 iphine.com
 iphone-cd.com
 iphone-cn.com
@@ -9393,6 +9404,7 @@ jlc
 jll
 jm
 jm98.cc
+jmcomic.ltd
 jmcomic.me
 jmcomic.mobi
 jmcomic.moe
@@ -11114,6 +11126,7 @@ moxing.mobi
 moxing.news
 moystoys.com
 mozaic
+mozgcp.net
 mozilla.com
 mozilla.community
 mozilla.net
@@ -18764,6 +18777,7 @@ full:3dns-3.adobe.com
 full:3dns-4.adobe.com
 full:3dns-5.adobe.com
 full:3dns.adobe.com
+full:a.ppy.sh
 full:abematv.akamaized.net
 full:activate-sea.adobe.com
 full:activate-sjc0.adobe.com
@@ -18799,6 +18813,7 @@ full:appleworldwidedeveloper.sc.omtrdc.net
 full:as-dash-uk-live.akamaized.net
 full:as-hls-uk-live.akamaized.net
 full:asahishimbun.sc.omtrdc.net
+full:assets.ppy.sh
 full:audio-ak-spotify-com.akamaized.net
 full:audio4-ak-spotify-com.akamaized.net
 full:avatargarenanow-a.akamaihd.net
@@ -18820,6 +18835,7 @@ full:bnetcmsus-a.akamaihd.net
 full:bnetproduct-a.akamaihd.net
 full:bnetshopus.akamaized.net
 full:brightcove.imgix.net
+full:c.ppy.sh
 full:cbsi.live.ott.irdeto.com
 full:cbsplaylistserver.aws.syncbak.com
 full:cbsservice.aws.syncbak.com
@@ -18910,6 +18926,7 @@ full:img-prod-cms-rt-microsoft-com.akamaized.net
 full:img-s-msn-com.akamaized.net
 full:impala-media-production.s3.amazonaws.com
 full:imperial.insendi.com
+full:lazer.ppy.sh
 full:lgelectronics.122.2o7.net
 full:licdn.cn.cdn20.com
 full:linear-abematv.akamaized.net
@@ -18919,6 +18936,7 @@ full:live-patreon-marketing.pantheonsite.io
 full:lm.licenses.adobe.com
 full:lmlicenses.wip4.adobe.com
 full:lolstatic-a.akamaihd.net
+full:m1.ppy.sh
 full:mdn.mozillademos.org
 full:media-rockstargames-com.akamaized.net
 full:medone-education.thieme.com
@@ -18932,6 +18950,7 @@ full:na1r.services.adobe.com
 full:nab.demdex.net
 full:nationalaustraliaban.tt.omtrdc.net
 full:netflix.com.edgesuite.net
+full:notify.ppy.sh
 full:nurofensk-prod-env.eu-west-1.elasticbeanstalk.com
 full:nvidia.tt.omtrdc.net
 full:ocsp.microsoft.com
@@ -18944,6 +18963,7 @@ full:openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net
 full:openaicomproductionae4b.blob.core.windows.net
 full:opgg-static.akamaized.net
 full:origin-a.akamaihd.net
+full:osu.ppy.sh
 full:p-events-delivery.akamaized.net
 full:p16-tiktokcdn-com.akamaized.net
 full:paper-attachments.s3.amazonaws.com
@@ -19042,7 +19062,9 @@ full:scholar.google.si
 full:scholar.google.sk
 full:scholar.googleusercontent.com
 full:scholar.l.google.com
+full:sentry.ppy.sh
 full:sni1dcb6gl.wpc.edgecastcdn.net
+full:spectator.ppy.sh
 full:spotify.com.edgesuite.net
 full:spotify.map.fastly.net
 full:spotify.map.fastlylb.net
