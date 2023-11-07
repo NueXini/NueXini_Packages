@@ -9398,7 +9398,6 @@ api.newad.ifeng.com
 api.newbelden.com
 api.newsfeed.intl.miui.com
 api.nobeta.com.br
-api.open.uc.cn
 api.openinstall.io
 api.pingstart.com
 api.poll.aiseet.atianqi.com
@@ -32581,6 +32580,7 @@ hkj8.evobanco.com
 hkjjfpkghxec.xyz
 hkkeafj.cn
 hkoxlirf.com
+hkrpg-log-upload.mihoyo.com
 hkrytf.xyz
 hkscldggm.xyz
 hksmstpzsnlj.com
@@ -67490,6 +67490,7 @@ telamoncom.actonservice.com
 telanggyppery.com
 tele.trafficmanager.net
 telechargementdirect.net
+telecome.cn
 telecommand.telemetry.microsoft.com
 telecommand.telemetry.microsoft.com.nsatc.net
 teledai.com
@@ -70789,6 +70790,7 @@ tracking4.labcorp.com
 tracking5.labcorp.com
 trackingca.com
 trackingcareers.accenture.com
+trackingio.com
 trackinglabs.com
 trackingmembers.com
 trackingmms.accenture.com
@@ -72661,6 +72663,7 @@ union178.com
 union2.50bang.org
 union55.com
 unionbig.com
+unioncom.cc
 unioncpm.com
 uniondm.cz88.net
 unionimage.baidu.com
@@ -77777,6 +77780,7 @@ www.tjhuajiantang.com
 www.tns-counter.ru
 www.topitme.com
 www.touclick.com
+www.trackingio.com
 www.tradeadexchange.com
 www.ttcdn.cn
 www.ttyyuuoo.com
