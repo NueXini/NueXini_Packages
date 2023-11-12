@@ -3427,6 +3427,7 @@ cdkworkshop.com
 cdmatech.com
 cdn-apple.com
 cdn-images.mailchimp.com
+cdn-telegram.org
 cdn-terapeak.com
 cdn.assets.lfpcontent.com
 cdn.printfriendly.com
@@ -6197,6 +6198,7 @@ fffdm.com
 fffucked.com
 fflick.com
 fflnk.net
+fflogs.com
 ffmpeg.org
 ffotolia.com
 ffprofile.com
@@ -14079,6 +14081,7 @@ routerboard.com
 routledgehandbooks.com
 royalcams.com
 royalsocietypublishing.org
+rpglogs.com
 rplay.live
 rpmfusion.org
 rprimelab.com
@@ -16014,6 +16017,7 @@ tig-ol-bitties.live
 tigervpn.com
 tik-tokapi.com
 tiktok.com
+tiktokcdn-us.com
 tiktokcdn.com
 tiktokd.net
 tiktokd.org
@@ -16293,6 +16297,7 @@ tt1069.com
 tteshop.com
 tttan.com
 ttvnw.net
+ttwstatic.com
 tu8964.com
 tubaholic.com
 tube-pornomovs.com
