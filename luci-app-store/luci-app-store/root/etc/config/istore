@@ -1,3 +1,0 @@
-config istore 'istore'
-    option hide_docker '0'
-#    option channel 'istore'
