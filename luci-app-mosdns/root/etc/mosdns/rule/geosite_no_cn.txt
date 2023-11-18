@@ -3516,6 +3516,7 @@ chartis
 chase
 chat
 chatango.com
+chatgpt.com
 chatnook.com
 chatr
 chatter.com
@@ -12131,6 +12132,7 @@ o365weve-dev.com
 o365weve-ppe.com
 o365weve.com
 oaistatic.com
+oaiusercontent.com
 oanda.com
 oanencore.com
 oann.com
