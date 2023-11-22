@@ -21,7 +21,7 @@ PKG_MAINTAINER:=Xingwang Liao <kuoruan@gmail.com>
 
 PKG_BUILD_DEPENDS:=golang/host upx/host
 PKG_BUILD_PARALLEL:=1
-PKG_BUILD_FLAGS:=no-mips16
+PKG_USE_MIPS16:=0
 
 GO_PKG:=github.com/fatedier/frp
 GO_PKG_BUILD_PKG:=github.com/fatedier/frp/cmd/...
