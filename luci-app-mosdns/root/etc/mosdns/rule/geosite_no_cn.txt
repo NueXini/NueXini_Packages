@@ -1822,6 +1822,7 @@ backdoorlesbians.com
 backroomcastingcouch.com
 backtotiananmen.com
 bacon.com
+bad.news
 badaas.com
 badasianpussy.com
 badgen.net
@@ -3177,8 +3178,11 @@ bwh88.net
 bwh89.net
 bwin.com
 by
+byapis.com
 bybeatsdre.com
 bybit.com
+bycbe.com
+bycsi.com
 bydrebeats.com
 byjav.me
 byjhd.com
@@ -3186,6 +3190,7 @@ bypasscensorship.org
 byrut.org
 byspotify.com
 byteoversea.com
+bytick.com
 bz
 bzazi.com
 bzh
@@ -4452,6 +4457,7 @@ depositphotos.com
 deps.dev
 deps.info
 derekhsu.homeip.net
+deribit.com
 derpibooru.org
 desertbmw.com
 designeriphonescases.com
@@ -6921,6 +6927,10 @@ gastrointestinalexam.com
 gate-project.com
 gate.cc
 gatecoin.com
+gatedata.org
+gateimg.com
+gateio.live
+gateio.services
 gateway.dev
 gateway.pinata.cloud
 gather.com
@@ -8782,6 +8792,7 @@ inikesneakers.com
 init.shop
 initiativesforchina.org
 initproducts.com
+inkbunny.net
 inkchoice.com
 inkedravens.com
 inkui.com
@@ -18832,6 +18843,8 @@ full:bnetcmsus-a.akamaihd.net
 full:bnetproduct-a.akamaihd.net
 full:bnetshopus.akamaized.net
 full:brightcove.imgix.net
+full:bybit-exchange.github.io
+full:bybit.ada.support
 full:c.ppy.sh
 full:cbsi.live.ott.irdeto.com
 full:cbsplaylistserver.aws.syncbak.com
@@ -18857,6 +18870,7 @@ full:d33wubrfki0l68.cloudfront.net
 full:databank.worldbank.org
 full:database.asahi.com
 full:default.exp-tas.com
+full:deribit.cdn.prismic.io
 full:deutschewelle.h-cdn.com
 full:developer.microsoft.com
 full:developers.facebook.com
