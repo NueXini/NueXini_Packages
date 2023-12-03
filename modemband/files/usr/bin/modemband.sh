@@ -5,6 +5,7 @@
 #
 
 hextobands() {
+	BANDS=""
 	HEX="$1"
 	LEN=${#HEX}
 	if [ $LEN -gt 18 ]; then

@@ -331,7 +331,7 @@ else
 fi
 
 CONF_DEVICE=$(uci -q get 3ginfo.@3ginfo[0].device)
-if echo "x$CONF_DEVICE" | grep -q "192.168."; then
+if echo "x$CONF_DEVICE" | grep -qE '^([0-9]{1,3}\.){3}[0-9]{1,3}$'; then
 	if grep -q "Vendor=1bbb" /sys/kernel/debug/usb/devices; then
 		. $RES/hilink/alcatel_hilink.sh $DEVICE
 	fi
