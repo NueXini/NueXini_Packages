@@ -1,0 +1,20 @@
+{
+	"luci-app-cpolar": {
+		"description": "Grant access for luci-app-cpolar",
+		"read": {
+			"file": {
+				"/etc/firewall.cpolar": ["read"],
+				"/etc/cpolar/*": ["read"]
+			},
+			"uci": ["dhcp", "firewall", "cpolar"]
+		},
+		"write": {
+			"file": {
+				"/etc/cpolar/*": ["write"],
+				"/etc/init.d/firewall": ["exec"],
+				"/etc/init.d/cpolar": ["exec"]
+			},
+			"uci": ["dhcp", "firewall", "cpolar"]
+		}
+	}
+}

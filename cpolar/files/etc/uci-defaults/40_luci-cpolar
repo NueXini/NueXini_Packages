@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# Copyright 2021-2022 Michael Zhang <probezy@gmail.com>
+# Licensed to the public under the MIT License.
+#
+
+# cpolar main
+cpolar=$(uci -q get cpolar.main)
+if [ "x$cpolar" != "xgeneral" ] ; then
+	uci -q batch <<-EOF >/dev/null
+		add general cpolar
+		rename cpolar.@general[-1]="main"
+		set cpolar.general.enabled="0"
+		commit cpolar
+	EOF
+fi
+
+uci -q batch <<-EOF >/dev/null
+	delete ucitrack.@cpolar[-1]
+	add ucitrack cpolar
+	set ucitrack.@cpolar[-1].init=cpolar
+	commit ucitrack
+	delete cpolar.cpolar.ucitracktest
+
+	delete firewall.cpolar
+	set firewall.cpolar=include
+	set firewall.cpolar.type=script
+	set firewall.cpolar.path=/etc/firewall.cpolar
+	set firewall.cpolar.family=any
+	set firewall.cpolar.reload=1
+	commit firewall
+EOF
+
+rm -rf /tmp/luci-indexcache /tmp/luci-modulecache
+
+exit 0
