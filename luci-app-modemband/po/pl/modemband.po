@@ -233,3 +233,12 @@ msgstr "Wybierz plik ustawień modemu"
 msgid "Select the template assigned to the Vendor and ProdID of the modem."
 msgstr "Wybierz szablon przypisany do dostawcy i ProdID modemu."
 
+msgid "Band selection switch"
+msgstr "Przełącznik wyboru pasm"
+
+msgid "Deselect all"
+msgstr "Odznacz wszystkie"
+
+msgid "Select all"
+msgstr "Zaznacz wszystkie"
+
