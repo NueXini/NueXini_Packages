@@ -22,6 +22,7 @@ Supported devices:
 - Quectel RM500Q-GL
 - Quectel RM502Q-AE
 - Quectel RM520N-GL
+- Sierra Wireless EM7455/MC7455/DW5811e
 - SIMCOM SIM8200EA-M2
 - Telit LM940
 - Telit LN940 (Foxconn T77W676)
