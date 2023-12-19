@@ -122,6 +122,7 @@ else
 
     # Set the plugin download path
     download_repo="https://github.com/ophub/luci-app-amlogic/releases/download"
+
     plugin_file="${download_repo}/${latest_version}/luci-app-amlogic_${latest_version}_all.ipk"
     language_file="${download_repo}/${latest_version}/luci-i18n-amlogic-zh-cn_${latest_version}_all.ipk"
 
