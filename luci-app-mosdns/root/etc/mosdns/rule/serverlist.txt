@@ -9223,6 +9223,7 @@ api.goulegu.com
 api.growingio.com
 api.gzxiongwa.cn
 api.h4game.net
+api.htp.hubcloud.com.cn
 api.iapps.ifeng.com
 api.iimedia.cn
 api.ijunhai.com
@@ -25585,6 +25586,7 @@ enquisite.com
 enquoted.com
 enragesundular.guru
 enrichdressedprecursor.com
+enrichgw.10010.com
 enrichstudentroast.com
 enrichyummy.com
 enrilov.info
@@ -33087,6 +33089,7 @@ hub5pn.wap.sandai.net
 hubbabu2bb8anys09.com
 hubbubtheol.com
 hubbysyndoc.com
+hubcloud.com.cn
 hubhubhub.name
 hubiazhi.com
 hublosk.com
@@ -47442,6 +47445,7 @@ nipperathymy.life
 nippona7n2theum.com
 nippytelephone.pro
 nirentang.com
+nishub1.10010.com
 nitheemp.net
 nitmus.com
 nitqbanrbcv.xyz
@@ -56081,6 +56085,7 @@ res.public.fr
 res.qhupdate.com
 res.rbl.ms
 res.ymxiaopin.com
+res1.hubcloud.com.cn
 resailsgyse.com
 resalag.com
 resalesruths.tech
@@ -64625,6 +64630,7 @@ statics.3987.com
 statics.9669.com
 statics.woozooo.com
 staticsfs.host
+staticsns.cdn.bcebos.com
 statictapcdn-a.akamaihd.net
 staticxx.facebook.com
 staticxz.com
@@ -73566,6 +73572,7 @@ v.9y88.com
 v.adblockultimate.net
 v.admaster.com.cn
 v.adserve.tv
+v.adx.hubcloud.com.cn
 v.angha.me
 v.aty.sohu.com
 v.behe.com
@@ -78022,6 +78029,7 @@ www.taojin1688.com
 www.targetedmedia.com.cn
 www.tcxshop.com
 www.tddmp.com
+www.telegram-cn.org
 www.telegram-vip.com
 www.telegramcn.org
 www.telegramsvip.com
