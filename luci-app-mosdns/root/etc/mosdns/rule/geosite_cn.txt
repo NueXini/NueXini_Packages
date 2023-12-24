@@ -64592,6 +64592,7 @@ full:moocs.unipus.cn
 full:msgr.dlservice.microsoft.com
 full:msgruser.dlservice.microsoft.com
 full:music.apple.com
+full:myvs.download.prss.microsoft.com
 full:ocsp-lb.apple.com.akadns.net
 full:ocsp.apple.com
 full:ocsp.globalsign.com
@@ -64599,6 +64600,7 @@ full:ocsp.pki.goog
 full:ocsp2-lb.apple.com.akadns.net
 full:ocsp2.apple.com
 full:ocsp2.globalsign.com
+full:oemsoc.download.prss.microsoft.com
 full:officecdn.microsoft.com
 full:opencourse.pku.edu.cn
 full:oscdn.apple.com
@@ -64678,6 +64680,7 @@ full:sf-api-token-service.itunes.apple.com
 full:silverlight.dlservice.microsoft.com
 full:slupdate.dlservice.microsoft.com
 full:smp-device-content.apple.com
+full:software.download.prss.microsoft.com
 full:sp.itunes.apple.com
 full:ss.bjmu.edu.cn
 full:ssl-google-analytics.l.google.com
@@ -64701,6 +64704,7 @@ full:su.itunes.apple.com
 full:support-china.apple-support.akadns.net
 full:support.1ucrs.com
 full:support.apple.com
+full:surface.downloads.prss.microsoft.com
 full:swallow-apple-com.v.aaplimg.com
 full:swallow.apple.com
 full:swcatalog-cdn.apple.com.akadns.net
@@ -64731,6 +64735,7 @@ full:upp.itunes.apple.com
 full:valid.apple.com
 full:valid.origin-apple.com.akadns.net
 full:vscode.download.prss.microsoft.com
+full:vz.download.prss.microsoft.com
 full:wear.googleapis.com
 full:weather-data.apple.com
 full:weather-data.apple.com.akadns.net
