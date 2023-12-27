@@ -28,7 +28,8 @@ case "$DISTRIB_TARGET" in
 	"ipq40xx/generic")
 		uci_write_config 0 ondemand 200000 $CPU_MAX_FREQ 10 50
 		;;
-	"ipq60xx/generic")
+	"ipq60xx/generic"|\
+	"qualcommax/ipq60xx")
 		uci_write_config 0 ondemand 864000 $CPU_MAX_FREQ 10 50
 		;;
 	"ipq806x/generic")
@@ -36,7 +37,8 @@ case "$DISTRIB_TARGET" in
 		echo "$CPU_POLICYS" | grep -q "1" && \
 			uci_write_config 1 ondemand 600000 1200000 10 50
 		;;
-	"ipq807x/generic")
+	"ipq807x/generic"|\
+	"qualcommax/ipq807x")
 		uci_write_config 0 ondemand 1017600 $CPU_MAX_FREQ 10 50
 		;;
 	"ipq95xx/generic")
@@ -45,7 +47,6 @@ case "$DISTRIB_TARGET" in
 	"meson/meson8b")
 		uci_write_config 0 schedutil 816000 $CPU_MAX_FREQ
 		;;
-	"rockchip/rk35xx"|\
 	"rockchip/armv8")
 		uci_write_config 0 schedutil 600000 $CPU_MAX_FREQ
 		echo "$CPU_POLICYS" | grep -q "4" && \
