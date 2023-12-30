@@ -7460,7 +7460,6 @@ graph.org
 graphql.org
 gravatar.com
 gravitytank.com
-greasespot.net
 great-firewall.com
 great-roc.org
 greatergothammini.com
@@ -12170,6 +12169,7 @@ observechina.net
 obsrvbl.com
 obutsumania.com
 obutu.com
+obyte.org
 ocaspro.com
 ocbmwdealers.com
 occupytiananmen.com
@@ -17628,7 +17628,6 @@ wnacg.link
 wnacg.org
 wnoaissulli1.com
 woeser.com
-woesermiddle-way.net
 woflthenewsstation.com
 wogx.com
 wokar.org
