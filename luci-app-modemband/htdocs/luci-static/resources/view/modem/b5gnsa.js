@@ -248,7 +248,8 @@ return view.extend({
 				modemen += 'n' + numb + '  ';
 				modemen = modemen.replace('undefined', '');
 		}
-		modemen = modemen.trim();
+		modemen = modemen.includes('n0') == true ? modemen = _('Bands are disabled...') : modemen.trim();
+
 
 		for (var i = 0; i < json.supported5gnsa.length; i++) 
 		{
@@ -258,6 +259,7 @@ return view.extend({
 				sbands = sbands.replace('undefined', '');
 		}
 		sbands = sbands.trim();
+		
 		
 		pollData: poll.add(function() {
 			return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh', [ 'json' ]))
@@ -276,7 +278,7 @@ return view.extend({
 				view.innerHTML  = '';
   				view.innerHTML  = renderHTML.trim();
 				}
-
+				view.innerHTML = view.innerHTML.includes('n0') == true ? view.innerHTML = _('Bands are disabled...') : view.innerHTML  = renderHTML.trim();
 				}
 				else {
 				var view = document.getElementById("modemlteb");
