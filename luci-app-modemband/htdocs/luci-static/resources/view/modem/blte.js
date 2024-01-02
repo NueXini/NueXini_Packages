@@ -9,7 +9,7 @@
 'require tools.widgets as widgets';
 
 /*
-	Copyright 2022-2023 Rafał Wabik - IceG - From eko.one.pl forum
+	Copyright 2022-2024 Rafał Wabik - IceG - From eko.one.pl forum
 */
 
 var CBISelectswitch = form.DummyValue.extend({                                                                                         

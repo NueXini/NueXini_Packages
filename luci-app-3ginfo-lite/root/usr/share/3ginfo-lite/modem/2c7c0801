@@ -107,7 +107,7 @@ if [ "x$MODE_NUM" = "x7" ]; then
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
 		TAC_DEC=$(printf "%d" "0x$T")
 		TAC_HEX=$T
-		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.1f\n", 0.2*$1*10 - 20}')
+		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
 		SINR=$T
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $12}')
 		case $T in
@@ -197,7 +197,7 @@ if [ "x$MODE_NUM" = "x13" ]; then
 			TAC_DEC=$(printf "%d" "0x$T")
 			TAC_HEX=$T
 
-			T=$(echo "$LINE" | awk -F[,:] '/^\+QENG:/ {print $16}' | awk '{printf "%.1f\n", 0.2*$1*10 - 20}')
+			T=$(echo "$LINE" | awk -F[,:] '/^\+QENG:/ {print $16}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
 			SINR=$T
 			T=$(echo "$LINE" | awk -F[,:] '/^\+QENG:/ {print $10}')
 			case $T in
@@ -347,7 +347,7 @@ if [ -n "$T" ]; then
 					*) T4="";;
 				esac
 				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $3}')
-				[ -n "$T5" ] && addon $((POS + 4)) "(S${IDX}) EARFCN" "$T5"
+				[ -n "$T5" ] && #addon $((POS + 4)) "(S${IDX}) EARFCN" "$T5"
 				if [ "x$MODE_NUM" = "x11" ]; then
 					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
 					if [ -n "$T5" ] && [ "$T5" != "-" ]; then

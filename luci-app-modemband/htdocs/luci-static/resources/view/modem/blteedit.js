@@ -7,7 +7,7 @@
 'require tools.widgets as widgets';
 
 /*
-	Copyright 2022-2023 Rafał Wabik - IceG - From eko.one.pl forum
+	Copyright 2022-2024 Rafał Wabik - IceG - From eko.one.pl forum
 	
 	MIT License
 */
@@ -53,17 +53,6 @@ return view.extend({
 			}, 2000).finally();
 
 		}
-
-/*		
-
-		o = s.taboption('template', form.Button, '_search');
-		o.title      = _('Refresh the view');
-		o.inputtitle = _('Reload');
-		o.onclick = function() {
-			window.location.reload();
-		};
-
-*/
 
 		o = s.taboption('template', form.TextValue, '_tmpl', _('Edit'),
 			_('Supported bands depend on the region in which the modem operates. By modifying the DEFAULT_LTE_BANDS variable, you can easily adapt the package to your modem.'));

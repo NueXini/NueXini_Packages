@@ -52,6 +52,7 @@ if [ -n "$T" ]; then
 	else
 		S2BAND="$(band $T)"
 	fi
+	MODE="${MODE/LTE/LTE_A} / $(band $T)"
 fi
 
 T=$(echo "$O" | awk '/^SCC3 info:/ {print $5}')
@@ -64,6 +65,7 @@ if [ -n "$T" ]; then
 	else
 		S3BAND="$(band $T)"
 	fi
+	MODE="${MODE/LTE/LTE_A} / $(band $T)"
 fi
 
 T=$(echo "$O" | awk '/^SCC4 info:/ {print $5}')
@@ -76,6 +78,7 @@ if [ -n "$T" ]; then
 	else
 		S4BAND="$(band $T)"
 	fi
+	MODE="${MODE/LTE/LTE_A} / $(band $T)"
 fi
 
 MODE=$(echo $MODE | sed 's,/,+,' | sed 's,LTE_A,LTE-A | ,')
