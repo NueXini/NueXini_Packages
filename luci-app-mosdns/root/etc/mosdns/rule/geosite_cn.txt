@@ -12566,6 +12566,7 @@ cdn-static.farfetch-contents.com
 cdn-uc.cc
 cdn-v.com
 cdn.fun
+cdn.jetbrains.com
 cdn.razersynapse.com
 cdn.samsung.com
 cdn.shanghai.nyu.edu
@@ -64318,7 +64319,6 @@ full:docs.microsoft.com
 full:doubleclick-cn.net
 full:doubleclick.net
 full:download.developer.apple.com
-full:download.jetbrains.com
 full:download.microsoft.com
 full:download.mlcc.google.com
 full:download.qatp1.net
