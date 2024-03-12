@@ -1,28 +1,47 @@
-<script type="text/javascript">
-    //<![CDATA[
-    XHR.poll(3, '<%=url([[admin]], [[services]], [[mosdns]], [[status]])%>', null,
-        function(x, data) {
-            var tb = document.getElementById('mosdns_status');
-            if (data && tb) {
-                if (data.running) {
-                    var links = '<em><b style=color:green>MosDNS <%:RUNNING%></b></em>';
-                    tb.innerHTML = links;
-                } else {
-                    tb.innerHTML = '<em><b style=color:red>MosDNS <%:NOT RUNNING%></b></em>';
-                }
-            }
-        }
-    );
-    //]]>
-</script>
 <style>
     .mar-10 {
         margin-left: 50px;
         margin-right: 10px;
     }
 </style>
+
 <fieldset class="cbi-section">
     <p id="mosdns_status">
         <em><%:Collecting data...%></em>
     </p>
 </fieldset>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', async function() {
+        const tb = document.getElementById('mosdns_status');
+
+        async function fetchMosDNSStatus() {
+            try {
+                const response = await fetch('<%=url([[admin]], [[services]], [[mosdns]], [[status]])%>');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error:', error);
+                throw error;
+            }
+        }
+
+        function updateMosDNSStatus() {
+            fetchMosDNSStatus()
+                .then(data => {
+                    const statusText = data && data.running ? 'MosDNS <%:RUNNING%>' : 'MosDNS <%:NOT RUNNING%>';
+                    const statusColor = data && data.running ? 'green' : 'red';
+                    tb.innerHTML = `<em><b style="color:${statusColor}">${statusText}</b></em>`;
+                })
+                .catch(() => {
+                    tb.innerHTML = '<em><b style="color:red">Failed to fetch MosDNS status</b></em>';
+                });
+        }
+
+        // Call the function initially
+        await updateMosDNSStatus();
+
+        // Call the function every 3 seconds
+        setInterval(updateMosDNSStatus, 3000);
+    });
+</script>

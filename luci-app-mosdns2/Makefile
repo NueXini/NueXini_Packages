@@ -1,6 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=luci-app-mosdns
+PKG_NAME:=luci-app-mosdns2
 PKG_VERSION:=1.5.18
 PKG_RELEASE:=1
 

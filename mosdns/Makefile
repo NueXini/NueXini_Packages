@@ -5,35 +5,76 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mosdns
-PKG_VERSION:=5.3.1
-PKG_RELEASE:=1
+PKG_VERSION:=a281fdb
+PKG_RELEASE:=$(AUTORELEASE)
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://codeload.github.com/IrineSistiana/mosdns/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=7c8c795de794df52fd2b51214826aea9ebde0dcd0da78d8dda9cc5e4ab98cd80
+PKG_SOURCE:=mosdns-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=https://codeload.github.com/IrineSistiana/mosdns/tar.gz/$(PKG_VERSION)?
+PKG_HASH:=skip
 
 PKG_LICENSE:=GPL-3.0
 PKG_LICENSE_FILE:=LICENSE
 PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 
+PKG_CONFIG_DEPENDS:= \
+	CONFIG_MOSDNS_COMPRESS_GOPROXY \
+	CONFIG_MOSDNS_COMPRESS_UPX
+
 PKG_BUILD_DEPENDS:=golang/host
 PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
-PKG_BUILD_FLAGS:=no-mips16
 
 GO_PKG:=github.com/IrineSistiana/mosdns
-GO_PKG_LDFLAGS_X:=main.version=v$(PKG_VERSION)
+GO_PKG_LDFLAGS:=-s -w
+GO_PKG_LDFLAGS_X:=main.version=$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk
 
-define Package/mosdns
+define Package/mosdns/Default
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=IP Addresses and Names
   TITLE:=A plug-in DNS forwarder/splitter
   URL:=https://github.com/IrineSistiana/mosdns
-  DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle
+endef
+
+define Package/mosdns
+  $(call Package/mosdns/Default)
+  DEPENDS:=$(GO_ARCH_DEPENDS)
+endef
+
+define Package/mosdns/config
+config MOSDNS_COMPRESS_GOPROXY
+	bool "Compiling with GOPROXY proxy"
+	default n
+
+config MOSDNS_COMPRESS_UPX
+	bool "Compress executable files with UPX"
+	default n
+endef
+
+ifeq ($(CONFIG_MOSDNS_COMPRESS_GOPROXY),y)
+	export GO111MODULE=on
+	export GOPROXY=https://mirrors.aliyun.com/goproxy/
+endif
+
+define Build/Prepare
+	$(call Build/Prepare/Default)
+endef
+
+define Build/UpdateDependencies
+	cd $(PKG_BUILD_DIR) && \
+		go get -u && \
+		go mod tidy
+endef
+
+define Build/Compile
+	$(call Build/UpdateDependencies)
+	$(call GoPackage/Build/Compile)
+ifneq ($(CONFIG_MOSDNS_COMPRESS_UPX),)
+	$(STAGING_DIR_HOST)/bin/upx --lzma --best $(GO_PKG_BUILD_BIN_DIR)/mosdns
+endif
 endef
 
 define Package/mosdns/install
