@@ -1,0 +1,26 @@
+{
+	"luci-app-3ginfo": {
+		"description": "Grant access to LuCI app 3ginfo-lite",
+		"read": {
+   			"cgi-io": [ "exec" ],
+    			"file": {
+				"/usr/share/3ginfo-lite/3ginfo.sh": [ "exec" ],
+				"/usr/share/3ginfo-lite/detect.sh": [ "exec" ],
+				"/usr/share/3ginfo-lite/check.gcom": [ "exec" ],
+				"/usr/share/3ginfo-lite/info.gcom": [ "exec" ],
+				"/etc/modemdefine": [ "read" ],
+				"/etc/3ginfo": [ "read" ],
+				"/sys/kernel/debug/usb/devices": [ "read" ]
+			},
+			"uci": [ "3ginfo", "luci-app-3ginfo-lite" ]
+		},
+		"write": {
+			"file": {
+				"/bin/cat": [ "exec" ],
+				"/etc/modemdefine": [ "write" ],
+				"/etc/3ginfo": [ "write" ]
+			},
+			"uci": [ "3ginfo", "luci-app-3ginfo-lite" ]
+		}
+	}
+}

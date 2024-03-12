@@ -1,0 +1,167 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+msgid "Information about 3G/4G/5G connection"
+msgstr "Informazioni sulla connessione 3G/4G/5G"
+
+msgid "More information about the 3ginfo on the %seko.one.pl forum%s."
+msgstr "Ulteriori informazioni su 3ginfo sul %sforum eko.one.pl%s."
+
+msgid "eko.one.pl forum"
+msgstr "forum eko.one.pl"
+
+msgid "Details"
+msgstr "Dettagli"
+
+msgid "USB debug information"
+msgstr "Informazioni di debug USB"
+
+msgid "Configuration"
+msgstr "Configurazione"
+
+msgid "General Information"
+msgstr "Informazioni generali"
+
+msgid "Modem Information"
+msgstr "Informazioni sul modem"
+
+msgid "Cell / Signal Information"
+msgstr "Informazioni sulla cella / segnale"
+
+msgid "Technology"
+msgstr "Tecnologia"
+
+msgid "Operator"
+msgstr "Operatore"
+
+msgid "Signal strength"
+msgstr "Potenza segnale"
+
+msgid "Connection statistics"
+msgstr "Statistiche di connessione"
+
+msgid "Modem type"
+msgstr "Tipo di modem"
+
+msgid "Additional information"
+msgstr "Informazioni aggiuntive"
+
+msgid "Revision / Firmware"
+msgstr "Revisione / Firmware"
+
+msgid "IP adress / Communication Port"
+msgstr "Indirizzo IP / Porta di comunicazione"
+
+msgid "Chip Temperature"
+msgstr "Temperatura del chip"
+
+msgid "Configuration 3ginfo-lite"
+msgstr "Configurazione 3ginfo-lite"
+
+msgid "Configuration panel for the 3ginfo-lite application."
+msgstr "Pannello di configurazione per l'applicazione 3ginfo-lite."
+
+msgid "Network"
+msgstr "Rete"
+
+msgid "IP adress / Port for communication with the modem"
+msgstr "Indirizzo IP / Porta per la comunicazione con il modem"
+
+msgid "Protocol"
+msgstr "Protocollo"
+
+msgid ""
+"Select the appropriate settings. <br /> <br />Traditional "
+"modem. <br /> Select one of the available ttyUSBX "
+"ports.<br /> <br />HiLink modem. <br /> Enter the IP address "
+"192.168.X.X under which the modem is available."
+msgstr ""
+"Seleziona le impostazioni appropriate. <br /> <br />Modem "
+"tradizionale. <br /> Seleziona una delle porte ttyUSBX "
+"disponibili.<br /> <br />Modem HiLink. <br /> Inserisci l'indirizzo IP "
+"192.168.X.X sotto il quale il modem è disponibile."
+
+msgid "Very good"
+msgstr "Molto buono"
+
+msgid "Good"
+msgstr "Buono"
+
+msgid "Weak"
+msgstr "Debole"
+
+msgid "Very weak"
+msgstr "Molto debole"
+
+msgid "Excellent"
+msgstr "Eccellente"
+
+msgid "Good"
+msgstr "Buono"
+
+msgid "Mid cell"
+msgstr "Cella media"
+
+msgid "Cell edge"
+msgstr "Margine della cella"
+
+msgid "SIM status"
+msgstr "Stato SIM"
+
+msgid "Not registered"
+msgstr "Non registrato"
+
+msgid "Registered"
+msgstr "Registrato"
+
+msgid "Registered (roaming)"
+msgstr "Registrato (in roaming)"
+
+msgid "Searching.."
+msgstr "Ricerca.."
+
+msgid "Registering denied"
+msgstr "Registrazione negata"
+
+msgid "Waiting to read data from the modem..."
+msgstr "In attesa di leggere i dati dal modem..."
+
+msgid "Waiting for connection data..."
+msgstr "In attesa dei dati di connessione..."
+
+msgid "BTS Search"
+msgstr "Ricerca BTS"
+
+msgid "Search"
+msgstr "Cerca"
+
+msgid "Search BTS using Cell ID"
+msgstr "Cerca la BTS utilizzando l'ID della cella"
+
+msgid "Hint: To set up a BTS search engine, all you have to do is select the dedicated website for your location."
+msgstr "Suggerimento: Per configurare un motore di ricerca BTS, devi solo selezionare il sito web dedicato alla tua posizione."
+
+msgid "BTS search settings"
+msgstr "Impostazioni di ricerca BTS"
+
+msgid "Website to search for BTS"
+msgstr "Sito web per cercare BTS"
+
+msgid "Select a website for searching."
+msgstr "Seleziona un sito web per la ricerca."
+
+msgid "SIM Slot"
+msgstr "Slot SIM"
+
+msgid "Customizing the appearance of the package"
+msgstr "Personalizzazione dell'aspetto del pacchetto"
+
+msgid "Hint: The settings below allow you to customize the appearance of the progress bars."
+msgstr "Suggerimento: Le impostazioni qui sotto ti consentono di personalizzare l'aspetto delle barre di avanzamento."
+
+msgid "The width of the progress bars"
+msgstr "Larghezza delle barre di avanzamento"
+
+msgid "Select the width of the progress bars."
+msgstr "Seleziona la larghezza delle barre di avanzamento."
+

@@ -1,0 +1,48 @@
+#!/bin/sh
+
+IFS=$'\n'
+
+function send_msg(){
+	to=$(echo "$1" | awk '/To:/{print $2}')
+	sent=$(echo "$1" | awk '/Sent:/{gsub("Sent: ","");print $0}')
+	time=$(echo "$1" | awk '/Sending_time:/{print $2}')
+	msg=$(echo "$1" |sed -e '1,/^$/ d')
+	string="{ \"to\": \"$to\", \"sent\": \"$sent\", \"time\": \"$time\", \"content\": \"$msg\" },"
+}
+
+
+function recv_msg(){
+	from=$(echo "$1" | awk '/From:/{print $2}')
+	srecv=$(echo "$1" | awk '/Sent:/{gsub("Sent: ","");print $0}')
+	drecv=$(echo "$1" | awk '/Received:/{gsub("Received: ","");print $0}')
+	msg=$(echo "$1" |sed -e '1,/^$/ d')
+	string="{ \"from\": \"$from\", \"srecv\": \"$srecv\", \"drecv\": \"$drecv\", \"content\": \"$msg\" },"
+}
+
+
+case $1 in
+	sent)
+		MSG=$(find /var/spool/sms/sent/ -type f | sort -r)
+		echo "{ \"sent\": ["
+		for m in $MSG; do
+			f=$(cat $m)
+			send_msg "$f"
+			json="$json $string"
+		done
+		echo -e $json | sed 's/.$//'
+		echo " ]}"
+	;;
+	recv)
+		MSG=$(find /var/spool/sms/incoming/ -type f | sort -r)
+		echo "{ \"recv\": ["
+		for m in $MSG; do
+			f=$(cat $m)
+			recv_msg "$f"
+			json="$json $string"
+		done
+			echo -e $json | sed 's/.$//'
+		echo " ]}"
+	;;
+	rmsent) rm -rf /var/spool/sms/sent/* ;;
+	rmrecv) rm -rf /var/spool/sms/incoming/* ;;
+esac

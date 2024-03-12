@@ -1,0 +1,249 @@
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Konstantine Shevlyakov <shevlakov@132lan.ru>\n"
+
+msgid "Incoming"
+msgstr "Входящие"
+
+msgid "Outcoming"
+msgstr "Исходящие"
+
+msgid "Push"
+msgstr "Отправить"
+
+msgid "Phonebook"
+msgstr "Тел.Книга"
+
+msgid "Commands"
+msgstr "Команды"
+
+msgid "Setup"
+msgstr "Настройка"
+
+msgid "User Script"
+msgstr "Сценарий"
+
+msgid "Send Date"
+msgstr "Отправлено"
+
+msgid "Recv.Date"
+msgstr "Получено"
+
+msgid "From"
+msgstr "Отправитель"
+
+msgid "Smstools3: Incoming messages"
+msgstr "Smstools3: Входящие сообщения"
+
+msgid "Remove SMS"
+msgstr "Удалить СМС"
+
+msgid "Refresh"
+msgstr "Обновить"
+
+msgid "Time(sec)"
+msgstr "Время(сек)"
+
+msgid "To"
+msgstr "Получатель"
+
+msgid "Message"
+msgstr "Сообщение"
+
+msgid "Smstools3: Outgoing messages"
+msgstr "Smstools3: Исходящие сообщения"
+
+msgid "Smstools3: Commands"
+msgstr "Smstools3: Команды"
+
+msgid "Command List interface."
+msgstr "Команды управления по СМС."
+
+msgid "Phone"
+msgstr "Ном.телеф."
+
+msgid "Root Phone list to accept commands."
+msgstr "Список телефонов для управления."
+
+msgid "Phone number must be without \"+\""
+msgstr "Телефный номер без \"+\""
+
+msgid "Command List"
+msgstr "Список команд"
+
+msgid "SMS Command"
+msgstr "Команда СМС"
+
+msgid "Execute"
+msgstr "Выполнить"
+
+msgid "Delay"
+msgstr "Задержка"
+
+msgid "Delay in sec."
+msgstr "В секундах"
+
+msgid "Answer"
+msgstr "Ответ"
+
+msgid "Answer MSG"
+msgstr "Сообщ. в ответ"
+
+msgid "Smstools3: Phonebook"
+msgstr "Smstools3: Телефонная книга"
+
+msgid "Phonebook"
+msgstr "Тел.книга"
+
+msgid "Each line must have the following format: 'Description;Phone Number'. For user convenience, the file is saved to the location <code>/etc/smstools3.pb</code>."
+msgstr "Каждая строчка должна иметь формат: 'Описание;Телефонный номер'. Файл телефонной книги находиться в <code>/etc/smstools3.pb</code>."
+
+msgid "Smtools3: User Script"
+msgstr "Smtools3: сценарий пользователя"
+
+msgid "Edit smstools3 user script. Add user\'s actions for incoming and outcoming messages.<br />Is shell script for smstools3 scenario. See \<a href\=\"http://smstools3.kekekasvi.com/index.php?p=eventhandler\"\>smstools3 manual page\</a\> for more details."
+msgstr "Отредактируйте пользовательский сценарий smstools3. Добавляйте действия для входящих и исходящих сообщений.<br />Это сценарий оболочки для smstools3. Более подробную информацию смотрите \<a href\=\"http://smstools3.kekekasvi.com/index.php?p=eventhandler\"\>на странице руководства smstools3\</a\>."
+
+msgid "Edit User script smstools3.<br />File stored in <code>/etc/smstools3.user</code>"
+msgstr "Сценарий smstools3.<br />Файл находиться в <code>/etc/smstools3.user</code>"
+
+msgid "User interface for sending SMS via smsd."
+msgstr "Отправить СМС через smsd"
+
+msgid "Smstools3: send message"
+msgstr "Smstools3: отправить сообщение"
+
+msgid "Phone Number"
+msgstr "Номер телефона"
+
+msgid "Text Message"
+msgstr "Текстовое сообщение"
+
+msgid "Please specify the phone number to send"
+msgstr "Пожадуйста введите номер телефона получателя"
+
+msgid "Message sent"
+msgstr "Сообщение отправлено"
+
+msgid "Clear text"
+msgstr "Очистить"
+
+msgid "Send message"
+msgstr "Отправить СМС"
+
+msgid "Smstools3: Setup"
+msgstr "Smstools3: Настройка"
+
+msgid "Configure smstools3 daemon."
+msgstr "Конфигурация smstools3."
+
+msgid "General"
+msgstr "Основные"
+
+msgid "Advanced"
+msgstr "Дополнительные"
+
+msgid "Decode SMS"
+msgstr "Декодировать СМС"
+
+msgid "Decode Incoming messages to UTF-8 codepage."
+msgstr "Декодировать входящие сообщения в UTF-8."
+
+msgid "Unexepted Input"
+msgstr "Нештатные команды"
+
+msgid "Enable Unexpected input from COM port."
+msgstr "Принимать команды, не предназначенные для службы на COM-порт."
+
+msgid "SMS Storage"
+msgstr "Хранилице СМС"
+
+msgid "Select storage to save SMS."
+msgstr "Выберите тип хранилища СМС"
+
+msgid "Temporary"
+msgstr "Временное"
+
+msgid "Persistent"
+msgstr "Постоянное"
+
+msgid "Select COM port"
+msgstr "COM-порт"
+
+msgid "Init string"
+msgstr "Иниациалиция"
+
+msgid "Initialise modem for more vendors"
+msgstr "Инициализировать модем для некоторых производителей"
+
+msgid "ASR or more"
+msgstr "ARS и подобные"
+
+msgid "Qualcomm or more"
+msgstr "Qualcomm и подобные"
+
+msgid "PIN Code"
+msgstr "ПИН-код"
+
+msgid "Default value: not in use.<br />Specifies the PIN number of the SIM card inside the modem."
+msgstr "По-умалчанию не используется.<br />ПИН-код симкарты модема."
+
+msgid "Loglevel"
+msgstr "Журнал"
+
+msgid "Logging output."
+msgstr "Уровень журнала."
+
+msgid "Emergency"
+msgstr "Чрезвычайный"
+
+msgid "Alert"
+msgstr "Тревожный"
+
+msgid "Critical"
+msgstr "Критический"
+
+msgid "Error"
+msgstr "Ошибка"
+
+msgid "Warning"
+msgstr "Предупреждение"
+
+msgid "Notice"
+msgstr "Уведомление"
+
+msgid "Info"
+msgstr "Информирование"
+
+msgid "Debug"
+msgstr "Отладка"
+
+msgid "Check network"
+msgstr "Проверять сеть"
+
+msgid "Ignore"
+msgstr "Никогда"
+
+msgid "Always"
+msgstr "Всегда"
+
+msgid "Before messages"
+msgstr "После сообщений"
+
+msgid "Setup network checking. Some modems incorrect test network."
+msgstr "Задать проверку сети. Некоторые модемы неверно определяют наличие сети."
+
+msgid "Ignore signal level"
+msgstr "Игнорировать уровень сигнала"
+
+msgid "Some devices do not support Bit Error Rate"
+msgstr "Некоторые модемы не поддерживают Bit Error Rate"
+
+msgid "LED indicate to Incoming messages."
+msgstr "Индикация входящих сообщений."
+
+msgid "Select LED"
+msgstr "Выберите LED"

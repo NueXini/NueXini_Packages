@@ -1,0 +1,33 @@
+{
+	"luci-app-smstools3": {
+		"description": "Grant UCI access for luci-app-smstools3",
+		"read": {
+			"file": {
+				"/usr/bin/sendsms": [ "exec" ],
+				"/usr/bin/msg_control": [ "exec" ],
+				"/etc/init.d/luci-sms": [ "exec" ],
+				"/usr/share/luci-app-smstools3/led.sh": [ "exec" ],
+				"/etc/smstools3.user": [ "read" ],
+				"/etc/smstools3.pb": [ "read" ]
+			},
+			"cgi-io": [ "exec" ],   
+			"ubus": {
+				"file": [ "exec" ],
+				"uci": [ "changes", "get" ]
+			},		
+			"uci": [ "smstools3" ]
+		},
+		"write": {
+			"file": {
+				"/etc/smstools3.user": [ "write" ],
+				"/etc/smstools3.pb": [ "write" ]
+			},
+			"cgi-io": [ "exec" ],   
+			"ubus": {
+				"file": [ "exec" ],
+				"uci": [ "add", "apply", "confirm", "delete", "order", "rename", "set" ]
+			},
+			"uci": [ "smstools3" ]
+		}
+	}
+}

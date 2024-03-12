@@ -1,0 +1,22 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+USE_PROCD=1
+
+start_service(){
+	sleep 10 && \
+	        /usr/share/luci-app-smstools3/event.sh > /tmp/smsd.conf && \
+	        rm -f /etc/smsd.conf && ln -s /tmp/smsd.conf /etc && \
+	        /etc/init.d/smstools3 stop && \
+        	sleep 3 && \
+	        /etc/init.d/smstools3 start && \
+        	/etc/init.d/led restart &
+}
+
+reload_service(){
+	start
+}
+
+service_triggers() {
+	procd_add_reload_trigger smstools3
+}

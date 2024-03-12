@@ -1,0 +1,300 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: luasrc/controller/cpolar/cpolar.lua:32
+msgid "About"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:55
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:34
+msgid "Address"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:36
+msgid "Advanced Settings"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:123
+msgid "Auth"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/general.lua:39
+msgid "AuthToken"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:35
+msgid "Basic Settings"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:129
+msgid "Bind TLS"
+msgstr ""
+
+#: luasrc/controller/cpolar/cpolar.lua:92
+msgid "Can't get Cpolar version"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:63
+msgid "China"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:65
+msgid "China Top"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:64
+msgid "China VIP"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:109
+msgid "Client Cas"
+msgstr ""
+
+#: luasrc/view/cpolar/status_header.htm:11
+msgid "Collecting data..."
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:11
+msgid "Configuration"
+msgstr ""
+
+#: luasrc/controller/cpolar/cpolar.lua:23
+#: luasrc/model/cbi/cpolar/general.lua:15
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:19
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:8
+msgid "Cpolar"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:103
+msgid "Crt"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:89
+msgid "Custom Domain"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:99
+msgid "Custom domain name"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:61
+msgid "Default"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:20
+msgid "Details: %s"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:136
+msgid "Disable Keep Alives"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:86
+msgid "Domain Type"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:19
+msgid "Edit Tunnel"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:116
+msgid "Enable listening for HTTP requests"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/general.lua:30
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:42
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:39
+msgid "Enabled"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:68
+msgid "Europe"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:75
+msgid "Fixed Port Address"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/general.lua:18
+msgid "For more information, please visit: %s"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:55
+msgid "Forward traffic to the local port number or network address"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/general.lua:15
+msgid "General"
+msgstr ""
+
+#: luasrc/controller/cpolar/cpolar.lua:26
+msgid "General Settings"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:60
+msgid "Global geographic region"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:123
+msgid "HTTP basic authentication credentials to enforce tunnel requests"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:103
+msgid "HTTPS key certificate"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:66
+msgid "HongKong"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:126
+msgid "Host Header"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:99
+msgid "Hostname"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:116
+msgid "Inspect"
+msgstr ""
+
+#: luasrc/controller/cpolar/cpolar.lua:75
+msgid "Invalid Cpolar file"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/general.lua:17
+msgid ""
+"It is a secure intranet penetration tool. It can easily publish internal "
+"websites to the public network, SSH remote home soft routing, remote desktop "
+"to office PC, it can simulate the local development environment into a "
+"public network environment, convenient For WeChat public number, small "
+"programs, OpenAPI development and debugging. Is the development, geek, IT "
+"operations staff must be a weapon."
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:106
+msgid "Key"
+msgstr ""
+
+#: luasrc/view/cpolar/status_header.htm:25
+msgid "Not Running"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:73
+msgid "Port Type"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:46
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:29
+msgid "Protocol"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:87
+msgid "Random Domain"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:74
+msgid "Random Port Address"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:142
+msgid "Redirect Https"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:142
+msgid ""
+"Redirect the Web site http request to the http protocol with the domain name "
+"site for true"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:60
+msgid "Region"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/general.lua:33
+msgid "Reload Service"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:78
+msgid "Remote Addr"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:126
+msgid "Rewrite the HTTP Host header to this value, or leave it unchanged"
+msgstr ""
+
+#: luasrc/view/cpolar/status_header.htm:24
+msgid "Running"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:88
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:94
+msgid "Sub Domain"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:73
+msgid "TCP Address Type"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:67
+msgid "TaiWan"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:109
+msgid ""
+"The PEM TLS certification authority on this path verifies the incoming TLS "
+"client connection certificate."
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:94
+msgid "The child domain name to request"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:106
+msgid "The private key on this path of PEM TLS"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:78
+msgid "The public TCP address and port number that are retained"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/general.lua:33
+msgid "This will restart service when config file changes."
+msgstr ""
+
+#: luasrc/controller/cpolar/cpolar.lua:30
+msgid "Tunnel"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:46
+msgid "Tunnel protocol name, http, tcp optional."
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:8
+msgid "Tunnels List"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:62
+msgid "United States"
+msgstr ""
+
+#: luasrc/view/cpolar/status_header.htm:42
+msgid "Version: %s"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:129
+msgid "bind an HTTPS or HTTP endpoint or both true, false, or both"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/general.lua:39
+msgid ""
+"cpolar Authtoken, visit cpolar background dashboard to <a href=\"https://"
+"dashboard.cpolar.com/auth\" target=\"_blank\">get your authentication token</"
+"a> <br/> No account? <a href=\"https://dashboard.cpolar.com/signup\" target="
+"\"_blank\">Sign up for free</a> to get an authentication token"
+msgstr ""
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:136
+msgid "disable Keep Alives for true, default false."
+msgstr ""

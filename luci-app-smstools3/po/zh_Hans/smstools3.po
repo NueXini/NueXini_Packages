@@ -1,0 +1,249 @@
+msgid ""
+msgstr ""
+"Language: zh_Hans\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Y0518 <yangqi@easybj.cn>\n"
+
+msgid "Incoming"
+msgstr "收件箱"
+
+msgid "Outcoming"
+msgstr "发件箱"
+
+msgid "Push"
+msgstr "发送"
+
+msgid "Phonebook"
+msgstr "电话簿"
+
+msgid "Commands"
+msgstr "命令"
+
+msgid "Setup"
+msgstr "设置"
+
+msgid "User Script"
+msgstr "用户脚本"
+
+msgid "Send Date"
+msgstr "发送日期"
+
+msgid "Recv.Date"
+msgstr "接收日期"
+
+msgid "From"
+msgstr "发件人"
+
+msgid "Smstools3: Incoming messages"
+msgstr "Smstools3: 接收的消息"
+
+msgid "Remove SMS"
+msgstr "删除短信"
+
+msgid "Refresh"
+msgstr "刷新"
+
+msgid "Time(sec)"
+msgstr "时间(秒)"
+
+msgid "To"
+msgstr "收件人"
+
+msgid "Message"
+msgstr "消息"
+
+msgid "Smstools3: Outgoing messages"
+msgstr "Smstools3: 发送的消息"
+
+msgid "Smstools3: Commands"
+msgstr "Smstools3: 命令"
+
+msgid "Command List interface."
+msgstr "通过短信命令的控制界面"
+
+msgid "Phone"
+msgstr "电话号码"
+
+msgid "Root Phone list to accept commands."
+msgstr "接受命令的根电话号码列表"
+
+msgid "Phone number must be without \"+\""
+msgstr "电话号码必须不包含 \"+\""
+
+msgid "Command List"
+msgstr "命令列表"
+
+msgid "SMS Command"
+msgstr "短信命令"
+
+msgid "Execute"
+msgstr "执行"
+
+msgid "Delay"
+msgstr "延迟"
+
+msgid "Delay in sec."
+msgstr "延迟时间（秒）"
+
+msgid "Answer"
+msgstr "回复"
+
+msgid "Answer MSG"
+msgstr "回复消息"
+
+msgid "Smstools3: Phonebook"
+msgstr "Smstools3: 电话簿"
+
+msgid "Phonebook"
+msgstr "电话簿"
+
+msgid "Each line must have the following format: 'Description;Phone Number'. For user convenience, the file is saved to the location <code>/etc/smstools3.pb</code>."
+msgstr "每行应按照以下格式：'描述;电话号码'。为了方便用户，该文件将保存在<code>/etc/smstools3.pb</code>位置。"
+
+msgid "Smtools3: User Script"
+msgstr "Smtools3: 用户脚本"
+
+msgid "Edit smstools3 user script. Add user's actions for incoming and outcoming messages.<br />Is shell script for smstools3 scenario. See <a href=\"http://smstools3.kekekasvi.com/index.php?p=eventhandler\">smstools3 manual page</a> for more details."
+msgstr "编辑smstools3的用户脚本。为接收到和发送的消息添加用户的处理动作。<br />这是用于smstools3场景的Shell脚本。欲了解更多信息，请参阅<a href=\"http://smstools3.kekekasvi.com/index.php?p=eventhandler\">smstools3手册页面</a>。"
+
+msgid "Edit User script smstools3.<br />File stored in <code>/etc/smstools3.user</code>"
+msgstr "编辑Smstools3用户脚本。<br />文件存储在 <code>/etc/smstools3.user</code>"
+
+msgid "User interface for sending SMS via smsd."
+msgstr "通过smsd发送短信的用户界面。"
+
+msgid "Smstools3: send message"
+msgstr "Smstools3：发送消息"
+
+msgid "Phone Number"
+msgstr "电话号码"
+
+msgid "Text Message"
+msgstr "文本消息"
+
+msgid "Please specify the phone number to send"
+msgstr "请输入接收短信的电话号码"
+
+msgid "Message sent"
+msgstr "消息已发送"
+
+msgid "Clear text"
+msgstr "清除文本"
+
+msgid "Send message"
+msgstr "发送短信"
+
+msgid "Smstools3: Setup"
+msgstr "Smstools3：设置"
+
+msgid "Configure smstools3 daemon."
+msgstr "配置smstools3守护进程。"
+
+msgid "General"
+msgstr "常规"
+
+msgid "Advanced"
+msgstr "高级"
+
+msgid "Decode SMS"
+msgstr "解码短信"
+
+msgid "Decode Incoming messages to UTF-8 codepage."
+msgstr "将接收到的消息解码为UTF-8编码。"
+
+msgid "Unexepted Input"
+msgstr "未预期的输入"
+
+msgid "Enable Unexpected input from COM port."
+msgstr "允许COM端口接收非预设服务的命令。"
+
+msgid "SMS Storage"
+msgstr "短信存储"
+
+msgid "Select storage to save SMS."
+msgstr "选择用于保存短信的存储方式。"
+
+msgid "Temporary"
+msgstr "临时"
+
+msgid "Persistent"
+msgstr "持久化"
+
+msgid "Select COM port"
+msgstr "选择COM端口"
+
+msgid "Init string"
+msgstr "初始化串行指令"
+
+msgid "Initialise modem for more vendors"
+msgstr "针对更多供应商初始化调制解调器"
+
+msgid "ASR or more"
+msgstr "ASR或其他类似设备"
+
+msgid "Qualcomm or more"
+msgstr "Qualcomm或其他类似设备"
+
+msgid "PIN Code"
+msgstr "PIN码"
+
+msgid "Default value: not in use.<br />Specifies the PIN number of the SIM card inside the modem."
+msgstr "默认值：未使用。<br />指定内置在调制解调器中的SIM卡的PIN码。"
+
+msgid "Loglevel"
+msgstr "日志级别"
+
+msgid "Logging output."
+msgstr "记录输出等级。"
+
+msgid "Emergency"
+msgstr "紧急情况"
+
+msgid "Alert"
+msgstr "警报"
+
+msgid "Critical"
+msgstr "严重"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "Warning"
+msgstr "警告"
+
+msgid "Notice"
+msgstr "通知"
+
+msgid "Info"
+msgstr "信息"
+
+msgid "Debug"
+msgstr "调试"
+
+msgid "Check network"
+msgstr "检查网络"
+
+msgid "Ignore"
+msgstr "忽略"
+
+msgid "Always"
+msgstr "始终"
+
+msgid "Before messages"
+msgstr "在消息之前"
+
+msgid "Setup network checking. Some modems incorrect test network."
+msgstr "设置网络检测。某些调制解调器可能无法正确检测网络状况。"
+
+msgid "Ignore signal level"
+msgstr "忽略信号强度"
+
+msgid "Some devices do not support Bit Error Rate"
+msgstr "某些设备不支持误码率（Bit Error Rate）"
+
+msgid "LED indicate to Incoming messages."
+msgstr "使用LED指示灯显示接收到的短信。"
+
+msgid "Select LED"
+msgstr "选择LED指示灯"

@@ -1,0 +1,303 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+msgid "Cpolar"
+msgstr "Cpolar内网穿透"
+
+#: luasrc/controller/cpolar/cpolar.lua:32
+msgid "About"
+msgstr "关于"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:55
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:34
+msgid "Address"
+msgstr "地址"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:36
+msgid "Advanced Settings"
+msgstr "高级设置"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:123
+msgid "Auth"
+msgstr "Auth验证"
+
+#: luasrc/model/cbi/cpolar/general.lua:39
+msgid "AuthToken"
+msgstr "AuthToken"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:35
+msgid "Basic Settings"
+msgstr "基础设置"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:129
+msgid "Bind TLS"
+msgstr "绑定TLS"
+
+#: luasrc/controller/cpolar/cpolar.lua:92
+msgid "Can't get Cpolar version"
+msgstr "不能获得Cpolar版本"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:63
+msgid "China"
+msgstr "中国"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:65
+msgid "China Top"
+msgstr "中国 Top"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:64
+msgid "China VIP"
+msgstr "中国 VIP"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:109
+msgid "Client Cas"
+msgstr "客户端证书"
+
+#: luasrc/view/cpolar/status_header.htm:11
+msgid "Collecting data..."
+msgstr "收集数据中..."
+
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:11
+msgid "Configuration"
+msgstr "设置"
+
+#: luasrc/controller/cpolar/cpolar.lua:23
+#: luasrc/model/cbi/cpolar/general.lua:15
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:19
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:8
+msgid "Cpolar"
+msgstr "Cpolar"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:103
+msgid "Crt"
+msgstr "服务器端证书"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:89
+msgid "Custom Domain"
+msgstr "自定义域名"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:99
+msgid "Custom domain name"
+msgstr "自定义域名"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:61
+msgid "Default"
+msgstr "默认"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:20
+msgid "Details: %s"
+msgstr "详情: %s"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:136
+msgid "Disable Keep Alives"
+msgstr "禁用Keep Alives"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:86
+msgid "Domain Type"
+msgstr "域名类型"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:19
+msgid "Edit Tunnel"
+msgstr "编辑隧道"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:116
+msgid "Enable listening for HTTP requests"
+msgstr "启用对 HTTP 请求的侦听"
+
+#: luasrc/model/cbi/cpolar/general.lua:30
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:42
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:39
+msgid "Enabled"
+msgstr "启用"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:68
+msgid "Europe"
+msgstr "欧洲"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:75
+msgid "Fixed Port Address"
+msgstr "固定端口预留TCP地址"
+
+#: luasrc/model/cbi/cpolar/general.lua:18
+msgid "For more information, please visit: %s"
+msgstr "欲了解更多信息，请访问：%s"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:55
+msgid "Forward traffic to the local port number or network address"
+msgstr "将流量转发到本地端口号或网络地址"
+
+#: luasrc/model/cbi/cpolar/general.lua:15
+msgid "General"
+msgstr "常规"
+
+#: luasrc/controller/cpolar/cpolar.lua:26
+msgid "General Settings"
+msgstr "常规设置"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:60
+msgid "Global geographic region"
+msgstr "地区"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:123
+msgid "HTTP basic authentication credentials to enforce tunnel requests"
+msgstr "用于强制执行隧道请求的 HTTP 基本身份验证凭据"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:103
+msgid "HTTPS key certificate"
+msgstr "HTTPS服务器端证书"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:66
+msgid "HongKong"
+msgstr "香港"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:126
+msgid "Host Header"
+msgstr "Host头域"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:99
+msgid "Hostname"
+msgstr "域名"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:116
+msgid "Inspect"
+msgstr "启动侦听流量"
+
+#: luasrc/controller/cpolar/cpolar.lua:75
+msgid "Invalid Cpolar file"
+msgstr "非法cpolar文件"
+
+#: luasrc/model/cbi/cpolar/general.lua:17
+msgid ""
+"It is a secure intranet penetration tool. It can easily publish internal "
+"websites to the public network, SSH remote home soft routing, remote desktop "
+"to office PC, it can simulate the local development environment into a "
+"public network environment, convenient For WeChat public number, small "
+"programs, OpenAPI development and debugging. Is the development, geek, IT "
+"operations staff must be a weapon."
+msgstr "它是一款安全的内网穿透工具。它可以将内网站轻松发布至公网；SSH远程家中的软路由；对办公室PC远程桌面；它可以将本地开发环境模拟成公网环境，方便微信公众号,小程序, OpenAPI开发与调试。是开发、极客、IT运维人员的必备利器。"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:106
+msgid "Key"
+msgstr "HTTPS服务器端密钥"
+
+#: luasrc/view/cpolar/status_header.htm:25
+msgid "Not Running"
+msgstr "未运行"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:73
+msgid "Port Type"
+msgstr "端口地址类型"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:46
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:29
+msgid "Protocol"
+msgstr "协议"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:87
+msgid "Random Domain"
+msgstr "随机域名"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:74
+msgid "Random Port Address"
+msgstr "随机端口地址"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:142
+msgid "Redirect Https"
+msgstr "重定向至https"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:142
+msgid ""
+"Redirect the Web site http request to the https protocol with the domain name "
+"site for true"
+msgstr "如果为真将网站http请求重定向到https"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:60
+msgid "Region"
+msgstr "地区"
+
+#: luasrc/model/cbi/cpolar/general.lua:33
+msgid "Reload Service"
+msgstr "重新加载服务"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:78
+msgid "Remote Addr"
+msgstr "预留TCP地址"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:126
+msgid "Rewrite the HTTP Host header to this value, or leave it unchanged"
+msgstr "将HTTP主机标头重写"
+
+#: luasrc/view/cpolar/status_header.htm:24
+msgid "Running"
+msgstr "运行中"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:88
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:94
+msgid "Sub Domain"
+msgstr "子域名"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:73
+msgid "TCP Address Type"
+msgstr "TCP地址类型"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:67
+msgid "TaiWan"
+msgstr "台湾"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:109
+msgid ""
+"The PEM TLS certification authority on this path verifies the incoming TLS "
+"client connection certificate."
+msgstr "此路径上的 PEM TLS 证书颁发机构验证传入的 TLS 客户端连接证书"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:94
+msgid "The child domain name to request"
+msgstr "要请求的子域名"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:106
+msgid "The private key on this path of PEM TLS"
+msgstr "PEM TLS 的此路径上的私钥"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:78
+msgid "The public TCP address and port number that are retained"
+msgstr "保留的公用 TCP 地址和端口号"
+
+#: luasrc/model/cbi/cpolar/general.lua:33
+msgid "This will restart service when config file changes."
+msgstr "这将在配置文件更改时重新启动服务。"
+
+#: luasrc/controller/cpolar/cpolar.lua:30
+msgid "Tunnel"
+msgstr "隧道"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:46
+msgid "Tunnel protocol name, http, tcp optional."
+msgstr "隧道协议名称，http，tcp 可选。"
+
+#: luasrc/model/cbi/cpolar/tunnel-list.lua:8
+msgid "Tunnels List"
+msgstr "隧道列表"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:62
+msgid "United States"
+msgstr "美国"
+
+#: luasrc/view/cpolar/status_header.htm:42
+msgid "Version: %s"
+msgstr "版本: %s"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:129
+msgid "bind an HTTPS or HTTP endpoint or both true, false, or both"
+msgstr "绑定 HTTPS 或 HTTP 节点，或同时绑定true、false或both"
+
+#: luasrc/model/cbi/cpolar/general.lua:39
+msgid ""
+"cpolar Authtoken, visit cpolar background dashboard to <a href=\"https://"
+"dashboard.cpolar.com/auth\" target=\"_blank\">get your authentication token</"
+"a> <br/> No account? <a href=\"https://dashboard.cpolar.com/signup\" target="
+"\"_blank\">Sign up for free</a> to get an authentication token"
+msgstr "cpolar 认证令牌, 访问cpolar后台仪表盘以<a href=\"https://dashboard.cpolar.com/auth\" target=\"_blank\">获取您的身份验证令牌</a> <br> 没有账号？<a href=\"https://dashboard.cpolar.com/signup\" target=\"_blank\">免费注册</a>以获取身份验证令牌"
+
+#: luasrc/model/cbi/cpolar/tunnel-detail.lua:136
+msgid "disable Keep Alives for true, default false."
+msgstr "禁用"保持活动状态"为 true，默认为 false。"

@@ -1,0 +1,24 @@
+
+config general 'main'
+	option enabled '1'
+	option cpolar_file '/usr/bin/cpolar'
+	option mem_percentage '0'
+	option loglevel 'warning'
+	option access_log '/var/log/cpolar-access.log'
+	option error_log '/var/log/cpolar-error.log'
+	option authtoken ''
+
+config tunnel 'website'
+	option proto 'http'
+	option addr '80'
+	option region 'cn_vip'
+	option domainType 'randDomain'
+	option enabled '1'
+
+config tunnel 'ssh'
+	option proto 'tcp'
+	option addr '22'
+	option region 'cn_vip'
+	option enabled '1'
+
+

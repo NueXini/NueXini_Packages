@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Simple resend incoming messages to telegram
+
+ROUTER=$(uci -q get system.@system[0].hostname)
+chat_id=$(uci -q get telegrambot.config.chat_id)
+token=$(uci -q get telegrambot.config.bot_token)
+
+# parse incoming message
+if [ "$1" == "RECEIVED" ]; then
+	from=`grep "From:" $2 | awk -F ': ' '{printf $2}'`
+	content=$(sed -e '1,/^$/ d' < "$2")	
+	text=$(cat <<EOF
+Hostname: $ROUTER
+$content
+From $from
+EOF
+)
+	# resent incoming messages to telegram
+	if [ x$chat_id != x ] && [ x$token != x ]; then
+		/usr/bin/curl -d "chat_id=$chat_id&text=$text" -X POST https://api.telegram.org/bot"$token"/sendMessage
+	fi
+fi

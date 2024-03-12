@@ -1,0 +1,204 @@
+# Dell DW5930e
+# Foxconn T99W175
+
+O=$(sms_tool -d $DEVICE at "at^temp")
+
+T=$(echo "$O" | awk '/^TSENS: / {gsub("C","",$2); print $2}')
+T1=$(echo "$O" | awk '/^PA: / {gsub("C","",$2); print $2}')
+if [ -n "$T" ] && [ -n "$T1" ]; then
+	[ "$T1" -gt "$T" ] && T="$T1"
+fi
+T1=$(echo "$O" | awk '/^Skin Sensor: / {gsub("C","",$2); print $2}')
+if [ -n "$T" ] && [ -n "$T1" ]; then
+	[ "$T1" -gt "$T" ] && T="$T1"
+fi
+[ -n "$T" ] && TEMP="$T &deg;C"
+
+if [ "$REGOK" = "1" ]; then
+
+O=$(sms_tool -d $DEVICE at "at^debug?")
+
+case "$MODE_NUM" in
+	"7")
+		MODE="LTE |"
+		echo "$O" | grep -q "scell:" && MODE="LTE-A |"
+		;;
+	"11")
+		MODE="5G SA |"
+		;;
+	"13")
+		MODE="5G NSA |"
+		;;
+esac
+
+T=$(echo "$O" | awk -F: '/^lte_tac:/ {print $2}')
+if [ -n "$T" ]; then
+	TAC_HEX=$(printf "%X" $T)
+	TAC_DEC=$(printf "%d" "0x$T")
+fi
+
+O1=$(echo "$O" | grep -A 3 pcell)
+T=$(echo "$O1" | awk -F: '/^pcell:/ {print $3}' | cut -f1 -d" ")
+if [ -n "$T" ]; then
+	MODE="$MODE $(band $T)"
+	T1=$(echo "$O1" | awk -F: '/^pcell:/ {print $4}' | xargs)
+	PBAND="$(band $T) @${T1/MHz/} MHz"
+	
+	T=$(echo "$O1" | awk -F: '/pci:/ {print $3}' | xargs)
+	[ -n "$T" ] && PCI=$T
+	T=$(echo "$O1" | awk -F: '/^channel:/ {print $2}' | cut -f1 -d" " | xargs)
+	[ -n "$T" ] && EARFCN=$T
+	T=$(echo "$O1" | awk -F[:,] '/^lte_rsrp:/ {print $2}')
+	[ -n "$T" ] && RSRP="${T/dBm/}"
+	T=$(echo "$O1" | awk -F[:,] '/rsrq:/ {print $4}' | xargs)
+	[ -n "$T" ] && RSRQ="${T/dB/}"
+	T=$(echo "$O1" | awk -F[:,] '/^lte_rssi:/ {print $2}')
+	[ -n "$T" ] && RSSI="${T/dBm/}"
+	T=$(echo "$O1" | awk -F[:,] '/lte_snr:/ {print $4}' | xargs)
+	[ -n "$T" ] && [ "$T" != "NA" ] && SINR="${T/dB/}"
+fi
+
+O1=$(echo "$O" | grep -A 3 scell)
+IDX=0;
+while true; do
+	O2=$(echo "$O1" | head -n4)
+	if [ -z "$O2" ]; then
+		break
+	fi
+	IDX=$((IDX + 1))
+
+	T=$(echo "$O2" | awk -F: '/^scell:/ {print $3}' | cut -f1 -d" ")
+	MODE="$MODE / $(band $T)"
+	T1=$(echo "$O2" | awk -F: '/^scell:/ {print $4}' | xargs)
+		if [ -n "$T1" ]; then
+			case $IDX in
+				1) S1BAND="$(band $T) @${T1/MHz/} MHz";;
+				2) S2BAND="$(band $T) @${T1/MHz/} MHz";;
+				3) S3BAND="$(band $T) @${T1/MHz/} MHz";;
+				4) S4BAND="$(band $T) @${T1/MHz/} MHz";;
+				*) ;;
+			esac
+		fi
+	
+	T=$(echo "$O2" | awk -F: '/pci:/ {print $3}' | xargs)
+		if [ -n "$T" ]; then
+			case $IDX in
+				1) S1PCI="$T";;
+				2) S2PCI="$T";;
+				3) S3PCI="$T";;
+				4) S4PCI="$T";;
+				*) ;;
+			esac
+		fi
+	
+	T=$(echo "$O2" | awk -F: '/^channel:/ {print $2}' | cut -f1 -d" " | xargs)
+		if [ -n "$T" ]; then
+			case $IDX in
+				1) S1EARFCN="$T";;
+				2) S2EARFCN="$T";;
+				3) S3EARFCN="$T";;
+				4) S4EARFCN="$T";;
+				*) ;;
+			esac
+		fi
+	
+	T=$(echo "$O2" | awk -F[:,] '/^lte_rsrp:/ {print $2}')
+#	[ -n "$T" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "${T/dBm/} dBm"
+	T=$(echo "$O2" | awk -F[:,] '/rsrq:/ {print $4}' | xargs)
+#	[ -n "$T" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "${T/dB/} dB"
+	T=$(echo "$O2" | awk -F[:,] '/^lte_rssi:/ {print $2}')
+#	[ -n "$T" ] && addon $((POS + 5)) "(S${IDX}) RSSI" "${T/dBm/} dBm"
+	T=$(echo "$O2" | awk -F[:,] '/lte_snr:/ {print $4}' | xargs)
+#	[ -n "$T" ] && [ "$T" != "NA" ] && addon $((POS + 8)) "(S${IDX}) SNR" "${T/dB/} dB"
+
+	O1=$(echo "$O1" | sed '1,4d')
+done
+
+T=$(echo "$O" | awk -F: '/^nr_band:/ {print $2}' | xargs)
+if [ -n "$T" ]; then
+	MODE="$MODE / $(band5g ${T/n/})"
+	IDX=$((IDX + 1))
+
+	T1=$(echo "$O" | awk -F: '/^nr_band_width:/ {print $2}' | xargs)
+		if [ -n "$T1" ]; then
+			case $IDX in
+				1) S1BAND="$(band5g ${T/n/}) @${T1/MHz/} MHz";;
+				2) S2BAND="$(band5g ${T/n/}) @${T1/MHz/} MHz";;
+				3) S3BAND="$(band5g ${T/n/}) @${T1/MHz/} MHz";;
+				4) S4BAND="$(band5g ${T/n/}) @${T1/MHz/} MHz";;
+				*) ;;
+			esac
+		fi
+	
+	T=$(echo "$O" | awk -F: '/^nr_pci:/ {print $2}' | xargs)
+		if [ -n "$T" ]; then
+			case $IDX in
+				1) S1PCI="$T";;
+				2) S2PCI="$T";;
+				3) S3PCI="$T";;
+				4) S4PCI="$T";;
+				*) ;;
+			esac
+		fi
+	T=$(echo "$O" | awk -F: '/^nr_channel:/ {print $2}' | xargs)
+		if [ -n "$T" ]; then
+			case $IDX in
+				1) S1EARFCN="$T";;
+				2) S2EARFCN="$T";;
+				3) S3EARFCN="$T";;
+				4) S4EARFCN="$T";;
+				*) ;;
+			esac
+		fi
+	T=$(echo "$O" | awk -F: '/^nr_rsrp:/ {print $2}' | cut -f1 -d" ")
+#	[ -n "$T" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "${T/dBm/} dBm"
+	T=$(echo "$O" | awk -F: '/^nr_rsrq:/ {print $2}' | xargs)
+#	[ -n "$T" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "${T/dB/} dB"
+	T=$(echo "$O" | awk -F: '/^nr_snr:/ {print $2}' | xargs)
+#	[ -n "$T" ] && [ "$T" != "NA" ] && addon $((POS + 8)) "(S${IDX}) SNR" "${T/dB/} dB"
+fi
+
+fi
+
+MODE=$(echo $MODE | sed 's,/,+,'| sed 's,LTE B,LTE | B,')
+
+
+# Modem
+
+MODELA=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n" | xargs)
+MODELB=$(sms_tool -d $DEVICE at "AT+CGMI" | tr -s "\n" | xargs)
+MODELACUT=$(echo $MODELA | sed s/"AT+CGMM "//)
+MODELBCUT=$(echo $MODELB | sed s/"AT+CGMI "//)
+MODEL="$MODELBCUT "$MODELACUT
+
+FWA=$(sms_tool -d $DEVICE at "AT+CGMR" | tr -s "\n" | xargs)
+FW=$(echo $FWA | sed s/"AT+CGMR "//)
+
+# International Mobile Equipment Identity (IMEI)
+O=$(sms_tool -d $DEVICE at "AT+CGSN" | xargs)
+NR_I=$(echo "$O" | sed s/"AT+CGSN "//)
+if [ -n "$NR_I" ]; then
+	NR_IMEI="$NR_I"
+fi
+
+# International Mobile Subscriber Identity (IMSI)
+O=$(sms_tool -d $DEVICE at "AT+CIMI" | xargs)
+NR_C=$(echo "$O" | sed s/"AT+CIMI "//)
+if [ -n "$NR_C" ]; then
+	NR_IMSI="$NR_C"
+fi
+
+#  Integrated Circuit Card Identifier (ICCID)
+O=$(sms_tool -d $DEVICE at "AT+ICCID")
+NR_D=$(echo "$O" | awk -F [:] '/^\ICCID:/{print $2}' | xargs)
+if [ -n "$NR_D" ]; then
+	NR_ICCID="$NR_D"
+fi
+
+# Protocol
+# DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
+
+if echo "$DEVICE" | grep -q "wwan0at0"
+then
+    PROTO="mbim"
+fi

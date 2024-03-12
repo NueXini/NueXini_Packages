@@ -1,0 +1,87 @@
+{
+	"admin/modem": {
+		"title": "Modem",
+		"order": 45,
+		"action": {
+			"type": "firstchild",
+			"recurse": true
+		}
+	},
+
+	"admin/modem/sms": {
+		"title": "Smstools3 SMS",
+		"order": 21,
+		"action": {
+			"type": "alias",
+			"path": "admin/modem/sms/in"
+		},
+		"depends": {
+			"uci": { "smstools3": true},
+			"acl": [ "luci-app-smstools3" ]
+		}
+	},
+
+
+	"admin/modem/sms/in": {
+		"title": "Incoming",
+		"order": 22,
+		"action": {
+			"type": "view",
+			"path": "smstools3/in"
+		}
+	},
+
+	"admin/modem/sms/out": {
+		"title": "Outcoming",
+		"order": 23,
+		"action": {
+			"type": "view",
+			"path": "smstools3/out"
+		}
+	},
+
+	"admin/modem/sms/send": {
+		"title": "Push",
+		"order": 24,
+		"action": {
+			"type": "view",
+			"path": "smstools3/send"
+		}
+	},
+
+	"admin/modem/sms/pb": {
+		"title": "Phonebook",
+		"order": 25,
+		"action": {
+			"type": "view",
+			"path": "smstools3/pb"
+		}
+	},
+
+	"admin/modem/sms/command": {
+		"title": "Commands",
+		"order": 26,
+		"action": {
+			"type": "view",
+			"path": "smstools3/cmd"
+		}
+	},
+
+	"admin/modem/sms/setup": {
+		"title": "Setup",
+		"order": 27,
+		"action": {
+			"type": "view",
+			"path": "smstools3/setup"
+		}
+	},
+
+	"admin/modem/sms/script": {
+		"title": "User Script",
+		"order": 28,
+		"action": {
+			"type": "view",
+			"path": "smstools3/script"
+		}
+	}
+}

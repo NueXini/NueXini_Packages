@@ -1,0 +1,23 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2016 Chen RuiWei <crwbak@gmail.com>
+# Copyright (C) 2021 xiaoqingfeng <xiaoqingfengatgm@gmail.com>
+START=99
+STOP=10
+
+CONFIG=softethervpn
+
+start()
+{
+	enable=$(uci -q get homeconnect.@softether[0].enable)
+	[ $enable -ne 1 ] && {
+		exit 0
+	}
+	/usr/bin/env LANG=en_US.UTF-8 /usr/libexec/softethervpn/vpnserver start > /dev/null 2>&1
+	fw3 reload
+}
+
+stop()
+{
+	/usr/bin/env LANG=en_US.UTF-8 /usr/libexec/softethervpn/vpnserver stop > /dev/null 2>&1
+	fw3 reload
+}
