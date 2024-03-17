@@ -16243,6 +16243,7 @@ pinduck.com
 pinflix.com
 ping.fm
 ping.pe
+ping.sx
 pingguotv.xyz
 pingxiangpuer.com
 pinimg.com
@@ -20001,6 +20002,8 @@ tiktokcdn.com
 tiktokd.net
 tiktokd.org
 tiktokv.com
+tiktokv.us
+tiktokw.us
 tiltbrush.com
 timdir.com
 time.com
@@ -23059,6 +23062,7 @@ yam.com
 yam.org.tw
 yamaxun
 yamaxun.com
+yamibo.com
 yammer.com
 yamoon.club
 yande.re
@@ -23891,6 +23895,7 @@ full:prd-priconne-redive.akamaized.net
 full:production-openaicom-storage.azureedge.net
 full:psg-int-centralus.cloudapp.net
 full:psg-int-eastus.cloudapp.net
+full:public-us-pingsx.api.clonoth.com
 full:push-apple.com.akadns.net
 full:pvr-hamivideo.cdn.hinet.net
 full:qualcomm.sc.omtrdc.net
