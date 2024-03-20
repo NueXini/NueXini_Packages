@@ -34,7 +34,8 @@
                     tb.innerHTML = `<em><b style="color:${statusColor}">${statusText}</b></em>`;
                 })
                 .catch(() => {
-                    tb.innerHTML = '<em><b style="color:red">Failed to fetch MosDNS status</b></em>';
+                    const errorMsg = '<em><b style="color:red"><%:Failed to fetch MosDNS status%></b></em>';
+                    tb.innerHTML = errorMsg;
                 });
         }
 

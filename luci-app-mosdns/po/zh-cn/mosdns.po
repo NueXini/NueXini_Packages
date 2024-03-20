@@ -16,6 +16,9 @@ msgstr "未运行"
 msgid "Collecting data..."
 msgstr "获取数据中..."
 
+msgid "Failed to fetch MosDNS status"
+msgstr "无法获取MosDNS状态"
+
 msgid "Enable"
 msgstr "启用"
 
@@ -24,9 +27,6 @@ msgstr "启用 DNS 重定向"
 
 msgid "Enable DNS ADblock"
 msgstr "启用 DNS 广告过滤"
-
-msgid "View the Custom YAML Configuration file used by this MosDNS. You can edit it as you own need."
-msgstr "注意！此页的更改仅当 'MosDNS 配置文件选择' 为 '自定义配置' 时才会生效"
 
 msgid "Geodata Update"
 msgstr "数据库更新"
@@ -97,10 +97,10 @@ msgstr "应用"
 msgid "MosDNS Config File"
 msgstr "MosDNS 配置文件选择"
 
-msgid "Def Config"
-msgstr "内置预设"
+msgid "Default Config"
+msgstr "默认配置"
 
-msgid "Cus Config"
+msgid "Custom Config"
 msgstr "自定义配置"
 
 msgid "Log Level"
@@ -121,32 +121,35 @@ msgstr "规则列表"
 msgid "Rule Settings"
 msgstr "自定义规则列表"
 
-msgid "<br>The list of rules only apply to 'Custom Config' profiles."
-msgstr "<br>规则列表仅适用于 “自定义配置” 配置文件"
+msgid "The rule list applies to both 'Default Config' and 'Custom Config' profiles."
+msgstr "规则列表适用于'默认配置'和'自定义配置'配置文件。"
 
-msgid "<br>The list of rules only apply to 'Default Config' profiles."
-msgstr "<br>规则列表仅适用于 “内置预设” 配置文件"
+msgid "The rule list applies exclusively to 'Custom Config' profiles."
+msgstr "规则列表仅适用于'自定义配置'配置文件。"
 
 msgid "White Lists"
 msgstr "白名单"
 
-msgid "These domain names allow DNS resolution with the highest priority. Please input the domain names of websites, every line can input only one website domain. For example: hm.baidu.com."
-msgstr "加入的域名始终允许 DNS 解析，且优先级最高（每个域名一行，允许使用规则匹配）"
+msgid "These domain names will be resolved with the highest priority<br> Please input the domain names of websites<br> Each line should contain only one website domain<br>For example: hm.baidu.com"
+msgstr "这些域名将以最高优先级进行 DNS 解析<br>请输入网站的域名<br>每行只能包含一个网站域名<br>例如：hm.baidu.com"
 
 msgid "Block Lists"
 msgstr "黑名单"
 
-msgid "These domains are blocked from DNS resolution. Please input the domain names of websites, every line can input only one website domain. For example: baidu.com."
-msgstr "加入的域名将屏蔽 DNS 解析（每个域名一行，允许使用规则匹配）"
+msgid "These domain names are blocked and cannot be resolved through DNS<br>Please input the domain names of websites<br>Each line should contain only one website domain<br>For example: baidu.com"
+msgstr "这些域名被屏蔽，无法进行 DNS 解析<br>请输入网站的域名<br>每行只能包含一个网站域名<br>例如：baidu.com"
 
-msgid "Hosts For example: baidu.com 10.0.0.1"
-msgstr "自定义 Hosts 重写，如：baidu.com 10.0.0.1（每个规则一行）"
+msgid "Hosts<br>For example: baidu.com 10.0.0.1"
+msgstr "Hosts<br>例如：baidu.com 10.0.0.1"
 
 msgid "Redirect"
 msgstr "重定向"
 
-msgid "The domain name to redirect the request to. Requests domain A, but returns records for domain B. example: a.com b.com"
-msgstr "重定向请求的域名。请求域名 A，但返回域名 B 的记录，如：baidu.com qq.com（每个规则一行）"
+msgid "These domain names will be redirected<br>Requests for domain A will return records for domain B<br>For example: a.com b.com"
+msgstr "这些域名将被重定向<br>对于域名 A 的请求将返回域名 B 的记录<br>例如：a.com b.com"
+
+msgid "View the Custom YAML Configuration file used by this MosDNS<br>You can edit it according to your own needs"
+msgstr "查看此 MosDNS 使用的自定义 YAML 配置文件<br>您可以根据自己的需求进行编辑"
 
 msgid "Logs"
 msgstr "日志"

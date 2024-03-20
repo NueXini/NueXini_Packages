@@ -1,99 +1,74 @@
-local datatypes = require "luci.cbi.datatypes"
+local perror = require("luci.util").perror
+local reload_mosdns = require("luci.controller.mosdns").reload_mosdns
 
-local rule_files = {
-  white_list = "/etc/mosdns/rule/whitelist.txt",
-  block_list = "/etc/mosdns/rule/blocklist.txt",
-  hosts_list = "/etc/mosdns/rule/hosts.txt",
-  redirect_list = "/etc/mosdns/rule/redirect.txt",
-  cus_config = "/etc/mosdns/cus_config.yaml"
+local rulePath = {
+  whiteList = "/etc/mosdns/rule/whitelist.txt",
+  blockList = "/etc/mosdns/rule/blocklist.txt",
+  hostsList = "/etc/mosdns/rule/hosts.txt",
+  redirectList = "/etc/mosdns/rule/redirect.txt",
+  cusConfig = "/etc/mosdns/cus_config.yaml"
 }
 
-local function read_file(file_path)
-  local file = io.open(file_path, "r")
-  if file then
-    local content = file:read("*a")
-    file:close()
-    return content
+local function readFile(filePath)
+  local file = io.open(filePath, "r")
+  if not file then
+    perror("Failed to read file: " .. filePath)
+    return ""
   end
-  return ""
+
+  local content = file:read("*a")
+  file:close()
+  return content
 end
 
-local function write_file(file_path, content)
-  local file = io.open(file_path, "w")
-  if file then
-    file:write(content)
-    file:close()
+local function writeFile(filePath, content)
+  local file = io.open(filePath, "w")
+  if not file then
+    perror("Failed to write file: " .. filePath)
+    return
   end
+
+  file:write(content)
+  file:close()
 end
 
-local function remove_file(file_path)
-  write_file(file_path, "")
-end
-
-m = Map("mosdns")
-
-s = m:section(TypedSection, "mosdns", translate("Rule Settings"))
+local m = Map("mosdns")
+local s = m:section(TypedSection, "mosdns", translate("Rule Settings"))
 s.anonymous = true
+
+local function createTextOption(tabName, optionName, filePath, description, customDescription, rows, size)
+  local o = s:taboption(tabName, TextValue, optionName, translate(description))
+  o.rows = rows or 15  -- 使用传入的rows参数或默认值15
+  o.size = size or 15  -- 使用传入的width参数或默认值15
+  o.wrap = "off"
+  o.cfgvalue = function(self, section) return readFile(filePath) end
+  o.write = function(self, section, value) writeFile(filePath, value:gsub("\r\n", "\n")) end
+  o.remove = function(self, section, value) writeFile(filePath, "") end
+  o.validate = function(self, value)
+    return value
+  end
+  o.description = "<font color='#00bd3e'>" .. translate(customDescription or "The rule list applies to both 'Default Config' and 'Custom Config' profiles.") .. "</font>"
+end
 
 s:tab("white_list", translate("White Lists"))
 s:tab("block_list", translate("Block Lists"))
 s:tab("hosts_list", translate("Hosts"))
 s:tab("redirect_list", translate("Redirect"))
-s:tab("cus_config", translate("Cus Config"))
+s:tab("cus_config", translate("Custom Config"))
 
-o = s:taboption("white_list", TextValue, "whitelist", "", "<font color='red'>" .. translate("These domain names allow DNS resolution with the highest priority. Please input the domain names of websites, every line can input only one website domain. For example: hm.baidu.com.") .. "</font>" .. "<font color='#00bd3e'>" .. translate("<br>The list of rules only apply to 'Default Config' profiles.") .. "</font>")
-o.rows = 15
-o.wrap = "off"
-o.cfgvalue = function(self, section) return read_file(rule_files.white_list) end
-o.write = function(self, section, value) write_file(rule_files.white_list, value:gsub("\r\n", "\n")) end
-o.remove = function(self, section, value) remove_file(rule_files.white_list) end
-o.validate = function(self, value)
-  return value
-end
+createTextOption("white_list", "whitelist", rulePath.whiteList, "These domain names will be resolved with the highest priority<br> Please input the domain names of websites<br> Each line should contain only one website domain<br>For example: hm.baidu.com")
 
-o = s:taboption("block_list", TextValue, "blocklist", "", "<font color='red'>" .. translate("These domains are blocked from DNS resolution. Please input the domain names of websites, every line can input only one website domain. For example: baidu.com.") .. "</font>" .. "<font color='#00bd3e'>" .. translate("<br>The list of rules only apply to 'Default Config' profiles.") .. "</font>")
-o.rows = 15
-o.wrap = "off"
-o.cfgvalue = function(self, section) return read_file(rule_files.block_list) end
-o.write = function(self, section, value) write_file(rule_files.block_list, value:gsub("\r\n", "\n")) end
-o.remove = function(self, section, value) remove_file(rule_files.block_list) end
-o.validate = function(self, value)
-  return value
-end
+createTextOption("block_list", "blocklist", rulePath.blockList, "These domain names are blocked and cannot be resolved through DNS<br>Please input the domain names of websites<br>Each line should contain only one website domain<br>For example: baidu.com")
 
-o = s:taboption("hosts_list", TextValue, "hosts", "", "<font color='red'>" .. translate("Hosts For example: baidu.com 10.0.0.1") .. "</font>" .. "<font color='#00bd3e'>" .. translate("<br>The list of rules only apply to 'Default Config' profiles.") .. "</font>")
-o.rows = 15
-o.wrap = "off"
-o.cfgvalue = function(self, section) return read_file(rule_files.hosts_list) end
-o.write = function(self, section, value) write_file(rule_files.hosts_list, value:gsub("\r\n", "\n")) end
-o.remove = function(self, section, value) remove_file(rule_files.hosts_list) end
-o.validate = function(self, value)
-  return value
-end
+createTextOption("hosts_list", "hosts", rulePath.hostsList, "Hosts<br>For example: baidu.com 10.0.0.1")
 
-o = s:taboption("redirect_list", TextValue, "redirect", "", "<font color='red'>" .. translate("The domain name to redirect the request to. Requests domain A, but returns records for domain B. example: a.com b.com") .. "</font>" .. "<font color='#00bd3e'>" .. translate("<br>The list of rules only apply to 'Default Config' profiles.") .. "</font>")
-o.rows = 15
-o.wrap = "off"
-o.cfgvalue = function(self, section) return read_file(rule_files.redirect_list) end
-o.write = function(self, section, value) write_file(rule_files.redirect_list, value:gsub("\r\n", "\n")) end
-o.remove = function(self, section, value) remove_file(rule_files.redirect_list) end
-o.validate = function(self, value)
-  return value
-end
+createTextOption("redirect_list", "redirect", rulePath.redirectList, "These domain names will be redirected<br>Requests for domain A will return records for domain B<br>For example: a.com b.com")
 
-o = s:taboption("cus_config", TextValue, "Cus Config", "", "<font color='red'>" .. translate("View the Custom YAML Configuration file used by this MosDNS. You can edit it as you own need.") .. "</font>" .. "<font color='#00bd3e'>" .. translate("<br>The list of rules only apply to 'Custom Config' profiles.") .. "</font>")
-o.rows = 30
-o.wrap = "off"
-o.cfgvalue = function(self, section) return read_file(rule_files.cus_config) end
-o.write = function(self, section, value) write_file(rule_files.cus_config, value:gsub("\r\n", "\n")) end
-o.remove = function(self, section, value) remove_file(rule_files.cus_config) end
-o.validate = function(self, value)
-  return value
-end
+createTextOption("cus_config", "cus_config", rulePath.cusConfig, "View the Custom YAML Configuration file used by this MosDNS<br>You can edit it according to your own needs", "The rule list applies exclusively to 'Custom Config' profiles.", 60, 70)
 
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
-  luci.sys.exec("/etc/init.d/mosdns reload")
+  reload_mosdns()
 end
 
 return m

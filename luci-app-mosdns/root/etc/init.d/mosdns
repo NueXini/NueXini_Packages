@@ -32,7 +32,7 @@ restore_setting() {
 
 prepare_setting() {
   redirect=$(uci -q get mosdns.mosdns.redirect)
-  if [ "$redirect" -eq 1 ]; then
+  if [ "$redirect" == "1" ]; then
     sed -i "/list server/d" /etc/config/dhcp
     uci add_list dhcp.@dnsmasq[0].server="127.0.0.1#$(uci -q get mosdns.mosdns.listen_port)"
     uci set dhcp.@dnsmasq[0].rebind_protection='0'
@@ -59,7 +59,7 @@ reload_service() {
 setcron() {
   touch "$CRON_FILE"
   sed -i '/mosupdater.sh/d' "$CRON_FILE" 2>/dev/null
-  if [ "$(uci -q get mosdns.mosdns.geo_auto_update)" -eq 1 ]; then
+  if [ "$(uci -q get mosdns.mosdns.geo_auto_update)" == "1" ]; then
     echo "0 $(uci -q get mosdns.mosdns.geo_update_day_time) * * $(uci -q get mosdns.mosdns.geo_update_week_time) /etc/mosdns/mosupdater.sh" >> "$CRON_FILE"
   fi
   crontab "$CRON_FILE"
@@ -71,12 +71,24 @@ delcron() {
 }
 
 adblock() {
-  cp -f /etc/mosdns/rule/serverlist.txt /etc/mosdns/rule/serverlist.bak
-  modns_adblock=$(uci -q get mosdns.mosdns.adblock)
-  if [ "$modns_adblock" -eq 0 ]; then
-    : > /etc/mosdns/rule/serverlist.txt
+  local mosdns_adblock=$(uci -q get mosdns.mosdns.adblock)
+  local serverlist_act="/etc/mosdns/rule/serverlist.act"
+  local serverlist_txt="/etc/mosdns/rule/serverlist.txt"
+
+  if [ "$mosdns_adblock" != "0" ]; then
+    if [ ! -L "$serverlist_act" ] || [ "$(readlink -f "$serverlist_act")" != "$serverlist_txt" ]; then
+      ln -sf "$serverlist_txt" "$serverlist_act" || {
+        echo "Failed to create symbolic link."
+        return 1
+      }
+    fi
   else
-    cat /etc/mosdns/rule/serverlist.bak > /etc/mosdns/rule/serverlist.txt
+    if [ ! -L "$serverlist_act" ] || [ "$(readlink -f "$serverlist_act")" != "/dev/null" ]; then
+      ln -sf /dev/null "$serverlist_act" || {
+        echo "Failed to create symbolic link."
+        return 1
+      }
+    fi
   fi
 }
 
@@ -95,8 +107,8 @@ v4config() {
 start_service() {
   # Reading config
   inital_conf
-  if [ "$enabled" -eq 0 ]; then
-    printf "MosDNS has turned off\n"
+  if [ "$enabled" == "0" ]; then
+    printf "MosDNS has been turned off\n"
     return 1
   fi
   delcron
@@ -116,7 +128,7 @@ start_service() {
   if [ "$(uci -q get mosdns.mosdns.configfile)" = "./def_config.yaml" ]; then
     restore_setting
     prepare_setting
-    if [ "$(uci -q get mosdns.mosdns.redirect)" -eq 1 ] && [ "$(uci -q get shadowsocksr.@global[0].run_mode)" != gfw ]; then
+    if [ "$(uci -q get mosdns.mosdns.redirect)" == "1" ] && [ "$(uci -q get shadowsocksr.@global[0].run_mode)" != gfw ]; then
       true > /etc/ssrplus/gfw_list.conf
       sed -i '/update.lua/d' /usr/share/shadowsocksr/ssrplusupdate.sh
       sed -i '/bin\/sh/a\/usr/bin/lua /usr/share/shadowsocksr/update.lua ad_data' /usr/share/shadowsocksr/ssrplusupdate.sh
@@ -126,22 +138,20 @@ start_service() {
     restart_others
   fi
 
-  printf "MosDNS turn on\n"
+  printf "MosDNS turned on\n"
   printf "enabled=%d\n" "$enabled"
 }
 
 stop_service() {
+  inital_conf
   pgrep -f /usr/bin/mosdns | xargs kill -9
-  printf "MosDNS turn off\n"
-  printf "enabled=%d\n" "$enabled"
-
   if [ "$(uci -q get mosdns.mosdns.configfile)" = "./def_config.yaml" ]; then
-    config_load "mosdns"
-    enabled=$(uci -q get mosdns.mosdns.enabled)
-    if [ "$enabled" = "0" ] && [ "$(uci -q get dhcp.@dnsmasq[0].setbymosdns)" -eq 1 ]; then
+    if [ "$enabled" = "0" ] && [ "$(uci -q get dhcp.@dnsmasq[0].setbymosdns)" == "1" ]; then
       restore_setting
     fi
     restart_others
   fi
   delcron
+  printf "MosDNS turned off\n"
+  printf "enabled=%d\n" "$enabled"
 }

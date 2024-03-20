@@ -61,7 +61,7 @@ plugins:
     type: domain_set
     args:
       files:
-        - "/etc/mosdns/rule/serverlist.txt"
+        - "/etc/mosdns/rule/serverlist.act"
 
   # 缓存
   - tag: cache

@@ -6,7 +6,7 @@ if uci_ext ssrp; then
     uci set shadowsocksr.@global[0].pdnsd_enable='1'
     uci set shadowsocksr.@global[0].tunnel_forward="$WAN_DNS0:53"
   elif [ "$1" = "" ]; then
-    if [ "$(uci -q get mosdns.mosdns.listen_port)" -eq 5335 ]; then
+    if [ "$(uci -q get mosdns.mosdns.listen_port)" == "5335" ]; then
       uci set shadowsocksr.@global[0].pdnsd_enable='0'
       uci del shadowsocksr.@global[0].tunnel_forward
       uci del shadowsocksr.@global[0].adblock_url

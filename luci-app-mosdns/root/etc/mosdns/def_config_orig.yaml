@@ -1,10 +1,10 @@
 log:
   level: loglvl
   file: "logfile"
-  
+
 # api:
 #   http: "127.0.0.1:8080" # 在该地址启动 api 接口。
-  
+
 plugins:
   # 加载配置
   # 国内域名
@@ -13,7 +13,7 @@ plugins:
     args:
       files:                        # 从文本文件载入
         - "/etc/mosdns/rule/geosite_cn.txt"
-  
+
   # 国内ip
   - tag: geoip_cn
     type: ip_set
@@ -61,7 +61,7 @@ plugins:
     type: domain_set
     args:
       files:
-        - "/etc/mosdns/rule/serverlist.txt"
+        - "/etc/mosdns/rule/serverlist.act"
 
   # 缓存
   - tag: cache
@@ -79,7 +79,7 @@ plugins:
       upstreams:
         - addr: localdns1
         - addr: localdns2
-  
+
   # 转发至远程服务器
   - tag: forward_remote
     type: forward
@@ -102,7 +102,7 @@ plugins:
     args:
       - exec: prefer_ipv4
       - exec: $forward_remote
-  
+
   # 有响应终止返回
   - tag: has_resp_sequence
     type: sequence
@@ -169,7 +169,7 @@ plugins:
         exec: reject 3
       - matches: qtype 65
         exec: reject 3
-  
+
   # 主要的运行逻辑插件
   # sequence 插件中调用的插件 tag 必须在 sequence 前定义，
   # 否则 sequence 找不到对应插件。

@@ -32,8 +32,8 @@ enable.rmempty = false
 
 -- Config file option
 local configfile = s:option(ListValue, "configfile", translate("MosDNS Config File"))
-configfile:value("./def_config.yaml", translate("Def Config"))
-configfile:value("./cus_config.yaml", translate("Cus Config"))
+configfile:value("./def_config.yaml", translate("Default Config"))
+configfile:value("./cus_config.yaml", translate("Custom Config"))
 configfile.default = "./def_config.yaml"
 
 -- Listen port option
