@@ -1,0 +1,96 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+
+TIMECONTROL_ENABLE=0
+
+iptables_w(){
+	iptables -w 1 "$@"
+}
+
+add_rule(){
+	local enable macaddr timeoff timeon z1 z2 z3 z4 z5 z6 z7
+	config_get enable "$1" enable "0"
+	config_get macaddr "$1" macaddr
+	config_get timeoff "$1" timeoff
+	config_get timeon "$1" timeon
+	config_get z1 "$1" z1
+	config_get z2 "$1" z2
+	config_get z3 "$1" z3
+	config_get z4 "$1" z4
+	config_get z5 "$1" z5
+	config_get z6 "$1" z6
+	config_get z7 "$1" z7
+
+	if [ -z $enable ] || [ "$enable" != "1" ] || [ -z $macaddr ] || [ -z $timeoff ] || [ -z $timeon ]; then
+		return 0
+	fi
+
+	local Z1 Z2 Z3 Z4 Z5 Z6 Z7
+	[ "$z1" == "1" ] && Z1="Mon,"
+	[ "$z2" == "1" ] && Z2="Tue,"
+	[ "$z3" == "1" ] && Z3="Wed,"
+	[ "$z4" == "1" ] && Z4="Thu,"
+	[ "$z5" == "1" ] && Z5="Fri,"
+	[ "$z6" == "1" ] && Z6="Sat,"
+	[ "$z7" == "1" ] && Z7="Sun"
+
+	local table
+	for table in filter nat; do
+		iptables_w -t $table -A TIMECONTROL_RULES -m mac --mac-source $macaddr -m time --kerneltz --timestart $timeon --timestop $timeoff --weekdays $Z1$Z2$Z3$Z4$Z5$Z6$Z7 -j TIMECONTROL_REJECT
+	done
+}
+
+timecontrol_header(){
+	config_get TIMECONTROL_ENABLE "$1" enable "0"
+}
+
+start(){
+	local table
+	config_load timecontrol
+	config_foreach timecontrol_header basic
+
+	[ "$TIMECONTROL_ENABLE" != "1" ] && return 0
+	# resolve interface
+	local interface=$(
+		. /lib/functions/network.sh
+
+		network_is_up "lan" && network_get_device device "lan"
+		echo "${device:-br-lan}"
+	)
+
+	for table in filter nat; do
+		iptables_w -t $table -N TIMECONTROL
+		iptables_w -t $table -F TIMECONTROL
+		iptables_w -t $table -N TIMECONTROL_RULES
+		iptables_w -t $table -F TIMECONTROL_RULES
+		iptables_w -t $table -N TIMECONTROL_REJECT
+		iptables_w -t $table -F TIMECONTROL_REJECT
+	done
+	iptables_w -t filter -I TIMECONTROL_REJECT -j DROP
+	iptables_w -t filter -I TIMECONTROL_REJECT -p tcp -j REJECT --reject-with tcp-reset
+	iptables_w -t nat -I TIMECONTROL_REJECT -j ACCEPT
+
+	config_foreach add_rule macbind
+
+	iptables_w -t filter -I TIMECONTROL -i $interface -j TIMECONTROL_RULES
+	iptables_w -t filter -I FORWARD -j TIMECONTROL
+	iptables_w -t nat -I TIMECONTROL -i $interface -j TIMECONTROL_RULES
+	iptables_w -t nat -I PREROUTING -j TIMECONTROL
+	echo "/etc/init.d/timecontrol restart" > "/var/etc/timecontrol.include"
+}
+
+stop(){
+	local table
+	iptables_w -t filter -D FORWARD -j TIMECONTROL
+	iptables_w -t nat -D PREROUTING -j TIMECONTROL
+
+	for table in filter nat; do
+		iptables_w -t $table -F TIMECONTROL
+		iptables_w -t $table -X TIMECONTROL
+		iptables_w -t $table -F TIMECONTROL_RULES
+		iptables_w -t $table -X TIMECONTROL_RULES
+		iptables_w -t $table -F TIMECONTROL_REJECT
+		iptables_w -t $table -X TIMECONTROL_REJECT
+	done
+}
