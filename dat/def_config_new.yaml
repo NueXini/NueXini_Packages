@@ -7,8 +7,8 @@ plugin:
     type: fast_forward
     args:
       upstream:
-        - addr: ${{ ./lib.sh dns 0 }}
-        - addr: ${{ ./lib.sh dns 1 }}
+        - addr: ${{ /usr/share/mosdns/mosdns.sh dns 0 }}
+        - addr: ${{ /usr/share/mosdns/mosdns.sh dns 1 }}
 
   - tag: query_is_whitelist_domain
     type: query_matcher
@@ -76,7 +76,7 @@ plugin:
     type: query_matcher
     args:
       qtype: [65]
-      
+
   - tag: query_is_local_ptr
     type: query_matcher
     args:
@@ -84,7 +84,7 @@ plugin:
       qtype: [12]
       domain:
         - "ext:./local-ptr.txt"
-      
+
   - tag: main_sequence
     type: sequence
     args:
@@ -125,7 +125,7 @@ plugin:
             - forward_remote
           fast_fallback: 150
           always_standby: true
-      
+
   - tag: main_server
     type: server
     args:

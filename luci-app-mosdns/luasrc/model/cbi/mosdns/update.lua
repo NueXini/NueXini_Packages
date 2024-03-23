@@ -35,7 +35,7 @@ local data_update = s:option(Button, "geo_update_database", translate("Database 
 data_update.inputtitle = translate("Check And Update")
 data_update.inputstyle = "reload"
 data_update.write = function()
-  luci.sys.exec("/etc/mosdns/mosupdater.sh > /dev/null 2>&1 &")
+  luci.sys.exec("/usr/share/mosdns/mosdns.sh update_mosdns > /dev/null 2>&1 &")
 end
 
 return m

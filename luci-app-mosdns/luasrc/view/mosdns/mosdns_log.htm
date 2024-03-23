@@ -1,5 +1,5 @@
 <script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', function() {
+	document.addEventListener('DOMContentLoaded', function () {
 		const clearLogButton = document.getElementById('clear_log_button');
 		const logTextarea = document.getElementById('log_textarea');
 
@@ -12,7 +12,7 @@
 			clearLogButton.disabled = true;
 
 			fetch('<%=url([[admin]], [[services]], [[mosdns]], [[clear_log]])%>', { method: 'GET' })
-				.then(function(response) {
+				.then(function (response) {
 					if (response.ok) {
 						clearLogTextarea();
 						location.reload();
@@ -20,7 +20,7 @@
 						throw new Error('Network response was not ok.');
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.error('Error:', error);
 					clearLogButton.disabled = false;
 				});
@@ -33,17 +33,17 @@
 
 		function getLog() {
 			fetch('<%=url([[admin]], [[services]], [[mosdns]], [[get_log]])%>', { method: 'GET' })
-				.then(function(response) {
+				.then(function (response) {
 					if (response.ok) {
 						return response.text();
 					} else {
 						throw new Error('Network response was not ok.');
 					}
 				})
-				.then(function(logText) {
+				.then(function (logText) {
 					updateLogTextarea(logText);
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.error('Error:', error);
 				});
 		}
@@ -55,6 +55,9 @@
 	});
 </script>
 <fieldset class="cbi-section" id="_log_fieldset">
-	<input id="clear_log_button" class="cbi-button cbi-input-remove" type="button" value="<%:Clear logs%>" style="margin-left: 10px; margin-top: 10px;">
-	<textarea id="log_textarea" class="cbi-input-textarea" style="width: calc(100% - 20px); height: 600px; margin: 10px;" data-update="change" rows="5" wrap="off" readonly></textarea>
+	<input id="clear_log_button" class="cbi-button cbi-input-remove" type="button" value="<%:Clear logs%>"
+		style="margin-left: 10px; margin-top: 10px;">
+	<textarea id="log_textarea" class="cbi-input-textarea"
+		style="width: calc(100% - 20px); height: 600px; margin: 10px;" data-update="change" rows="5" wrap="off"
+		readonly></textarea>
 </fieldset>

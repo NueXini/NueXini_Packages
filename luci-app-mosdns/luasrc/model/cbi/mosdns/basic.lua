@@ -53,8 +53,8 @@ loglv:depends("configfile", "./def_config.yaml")
 
 -- Log file option
 local logfile = s:option(Value, "logfile", translate("MosDNS Log File"))
-logfile.placeholder = "/tmp/mosdns.txt"
-logfile.default = "/tmp/mosdns.txt"
+logfile.placeholder = "/tmp/log/mosdns.log"
+logfile.default = "/tmp/log/mosdns.log"
 logfile:depends("configfile", "./def_config.yaml")
 
 -- Remote DNS options
@@ -83,7 +83,7 @@ set_config.inputtitle = translate("Apply")
 set_config.inputstyle = "reload"
 set_config.description = translate("This will make the necessary adjustments to other plug-in settings.")
 set_config.write = function()
-  luci.sys.exec("/etc/mosdns/set.sh &> /dev/null &")
+  luci.sys.exec("/usr/share/mosdns/conf_dns.sh &> /dev/null &")
 end
 set_config:depends("configfile", "./def_config.yaml")
 
@@ -93,7 +93,7 @@ unset_config.inputtitle = translate("Apply")
 unset_config.inputstyle = "reload"
 unset_config.description = translate("This will revert the adjustments.")
 unset_config.write = function()
-  luci.sys.exec("/etc/mosdns/set.sh unset &> /dev/null &")
+  luci.sys.exec("/usr/share/mosdns/conf_dns.sh unset &> /dev/null &")
 end
 
 return m

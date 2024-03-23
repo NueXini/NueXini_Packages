@@ -11,42 +11,42 @@ plugins:
   - tag: geosite_cn
     type: domain_set
     args:
-      files:                        # 从文本文件载入
+      files: # 从文本文件载入
         - "/etc/mosdns/rule/geosite_cn.txt"
 
   # 国内ip
   - tag: geoip_cn
     type: ip_set
     args:
-      files:                        # 从文本文件载入
+      files: # 从文本文件载入
         - "/etc/mosdns/rule/geoip_cn.txt"
 
   # 国外域名
   - tag: geosite_no_cn
     type: domain_set
     args:
-      files:                        # 从文本文件载入
+      files: # 从文本文件载入
         - "/etc/mosdns/rule/geosite_no_cn.txt"
 
   # 白名单 加入的域名始终允许使用 “本地 DNS” 进行解析
   - tag: whitelist
     type: domain_set
     args:
-      files:                        # 从文本文件载入
+      files: # 从文本文件载入
         - "/etc/mosdns/rule/whitelist.txt"
 
   # 黑名单 加入的域名将屏蔽 DNS 解析
   - tag: blocklist
     type: domain_set
     args:
-      files:                        # 从文本文件载入
+      files: # 从文本文件载入
         - "/etc/mosdns/rule/blocklist.txt"
 
   # 自定义 Hosts 重写
   - tag: hosts
     type: hosts
     args:
-      files:                        # 从文本文件载入
+      files: # 从文本文件载入
         - "/etc/mosdns/rule/hosts.txt"
 
   # 重定向请求的域名
@@ -69,7 +69,7 @@ plugins:
     args:
       size: 20480
       lazy_cache_ttl: 259200
-      dump_file: "/etc/mosdns/rule/cache.dump"
+      dump_file: "/tmp/mosdns.cache"
       dump_interval: 43200
 
   # 转发至本地服务器
@@ -133,7 +133,6 @@ plugins:
       threshold: 150
       always_standby: true
 
-
   # 查询国内域名
   - tag: query_is_local_domain
     type: sequence
@@ -165,7 +164,7 @@ plugins:
       - matches: qname $adlist
         exec: reject 3
       - matches:
-        - qtype 12
+          - qtype 12
         exec: reject 3
       - matches: qtype 65
         exec: reject 3

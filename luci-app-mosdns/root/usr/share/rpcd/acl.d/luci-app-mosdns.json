@@ -2,10 +2,14 @@
 	"luci-app-mosdns": {
 		"description": "Grant UCI access for luci-app-mosdns",
 		"read": {
-			"uci": [ "mosdns" ]
+			"uci": [
+				"mosdns"
+			]
 		},
 		"write": {
-			"uci": [ "mosdns" ]
+			"uci": [
+				"mosdns"
+			]
 		}
 	}
 }

@@ -21,12 +21,41 @@ local function handle_file_content(file_path, write)
 end
 
 local function check_config_file()
-    return nixio.fs.access("/etc/config/mosdns")
+    local filePath = "/etc/config/mosdns"
+    local exists = readFile(filePath, true)
+    return exists
 end
 
 local function is_mosdns_running()
     local result = sys.exec("pgrep -f mosdns")
     return result ~= ""
+end
+
+function readFile(filePath, checkExistence)
+    local file = io.open(filePath, "r")
+    if not file then
+        util.perror("Failed to read file: " .. filePath)
+        return false
+    else
+        if checkExistence then
+            return true
+        else
+            local content = file:read("*a")
+            file:close()
+            return content
+        end
+    end
+end
+
+function writeFile(filePath, content)
+    local file = io.open(filePath, "w")
+    if not file then
+        util.perror("Failed to write file: " .. filePath)
+        return
+    end
+
+    file:write(content)
+    file:close()
 end
 
 function act_status()
@@ -37,12 +66,12 @@ function act_status()
 end
 
 function get_log()
-    local log_file_path = sys.exec("/etc/mosdns/lib.sh logfile")
+    local log_file_path = sys.exec("/usr/share/mosdns/mosdns.sh logfile")
     handle_file_content(log_file_path, true)
 end
 
 function clear_log()
-    local log_file_path = sys.exec("/etc/mosdns/lib.sh logfile")
+    local log_file_path = sys.exec("/usr/share/mosdns/mosdns.sh logfile")
     handle_file_content(log_file_path, false)
 end
 
@@ -59,7 +88,7 @@ function index()
     end
 
     local mosdns_page = entry(
-        {"admin", "services", "mosdns"},
+        { "admin", "services", "mosdns" },
         alias("admin", "services", "mosdns", "basic"),
         _("MosDNS"),
         30
@@ -68,45 +97,45 @@ function index()
     mosdns_page.acl_depends = { "luci-app-mosdns" }
 
     entry(
-        {"admin", "services", "mosdns", "basic"},
+        { "admin", "services", "mosdns", "basic" },
         cbi("mosdns/basic"),
         _("Basic Setting"),
         1
     ).leaf = true
 
     entry(
-        {"admin", "services", "mosdns", "rule_list"},
+        { "admin", "services", "mosdns", "rule_list" },
         cbi("mosdns/rule_list"),
         _("Rule List"),
         2
     ).leaf = true
 
     entry(
-        {"admin", "services", "mosdns", "update"},
+        { "admin", "services", "mosdns", "update" },
         cbi("mosdns/update"),
         _("Geodata Update"),
         3
     ).leaf = true
 
     entry(
-        {"admin", "services", "mosdns", "log"},
+        { "admin", "services", "mosdns", "log" },
         cbi("mosdns/log"),
         _("Logs"),
         4
     ).leaf = true
 
     entry(
-        {"admin", "services", "mosdns", "status"},
+        { "admin", "services", "mosdns", "status" },
         call("act_status")
     ).leaf = true
 
     entry(
-        {"admin", "services", "mosdns", "get_log"},
+        { "admin", "services", "mosdns", "get_log" },
         call("get_log")
     ).leaf = true
 
     entry(
-        {"admin", "services", "mosdns", "clear_log"},
+        { "admin", "services", "mosdns", "clear_log" },
         call("clear_log")
     ).leaf = true
 end

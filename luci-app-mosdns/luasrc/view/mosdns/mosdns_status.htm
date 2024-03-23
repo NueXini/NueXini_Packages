@@ -7,12 +7,14 @@
 
 <fieldset class="cbi-section">
     <p id="mosdns_status">
-        <em><%:Collecting data...%></em>
+        <em>
+            <%:Collecting data...%>
+        </em>
     </p>
 </fieldset>
 
 <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', async function() {
+    document.addEventListener('DOMContentLoaded', async function () {
         const tb = document.getElementById('mosdns_status');
 
         async function fetchMosDNSStatus() {
