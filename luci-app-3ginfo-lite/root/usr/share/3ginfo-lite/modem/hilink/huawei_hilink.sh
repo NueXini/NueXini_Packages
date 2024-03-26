@@ -61,12 +61,23 @@ then
     PROTO="NCM"
 fi
 
-RSSI=$(getvaluen device-signal rssi)
+RSSI=$(getvalue device-signal rssi)
+if [ "$RSSI" == "&lt;=-113dBm" ]; then
+	RSSI=
+else
+	RSSI=$(echo "$RSSI" | sed 's/[^0-9]//g')
+fi
 if [ -n "$RSSI" ]; then
 	CSQ=$(((-1*RSSI + 113)/2))
 	CSQ_PER=$(($CSQ * 100/31))
 else
 	CSQ_PER=$(getvaluen monitoring-status SignalStrength)
+	if [ -z "$CSQ_PER" ]; then
+		CSQ_PER=$(getvaluen monitoring-status SignalIcon)
+		if [ -n "$CSQ_PER" ]; then
+			CSQ_PER=$((($CSQ_PER * 20) - 19))
+		fi
+	fi
 	if [ -n "$CSQ_PER" ]; then
 		CSQ=$((($CSQ_PER*31)/100))
 	fi
