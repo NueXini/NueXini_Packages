@@ -85,6 +85,7 @@ fi
 
 MODEN=$(getvaluen monitoring-status CurrentNetworkType)
 case $MODEN in
+	0)  MODE="NOSERVICE";;
 	1)  MODE="GSM";;
 	2)  MODE="GPRS";;
 	3)  MODE="EDGE";;
@@ -136,7 +137,7 @@ case $MODEN in
 	*)  MODE="-";;
 esac
 
-if [ "x$MODE" = "xLTE" ]; then
+if [ "x$MODE" = "xLTE" ] || [ "x$MODE" = "xNOSERVICE"]; then
 	RSRP=$(getvaluens device-signal rsrp)
 	SINR=$(getvaluens device-signal sinr)
 	RSRQ=$(getvaluens device-signal rsrq)
