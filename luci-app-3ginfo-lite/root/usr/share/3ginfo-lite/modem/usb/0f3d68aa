@@ -17,39 +17,38 @@ fi
 T=$(echo "$O" | awk '/^RSSI/ {print $3}' | xargs)
 if [ -n "$T" ]; then
 	RSSI="${T// //}"
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"RSSI":"'${T// //}' dBm"}'
+#	[ -n "$ADDON" ] && ADDON="$ADDON,"
+#	ADDON="$ADDON"'{"RSSI":"'${T// //}' dBm"}'
 fi
 
 T=$(echo "$O" | awk '/^RSRP/ {print $3}' | xargs)
 if [ -n "$T" ]; then
 	RSRP="${T// //}"
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"RSRP":"'${T// //}' dBm"}'
+#	[ -n "$ADDON" ] && ADDON="$ADDON,"
+#	ADDON="$ADDON"'{"RSRP":"'${T// //}' dBm"}'
 fi
 T=$(echo "$O" | awk '/^RSRQ/ {print $3}' | xargs)
 if [ -n "$T" ]; then
 	RSRQ="$T"
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"RSRQ":"'$T' dB"}'
+#	[ -n "$ADDON" ] && ADDON="$ADDON,"
+#	ADDON="$ADDON"'{"RSRQ":"'$T' dB"}'
 fi
 T=$(echo "$O" | awk '/^SINR/ {print $3}' | xargs)
 if [ -n "$T" ]; then
 	SINR="$T"
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"SINR":"'$T' dB"}'
+#	[ -n "$ADDON" ] && ADDON="$ADDON,"
+#	ADDON="$ADDON"'{"SINR":"'$T' dB"}'
 fi
 
 T=$(echo "$O" | awk -F: '/Temperature:/ {print $3}' | xargs)
 if [ -n "$T" ]; then
 	TEMP="$T &deg;C"
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"Temperatura":"'$T' &deg;C"}'
+#	[ -n "$ADDON" ] && ADDON="$ADDON,"
+#	ADDON="$ADDON"'{"Temperatura":"'$T' &deg;C"}'
 fi
 
 TAC_HEX=$(echo "$O" |awk -F: '/TAC:/ {print $3}' | awk '{ print $1 }' | xargs)
 TAC_DEC=$(echo "$O" | sed 's/[()]//g' |awk -F: '/TAC:/ {print $3}' | awk '{ print $2 }' | xargs)
-
 
 
 BW=$(echo "$O" |awk -F: '/LTE bw:/ {print $3}' | xargs)

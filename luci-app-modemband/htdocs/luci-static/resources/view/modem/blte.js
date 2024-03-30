@@ -479,7 +479,8 @@ return view.extend({
 			args.push(data.modemband.set_bands);
 			var ax = args.toString();
 			ax = ax.replace(/,/g, ' ')
-			fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands', ax ]);
+			
+			ax.length >= 1 ? fs.exec_direct('/usr/bin/modemband.sh', [ 'setbands', ax ]) : ui.addNotification(null, E('p', _('Check if you have selected the bands correctly.')), 'info');
 
 			return uci.load('modemband').then(function() {
 				var wrestart = (uci.get('modemband', '@modemband[0]', 'wanrestart'));
@@ -494,8 +495,10 @@ return view.extend({
 				var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
 				var nuser = (uci.get('modemband', '@modemband[0]', 'notify'));
 				
-				if ( nuser != '1' || nuser == null ) {
-				ui.addNotification(null, E('p', _('The new bands settings have been sent to the modem. If the changes are not visible, a restart of the connection, modem or router may be required.')), 'info');
+				if ( ax.length >= 1 ) {
+					if ( nuser != '1' || nuser == null ) {
+					ui.addNotification(null, E('p', _('The new bands settings have been sent to the modem. If the changes are not visible, a restart of the connection, modem or router may be required.')), 'info');
+					}
 				}
 				
 				if (wrestart == '1') {

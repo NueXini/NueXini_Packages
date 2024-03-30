@@ -245,3 +245,6 @@ msgstr "Zaznacz wszystkie"
 msgid "Bands are disabled..."
 msgstr "Pasma są wyłączone..."
 
+msgid "Check if you have selected the bands correctly."
+msgstr "Sprawdź, czy prawidłowo wybrałeś pasma."
+

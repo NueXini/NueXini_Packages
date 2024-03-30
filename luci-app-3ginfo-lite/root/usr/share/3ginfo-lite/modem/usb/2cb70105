@@ -27,8 +27,8 @@ if [ "x$MODE" = "xLTE" ]; then
 		T=$(echo "$T1" | awk -F, '{print $9}')
 		if [ -n "$T" ]; then
 			T=$((T - 100))
-			MODE="$MODE | $(band $T)"
-			PBAND="$(band $T "")"
+			MODE="$MODE | $(band4g $T)"
+			PBAND="$(band4g $T "")"
 		fi
 		T=$(echo "$T1" | awk -F, '{print $11}')
 		if [ -n "$T" ]; then
@@ -70,7 +70,7 @@ IFS="
 		T=$(echo "$LINE" | awk -F[:,] '/^SCC'$IDX': 2,./{print $4}')
 		T=$((T - 100))
 		
-		T2=$(band $T)
+		T2=$(band4g $T)
 		MODE="$MODE / $T2"
 
 		if [ -n "$T" ]; then

@@ -2,7 +2,7 @@
 #
 # (c) 2010-2021 Cezary Jackiewicz <cezary@eko.one.pl>
 #
-# (c) 2021 modified by Rafał Wabik - IceG - From eko.one.pl forum
+# (c) 2024 modified by Rafał Wabik - IceG - From eko.one.pl forum
 #
 
 IP=$1
@@ -167,6 +167,30 @@ COPS_MNC="$COPSC"
 
 COPS=$(getvalue net-current-plmn ShortName)
 
+if [[ -n "$COPS" ]]; then
+		COPS=$(awk -F[\;] '/^'$COPS';/ {print $3}' $RES/mccmnc.dat)
+		LOC=$(awk -F[\;] '/^'$COPS';/ {print $2}' $RES/mccmnc.dat)
+fi
+
+# operator location from temporary config
+LOCATIONFILE=/tmp/location
+if [ -e "$LOCATIONFILE" ]; then
+	touch $LOCATIONFILE
+	LOC=$(cat $LOCATIONFILE)
+	if [ -n "$LOC" ]; then
+		LOC=$(cat $LOCATIONFILE)
+	else
+		echo "-" > /tmp/location
+	fi
+else
+	LOC=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' $RES/mccmnc.dat)
+	if [ -n "$LOC" ]; then
+		echo "$LOC" > /tmp/location
+	else
+		echo "-" > /tmp/location
+	fi
+fi
+
 LAC_HEX=$(getvalue net-signal-para Lac)
 if [ -z "$LAC_HEX" ]; then
 	/usr/bin/wget -t 3 -O /tmp/add-param "http://$IP/config/deviceinformation/add_param.xml" > /dev/null 2>&1
@@ -191,3 +215,4 @@ fi
 
 rm $cookie
 break
+

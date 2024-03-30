@@ -36,12 +36,12 @@ case "$MODE_NUM" in
 		SINR="$T"
 
 		T=$(echo "$O" | awk -F[,:] '/^\+ZCELLINFO/ {print $4}' | xargs)
-		MODE="LTE $(band ${T/LTE B/})"
+		MODE="LTE $(band4g ${T/LTE B/})"
 		
 		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $3}' | xargs)
 		if [ -n "$T" ] && [ "x$T" != "x0" ]; then
 			T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $6}' | xargs)
-			PBAND="$(band $T "") @$T1 MHz"
+			PBAND="$(band4g $T "") @$T1 MHz"
 
 			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $2}' | xargs)
 			if [ -n "$T" ] && [ "x$T" != "x0" ]; then
@@ -57,8 +57,8 @@ case "$MODE_NUM" in
 			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $9}' | xargs)
 			if [ -n "$T" ] && [ "x$T" != "x0" ]; then
 				T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $11}' | xargs)
-				S1BAND="$(band $T "") @$T1 MHz"
-				MODE="${MODE/LTE/LTE_A} / $(band ${T})"
+				S1BAND="$(band4g $T "") @$T1 MHz"
+				MODE="${MODE/LTE/LTE_A} / $(band4g ${T})"
 
 				T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $7}' | xargs)
 				[ -n "$T" ] && S1PCI="$T"

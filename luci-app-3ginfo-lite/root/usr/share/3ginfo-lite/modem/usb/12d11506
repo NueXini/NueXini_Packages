@@ -99,12 +99,12 @@ UL=$(($TUL/1000))
 ULBW="UL: @$UL MHz"
 DLBW="DL: @$DL MHz"
 
-PBAND="$(band $TB "") $DLBW $ULBW"
+PBAND="$(band4g $TB "") $DLBW $ULBW"
 EARFCN=$(echo "$TBX" | cut -d ',' -f4-4 )
 PCI="-"
 
 if [[ "$MODE" == *"LTE"* ]] && [ -n "$TB" ]; then
-MODE="LTE | "$(band $TB "")
+MODE="LTE | "$(band4g $TB "")
 fi
       
 fi

@@ -1,0 +1,91 @@
+opengt
+ set com 115200n81
+ set comecho off
+ set senddelay 0.01
+ waitquiet 0.01 0.01
+
+ let $c="ATE0;+CGMI^m"
+ let $r="+CGMI:"
+ gosub readatcmdfl
+
+ let $c="AT+CGMM^m"
+ let $r="+CGMM:"
+ gosub readatcmdfl
+
+ let $c="AT+CGMR^m"
+ let $r="+CGMR:"
+ gosub readatcmdfl
+ let $c="AT+GMR^m"
+ let $r="+GMR:"
+ gosub readatcmdfl
+
+ let $c="AT+CGSN^m"
+ let $r="+CGSN:"
+ gosub readatcmdfl
+
+ let $c="AT+CIMI^m"
+ let $r="+CIMI:"
+ gosub readatcmdfl
+
+ let $c="AT\^ICCID?^m"
+ gosub readatcmd
+ let $c="AT+ICCID^m"
+ gosub readatcmd
+ let $c="AT+QCCID^m"
+ gosub readatcmd
+ let $c="AT#CCID^m"
+ gosub readatcmd
+ let $c="AT!ICCID?^m"
+ gosub readatcmd
+ let $c="AT*ICCID?^m"
+ gosub readatcmd
+ let $c="AT+CCID^m"
+ gosub readatcmd
+
+ exit 0
+
+:readatcmd
+ let i=15
+ send $c
+:loop
+ get 0.1 "^m" $s
+ if len($s) < 2 goto loop2
+ if $mid($s,1,2) = "ER" goto loop1
+ if $mid($s,1,2) = "OK" goto loop2
+ if $mid($s,1,2) = "AT" goto loop2
+ print $s,"\n"
+ exit 0
+
+:loop1
+ return
+
+:loop2
+ if i = 0 return
+ let i=i-1
+ goto loop
+
+:readatcmdfl
+ let i=15
+ send $c
+:loop3
+ get 0.1 "^m" $s
+ if len($s) < 2 goto loop5
+ let f=0
+ if $mid($s,0,1) ="\n" let f=1
+ if $mid($s,f,2) = "ER" goto loop4
+ if $mid($s,f,2) = "OK" goto loop5
+ if $mid($s,f,2) = "AT" goto loop5
+ if $mid($s,f,1) = "\^" goto loop5
+ if $mid($s,f,1) = "#"  goto loop5
+ let l=len($s)
+ let $s=$mid($s,f,l)
+ print $r,$s,"\n"
+ return
+
+:loop4
+ return
+
+:loop5
+ if i = 0 return
+ let i=i-1
+ goto loop3

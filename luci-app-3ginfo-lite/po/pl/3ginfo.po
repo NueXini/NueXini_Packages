@@ -203,3 +203,15 @@ msgstr "Interfejs wyboru modemów zdefiniowanych przez użytkownika."
 
 msgid "Modem selection menu"
 msgstr "Menu wyboru modemu"
+
+msgid "SIM card menu"
+msgstr "Menu karty SIM"
+
+msgid "Information read from the SIM card and device."
+msgstr "Informacje odczytane z karty SIM oraz z urządzenia."
+
+msgid "Hint"
+msgstr "Podpowiedź"
+
+msgid "CLICK ME TO SEE NEW MENU"
+msgstr "KLIKNIJ MNIE, ABY ZOBACZYĆ NOWE MENU"

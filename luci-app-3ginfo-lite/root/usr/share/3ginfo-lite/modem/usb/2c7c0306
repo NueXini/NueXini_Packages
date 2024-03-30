@@ -12,8 +12,8 @@ T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO/ {print $2"/"$4}' | xargs)
 if [ -n "$T" ]; then
 	if [ "x$MODE_NUM" = "x7" ]; then
 		B=$(echo $T | sed 's/.*LTE BAND \(.*\)/\1/')
-		MODE="LTE $(band ${B})"
-		MAINCUT="$(band ${B})"
+		MODE="LTE $(band4g ${B})"
+		MAINCUT="$(band4g ${B})"
 	fi
 fi
 
@@ -82,8 +82,8 @@ if [ "x$MODE_NUM" = "x7" ]; then
 			100) T1="20";;
 			*) T1="?";;
 		esac
-		MODE="${MODE/LTE/LTE_A} / $(band ${B})"
-		S1BAND="$(band ${B}) @$T1 MHz"
+		MODE="${MODE/LTE/LTE_A} / $(band4g ${B})"
+		S1BAND="$(band4g ${B}) @$T1 MHz"
 
 		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "scc"/ {print $7}')
 		S1PCI="$T"

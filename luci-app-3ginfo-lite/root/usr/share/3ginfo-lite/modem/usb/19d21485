@@ -68,13 +68,13 @@ case "$MODE_NUM" in
 		SINR="$T"
 
 		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCELLINFO/ {print $4}' | xargs)
-		MODE="LTE $(band ${T/LTE B/})"
+		MODE="LTE $(band4g ${T/LTE B/})"
 
 		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $3}' | xargs)
 		if [ -n "$T" ]; then
 			T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $6}' | xargs)
-			PBAND="$(band $T "") @$T1 MHz"
-			[ "x$MODE" = "xLTE BUnknown" ] && MODE="LTE $(band $T)"
+			PBAND="$(band4g $T "") @$T1 MHz"
+			[ "x$MODE" = "xLTE BUnknown" ] && MODE="LTE $(band4g $T)"
 			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $2}' | xargs)
 			[ -n "$T" ] && PCI="$T"
 			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $5}' | xargs)
@@ -84,8 +84,8 @@ case "$MODE_NUM" in
 		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $9}' | xargs)
 		if [ -n "$T" ]; then
 			T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $11}' | xargs)
-			S1BAND="$(band $T "") @$T1 MHz"
-			MODE="${MODE/LTE/LTE_A} / $(band ${T})"
+			S1BAND="$(band4g $T "") @$T1 MHz"
+			MODE="${MODE/LTE/LTE_A} / $(band4g ${T})"
 			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $7}' | xargs)
 			[ -n "$T" ] && S1PCI="$T"
 			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $10}' | xargs)
@@ -95,8 +95,8 @@ case "$MODE_NUM" in
 		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $14}' | xargs)
 		if [ -n "$T" ]; then
 			T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $16}' | xargs)
-			S2BAND="$(band $T "") @$T1 MHz"
-			MODE="$MODE / $(band ${T})"
+			S2BAND="$(band4g $T "") @$T1 MHz"
+			MODE="$MODE / $(band4g ${T})"
 			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $12}' | xargs)
 			[ -n "$T" ] && S2PCI="$T"
 			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $15}' | xargs)
@@ -106,8 +106,8 @@ case "$MODE_NUM" in
 		T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $19}' | xargs)
 		if [ -n "$T" ]; then
 			T1=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $21}' | xargs)
-			S3BAND="$(band $T "") @$T1 MHz"
-			MODE="$MODE / $(band ${T})"
+			S3BAND="$(band4g $T "") @$T1 MHz"
+			MODE="$MODE / $(band4g ${T})"
 			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $17}' | xargs)
 			[ -n "$T" ] && S3PCI="$T"
 			T=$(echo "$O" | awk -F[,:\;] '/^\+ZCAINFO/ {print $20}' | xargs)

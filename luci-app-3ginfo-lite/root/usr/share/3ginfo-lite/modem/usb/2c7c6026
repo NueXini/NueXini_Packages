@@ -13,8 +13,8 @@ T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO/ {print $2"/"$4}' | xargs)
 if [ -n "$T" ]; then
 	if [ "x$MODE_NUM" = "x7" ]; then
 		B=$(echo $T | sed 's/.*LTE BAND \(.*\)/\1/')
-		MODE="LTE | $(band ${B})"
-		MAINCUT="$(band ${B})"
+		MODE="LTE | $(band4g ${B})"
+		MAINCUT="$(band4g ${B})"
 	fi
 fi
 

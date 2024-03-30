@@ -34,11 +34,11 @@ if [ -n "$T" ]; then
 	MODE=$T
 	T=$(echo "$O" | awk -F[,:] '/^\+ZCELLINFO/ {print $4}' | xargs)
 	if [ "x$MODE_NUM" = "x7" ] || [ "x$MODE_NUM" = "x9" ]; then
-		MODE="$MODE $(band ${T/LTE B/})"
-    		PBAND="$(band ${T/LTE B/})"
+		MODE="$MODE $(band4g ${T/LTE B/})"
+    		PBAND="$(band4g ${T/LTE B/})"
 	else
 		MODE="$MODE $T"
-		PBAND="$(band ${T})"
+		PBAND="$(band4g ${T})"
 	fi
 fi
 
@@ -47,8 +47,8 @@ case "$MODE_NUM" in
 		T=$(echo "$O" | awk -F[,] '/^\+ZCAINFO: /{print $11}')
 		if [ -n "$T" ]; then
 			if [ "$T" != "0" ]; then
-				MODE="$MODE / $(band ${T})"
-        			S1BAND="$(band ${T})"
+				MODE="$MODE / $(band4g ${T})"
+        			S1BAND="$(band4g ${T})"
 			fi
 		fi
 		;;

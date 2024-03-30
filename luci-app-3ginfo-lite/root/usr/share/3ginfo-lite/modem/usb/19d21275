@@ -1,0 +1,58 @@
+# ZTE P685M
+# ZTE ZM8630A
+
+if [ "$REGOK" = "1" ]; then
+
+O=$(sms_tool -d $DEVICE at "at+zrssi;+zcellinfo?;+zcainfo?")
+
+case "$MODE_NUM" in
+	3*)
+		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $2}' | xargs)
+		RSSI="$T"
+		;;
+	2*|\
+	4*|\
+	5*|\
+	6*)
+		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $2}' | xargs)
+#		addon 35 "RSCP" "$T dBm"
+		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $3}' | xargs)
+#		addon 36 "ECIO" "$T dB"
+		T=$(echo "$O" | awk -F[,:] '/^\+ZCELLINFO/ {print $4}' | xargs)
+		[ -n "$T" ] && MODE="$T"
+		;;
+	7*)
+		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $4}' | xargs)
+		if [ -n "$T" ]; then
+			T_HEX=$(printf "%X" $T)
+			T_DEC=$(printf "%d" "0x${T_HEX}")
+		fi
+
+		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $4}' | xargs)
+		[ -n "$T" ] && RSSI="$T"
+		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $2}' | xargs)
+		[ -n "$T" ] && RSRP="$T"
+		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $3}' | xargs)
+		[ -n "$T" ] && RSRQ="$T"
+		T=$(echo "$O" | awk -F[,:] '/^\+ZRSSI/ {print $5}' | xargs)
+		[ -n "$T" ] && SINR="$T"
+		T=$(echo "$O" | awk -F[,:] '/^\+ZCELLINFO/ {print $4}' | xargs)
+		MODE="LTE | $(band4g ${T/LTE B/})"
+
+		T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $3}' | xargs)
+		if [ -n "$T" ]; then
+			T1=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $6}' | xargs)
+			if [ -z "$T1" ] || [ "x$T1" = "x0.0" ]; then
+				PBAND="$(band4g $T)"
+			else
+				PBAND="$(band4g $T) @${T1} MHz"
+			fi
+			T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $2}' | xargs)
+			[ -n "$T" ] && PCI="$T"
+			T=$(echo "$O" | awk -F[,:] '/^\+ZCAINFO/ {print $5}' | xargs)
+			[ -n "$T" ] && EARFCN="$T"
+		fi
+		;;
+esac
+
+fi

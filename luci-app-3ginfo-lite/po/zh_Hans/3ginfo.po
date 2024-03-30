@@ -1,0 +1,169 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+# Translation: oldcat
+# https://github.com/oldcat618
+
+msgid "Information about 3G/4G/5G connection"
+msgstr "关于3G/4G/5G连接的信息"
+
+msgid "More information about the 3ginfo on the %seko.one.pl forum%s."
+msgstr "关于 "3ginfo" 在 eko.one.pl 论坛."
+
+msgid "eko.one.pl forum"
+msgstr "forum eko.one.pl"
+
+msgid "Details"
+msgstr "详细信息"
+
+msgid "USB debug information"
+msgstr "USB调试信息"
+
+msgid "Configuration"
+msgstr "配置"
+
+msgid "General Information"
+msgstr "通用信息"
+
+msgid "Modem Information"
+msgstr "modem信息"
+
+msgid "Cell / Signal Information"
+msgstr "单元/信号信息"
+
+msgid "Technology"
+msgstr "技术"
+
+msgid "Operator"
+msgstr "操作人员"
+
+msgid "Signal strength"
+msgstr "信号强度"
+
+msgid "Connection statistics"
+msgstr "连接统计信息"
+
+msgid "Modem type"
+msgstr "modem类型"
+
+msgid "Additional information"
+msgstr "附加资料"
+
+msgid "Revision / Firmware"
+msgstr "修订版/固件"
+
+msgid "IP adress / Communication Port"
+msgstr "IP地址/通信端口"
+
+msgid "Chip Temperature"
+msgstr "芯片温度"
+
+msgid "Configuration 3ginfo-lite"
+msgstr "3ginfo lite配置"
+
+msgid "Configuration panel for the 3ginfo-lite application."
+msgstr "3ginfo lite应用程序的配置面板。"
+
+msgid "Network"
+msgstr "网络"
+
+msgid "IP adress / Port for communication with the modem"
+msgstr "IP地址/与调制解调器通信的端口"
+
+msgid "Protocol"
+msgstr "协议"
+
+msgid ""
+"Select the appropriate settings. <br /> <br />Traditional "
+"modem. <br /> Select one of the available ttyUSBX "
+"ports.<br /> <br />HiLink modem. <br /> Enter the IP address "
+"192.168.X.X under which the modem is available."
+msgstr ""
+"选择适当的设置<br/><br/>传统调制解调器<br/> "
+"选择一个可用的ttyUSBX端口 "
+"HiLink调制解调器<br/>输入IP地址. "
+"192.168.X.X 调制解调器在该X.X下可用."
+
+msgid "Very good"
+msgstr "最好"
+
+msgid "Good"
+msgstr "好"
+
+msgid "Weak"
+msgstr "差"
+
+msgid "Very weak"
+msgstr "极差"
+
+msgid "Excellent"
+msgstr "极好的"
+
+msgid "Good"
+msgstr "好"
+
+msgid "Mid cell"
+msgstr "中间"
+
+msgid "Cell edge"
+msgstr "信号边缘"
+
+msgid "SIM status"
+msgstr "SIM状态"
+
+msgid "Not registered"
+msgstr "未注册"
+
+msgid "Registered"
+msgstr "注册"
+
+msgid "Registered (roaming)"
+msgstr "已注册（漫游）"
+
+msgid "Searching.."
+msgstr "搜索.."
+
+msgid "Registering denied"
+msgstr "注册被拒绝"
+
+msgid "Waiting to read data from the modem..."
+msgstr "正在等待从调制解调器读取数据..."
+
+msgid "Waiting for connection data..."
+msgstr "正在创建连接..."
+
+msgid "BTS Search"
+msgstr "BTS搜索"
+
+msgid "Search"
+msgstr "搜索"
+
+msgid "Search BTS using Cell ID"
+msgstr "使用小区ID搜索BTS"
+
+msgid "Hint: To set up a BTS search engine, all you have to do is select the dedicated website for your location."
+msgstr "提示：要设置 BTS 搜索引擎，您只需选择适合您所在位置的专用网站即可."
+
+msgid "BTS search settings"
+msgstr "BTS搜索设置"
+
+msgid "Website to search for BTS"
+msgstr "搜索 BTS 的网站"
+
+msgid "Select a website for searching."
+msgstr "选择要搜索的网站."
+
+msgid "SIM Slot"
+msgstr "SIM插槽"
+
+msgid "Customizing the appearance of the package"
+msgstr "自定义外观"
+
+msgid "Hint: The settings below allow you to customize the appearance of the progress bars."
+msgstr "提示：下面的设置允许您自定义进度条的外观."
+
+msgid "The width of the progress bars"
+msgstr "进度条的宽度"
+
+msgid "Select the width of the progress bars."
+msgstr "选择进度条的宽度."

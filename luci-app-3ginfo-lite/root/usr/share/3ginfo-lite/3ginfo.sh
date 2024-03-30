@@ -7,7 +7,7 @@
 #
 
 
-band() {
+band4g() {
 # see https://en.wikipedia.org/wiki/LTE_frequency_bands
 	echo -n "B${1}"
 	case "${1}" in
@@ -184,6 +184,15 @@ DEVICE=$($RES/detect.sh)
 if [ -z "$DEVICE" ]; then
 	echo '{"error":"Device not found"}'
 	exit 0
+#elif [ ! -e "$DEVICE" ]; then
+#	uci -q del 3ginfo.@3ginfo[0].device
+#	uci commit 3ginfo
+
+#	DEVICE=$($RES/detect.sh)
+#	if [ -z "$DEVICE" ]; then
+#		echo '{"error":"Device not found"}'
+#		exit 0
+#	fi
 fi
 
 O=""
@@ -194,14 +203,20 @@ else
 fi
 
 
-SECT=$(uci -q get 3ginfo.@3ginfo[0].network)
-
-SUB='@'
-if [[ "$SECT" == *"$SUB"* ]]; then
-		SEC=$(echo $SECT | sed 's/@//')
-else
-		SEC=$(uci -q get 3ginfo.@3ginfo[0].network)
+CONFIG=modemdefine
+MODEMZ=$(uci show $CONFIG | grep -o "@modemdefine\[[0-9]*\]\.modem" | wc -l | xargs)
+if [[ $MODEMZ > 1 ]]; then
+	SEC=$(uci -q get modemdefine.@general[0].main_network)
+fi	
+if [[ $MODEMZ = "0" ]]; then
+	SEC=$(uci -q get 3ginfo.@3ginfo[0].network)
 fi
+if [[ $MODEMZ = 1 ]]; then
+	SEC=$(uci -q get modemdefine.@modemdefine[0].network)
+fi
+
+
+
 	if [ -z "$SEC" ]; then
 		getpath $DEVICE
 		PORIG=$P
@@ -284,10 +299,13 @@ isp_num="$COPS_MCC $COPS_MNC"
 isp_numws="$COPS_MCC$COPS_MNC"
 
 if [[ "$COPS" = "$isp_num" || "$COPS" = "$isp_numws" ]]; then
-	if [ -n "$isp" ]; then
+	if [[ -n "$isp" ]]; then
 		COPS=$(awk -F[\;] '/^'$isp';/ {print $3}' $RES/mccmnc.dat)
 		LOC=$(awk -F[\;] '/^'$isp';/ {print $2}' $RES/mccmnc.dat)
 	fi
+elif [[ -n "$COPS" ]]; then
+		COPS=$(awk -F[\;] '/^'$COPS';/ {print $3}' $RES/mccmnc.dat)
+		LOC=$(awk -F[\;] '/^'$COPS';/ {print $2}' $RES/mccmnc.dat)
 fi
 
 # operator location from temporary config
@@ -460,3 +478,4 @@ cat <<EOF
 }
 EOF
 exit 0
+

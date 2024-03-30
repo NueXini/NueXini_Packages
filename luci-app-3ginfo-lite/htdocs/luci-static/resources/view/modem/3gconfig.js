@@ -55,7 +55,7 @@ return view.extend({
 		devs.sort((a, b) => a.name > b.name);
 		devs.forEach(dev => o.value('/dev/' + dev.name));
 		o.placeholder = _('Please select a port');
-		o.rmempty = false
+		o.rmempty = true;
 
 		s = m.section(form.TypedSection, '3ginfo', null);
 		s.anonymous = true;

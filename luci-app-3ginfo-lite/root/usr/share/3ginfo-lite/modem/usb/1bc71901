@@ -18,18 +18,18 @@ T=$(echo "$O" | awk -F[,:] '/^\PCC info: /{print $2}' | sed 's/Band is //g')
 [ -z "$T" ] && T=$(echo "$O" | awk -F[,] '/^\PCC info: /{print $2}')
 if [ -n "$T" ]; then
 	PC=$(echo $T | tr -d 'LTE_B')
-	MODE="LTE | $(band $PC)"
+	MODE="LTE | $(band4g $PC)"
 
 	T=$(echo "$O" | awk -F[,:] '/^\SCC1 info: /{print $2}' | sed 's/Band is //g')
 	if [ -n "$T" ]; then
 		SC1=$(echo $T | tr -d 'LTE_B')
-		MODE="${MODE/LTE/LTE_A} / "$(band ${SC1} "")
+		MODE="${MODE/LTE/LTE_A} / "$(band4g ${SC1} "")
 	fi
 
 	T=$(echo "$O" | awk -F[,:] '/^\SCC2 info: /{print $2}' | sed 's/Band is //g')
 	if [ -n "$T" ]; then
 		SC2=$(echo $T | tr -d 'LTE_B')
-		MODE="${MODE} / "$(band ${SC2} "")
+		MODE="${MODE} / "$(band4g ${SC2} "")
 	fi
 fi
 
@@ -39,7 +39,7 @@ MODE=$(echo $MODE | sed 's,/,+,' | sed 's,LTE_A,LTE-A ,')
 T1=$(echo "$O" | awk '/PCC/{print $5}' | sed -e 's/LTE_//g' -e 's/.$//')
 if [ -n "$T1" ]; then
 	T2=$(echo "$O" | awk '/PCC/{print $8}' | sed -e 's/Band_width//g')
-	PBAND="$(band ${T1/B/} "") @$T2 MHz"
+	PBAND="$(band4g ${T1/B/} "") @$T2 MHz"
 	EARFCN=$(echo "$TR" |awk -F [,] '{print $2}')
 	PCI=$(echo "$TR" |awk -F [,] '{print $11}')
 fi
@@ -48,7 +48,7 @@ fi
 T3=$(echo "$O" | awk '/SCC1/{print $5}' | sed -e 's/LTE_//g' -e 's/.$//')
 if [ -n "$T3" ]; then
 	T4=$(echo "$O" | awk '/SCC1/{print $8}' | sed -e 's/Band_width//g')
-	S1BAND="$(band ${T3/B/} "") @$T4 MHz"
+	S1BAND="$(band4g ${T3/B/} "") @$T4 MHz"
 #	S1EARFCN=$(echo "$TR" |awk -F [,] '{print $2}')
 #	S1PCI=$(echo "$TR" |awk -F [,] '{print $11}')
 fi
@@ -57,7 +57,7 @@ fi
 T5=$(echo "$O" | awk '/SCC2/{print $5}' | sed -e 's/LTE_//g' -e 's/.$//')
 if [ -n "$T5" ]; then
 	T6=$(echo "$O" | awk '/SCC2/{print $8}' | sed -e 's/Band_width//g')
-	S2BAND="$(band ${T5/B/} "") @$T6 MHz"
+	S2BAND="$(band4g ${T5/B/} "") @$T6 MHz"
 #	S2EARFCN=$(echo "$TR" |awk -F [,] '{print $2}')
 #	S2PCI=$(echo "$TR" |awk -F [,] '{print $11}')
 fi

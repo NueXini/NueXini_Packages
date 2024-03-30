@@ -21,13 +21,13 @@ fi
 T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $5}')
 if [ -n "$T" ]; then
 	B=$(echo $T | sed 's/"LTE BAND \(.*\)"/\1/')
-	MODE="$MODE $(band ${B})"
+	MODE="$MODE $(band4g ${B})"
 
 	T1=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{gsub(" ", "-");print $5}')
 	if [ -n "$T1" ]; then
 		for T in $T1; do
 			B=$(echo $T | sed 's/"LTE-BAND-\(.*\)"/\1/')
-			MODE="$MODE / $(band ${B})"
+			MODE="$MODE / $(band4g ${B})"
 		done
 	fi
 fi
@@ -90,9 +90,9 @@ if [ "x$MODE_NUM" = "x7" ]; then
 		esac
 		DLBW="DL: @$T1 MHz"
 
-		PBAND="$(band $MAINCUT "") $DLBW $ULBW"
+		PBAND="$(band4g $MAINCUT "") $DLBW $ULBW"
 		if [ "x$MODE" = "xLTE" ]; then	
-      			MODE="LTE | $(band $MAINCUT "")"
+      			MODE="LTE | $(band4g $MAINCUT "")"
 		fi
 	fi
 fi
@@ -103,7 +103,7 @@ IFS="
 T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $5}')
 if [ -n "$T" ]; then
 	B=$(echo $T | sed 's/"LTE BAND \(.*\)"/\1/')
-	T2=$(band ${B})
+	T2=$(band4g ${B})
 	T3=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $4}')
 	case $T3 in
 		6) T4="1.4";;
@@ -136,7 +136,7 @@ if [ -n "$T" ]; then
 
 		T=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $5}')
 		B=$(echo $T | sed 's/"LTE BAND \(.*\)"/\1/')
-		T2=$(band ${B})
+		T2=$(band4g ${B})
 		T3=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $4}')
 		case $T3 in
 			6) T4="1.4";;

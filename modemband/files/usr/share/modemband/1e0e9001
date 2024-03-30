@@ -43,7 +43,7 @@ getbands5gnsa() {
 
 setbands5gnsa() {
 	BANDS="$1"
-	[ "$BANDS" = "default" ] && BANDS="$_DEFAULT_LTE_BANDS"
+	[ "$BANDS" = "default" ] && BANDS="$_DEFAULT_5GNSA_BANDS"
 
 	T=""
 	for BAND in $BANDS; do
@@ -68,7 +68,7 @@ getbands5gsa() {
 
 setbands5gsa() {
 	BANDS="$1"
-	[ "$BANDS" = "default" ] && BANDS="$_DEFAULT_5GNSA_BANDS"
+	[ "$BANDS" = "default" ] && BANDS="$_DEFAULT_5GSA_BANDS"
 
 	T=""
 	for BAND in $BANDS; do

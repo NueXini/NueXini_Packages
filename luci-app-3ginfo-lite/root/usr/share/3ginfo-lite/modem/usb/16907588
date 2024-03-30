@@ -63,11 +63,11 @@ fi
 T=$(echo "$O" | awk -F[,] '/^\$QCAI/{print $7}')
 if [ -n "$T" ]; then
 	case $T in
-		*"Band:1") MODE=$(band 1 "LTE ");;
-		*"Band:3") MODE=$(band 3 "LTE ");;
-		*"Band:7") MODE=$(band 7 "LTE ");;
-		*"Band:8") MODE=$(band 8 "LTE ");;
-		*"Band:20") MODE=$(band 20 "LTE ");;
+		*"Band:1") MODE=$(band4g 1 "LTE ");;
+		*"Band:3") MODE=$(band4g 3 "LTE ");;
+		*"Band:7") MODE=$(band4g 7 "LTE ");;
+		*"Band:8") MODE=$(band4g 8 "LTE ");;
+		*"Band:20") MODE=$(band4g 20 "LTE ");;
 		*) MODE="LTE ${T}";;
 	esac
 fi
@@ -75,11 +75,11 @@ fi
 T=$(echo "$O" | awk -F[,] '/CA:ADDED/{print $16}')
 if [ -n "$T" ]; then
 	case $T in
-		*"(S)Band:1") MODE="${MODE/LTE/LTE_A} / "$(band 1 "");;
-		*"(S)Band:3") MODE="${MODE/LTE/LTE_A} / "$(band 3 "");;
-		*"(S)Band:7") MODE="${MODE/LTE/LTE_A} / "$(band 7 "");;
-		*"(S)Band:8") MODE="${MODE/LTE/LTE_A} / "$(band 8 "");;
-		*"(S)Band:20") MODE="${MODE/LTE/LTE_A} / "$(band 20 "");;
+		*"(S)Band:1") MODE="${MODE/LTE/LTE_A} / "$(band4g 1 "");;
+		*"(S)Band:3") MODE="${MODE/LTE/LTE_A} / "$(band4g 3 "");;
+		*"(S)Band:7") MODE="${MODE/LTE/LTE_A} / "$(band4g 7 "");;
+		*"(S)Band:8") MODE="${MODE/LTE/LTE_A} / "$(band4g 8 "");;
+		*"(S)Band:20") MODE="${MODE/LTE/LTE_A} / "$(band4g 20 "");;
 		*) MODE="${MODE/LTE/LTE_A} / B${T}";;
 	esac
 fi

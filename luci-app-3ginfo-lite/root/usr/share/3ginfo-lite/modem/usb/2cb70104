@@ -54,27 +54,27 @@ if [ "x$MODE" = "xLTE" ]; then
 			T=$((T - 100))
 
 			case $T in
-				*"1") MODE="$MODE | "$(band 1 "");;
-				*"2") MODE="$MODE | "$(band 2 "");;
-				*"3") MODE="$MODE | "$(band 3 "");;
-				*"5") MODE="$MODE | "$(band 5 "");;
-				*"7") MODE="$MODE | "$(band 7 "");;
-				*"8") MODE="$MODE | "$(band 8 "");;
-				*"18") MODE="$MODE | "$(band 18 "");;
-				*"19") MODE="$MODE | "$(band 19 "");;
-				*"20") MODE="$MODE | "$(band 20 "");;
-				*"28") MODE="$MODE | "$(band 28 "");;
-				*"32") MODE="$MODE | "$(band 32 "");;
-				*"34") MODE="$MODE | "$(band 34 "");;
-				*"38") MODE="$MODE | "$(band 38 "");;
-				*"39") MODE="$MODE | "$(band 39 "");;
-				*"40") MODE="$MODE | "$(band 40 "");;
-				*"41") MODE="$MODE | "$(band 41 "");;
-				*"42") MODE="$MODE | "$(band 42 "");;
-				*"43") MODE="$MODE | "$(band 43 "");;
+				*"1") MODE="$MODE | "$(band4g 1 "");;
+				*"2") MODE="$MODE | "$(band4g 2 "");;
+				*"3") MODE="$MODE | "$(band4g 3 "");;
+				*"5") MODE="$MODE | "$(band4g 5 "");;
+				*"7") MODE="$MODE | "$(band4g 7 "");;
+				*"8") MODE="$MODE | "$(band4g 8 "");;
+				*"18") MODE="$MODE | "$(band4g 18 "");;
+				*"19") MODE="$MODE | "$(band4g 19 "");;
+				*"20") MODE="$MODE | "$(band4g 20 "");;
+				*"28") MODE="$MODE | "$(band4g 28 "");;
+				*"32") MODE="$MODE | "$(band4g 32 "");;
+				*"34") MODE="$MODE | "$(band4g 34 "");;
+				*"38") MODE="$MODE | "$(band4g 38 "");;
+				*"39") MODE="$MODE | "$(band4g 39 "");;
+				*"40") MODE="$MODE | "$(band4g 40 "");;
+				*"41") MODE="$MODE | "$(band4g 41 "");;
+				*"42") MODE="$MODE | "$(band4g 42 "");;
+				*"43") MODE="$MODE | "$(band4g 43 "");;
 				*) MODE="$MODE / B${T}";;
 			esac
-      			PBAND="$(band $T "")"
+      			PBAND="$(band4g $T "")"
 		fi
 
 	fi
@@ -98,24 +98,24 @@ IFS="
 		T=$((T - 100))
 		
 		case $T in
-      		"1") T2=$(band 1 "");;
-      		"2") T2=$(band 2 "");;
-      		"3") T2=$(band 3 "");;
-      		"5") T2=$(band 5 "");;
-      		"7") T2=$(band 7 "");;
-      		"8") T2=$(band 8 "");;
-      		"18") T2=$(band 18 "");;
-      		"19") T2=$(band 19 "");;
-      		"20") T2=$(band 20 "");;
-      		"28") T2=$(band 28 "");;
-      		"32") T2=$(band 32 "");;
-      		"34") T2=$(band 34 "");;
-      		"38") T2=$(band 38 "");;
-      		"39") T2=$(band 39 "");;
-      		"40") T2=$(band 40 "");;
-      		"41") T2=$(band 41 "");;
-      		"42") T2=$(band 42 "");;
-      		"43") T2=$(band 43 "");;
+      		"1") T2=$(band4g 1 "");;
+      		"2") T2=$(band4g 2 "");;
+      		"3") T2=$(band4g 3 "");;
+      		"5") T2=$(band4g 5 "");;
+      		"7") T2=$(band4g 7 "");;
+      		"8") T2=$(band4g 8 "");;
+      		"18") T2=$(band4g 18 "");;
+      		"19") T2=$(band4g 19 "");;
+      		"20") T2=$(band4g 20 "");;
+      		"28") T2=$(band4g 28 "");;
+      		"32") T2=$(band4g 32 "");;
+      		"34") T2=$(band4g 34 "");;
+      		"38") T2=$(band4g 38 "");;
+      		"39") T2=$(band4g 39 "");;
+      		"40") T2=$(band4g 40 "");;
+      		"41") T2=$(band4g 41 "");;
+      		"42") T2=$(band4g 42 "");;
+      		"43") T2=$(band4g 43 "");;
 		*) T2="B${T}";;
 		esac
 		MODE="$MODE / $T2"

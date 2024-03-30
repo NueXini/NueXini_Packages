@@ -1,8 +1,9 @@
 msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8"
-
-# Translation: lazyoop 
-# https://github.com/lazyoop
+msgstr ""
+"Language: zh_Hans\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: lazyoop <https://github.com/lazyoop>\n"
 
 msgid "Preferred LTE bands"
 msgstr "首选LTE频段"

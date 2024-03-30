@@ -40,9 +40,9 @@ fi
 O1=$(echo "$O" | grep -A 3 pcell)
 T=$(echo "$O1" | awk -F: '/^pcell:/ {print $3}' | cut -f1 -d" ")
 if [ -n "$T" ]; then
-	MODE="$MODE $(band $T)"
+	MODE="$MODE $(band4g $T)"
 	T1=$(echo "$O1" | awk -F: '/^pcell:/ {print $4}' | xargs)
-	PBAND="$(band $T) @${T1/MHz/} MHz"
+	PBAND="$(band4g $T) @${T1/MHz/} MHz"
 	
 	T=$(echo "$O1" | awk -F: '/pci:/ {print $3}' | xargs)
 	[ -n "$T" ] && PCI=$T
@@ -68,14 +68,14 @@ while true; do
 	IDX=$((IDX + 1))
 
 	T=$(echo "$O2" | awk -F: '/^scell:/ {print $3}' | cut -f1 -d" ")
-	MODE="$MODE / $(band $T)"
+	MODE="$MODE / $(band4g $T)"
 	T1=$(echo "$O2" | awk -F: '/^scell:/ {print $4}' | xargs)
 		if [ -n "$T1" ]; then
 			case $IDX in
-				1) S1BAND="$(band $T) @${T1/MHz/} MHz";;
-				2) S2BAND="$(band $T) @${T1/MHz/} MHz";;
-				3) S3BAND="$(band $T) @${T1/MHz/} MHz";;
-				4) S4BAND="$(band $T) @${T1/MHz/} MHz";;
+				1) S1BAND="$(band4g $T) @${T1/MHz/} MHz";;
+				2) S2BAND="$(band4g $T) @${T1/MHz/} MHz";;
+				3) S3BAND="$(band4g $T) @${T1/MHz/} MHz";;
+				4) S4BAND="$(band4g $T) @${T1/MHz/} MHz";;
 				*) ;;
 			esac
 		fi

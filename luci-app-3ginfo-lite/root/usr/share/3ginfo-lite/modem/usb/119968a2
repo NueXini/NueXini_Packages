@@ -2,46 +2,38 @@
 
 O=$(sms_tool -d $DEVICE at "at!gstatus?")
 
-T=$(echo "$O" | awk '/^LTE band:/ {print $3}' | xargs)
-if [ -n "$T" ]; then
-	case "$T" in
-		*"B1") MODE=$(band 1 "LTE ");;
-		*"B3") MODE=$(band 3 "LTE ");;
-		*"B7") MODE=$(band 7 "LTE ");;
-		*"B8") MODE=$(band 8 "LTE ");;
-		*"B20") MODE=$(band 20 "LTE ");;
-		*) MODE="LTE ${T}";;
-	esac
-fi
-
-T=$(echo "$O" | awk '/^RSSI/ {print $3}' | xargs)
-if [ -n "$T" ]; then
-	RSSI="$T"
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"RSSI":"'$T' dBm"}'
-fi
-T=$(echo "$O" | awk '/^RSRP/ {print $3}' | xargs)
-if [ -n "$T" ]; then
-	RSRP="$T"
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"RSRP":"'$T' dBm"}'
-fi
-T=$(echo "$O" | awk '/^RSRQ/ {print $3}' | xargs)
-if [ -n "$T" ]; then
-	RSRQ="$T"
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"RSRQ":"'$T' dB"}'
-fi
-T=$(echo "$O" | awk '/^SINR/ {print $3}' | xargs)
-if [ -n "$T" ]; then
-	SINR="$T"
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"SINR":"'$T' dB"}'
-fi
-
 T=$(echo "$O" | awk -F: '/Temperature:/ {print $3}' | xargs)
-if [ -n "$T" ]; then
-	TEMP="$T &deg;C"
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"Temperatura":"'$T' &deg;C"}'
+[ -n "$T" ] && TEMP="$T &deg;C"
+
+if [ "$REGOK" = "1" ]; then
+
+if [ "x$MODE_NUM" = "x7" ]; then
+	T=$(echo "$O" | awk '/.*TAC:/ {print $5}')
+	if [ -n "$T" ]; then
+		T_DEC=$(printf "%d" "0x$T")
+		TAC="${T_DEC} ($T)"
+	fi
+
+	T=$(echo "$O" | awk '/^RSSI/ {print $3}')
+	[ -n "$T" ] && RSSI="$T"
+	T=$(echo "$O" | awk '/^RSRP/ {print $3}')
+	[ -n "$T" ] && RSRP="$T"
+	T=$(echo "$O" | awk '/^RSRQ/ {print $3}')
+	[ -n "$T" ] && RSRQ="$T"
+	T=$(echo "$O" | awk '/^SINR/ {print $3}')
+	[ -n "$T" ] && SINR="$T"
+
+	T=$(echo "$O" | awk '/^LTE band:/ {print $3}')
+	if [ -n "$T" ]; then
+		T1=$(echo "$O" | awk '/^LTE band:/ {print $6}')
+		PBAND="$(band4g ${T/B/}) @${T1} MHz"
+		MODE="LTE $(band4g ${T/B/})"
+	fi
+	T=$(echo "$O" | awk '/^LTE Rx chan:/ {print $4}')
+#	[ -n "$T" ] && addon 34 "EARFCN DL" "$T"
+	T=$(echo "$O" | awk '/^LTE Rx chan:/ {print $8}')
+#	[ -n "$T" ] && addon 34 "EARFCN UL" "$T"
 fi
+
+fi
+

@@ -74,12 +74,16 @@ esac
 T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $5}')
 if [ -n "$T" ]; then
 	case $T in
-		*"LTE B"*)
-			B=$(echo $T | sed 's/[^0-9]*//g')
-			MODE="$MODE $(band ${B})"
+		*"LTE BAND"*)
+			B=$(echo $T | sed 's/"LTE BAND \(.*\)"/\1/')
+			MODE="$MODE $(band4g ${B})"
 			;;
 		*"NR N"*)
-			B=$(echo $T | sed 's/[^0-9]*//g')
+			B=$(echo $T | sed 's/NR N\(.*\)/\1/')
+			MODE="$MODE $(band5g ${B})"
+			;;
+		*"NR5G BAND"*)
+			B=$(echo $T | sed 's/"NR5G BAND \(.*\)"/\1/')
 			MODE="$MODE $(band5g ${B})"
 			;;
 	esac
@@ -88,12 +92,16 @@ if [ -n "$T" ]; then
 	if [ -n "$T1" ]; then
 		for T in $T1; do
 			case $T in
-				*"LTE-B"*)
-					B=$(echo $T | sed 's/[^0-9]*//g')
-					MODE="$MODE / $(band ${B})"
+				*"LTE-BAND"*)
+					B=$(echo $T | sed 's/"LTE-BAND-\(.*\)"/\1/')
+					MODE="$MODE / $(band4g ${B})"
 					;;
 				*"NR-N"*)
-					B=$(echo $T | sed 's/[^0-9]*//g')
+					B=$(echo $T | sed 's/NR-N\(.*\)/\1/')
+					MODE="$MODE / $(band5g ${B})"
+					;;
+				*"NR5G-BAND"*)
+					B=$(echo $T | sed 's/"NR5G-BAND-\(.*\)"/\1/')
 					MODE="$MODE / $(band5g ${B})"
 					;;
 			esac
@@ -198,7 +206,7 @@ if [ "x$MODE_NUM" = "x13" ]; then
 			TAC_DEC=$(printf "%d" "0x$T")
 			TAC_HEX=$T
 
-			T=$(echo "$LINE" | awk -F[,:] '/^\+QENG:/ {print $16}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
+			T=$(echo "$LINE" | awk -F[,:] '/^\+QENG:/ {print $16}' | awk '{printf "%.1f\n", 0.2*$1*10 - 20}')
 			SINR="$T"
 			T=$(echo "$LINE" | awk -F[,:] '/^\+QENG:/ {print $10}')
 			case $T in
@@ -231,7 +239,11 @@ if [ -n "$T" ]; then
 	case $T in
 		*"LTE BAND"*)
 			B=$(echo $T | sed 's/"LTE BAND \(.*\)"/\1/')
-			T2=$(band ${B})
+			T2=$(band4g ${B})
+			;;
+		*"NR N"*)
+			B=$(echo $T | sed 's/NR N\(.*\)/\1/')
+			T2=$(band5g ${B})
 			;;
 		*"NR5G BAND"*)
 			B=$(echo $T | sed 's/"NR5G BAND \(.*\)"/\1/')
@@ -248,14 +260,16 @@ if [ -n "$T" ]; then
 		100*) T4="20";;
 		*) T4="";;
 	esac
+	
 	if [ -z "$T4" ]; then
 		PBAND="$T2"
 			if [ -n "$DBW" ]; then
 			PBAND="$T2 $DBW"
 		fi
 	else
-		PBAND="$T2 @$T4 MHz"
+		PBAND="${T2} @${T4} MHz"
 	fi
+	
 	if [ "x$MODE_NUM" = "x11" ]; then
 		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $3}')
 		[ -n "$T" ] && EARFCN="$T"
@@ -284,7 +298,7 @@ if [ -n "$T" ]; then
 		case $T in
 			*"LTE BAND"*)
 				B=$(echo $T | sed 's/"LTE BAND \(.*\)"/\1/')
-				T2=$(band ${B})
+				T2=$(band4g ${B})
 				case $T3 in
 					6*) T4="1.4";;
 					15*) T4="3";;
@@ -304,7 +318,6 @@ if [ -n "$T" ]; then
 					*) ;;
 					esac
 				fi
-				
 				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}' | xargs)
 				if [ -n "$T5" ]; then
 					case $IDX in
@@ -324,6 +337,70 @@ if [ -n "$T" ]; then
 				
 				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $9}')
 #				[ -n "$T5" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
+				;;
+			*"NR N"*)
+				B=$(echo $T | sed 's/NR N\(.*\)/\1/')
+				T2=$(band5g ${B})
+				case $T3 in
+					0) T4="5";;
+					1) T4="10";;
+					2) T4="15";;
+					3) T4="20";;
+					4) T4="25";;
+					5) T4="30";;
+					6) T4="40";;
+					7) T4="50";;
+					8) T4="60";;
+					9) T4="70";;
+					10) T4="80";;
+					11) T4="90";;
+					12) T4="100";;
+					13) T4="200";;
+					14) T4="400";;
+					*) T4="";;
+				esac
+				T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $3}')
+				if [ -n "$T5" ]; then
+					case $IDX in
+					1) S1EARFCN="$T5";;
+					2) S2EARFCN="$T5";;
+					3) S3EARFCN="$T5";;
+					4) S4EARFCN="$T5";;
+					*) ;;
+					esac
+				fi
+				
+				if [ "x$MODE_NUM" = "x11" ]; then
+					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
+					if [ -n "$T5" ] && [ "$T5" != "-" ]; then
+			                case $IDX in
+				                1) S1PCI="$T5";;
+				                2) S2PCI="$T5";;
+				                3) S3PCI="$T5";;
+				                4) S4PCI="$T5";;
+				                *) ;;
+			                esac
+		            		fi
+					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
+#					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
+					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $9}')
+#					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
+				else
+					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $6}')
+					if [ -n "$T5" ] && [ "$T5" != "-" ]; then
+			                case $IDX in
+				                1) S1PCI="$T5";;
+				                2) S2PCI="$T5";;
+				                3) S3PCI="$T5";;
+				                4) S4PCI="$T5";;
+				                *) ;;
+			                esac
+		            		fi
+					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
+#					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
+					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
+#					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
+				fi
 				;;
 			*"NR5G BAND"*)
 				B=$(echo $T | sed 's/"NR5G BAND \(.*\)"/\1/')
@@ -359,7 +436,7 @@ if [ -n "$T" ]; then
 					fi
 				
 				if [ "x$MODE_NUM" = "x11" ]; then
-					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}' | xargs)
+					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
 					if [ -n "$T5" ] && [ "$T5" != "-" ]; then
 			                case $IDX in
 				                1) S1PCI="$T5";;
@@ -369,22 +446,21 @@ if [ -n "$T" ]; then
 				                *) ;;
 			                esac
 		            		fi
-					
 					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
 #					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
 					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $9}')
 #					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 7)) "(S${IDX}) RSRQ" "$T5 dB"
 				else
-					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $6}' | xargs)
-						if [ -n "$T5" ]; then
-							case $IDX in
-							1) S1PCI="$T5";;
-							2) S2PCI="$T5";;
-							3) S3PCI="$T5";;
-							4) S4PCI="$T5";;
-							*) ;;
-							esac
-						fi
+					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $6}')
+					if [ -n "$T5" ] && [ "$T5" != "-" ]; then
+			                case $IDX in
+				                1) S1PCI="$T5";;
+				                2) S2PCI="$T5";;
+				                3) S3PCI="$T5";;
+				                4) S4PCI="$T5";;
+				                *) ;;
+			                esac
+		            		fi
 					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $7}')
 #					[ -n "$T5" ] && [ "$T5" != "-" ] && addon $((POS + 6)) "(S${IDX}) RSRP" "$T5 dBm"
 					T5=$(echo "$LINE" | awk -F[,:] '/^\+QCAINFO: "(scc|SCC)"/{print $8}')
