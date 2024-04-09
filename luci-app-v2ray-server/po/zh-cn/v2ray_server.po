@@ -180,3 +180,6 @@ msgstr "未运行"
 
 msgid "RUNNING"
 msgstr "运行中"
+
+msgid "Manually update"
+msgstr "检查更新"
