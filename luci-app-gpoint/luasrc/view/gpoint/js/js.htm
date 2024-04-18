@@ -14,25 +14,12 @@ Licensed to the public under the Apache License 2.0.
     }
 
     function flyTo(location, z, done) {
-        var duration = 5000;
-        var zoom = z;
-        var parts = 2;
-        var called = false;
-
-        function callback(complete) {
-            --parts;
-            if (called) {
-                return;
-            }
-            if (parts === 0 || !complete) {
-                called = true;
-                done(complete);
-            }
-        }
-
-        view.animate({center: location, duration: duration,}, callback);
-        view.animate({zoom: zoom - 1, duration: duration / 2,},
-            {zoom: zoom, duration: duration / 2,}, callback);
+        const duration = 2500;
+        view.animate({
+            center: location,
+            duration: duration,
+            zoom: z,
+        });
     }
 
     function getAddress(lat, lon) {
@@ -147,7 +134,7 @@ Licensed to the public under the Apache License 2.0.
 
     var lon = 55.7522;
     var lat = 37.6156;
-    var zoom = 3;
+    var zoom = 1;
     var spinerStatus = true;
     var CIRCLE_STATUS = true;
 
@@ -187,7 +174,7 @@ Licensed to the public under the Apache License 2.0.
 
     var view = new ol.View({
         center: coordinate,
-        zoom: 3,
+        zoom: 1,
     });
 
     var map = new ol.Map({

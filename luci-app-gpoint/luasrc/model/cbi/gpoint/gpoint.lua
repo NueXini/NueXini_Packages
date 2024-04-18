@@ -30,6 +30,7 @@ local modems = {
     ["Quectel"] = {
         ["2c7c:0306"] = "EP06",
         ["2c7c:0512"] = "EM12",
+        ["2c7c:0121"] = "EC21",
         ["2c7c:0125"] = "EC25",
         ["2c7c:0620"] = "EM160R",
         ["2c7c:0800"] = "RM500Q",
@@ -68,7 +69,7 @@ s.addremove = false
 local o = s:option(DummyValue, "_dummy")
 o.template = packageName .. "/buttons"
 
-o = s:option(DummyValue, "_dummy", translate("Service Status:"))
+o = s:option(DummyValue, "_dummy")
 o.template = packageName .. "/service_status"
 
 
@@ -167,7 +168,7 @@ o.rawhtml = true
 o:depends("mode", "gpsd")
 
 -- Remote Server
-s = m:section(TypedSection, "server_settings", translate("Remote Server"), translate("Configuration of the remote navigation server"))
+s = m:section(TypedSection, "server_settings", translate("Remote server"), translate("Configuration of the remote navigation server"))
 s.addremove = false
 s.anonymous = true
 

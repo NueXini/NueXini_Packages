@@ -33,7 +33,7 @@ It doesn't matter if you use a router in transport or it is installed in your te
 - Dell DW5821e/DW5829e
 - Huawei ME909u-521
 - MEIGLink SLM820/SLM828
-- Quectel EC25/EP06/EM12/EM160R/RM500Q/RM520N
+- Quectel EC21/EC25/EP06/EM12/EM160R/RM500Q/RM520N
 - Sierra EM7455/EM7565
 - Simcom SIM7600E-H
 - U-Blox VK-172 GPS/GLONASS module (u-blox 7 GNSS modules)
@@ -103,7 +103,7 @@ Thank you for your interest in the project!
 # # Upload ipk file to tmp folder
 # cd /tmp
 # opkg update
-# opkg install luci-app-gpoint_2.5.7_all.ipk
+# opkg install luci-app-gpoint_2.6.0_all.ipk
 ```
 
 ## Uninstall
