@@ -275,14 +275,14 @@ fi
 COPS=""
 COPS_MCC=""
 COPS_MNC=""
-COPS_NUM=$(echo "$O" | awk -F[\"] '/^\+COPS: .,2/ {print $2}')
+COPS_NUM=$(echo "$O" | awk -F[\"] '/^\+COPS:\s?.,2/ {print $2}')
 if [ -n "$COPS_NUM" ]; then
 	COPS_MCC=${COPS_NUM:0:3}
 	COPS_MNC=${COPS_NUM:3:3}
 fi
 
 if [ -z "$FORCE_PLMN" ]; then
-	COPS=$(echo "$O" | awk -F[\"] '/^\+COPS: .,0/ {print $2}')
+	COPS=$(echo "$O" | awk -F[\"] '/^\+COPS:\s?.,0/ {print $2}')
 else
 	if [ -n "$COPS_NUM" ]; then
 		COPS=$(awk -F[\;] '/^'$COPS_NUM';/ {print $3}' $RES/mccmnc.dat)
