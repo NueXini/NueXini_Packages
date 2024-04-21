@@ -549,13 +549,14 @@ simDialog: baseclass.extend({
 					}
 
 					if (document.getElementById('location')) {
-						var view = document.getElementById("location");
-						if (!json.location.length > 1) { 
-						view.textContent = '-';
+						var viewloc = document.getElementById("location");
+						if (!json.location.length > 2) { 
+						viewloc.style.display = 'none';
 						}
 						else {
-						view.innerHTML = json.location;
+						viewloc.innerHTML = json.location;
 						}
+
 					}
 
 					if (document.getElementById('sim')) {

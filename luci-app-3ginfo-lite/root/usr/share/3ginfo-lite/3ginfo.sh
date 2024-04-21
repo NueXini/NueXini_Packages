@@ -184,15 +184,6 @@ DEVICE=$($RES/detect.sh)
 if [ -z "$DEVICE" ]; then
 	echo '{"error":"Device not found"}'
 	exit 0
-#elif [ ! -e "$DEVICE" ]; then
-#	uci -q del 3ginfo.@3ginfo[0].device
-#	uci commit 3ginfo
-
-#	DEVICE=$($RES/detect.sh)
-#	if [ -z "$DEVICE" ]; then
-#		echo '{"error":"Device not found"}'
-#		exit 0
-#	fi
 fi
 
 O=""
@@ -202,20 +193,39 @@ else
 	O=$(gcom -d $DEVICE -s $RES/info.gcom 2>/dev/null)
 fi
 
+getpath() {
+	devname="$(basename $1)"
+	case "$devname" in
+	'wwan'*'at'*)
+		devpath="$(readlink -f /sys/class/wwan/$devname/device)"
+		P=${devpath%/*/*/*}
+		;;
+	'ttyACM'*)
+		devpath="$(readlink -f /sys/class/tty/$devname/device)"
+		P=${devpath%/*}
+		;;
+	'tty'*)
+		devpath="$(readlink -f /sys/class/tty/$devname/device)"
+		P=${devpath%/*/*}
+		;;
+	*)
+		devpath="$(readlink -f /sys/class/usbmisc/$devname/device/)"
+		P=${devpath%/*}
+		;;
+	esac
+}
 
 CONFIG=modemdefine
 MODEMZ=$(uci show $CONFIG | grep -o "@modemdefine\[[0-9]*\]\.modem" | wc -l | xargs)
 if [[ $MODEMZ > 1 ]]; then
 	SEC=$(uci -q get modemdefine.@general[0].main_network)
-fi	
-if [[ $MODEMZ = "0" ]]; then
+	fi	
+	if [[ $MODEMZ = "0" ]]; then
 	SEC=$(uci -q get 3ginfo.@3ginfo[0].network)
-fi
-if [[ $MODEMZ = 1 ]]; then
+	fi
+	if [[ $MODEMZ = 1 ]]; then
 	SEC=$(uci -q get modemdefine.@modemdefine[0].network)
 fi
-
-
 
 	if [ -z "$SEC" ]; then
 		getpath $DEVICE
@@ -275,38 +285,38 @@ fi
 COPS=""
 COPS_MCC=""
 COPS_MNC=""
-COPS_NUM=$(echo "$O" | awk -F[\"] '/^\+COPS:\s?.,2/ {print $2}')
+COPS_NUM=$(echo "$O" | awk -F[\"] '/^\+COPS: .,2/ {print $2}')
 if [ -n "$COPS_NUM" ]; then
 	COPS_MCC=${COPS_NUM:0:3}
 	COPS_MNC=${COPS_NUM:3:3}
 fi
 
 if [ -z "$FORCE_PLMN" ]; then
-	COPS=$(echo "$O" | awk -F[\"] '/^\+COPS:\s?.,0/ {print $2}')
+	COPS=$(echo "$O" | awk -F[\"] '/^\+COPS: .,0/ {print $2}')
 else
 	if [ -n "$COPS_NUM" ]; then
-		COPS=$(awk -F[\;] '/^'$COPS_NUM';/ {print $3}' $RES/mccmnc.dat)
+		COPS=$(awk -F[\;] '/^'$COPS_NUM';/ {print $3}' $RES/mccmnc.dat | xargs)
 		LOC=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' $RES/mccmnc.dat)
 	fi
 fi
 [ -z "$COPS" ] && COPS=$COPS_NUM
 
 COPZ=$(echo $COPS | sed ':s;s/\(\<\S*\>\)\(.*\)\<\1\>/\1\2/g;ts')
-COPS=$(echo $COPZ | awk '{for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) }}1')
+COPS=$(echo $COPZ | awk '{for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) }}1' | xargs)
 
 isp=$(sms_tool -d $DEVICE at "AT+COPS?"|sed -n '2p'|cut -d '"' -f2|tr -d '\r')
 isp_num="$COPS_MCC $COPS_MNC"
 isp_numws="$COPS_MCC$COPS_MNC"
 
-if [[ "$COPS" = "$isp_num" || "$COPS" = "$isp_numws" ]]; then
+if [[ $COPS =~ ^[0-9]+$ ]]; then
+    if [[ "$COPS" = "$isp_num" || "$COPS" = "$isp_numws" ]]; then
 	if [[ -n "$isp" ]]; then
-		COPS=$(awk -F[\;] '/^'$isp';/ {print $3}' $RES/mccmnc.dat)
+		COPS=$(awk -F[\;] '/^'$isp';/ {print $3}' $RES/mccmnc.dat | xargs)
 		LOC=$(awk -F[\;] '/^'$isp';/ {print $2}' $RES/mccmnc.dat)
 	fi
-elif [[ -n "$COPS" ]]; then
-		COPS=$(awk -F[\;] '/^'$COPS';/ {print $3}' $RES/mccmnc.dat)
-		LOC=$(awk -F[\;] '/^'$COPS';/ {print $2}' $RES/mccmnc.dat)
+    fi
 fi
+
 
 # operator location from temporary config
 LOCATIONFILE=/tmp/location
@@ -315,15 +325,27 @@ if [ -e "$LOCATIONFILE" ]; then
 	LOC=$(cat $LOCATIONFILE)
 	if [ -n "$LOC" ]; then
 		LOC=$(cat $LOCATIONFILE)
-	else
-		echo "-" > /tmp/location
+			if [[ $LOC == "-" ]]; then
+				rm $LOCATIONFILE
+				LOC=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' $RES/mccmnc.dat)
+				if [ -n "$LOC" ]; then
+					echo "$LOC" > /tmp/location
+				fi
+			else
+				LOC=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' $RES/mccmnc.dat)
+				if [ -n "$LOC" ]; then
+					echo "$LOC" > /tmp/location
+				fi
+			fi
 	fi
 else
-	LOC=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' $RES/mccmnc.dat)
-	if [ -n "$LOC" ]; then
-		echo "$LOC" > /tmp/location
-	else
-		echo "-" > /tmp/location
+	if [[ "$COPS_MCC$COPS_MNC" =~ ^[0-9]+$ ]]; then
+		if [ -n "$LOC" ]; then
+			LOC=$(awk -F[\;] '/^'$COPS_MCC$COPS_MNC';/ {print $2}' $RES/mccmnc.dat)
+				echo "$LOC" > /tmp/location
+			else
+				echo "-" > /tmp/location
+		fi
 	fi
 fi
 
@@ -478,4 +500,3 @@ cat <<EOF
 }
 EOF
 exit 0
-

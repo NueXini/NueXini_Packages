@@ -226,9 +226,9 @@ if [ "x$MODE_NUM" = "x13" ]; then
 			if [ "x${MODE:0:3}" = "xLTE" ]; then
 				T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
 				T_DEC=$(printf "%d" "0x$T")
-				addon 23 "TAC" "${T_DEC} ($T)"
+				T_HEX="$T"
 				T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.1f\n", 0.2*$1*10 - 20}')
-				addon 38 "SINR" "$T dB"
+				SINR="$T"
 				T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $12}')
 				case $T in
 					0*) T1="1.4";;
