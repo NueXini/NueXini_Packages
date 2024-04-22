@@ -117,6 +117,12 @@ msgstr "Zalogowana do sieci"
 msgid "Registered (roaming)"
 msgstr "Zalogowana do sieci (roaming)"
 
+msgid "Registered, only SMS"
+msgstr "Zalogowana do sieci, tylko SMS"
+
+msgid "Registered (roaming), only SMS"
+msgstr "Zalogowana do sieci (roaming), tylko SMS"
+
 msgid "Searching.."
 msgstr "Wyszukiwanie.."
 

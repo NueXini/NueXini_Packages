@@ -580,8 +580,14 @@ simDialog: baseclass.extend({
 						if (json.registration == '3') { 
 							view.textContent = _('Registering denied');
 						}
-						if (json.registration == '5' || json.registration == '7') { 
+						if (json.registration == '5') { 
 							view.textContent = _('Registered (roaming)');
+						}
+						if (json.registration == '6') { 
+							view.textContent = _('Registered, only SMS');
+						}
+						if (json.registration == '7') { 
+							view.textContent = _('Registered (roaming), only SMS');
 						}
 					}
 					}

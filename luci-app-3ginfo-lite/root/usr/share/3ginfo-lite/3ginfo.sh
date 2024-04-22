@@ -215,6 +215,7 @@ getpath() {
 	esac
 }
 
+# Luci-app-modemdefine - WAN config
 CONFIG=modemdefine
 MODEMZ=$(uci show $CONFIG | grep -o "@modemdefine\[[0-9]*\]\.modem" | wc -l | xargs)
 if [[ $MODEMZ > 1 ]]; then
@@ -237,7 +238,8 @@ fi
 				[ -n "$SEC" ] && break
 			fi
 		done
-	fi
+	fi	
+# modemdefine config
 
 CONN_TIME="-"
 RX="-"
@@ -285,14 +287,15 @@ fi
 COPS=""
 COPS_MCC=""
 COPS_MNC=""
-COPS_NUM=$(echo "$O" | awk -F[\"] '/^\+COPS: .,2/ {print $2}')
+COPS_NUM=$(echo "$O" | awk -F[\"] '/^\+COPS:\s*.,2/ {print $2}')
 if [ -n "$COPS_NUM" ]; then
 	COPS_MCC=${COPS_NUM:0:3}
 	COPS_MNC=${COPS_NUM:3:3}
 fi
 
 if [ -z "$FORCE_PLMN" ]; then
-	COPS=$(echo "$O" | awk -F[\"] '/^\+COPS: .,0/ {print $2}')
+	T=$(echo "$O" | awk -F[\"] '/^\+COPS:\s*.,0/ {print $2}')
+	[ "x$T" != "x" ] && COPS="$T"
 else
 	if [ -n "$COPS_NUM" ]; then
 		COPS=$(awk -F[\;] '/^'$COPS_NUM';/ {print $3}' $RES/mccmnc.dat | xargs)
@@ -372,22 +375,14 @@ fi
 # CREG
 eval $(echo "$O" | awk -F[,] '/^\+CREG/ {gsub(/[[:space:]"]+/,"");printf "T=\"%d\";LAC_HEX=\"%X\";CID_HEX=\"%X\";LAC_DEC=\"%d\";CID_DEC=\"%d\";MODE_NUM=\"%d\"", $2, "0x"$3, "0x"$4, "0x"$3, "0x"$4, $5}')
 case "$T" in
-	0*)
-		REG="0";;
-	1*)
-		REG="1";;
-	2*)
-		REG="2";;
-	3*)
-		REG="3";;
-	5*)
-		REG="5";;
-	6*)
-		REG="6";;
-	7*)
-		REG="7";;
-	*)
-		REG="";;
+	0*) REG="0";;
+	1*) REG="1";;
+	2*) REG="2";;
+	3*) REG="3";;
+	5*) REG="5";;
+	6*) REG="6";;
+	7*) REG="7";;
+	*) REG="";;
 esac
 
 # MODE
@@ -431,7 +426,7 @@ else
 
 if [ -e /usr/bin/sms_tool ]; then
 	REGOK=0
-	[ "x$REG" = "x1" ] || [ "x$REG" = "x5" ] && REGOK=1
+	[ "x$REG" = "x1" ] || [ "x$REG" = "x5" ] || [ "x$REG" = "x6" ] || [ "x$REG" = "x7" ] && REGOK=1
 	VIDPID=$(getdevicevendorproduct $DEVICE)
 	if [ -e "$RES/modem/$VIDPID" ]; then
 		case $(cat /tmp/sysinfo/board_name) in

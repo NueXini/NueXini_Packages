@@ -49,11 +49,6 @@ O=$(sms_tool -d $DEVICE at "AT+MTSM=1")
 T=$(echo "$O" | awk -F: '/^\+MTSM:/ {print $2}' | xargs)
 [ -n "$T" ] && TEMP="$T &deg;C"
 
-if [ -z "$REG" ]; then
-	T=$(echo "$O" | awk -F[,:] '/^\+CREG:/{print $3}')
-	[ "x$T" = "x6" ] && REGOK=1
-fi
-
 if [ "$REGOK" = "1" ]; then
 
 O=$(sms_tool -d $DEVICE at "AT+XLEC?;+XMCI=1;+XCCINFO=1;+XCCINFO?")

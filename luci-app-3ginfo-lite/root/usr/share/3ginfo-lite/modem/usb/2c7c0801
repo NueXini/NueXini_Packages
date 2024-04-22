@@ -5,7 +5,7 @@ O=$(sms_tool -d $DEVICE at "at+qtemp")
 T=$(echo "$O" | awk -F[,:] '/^\+QTEMP/ {print $3}' | sort -r | head -n1 | xargs)
 [ -n "$T" ] && TEMP="$T &deg;C"
 
-if [ "$REG" = "0" ] || [ "x$MODE_NUM" = "x11" ]; then
+if [ -z "$REG" ] || [ "x$MODE_NUM" = "x11" ]; then
 	O=$(sms_tool -d $DEVICE at "at+c5greg=2;+c5greg?")
 
 	# C5GREG
