@@ -49,16 +49,16 @@ PV=$(cat /sys/kernel/debug/usb/devices)
 PVCUT=$(echo $PV | awk -F 'Vendor=12d1 ProdID=' '{print $2}' | cut -c-1108)
 if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
 then
-    PROTO="QMI"
+    PROTO="qmi"
 elif echo "$PVCUT" | grep -q "Driver=cdc_mbim"
 then
-    PROTO="MBIM"
+    PROTO="mbim"
 elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
 then
-    PROTO="ECM"
+    PROTO="ecm"
 elif echo "$PVCUT" | grep -q "Driver=huawei_cdc_ncm"
 then
-    PROTO="NCM"
+    PROTO="ncm"
 fi
 
 RSSI=$(getvalue device-signal rssi)
@@ -159,6 +159,16 @@ if [ -n "$FW" ]; then
 	FW="$rev / $FW"
 fi
 
+if [ -z "$FW" ]
+then
+	FW='-'
+fi
+
+if [ -z "$TEMP" ]
+then
+	TEMP='-'
+fi
+
 COPSA=$(getvaluen net-current-plmn Numeric)
 COPSB=$(echo "${COPSA}" | cut -c1-3)
 COPSC=$(echo -n $COPSA | tail -c 2)
@@ -167,9 +177,12 @@ COPS_MNC="$COPSC"
 
 COPS=$(getvalue net-current-plmn ShortName)
 
-if [[ -n "$COPS" ]]; then
-		COPS=$(awk -F[\;] '/^'$COPS';/ {print $3}' $RES/mccmnc.dat)
-		LOC=$(awk -F[\;] '/^'$COPS';/ {print $2}' $RES/mccmnc.dat)
+if [[ $COPSA =~ ^[0-9]+$ ]]; then
+	if [ -z "$COPS" ]
+	then
+		COPS=$(awk -F[\;] '/^'$COPSA';/ {print $3}' $RES/mccmnc.dat | xargs)
+	fi
+	LOC=$(awk -F[\;] '/^'$COPSA';/ {print $2}' $RES/mccmnc.dat)
 fi
 
 # operator location from temporary config
@@ -179,15 +192,27 @@ if [ -e "$LOCATIONFILE" ]; then
 	LOC=$(cat $LOCATIONFILE)
 	if [ -n "$LOC" ]; then
 		LOC=$(cat $LOCATIONFILE)
-	else
-		echo "-" > /tmp/location
+			if [[ $LOC == "-" ]]; then
+				rm $LOCATIONFILE
+				LOC=$(awk -F[\;] '/^'$COPSA';/ {print $2}' $RES/mccmnc.dat)
+				if [ -n "$LOC" ]; then
+					echo "$LOC" > /tmp/location
+				fi
+			else
+				LOC=$(awk -F[\;] '/^'$COPSA';/ {print $2}' $RES/mccmnc.dat)
+				if [ -n "$LOC" ]; then
+					echo "$LOC" > /tmp/location
+				fi
+			fi
 	fi
 else
-	LOC=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' $RES/mccmnc.dat)
-	if [ -n "$LOC" ]; then
-		echo "$LOC" > /tmp/location
-	else
-		echo "-" > /tmp/location
+	if [[ "$COPS_MCC$COPS_MNC" =~ ^[0-9]+$ ]]; then
+		if [ -n "$LOC" ]; then
+			LOC=$(awk -F[\;] '/^'$COPS_MCC$COPS_MNC';/ {print $2}' $RES/mccmnc.dat)
+				echo "$LOC" > /tmp/location
+			else
+				echo "-" > /tmp/location
+		fi
 	fi
 fi
 
@@ -211,6 +236,11 @@ fi
 if [ -z "$CID_HEX" ]
 then
 	CID_HEX='-'
+fi
+
+if [ -z "$CID_DEC" ]
+then
+	[ -n "$CID_HEX" ] && CID_DEC=$(echo $((0x$CID_HEX)))
 fi
 
 rm $cookie

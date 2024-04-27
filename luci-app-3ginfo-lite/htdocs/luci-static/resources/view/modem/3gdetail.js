@@ -932,7 +932,7 @@ simDialog: baseclass.extend({
 							'class': 'ifacebadge',
 							'title': null,
 							'id': 'simv',
-							'style': 'visibility: hidden; max-width:3em; display: inline-block;',
+							'style': 'visibility: hidden; margin:0 auto; padding: 4px;',
 							'click': ui.createHandlerFn(this, function() {
 									return upSIMDialog.show();
 							}),
@@ -942,7 +942,7 @@ simDialog: baseclass.extend({
 							E('div', { 'class': 'cbi-tooltip-container' }, [
 							E('img', {
 								'src': L.resource('icons/sim1m.png'),
-								'style': 'width:24px; height:auto; padding: 0px',
+								'style': 'width:24px; height:auto; padding: 1%; margin:0 auto;',
 								'title': _(''),
 								'class': 'middle',
 							}),
