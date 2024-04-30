@@ -65,7 +65,7 @@ endef
 
 define Build/UpdateDependencies
 	cd $(PKG_BUILD_DIR) && \
-		go get -u && \
+		go get -u=patch && \
 		go mod tidy
 endef
 

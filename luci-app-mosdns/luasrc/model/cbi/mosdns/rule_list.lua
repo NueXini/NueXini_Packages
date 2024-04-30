@@ -1,5 +1,5 @@
-local reload_mosdns, readFile, writeFile = require("luci.controller.mosdns").reload_mosdns,
-    require("luci.controller.mosdns").readFile, require("luci.controller.mosdns").writeFile
+local reload_mosdns, readFile, writeFile = require("luci.controller.mosdns").Reload_mosdns,
+    require("luci.controller.mosdns").ReadFile, require("luci.controller.mosdns").WriteFile
 
 local rulePath = {
   whiteList = "/etc/mosdns/rule/whitelist.txt",
