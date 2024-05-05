@@ -20,6 +20,9 @@ CPU_POLICYS=$(find "$CPUFREQ_PATH"/policy* -maxdepth 0 | grep -Eo '[0-9]+')
 	CPU6_MAX_FREQ=$(cat "$CPUFREQ_PATH"/policy6/scaling_max_freq)
 source "/etc/openwrt_release"
 case "$DISTRIB_TARGET" in
+	"amlogic/mesongx")
+		uci_write_config 0 schedutil 1000000 $CPU_MAX_FREQ
+		;;
 	"bcm27xx/bcm2710"|\
 	"bcm27xx/bcm2711"|\
 	"mediatek/mt7622")
@@ -44,6 +47,7 @@ case "$DISTRIB_TARGET" in
 	"ipq95xx/generic")
 		uci_write_config 0 ondemand 936000 $CPU_MAX_FREQ 10 50
 		;;
+	"amlogic/meson8b"|\
 	"meson/meson8b")
 		uci_write_config 0 schedutil 816000 $CPU_MAX_FREQ
 		;;
