@@ -7,7 +7,7 @@ sed -i '$a src-git NueXini_Packages https://github.com/NueXini/NueXini_Packages.
 ./scripts/feeds update -a && ./scripts/feeds install -a
 ```
 ## 2.主题
-[lean lede](https://github.com/coolsnowwolf/lede/tree/master)，**请选择1806的主题**
+[lean lede](https://github.com/coolsnowwolf/lede/tree/master)，**默认1806主题，如luci选择2305请使用1907及以上主题**
 
 [OpenWrt Snapshots](https://github.com/openwrt/openwrt/tree/master)，**请选择1907及以上版本的主题**
 
