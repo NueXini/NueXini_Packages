@@ -1,66 +1,89 @@
-# BroadMobi BM806U
+# BroadMobi BM806U (DLINK DWR-921 C1)
 
-O=$(sms_tool -d $DEVICE at "AT+BMTCELLINFO")
+if [ "x$MODE_NUM" = "x7" ]; then
 
-T=$(echo "$O" | awk -F[,:] '/^TAC:/ {print $2}' | xargs)
-if [ -n "$T" ]; then
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	T_HEX=$(printf "%X" $T)
-	ADDON="$ADDON"'{"TAC":"'$T' ('$T_HEX')"}'
-fi
+	O=$(sms_tool -d $DEVICE at "AT+BMTCELLINFO")
+	echo "$O" | grep "^+BMTCELLINFO" | grep -q ",LAC_ID:" && O=$(echo "$O"| sed 's/,[ ]*/\n/g')
 
-ADDON=""
-T=$(echo "$O" | awk -F[,:] '/^RSSI:/ {print $2}' | xargs)
-if [ -n "$T" ]; then
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	RSSI="$T"
-	ADDON="$ADDON"'{"RSSI":"-'$T' dBm"}'
-fi
-T=$(echo "$O" | awk -F[,:] '/^RSRP:/ {print $2}' | xargs)
-if [ -n "$T" ]; then
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	RSRP="$T"
-	ADDON="$ADDON"'{"RSRP":"'$T' dBm"}'
-fi
-T=$(echo "$O" | awk -F[,:] '/^RSRQ:/ {print $2}' | xargs)
-if [ -n "$T" ]; then
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	RSRQ="$T"
-	ADDON="$ADDON"'{"RSRQ":"'$T' dB"}'
-fi
-T=$(echo "$O" | awk -F[,:] '/^SINR:/ {print $2}' | xargs)
-if [ -n "$T" ]; then
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	SINR="$T"
-	ADDON="$ADDON"'{"SINR":"'$T' dB"}'
-fi
-
-if [ "x$MODE" = "xLTE" ]; then
-	T=$(echo "$O" | awk -F[,:] '/^ACTIVE BAND:/ {print $2}' | xargs)
+	T=$(echo "$O" | awk -F[,:] '/^TAC:/ {print $2}' | xargs)
 	if [ -n "$T" ]; then
-		case "$T" in
-			*"1") MODE=$(band4g 1 "LTE ");;
-			*"3") MODE=$(band4g 3 "LTE ");;
-			*"7") MODE=$(band4g 7 "LTE ");;
-			*"8") MODE=$(band4g 8 "LTE ");;
-			*"20") MODE=$(band4g 20 "LTE ");;
-			*) MODE="LTE B${T}";;
-		esac
+		T_HEX=$(printf "%X" $T)
 	fi
+
+	T=$(echo "$O" | awk -F[,:] '/^RSSI:/ {print $2}' | xargs)
+	[ -n "$T" ] && RSSI="-${T}"
+	T=$(echo "$O" | awk -F[,:] '/^RSRP:/ {print $2}' | xargs)
+	[ -n "$T" ] && RSRP="$T"
+	T=$(echo "$O" | awk -F[,:] '/^RSRQ:/ {print $2}' | xargs)
+	[ -n "$T" ] && RSRQ="$T"
+	T=$(echo "$O" | awk -F[,:] '/^SINR:/ {print $2}' | xargs)
+	[ -n "$T" ] && SINR="$T"
+
+	TB=$(echo "$O" | awk -F[,:] '/^ACTIVE BAND:/ {print $2}' | xargs)
+	[ -n "$TB" ] && MODE="LTE | $(band4g ${TB})" && PBAND="$(band4g ${TB})"
+	if [ -z "$TB" ]; then
+		T=$(echo "$O" | awk -F[,:] '/^active band:/ {print $2}' | xargs)
+	        [ -n "$T" ] && MODE="LTE | $(band4g ${T})"
+	       	PBAND="$(band4g ${T})"
+	fi
+
+	T=$(echo "$O" | awk -F[,:] '/^PCI:/ {print $2}' | xargs)
+	[ -n "$T" ] && PCI="$T"
+	T=$(echo "$O" | awk -F[,:] '/^EARFCN_DL:/ {print $2}' | xargs)
+	if [ -n "$T" ] && [ "x$T" != "x0" ]; then
+		EARFCN="$T"
+#		EARFCN DL="$T"
+	fi
+	T=$(echo "$O" | awk -F[,:] '/^EARFCN_UL:/ {print $2}' | xargs)
+	if [ -n "$T" ] && [ "x$T" != "x0" ]; then
+		EARFCN UL="$T"
+	fi
+
 fi
 
-T=$(echo "$O" | awk -F[,:] '/^PCI:/ {print $2}' | xargs)
-if [ -n "$T" ]; then
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"PCI":"'$T'"}'
+# Modem
+FWA=$(sms_tool -d $DEVICE at "AT+CGMR" | tr -s "\n" | xargs)
+FW=$(echo $FWA | sed s/"AT+CGMR "//)
+
+MODELA=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n" | xargs)
+MODELB=$(sms_tool -d $DEVICE at "AT+CGMI" | tr -s "\n" | xargs)
+MODELACUT=$(echo $MODELA | sed s/"AT+CGMM "//)
+MODELBCUT=$(echo $MODELB | sed s/"AT+CGMI "//)
+MODEL="$MODELBCUT "$MODELACUT
+
+
+# International Mobile Equipment Identity (IMEI)
+O=$(sms_tool -d $DEVICE at "AT+CGSN" | xargs)
+NR_I=$(echo "$O" | sed s/"AT+CGSN "//)
+if [ -n "$NR_I" ]; then
+	NR_IMEI="$NR_I"
 fi
-T=$(echo "$O" | awk -F[,:] '/^EARFCN_DL:/ {print $2}' | xargs)
-if [ -n "$T" ] && [ "x$T" != "x0" ]; then
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"EARFCN DL":"'$T'"}'
+
+# International Mobile Subscriber Identity (IMSI)
+O=$(sms_tool -d $DEVICE at "AT+CIMI" | xargs)
+NR_C=$(echo "$O" | sed s/"AT+CIMI "//)
+if [ -n "$NR_C" ]; then
+	NR_IMSI="$NR_C"
 fi
-T=$(echo "$O" | awk -F[,:] '/^EARFCN_UL:/ {print $2}' | xargs)
-if [ -n "$T" ] && [ "x$T" != "x0" ]; then
-	[ -n "$ADDON" ] && ADDON="$ADDON,"
-	ADDON="$ADDON"'{"EARFCN UL":"'$T'"}'
+
+#  Integrated Circuit Card Identifier (ICCID)
+O=$(sms_tool -d $DEVICE at "AT+ICCID")
+NR_D=$(echo "$O" | awk -F [:] '/^\ICCID: /{print $2}' | xargs)
+if [ -n "$NR_D" ]; then
+	NR_ICCID="$NR_D"
+fi
+
+# Protocol
+# DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
+PV=$(cat /sys/kernel/debug/usb/devices 2>/dev/null)
+PVCUT=$(echo $PV | awk -F 'Vendor=2020 ProdID=2033' '{print $2}' | cut -c-1290)
+if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
+then
+    PROTO="qmi"
+elif echo "$PVCUT" | grep -q "Driver=cdc_mbim"
+then
+    PROTO="mbim"
+elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
+then
+    PROTO="ecm"
 fi

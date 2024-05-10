@@ -13,33 +13,5 @@ chmod +x /usr/share/3ginfo-lite/modem/hilink/zte.sh 2>&1 &
 rm -rf /tmp/luci-indexcache 2>&1 &
 rm -rf /tmp/luci-modulecache/ 2>&1 &
 
-DEVICE=$(cat /tmp/sysinfo/board_name)
-
-if [[ "$DEVICE" == *"mf289f"* ]]; then
-	
-		uci set 3ginfo.@3ginfo[0].device="/dev/ttyUSB1" 2>&1 &
-		uci commit 3ginfo 2>&1 &
-
-fi
-	
-if [[ "$DEVICE" == *"mf286r"* ]]; then
-	
-		uci set 3ginfo.@3ginfo[0].device="/dev/ttyACM0" 2>&1 &
-		uci commit 3ginfo 2>&1 &
-
-fi
-
-if [[ "$DEVICE" == *"mf286d"* ]]; then
-	
-		uci set 3ginfo.@3ginfo[0].device="/dev/ttyUSB1" 2>&1 &
-		uci commit 3ginfo 2>&1 &
-
-fi
-
-if [[ "$DEVICE" == *"mf286"* ]]; then
-	
-		uci set 3ginfo.@3ginfo[0].device="/dev/ttyUSB1" 2>&1 &
-		uci commit 3ginfo 2>&1 &
-
-fi
+exit 0
 

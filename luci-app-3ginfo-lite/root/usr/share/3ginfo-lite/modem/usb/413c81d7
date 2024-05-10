@@ -15,6 +15,7 @@ fi
 O=$(sms_tool -d $DEVICE at "at^ca_info?;^debug?")
 
 O1=$(echo "$O" | sed -n '/^RAT:/,/^SCell1:/p')
+[ -z "$O1" ] && O1=$(echo "$O" | sed -n '/^EARFCN/,/^SCell1:/p')
 
 T=$(echo "$O1" | awk '/TAC:/ {print $2}')
 if [ -n "$T" ]; then
@@ -156,6 +157,11 @@ if [ -n "$LAC_DEC" ]; then
 fi
 CID_HEX=$(printf "%X" $CID_DEC)
 
+if [ -z "$TAC_DEC" ]
+then
+	[ -n "$TAC_HEX" ] && TAC_DEC=$(echo $((0x$TAC_HEX)))
+fi
+
 # Protocol
 # DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
 PV=$(cat /sys/kernel/debug/usb/devices)
@@ -176,8 +182,8 @@ fi
 PVMODEL=$(echo $PV | awk -F 'Vendor=413c ProdID=81d7' '{print $2}' | cut -c-150)
 if [ -z "$MODEL" ]
 then
-	MODELBCUT=$(echo $PVMODEL | awk -F 'Manufacturer=|S: Product=' '{print $2}'| xargs)
-	MODELACUT=$(echo $PVMODEL | awk -F 'Product=|S: SerialNumber' '{print $2}'| xargs)
+	MODELBCUT=$(echo $PVMODEL | awk -F 'Manufacturer=|S: Product=' '{print $2}' | sed s/"Inc. "// | xargs)
+	MODELACUT=$(echo $PVMODEL | awk -F 'Product=| S: SerialNumber' '{print $2}'| xargs)
 	MODELC="$MODELBCUT "$MODELACUT
 	MODEL=$(echo "$MODELC" | awk '{for (i=1;i<=NF;i++) if (!a[$i]++) printf("%s%s",$i,FS)}{printf("\n")}' | tr -d '\r\n')
 fi

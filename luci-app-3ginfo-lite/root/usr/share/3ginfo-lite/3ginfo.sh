@@ -137,6 +137,8 @@ band5g() {
 		"102") echo " (6200 MHz)";;
 		"104") echo " (6700 MHz)";;
 		"105") echo " (600 MHz)";;
+		"106") echo " (900 MHz)";;
+		"109") echo " (700/1500 MHz)";;
 		"257") echo " (28 GHz)";;
 		"258") echo " (26 GHz)";;
 		"259") echo " (41 GHz)";;
@@ -215,7 +217,28 @@ getpath() {
 	esac
 }
 
-# Luci-app-modemdefine - WAN config
+rmduplicates() {
+    local rv=""
+    set_uplow() {
+        echo "$1" | tr '[:upper:]' '[:lower:]'
+    }
+    for name in $1; do
+        d_name=$(set_uplow "$name")
+        d=false
+        for vn in $rv; do
+            if [ "$(set_uplow "$vn")" = "$d_name" ]; then
+                d=true
+                break
+            fi
+        done
+        if [ "$d" = false ]; then
+            rv="$rv $name"
+        fi
+    done
+    echo "$rv" | xargs
+}
+
+# --- modemdefine - WAN config ---
 CONFIG=modemdefine
 MODEMZ=$(uci show $CONFIG | grep -o "@modemdefine\[[0-9]*\]\.modem" | wc -l | xargs)
 if [[ $MODEMZ > 1 ]]; then
@@ -239,7 +262,7 @@ fi
 			fi
 		done
 	fi	
-# modemdefine config
+# --- modemdefine config ---
 
 CONN_TIME="-"
 RX="-"
@@ -256,18 +279,21 @@ if [ -n "$NETUP" ]; then
 			CT=$((UPTIME-CT))
 		fi
 		if [ ! -z $CT ]; then
+
 			D=$(expr $CT / 60 / 60 / 24)
 			H=$(expr $CT / 60 / 60 % 24)
 			M=$(expr $CT / 60 % 60)
 			S=$(expr $CT % 60)
 			CONN_TIME=$(printf "%dd, %02d:%02d:%02d" $D $H $M $S)
+			CONN_TIME_SINCE=$(date "+%Y%m%d%H%M%S" -d "@$(($(date +%s) - CT))")
+			
 		fi
+		
 		IFACE=$(ifstatus $SEC | awk -F\" '/l3_device/ {print $4}')
 		if [ -n "$IFACE" ]; then
 			RX=$(ifconfig $IFACE | awk -F[\(\)] '/bytes/ {printf "%s",$2}')
 			TX=$(ifconfig $IFACE | awk -F[\(\)] '/bytes/ {printf "%s",$4}')
 		fi
-
 fi
 
 # CSQ
@@ -283,7 +309,7 @@ fi
 
 # COPS numeric
 # see https://mcc-mnc.com/
-# Update: 13/01/2024 items: 2965
+# Update: 28/04/2024 items: 2970
 COPS=""
 COPS_MCC=""
 COPS_MNC=""
@@ -304,8 +330,7 @@ else
 fi
 [ -z "$COPS" ] && COPS=$COPS_NUM
 
-COPZ=$(echo $COPS | sed ':s;s/\(\<\S*\>\)\(.*\)\<\1\>/\1\2/g;ts')
-COPS=$(echo $COPZ | awk '{for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) }}1' | xargs)
+COPS=$(rmduplicates "$COPS")
 
 isp=$(sms_tool -d $DEVICE at "AT+COPS?"|sed -n '2p'|cut -d '"' -f2|tr -d '\r')
 isp_num="$COPS_MCC $COPS_MNC"
@@ -445,9 +470,11 @@ fi
 
 cat <<EOF
 {
-"connt":"$CONN_TIME",
-"conntx":"$TX",
-"connrx":"$RX",
+"conn_time":"$CONN_TIME",
+"conn_time_sec":"$CT",
+"conn_time_since":"$CONN_TIME_SINCE",
+"rx":"$RX",
+"tx":"$TX",
 "modem":"$MODEL",
 "mtemp":"$TEMP",
 "firmware":"$FW",
