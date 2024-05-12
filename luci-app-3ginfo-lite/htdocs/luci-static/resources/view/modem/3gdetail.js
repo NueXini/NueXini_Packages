@@ -237,6 +237,25 @@ function formatDateTime(s) {
 	return s;
 }
 
+function checkOperatorName(t) {
+    var w = t.split(" ");
+    var f = {};
+
+    for (var i = 0; i < w.length; i++) {
+        var wo = w[i].toLowerCase(); 
+        if (!f.hasOwnProperty(wo)) {
+            f[wo] = i;
+        }
+    }
+
+    var u = Object.keys(f).map(function(wo) {
+        return w[f[wo]];
+    });
+
+    var r = u.join(" ");
+    return r;
+}
+
 return view.extend({
 
 
@@ -361,7 +380,7 @@ simDialog: baseclass.extend({
 
 		render: function(content) {
 
-			let json = JSON.parse(content);
+			var json = JSON.parse(content);
 
 			if (json) {
 				if (!json.imei.length > 2) {
@@ -570,7 +589,7 @@ simDialog: baseclass.extend({
 						view.textContent = '-';
 						}
 						else {
-						view.textContent = json.operator_name;
+						view.textContent = checkOperatorName(json.operator_name);
 						}
 					}
 

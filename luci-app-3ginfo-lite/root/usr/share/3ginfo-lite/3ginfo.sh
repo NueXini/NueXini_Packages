@@ -217,27 +217,6 @@ getpath() {
 	esac
 }
 
-rmduplicates() {
-    local rv=""
-    set_uplow() {
-        echo "$1" | tr '[:upper:]' '[:lower:]'
-    }
-    for name in $1; do
-        d_name=$(set_uplow "$name")
-        d=false
-        for vn in $rv; do
-            if [ "$(set_uplow "$vn")" = "$d_name" ]; then
-                d=true
-                break
-            fi
-        done
-        if [ "$d" = false ]; then
-            rv="$rv $name"
-        fi
-    done
-    echo "$rv" | xargs
-}
-
 # --- modemdefine - WAN config ---
 CONFIG=modemdefine
 MODEMZ=$(uci show $CONFIG | grep -o "@modemdefine\[[0-9]*\]\.modem" | wc -l | xargs)
@@ -319,10 +298,10 @@ if [ -n "$COPS_NUM" ]; then
 	COPS_MNC=${COPS_NUM:3:3}
 fi
 
-if [ -z "$FORCE_PLMN" ]; then
-	T=$(echo "$O" | awk -F[\"] '/^\+COPS:\s*.,0/ {print $2}')
-	[ "x$T" != "x" ] && COPS="$T"
-else
+TCOPS=$(echo "$O" | awk -F[\"] '/^\+COPS:\s*.,0/ {print $2}')
+[ "x$TCOPS" != "x" ] && COPS="$TCOPS"
+
+if [ -z "$COPS" ]; then
 	if [ -n "$COPS_NUM" ]; then
 		COPS=$(awk -F[\;] '/^'$COPS_NUM';/ {print $3}' $RES/mccmnc.dat | xargs)
 		LOC=$(awk -F[\;] '/^'$COPS_NUM';/ {print $2}' $RES/mccmnc.dat)
@@ -330,7 +309,9 @@ else
 fi
 [ -z "$COPS" ] && COPS=$COPS_NUM
 
-COPS=$(rmduplicates "$COPS")
+if [[ $COPS =~ " " ]]; then
+	COPS=$(echo "$COPS" | awk '{if(NF==2 && tolower($1)==tolower($2)){print $1}else{print $0}}')
+fi
 
 isp=$(sms_tool -d $DEVICE at "AT+COPS?"|sed -n '2p'|cut -d '"' -f2|tr -d '\r')
 isp_num="$COPS_MCC $COPS_MNC"

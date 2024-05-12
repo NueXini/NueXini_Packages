@@ -148,7 +148,7 @@ if [ -n "$T" ]; then
 #	[ -n "$T" ] && addon 68 "(S4) SNR" "$T"
 fi
 
-MODE=$(echo $MODE | sed 's,/,+,' | sed 's,LTE_A,LTE-A | ,')
+MODE=$(echo $MODE | sed 's,/,+,' | sed 's,LTE_A,LTE-A | ,' | sed 's,LTE B,LTE | B,')
 
 # Cell ID & LAC & TAC
 LAC_HEX=$(printf "%X" $LAC_DEC)
@@ -184,8 +184,9 @@ if [ -z "$MODEL" ]
 then
 	MODELBCUT=$(echo $PVMODEL | awk -F 'Manufacturer=|S: Product=' '{print $2}' | sed s/"Inc. "// | xargs)
 	MODELACUT=$(echo $PVMODEL | awk -F 'Product=| S: SerialNumber' '{print $2}'| xargs)
-	MODELC="$MODELBCUT "$MODELACUT
-	MODEL=$(echo "$MODELC" | awk '{for (i=1;i<=NF;i++) if (!a[$i]++) printf("%s%s",$i,FS)}{printf("\n")}' | tr -d '\r\n')
+	MODEL="$MODELBCUT "$MODELACUT
+#	MODELC="$MODELBCUT "$MODELACUT
+#	MODEL=$(echo "$MODELC" | awk '{for (i=1;i<=NF;i++) if (!a[$i]++) printf("%s%s",$i,FS)}{printf("\n")}' | tr -d '\r\n')
 fi
 
 # FW
