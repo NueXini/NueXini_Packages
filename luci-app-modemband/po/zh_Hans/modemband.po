@@ -4,6 +4,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "Modem"
+msgstr "调制解调器型号"
+
 msgid "Preferred LTE bands"
 msgstr "首选LTE频段"
 
@@ -44,8 +47,8 @@ msgid ""
 "Configuration modem frequency bands. More "
 "information about the modemband application on the %seko.one.pl forum%s."
 msgstr ""
-"配置首选调制解调器频段. More..."
-"有关调制解调器应用程序的信息 %sforum eko.one.pl%s."
+"配置首选调制解调器频段。"
+"更多有关调制解调器应用程序的信息请前往 %sforum eko.one.pl%s。"
 
 msgid "LTE Bands Configuration"
 msgstr "LTE频段配置"
@@ -120,7 +123,7 @@ msgid "Configuration"
 msgstr "配置"
 
 msgid "Configuration modemband"
-msgstr "调制解调器频段配置"
+msgstr "调制解调器配置"
 
 msgid "Configuration panel for modemband and gui application."
 msgstr "调制解调器应用程序和用户界面设置"
@@ -204,7 +207,7 @@ msgid "Checking this option disables the notification that appears every time th
 msgstr "选中此选项将禁用每次更改频段时出现的通知"
 
 msgid "Modem settings template"
-msgstr "调制解调器设置模板"
+msgstr "调制解调器模板配置"
 
 msgid "Modem template configuration"
 msgstr "调制解调器模板配置"
