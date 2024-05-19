@@ -16,7 +16,7 @@
 			"path": "admin/modem/3ginfo-lite/3gdetail"
 		},
 		"depends": {
-			"acl": [ "luci-app-3ginfo" ],
+			"acl": [ "luci-app-3ginfo-lite" ],
 			"uci": { "3ginfo": true }
 		}
 	},
@@ -29,6 +29,15 @@
 			"path": "modem/3gdetail"
 		}
 	},
+	
+	"admin/modem/3ginfo-lite/3gdebug": {
+		"title": "Diagnostics",
+		"order": 20,
+		"action": {
+			"type": "view",
+			"path": "modem/3gdebug"
+		}
+	},
 
 	"admin/modem/3ginfo-lite/3gconfig": {
 		"title": "Configuration",
@@ -36,15 +45,6 @@
 		"action": {
 			"type": "view",
 			"path": "modem/3gconfig"
-		}
-	},
-
-	"admin/modem/3ginfo-lite/3gdebug": {
-		"title": "USB debug information",
-		"order": 20,
-		"action": {
-			"type": "view",
-			"path": "modem/3gdebug"
 		}
 	}
 }

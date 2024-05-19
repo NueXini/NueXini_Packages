@@ -1,5 +1,5 @@
 {
-	"luci-app-3ginfo": {
+	"luci-app-3ginfo-lite": {
 		"description": "Grant access to LuCI app 3ginfo-lite",
 		"read": {
    			"cgi-io": [ "exec" ],
@@ -17,7 +17,10 @@
 		"write": {
 			"file": {
 				"/bin/cat": [ "exec" ],
+				"/bin/sh -x /usr/share/3ginfo-lite/3ginfo.sh": [ "exec" ],
+				"/bin/ls /dev": [ "exec" ],
 				"/etc/modemdefine": [ "write" ],
+				"/tmp/debug_result.txt": [ "write" ],
 				"/etc/3ginfo": [ "write" ]
 			},
 			"uci": [ "3ginfo", "luci-app-3ginfo-lite" ]
