@@ -1,0 +1,24 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2008-2022 OpenWrt.org
+
+START=99
+USE_PROCD=1
+
+PROG=/usr/bin/pppwn
+
+start_service() {
+	config_load "pppwn"
+	
+	config_get "port" "config" "port"
+	config_get "fwver" "config" "fwver"
+	
+	local enable
+	config_get_bool enable config enable 0
+	
+	[ "${enable}" -gt 0 ] || return
+
+	procd_open_instance
+	procd_set_param command $PROG --interface $port --fw $fwver --stage1 "/etc/pppwn/stage1.bin" --stage2 "/etc/pppwn/stage2.bin" -a
+	procd_set_param respawn
+	procd_close_instance
+}
