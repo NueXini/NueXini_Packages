@@ -6,7 +6,7 @@ function send_msg(){
 	to=$(echo "$1" | awk '/To:/{print $2}')
 	sent=$(echo "$1" | awk '/Sent:/{gsub("Sent: ","");print $0}')
 	time=$(echo "$1" | awk '/Sending_time:/{print $2}')
-	msg=$(echo "$1" |sed -e '1,/^$/ d')
+	msg=$(echo "$1" |sed -e '1,/^$/ d' | sed 's/[]["]/\\&/g')
 	string="{ \"to\": \"$to\", \"sent\": \"$sent\", \"time\": \"$time\", \"content\": \"$msg\" },"
 }
 
@@ -15,7 +15,7 @@ function recv_msg(){
 	from=$(echo "$1" | awk '/From:/{print $2}')
 	srecv=$(echo "$1" | awk '/Sent:/{gsub("Sent: ","");print $0}')
 	drecv=$(echo "$1" | awk '/Received:/{gsub("Received: ","");print $0}')
-	msg=$(echo "$1" |sed -e '1,/^$/ d')
+	msg=$(echo "$1" |sed -e '1,/^$/ d'| sed 's/[]["]/\\&/g')
 	string="{ \"from\": \"$from\", \"srecv\": \"$srecv\", \"drecv\": \"$drecv\", \"content\": \"$msg\" },"
 }
 
