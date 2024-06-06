@@ -12,7 +12,7 @@ Supported devices:
    
  - STYX MG8224
 
- - Huawei E3372 (LTE)/ME909
+ - Huawei E3372 (LTE)/MU709/ME909
 
  - Sierra Wireless EM7455
 
@@ -44,7 +44,7 @@ Supported devices:
 |modeminfo-qmi |Qualcomm MSM Interface support |
 |modeminfo-serial-quectel |Quectel modems support |
 |modeminfo-serial-telit |Telit LN940 (HP LT4220) modem support |
-|modeminfo-serial-huawei |Huawei ME909/E3372(stick mode, LTE only) modems support|
+|modeminfo-serial-huawei |Huawei MU709/ME909/E3372(stick mode, LTE only) modems support|
 |modeminfo-serial-sierra |Sierra EM7455 modem support |
 |modeminfo-serial-simcom |SimCOM Quaclomm chip modems support |
 |modeminfo-serial-simcom-a7xxx |SimCOM ASR chip modems support |
