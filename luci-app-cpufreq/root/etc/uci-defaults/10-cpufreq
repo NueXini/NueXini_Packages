@@ -53,6 +53,9 @@ case "$DISTRIB_TARGET" in
 	"meson/meson8b")
 		uci_write_config 0 schedutil 816000 $CPU_MAX_FREQ
 		;;
+	"mediatek/mt7988")
+		uci_write_config 0 schedutil 800000 2300000
+		;;
 	"mvebu/cortexa72")
 		uci_write_config 0 ondemand 550000 $CPU_MAX_FREQ 10 50
 		uci_write_config 2 ondemand 550000 $CPU2_MAX_FREQ 10 50
