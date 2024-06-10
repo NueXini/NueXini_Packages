@@ -20,7 +20,6 @@
 return view.extend({
 
 	load: function(data) {
-		L.resolveDefault(fs.exec_direct('/usr/share/modeminfo/scripts/rmtmp'));
 		return L.resolveDefault(fs.exec_direct('/usr/bin/modeminfo'));
 	},
 
