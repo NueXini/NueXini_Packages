@@ -1,9 +1,8 @@
-name: Build
+name: Release-Build
 
 on:
   push:
     tags:
-      #- v5.**
       - "*"
 
 jobs:
@@ -43,14 +42,14 @@ jobs:
           - x86_64
 
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Building packages
-        uses: sbwml/openwrt-gh-action-sdk@go1.22
+        uses: sbwml/openwrt-gh-action-sdk@master
         env:
-          ARCH: ${{ matrix.arch }}
+          ARCH: ${{ matrix.arch }}-openwrt-22.03
           FEEDNAME: packages_ci
           PACKAGES: luci-app-ikoolproxy
           NO_REFRESH_CHECK: true
@@ -64,7 +63,7 @@ jobs:
       - name: Upload packages
         uses: ncipollo/release-action@v1.14.0
         with:
-          token: ${{ secrets.REPO_TOKEN  }}
+          token: ${{ secrets.REPO_TOKEN }}
           allowUpdates: true
           replacesArtifacts: true
           artifacts: "bin/packages/${{ matrix.arch }}/packages_ci/*.ipk"
