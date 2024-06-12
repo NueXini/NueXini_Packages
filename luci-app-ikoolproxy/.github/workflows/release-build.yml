@@ -51,7 +51,7 @@ jobs:
         env:
           ARCH: ${{ matrix.arch }}-openwrt-22.03
           FEEDNAME: packages_ci
-          PACKAGES: luci-app-ikoolproxy
+          #PACKAGES: koolproxy
           NO_REFRESH_CHECK: true
 
       - name: Upload artifacts
