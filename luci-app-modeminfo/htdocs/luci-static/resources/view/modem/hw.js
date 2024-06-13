@@ -110,8 +110,9 @@ return view.extend({
 			let iccid = 'iccid'+i;
 			let imei = 'imei'+i;
 			let chiptemp = 'chiptemp'+i;
+			let m = i+1;
 			if ( json.modem.length > 1 ) {
-				s.tab('modem'+i, _('Modem')+' '+i);
+				s.tab('modem'+i, _('Modem')+' '+m);
 				o = s.taboption('modem'+i, form.HiddenValue, 'generic');
 			} else {
 				o = s.option(form.HiddenValue, 'generic');
