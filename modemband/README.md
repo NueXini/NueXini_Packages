@@ -35,6 +35,7 @@ Supported devices:
 - Telit LN940 (Foxconn T77W676) in mbim mode
 - Telit LN960 (Foxconn T77W968)
 - Telit LN960
+- Yuge CLM920 NC_5
 - ZTE MF286 (router)
 - ZTE MF286A (router)
 - ZTE MF286D (router)

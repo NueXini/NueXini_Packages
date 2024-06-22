@@ -12,7 +12,7 @@
 				"/etc/3ginfo": [ "read" ],
 				"/sys/kernel/debug/usb/devices": [ "read" ]
 			},
-			"uci": [ "3ginfo", "luci-app-3ginfo-lite" ]
+			"uci": [ "3ginfo" ]
 		},
 		"write": {
 			"file": {
@@ -23,7 +23,7 @@
 				"/tmp/debug_result.txt": [ "write" ],
 				"/etc/3ginfo": [ "write" ]
 			},
-			"uci": [ "3ginfo", "luci-app-3ginfo-lite" ]
+			"uci": [ "3ginfo" ]
 		}
 	}
 }

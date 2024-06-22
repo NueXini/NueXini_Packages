@@ -71,7 +71,9 @@ if [ "x$MODE_NUM" = "x7" ]; then
 	BWS4=""
 
 	CELLS=$(echo "$O" | awk -F[,:] '/^\+XLEC:/{print $3}')
+	[ -z "$CELLS" ] && CELLS=0
 	case $CELLS in
+	
 		"1")
 			T=$(echo "$O" | awk -F[,:] '/^\+XLEC:/{print $4}')
 			BWP=$(bandwidth "$T")
@@ -308,8 +310,11 @@ if [ "x$MODE_NUM" = "x7" ]; then
 		fi
 		T=$(echo "$O" | awk -F[,:] '/^\+XMCI: 4/{print $12}')
 		[ "$T" != "255" ] && RSRQ="$((-20 + T/2))"
+		# SNR
 #		T=$(echo "$O" | awk -F[,:] '/^\+XMCI: 4/{print $13}')
-#		[ "$T" != "255" ] && addon 38 "SNR" "$T dB"
+#		[ "$T" != "255" ] && SNR="$T"
+		# SINR
+		SINR=$(echo "$O" | awk -F [:,] '/\+XMCI: 4/{gsub(/"/,""); printf "%.0f\n", $13/4+5}')
 	fi
 
 IFS="
@@ -397,7 +402,8 @@ IFS="
 #			T=$(echo "$LINE" | awk -F[,:] '/^\+XMCI: 4/{print $13}')
 #			[ "$T" != "255" ] && addon $((POS + 8)) "(S${IDX}) SNR" "$T dB"
 			IDX=$((IDX + 1))
-
+			[ $IDX -ge $CELLS ] && break
+			POS=$((POS + 10))
 		fi
 	done
 fi

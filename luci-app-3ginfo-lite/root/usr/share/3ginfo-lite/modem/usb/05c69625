@@ -1,0 +1,85 @@
+# YUGA CLM920-NC5
+
+O=$(sms_tool -d $DEVICE at "at+temp")
+
+T=$(echo "$O" | awk -F[,:] '/^temp:/ {print $2}')
+[ -n "$T" ] && TEMP="$T &deg;C"
+
+if [ "$REGOK" = "1" ]; then
+
+O=$(sms_tool -d $DEVICE at "at+qnwinfo")
+
+if [ "x$MODE_NUM" = "x7" ]; then
+	T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO/ {print $4}')
+	if [ -n "$T" ]; then
+		B=$(echo $T | sed 's/.*LTE_EUTRAN_BAND\(.*\)"/\1/')
+		MODE="LTE $(band4g ${B})"
+		PBAND="$(band4g ${B})"
+		T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO/ {print $5}')
+		EARFCN="$T"
+	fi
+	O=$(sms_tool -d $DEVICE at "at+qnwinfo")
+	T=$(echo "$O" | awk -F[,:] '/^\+LTEINFO/ {print $3}')
+	if [ -n "$T" ]; then
+		T_HEX=$(printf "%X" "$T")
+		T_DEC=$(printf "%d" "$T")
+	fi
+	T=$(echo "$O" | awk -F[,:] '/^\+LTEINFO/ {print $5}')
+	[ -n "$T" ] && PCI="$T"
+	T=$(echo "$O" | awk -F[,:] '/^\+LTEINFO/ {print $12}')
+	[ -n "$T" ] && RSSI="$T"
+	T=$(echo "$O" | awk -F[,:] '/^\+LTEINFO/ {print $11}')
+	[ -n "$T" ] && RSRP="$T"
+	T=$(echo "$O" | awk -F[,:] '/^\+LTEINFO/ {print $10}')
+	[ -n "$T" ] && RSRQ="$T"
+	T=$(echo "$O" | awk -F[,:] '/^\+LTEINFO/ {print $13}' | xargs)
+	[ -n "$T" ] && SINR="$T"
+fi
+
+fi
+
+# Modem
+FWA=$(sms_tool -d $DEVICE at "AT+CGMR" | tr -s "\n" | xargs)
+FW=$(echo $FWA | sed s/"AT+CGMR"//)
+
+MODELA=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n" | xargs)
+MODELB=$(sms_tool -d $DEVICE at "AT+CGMI" | tr -s "\n" | xargs)
+MODELACUT=$(echo $MODELA | sed s/"AT+CGMM "//)
+MODELBCUT=$(echo $MODELB | sed s/"AT+CGMI "// | sed s/"Co.,Ltd."//)
+MODEL="$MODELBCUT "$MODELACUT
+
+# International Mobile Equipment Identity (IMEI)
+O=$(sms_tool -d $DEVICE at "AT^IMEI?" | xargs)
+NR_I=$(echo "$O" | awk -F': ' '/\^IMEI:/ {print $2}')
+if [ -n "$NR_I" ]; then
+	NR_IMEI="$NR_I"
+fi
+
+# International Mobile Subscriber Identity (IMSI)
+O=$(sms_tool -d $DEVICE at "AT+QCIMI" | xargs)
+NR_C=$(echo "$O" | sed s/"AT+QCIMI "//)
+if [ -n "$NR_C" ]; then
+	NR_IMSI="$NR_C"
+fi
+
+#  Integrated Circuit Card Identifier (ICCID)
+O=$(sms_tool -d $DEVICE at "AT+ICCID")
+NR_D=$(echo "$O" | awk -F [:] '/^\+ICCID:/{print $2}' | xargs)
+if [ -n "$NR_D" ]; then
+	NR_ICCID="$NR_D"
+fi
+
+# Protocol
+# DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
+PV=$(cat /sys/kernel/debug/usb/devices 2>/dev/null)
+PVCUT=$(echo $PV | awk -F 'Vendor=05c6 ProdID=9625' '{print $2}' | cut -c-1220)
+if echo "$PVCUT" | grep -q "Driver=qmi_wwan"
+then
+    PROTO="qmi"
+elif echo "$PVCUT" | grep -q "Driver=cdc_mbim"
+then
+    PROTO="mbim"
+elif echo "$PVCUT" | grep -q "Driver=cdc_ether"
+then
+    PROTO="ecm"
+fi

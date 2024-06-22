@@ -36,19 +36,18 @@ fi
 
 case "$MODE_NUM" in
 	7*)
-		if echo "$O" | grep -q -i "+QCAINFO.*SCC"; then
-			MODE="LTE-A |"
-		fi
+		MODE="LTE |"
+		echo "$O" | grep -q -i "+QCAINFO.*SCC" && MODE="LTE_A"
 		;;
 	11*)
 		MODE="5G SA |"
 		;;
 	13*)
+		MODE="LTE |"
 		if echo "$O" | grep -q -i "+QCAINFO.*NR5G"; then
 			MODE="5G NSA |"
 		else
 			if echo "$O" | grep -q -i "+QCAINFO.*PCC.*LTE"; then
-				MODE="LTE |"
 
 					OTS=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
 					SINR=$OTS
@@ -79,6 +78,10 @@ if [ -n "$T" ]; then
 			B=$(echo $T | sed 's/"LTE BAND \(.*\)"/\1/')
 			MODE="$MODE $(band4g ${B})"
 			;;
+		*"NR N"*)
+			B=$(echo $T | sed 's/NR N\(.*\)/\1/')
+			MODE="$MODE $(band5g ${B})"
+			;;
 		*"NR5G BAND"*)
 			B=$(echo $T | sed 's/"NR5G BAND \(.*\)"/\1/')
 			MODE="$MODE $(band5g ${B})"
@@ -93,6 +96,10 @@ if [ -n "$T" ]; then
 					B=$(echo $T | sed 's/"LTE-BAND-\(.*\)"/\1/')
 					MODE="$MODE / $(band4g ${B})"
 					;;
+				*"NR-N"*)
+					B=$(echo $T | sed 's/NR-N\(.*\)/\1/')
+					MODE="$MODE / $(band5g ${B})"
+					;;
 				*"NR5G-BAND"*)
 					B=$(echo $T | sed 's/"NR5G-BAND-\(.*\)"/\1/')
 					MODE="$MODE / $(band5g ${B})"
@@ -100,6 +107,23 @@ if [ -n "$T" ]; then
 			esac
 		done
 	fi
+else
+	case "$MODE_NUM" in
+		7 | 13)
+			T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO:.*LTE.*/{print $4}')
+			if [ -n "$T" ]; then
+				B=$(echo $T | sed 's/"LTE BAND \(.*\)"/\1/')
+				MODE="$MODE $(band4g ${B})"
+			fi
+			;;
+		11*)
+			T=$(echo "$O" | awk -F[,:] '/^\+QNWINFO:.*NR5G.*/{print $4}')
+			if [ -n "$T" ]; then
+				B=$(echo $T | sed 's/"NR5G BAND \(.*\)"/\1/')
+				MODE="$MODE $(band5g ${B})"
+			fi
+			;;
+	esac
 fi
 
 if [ "x$MODE_NUM" = "x7" ]; then
@@ -452,15 +476,17 @@ MODE=$(echo $MODE | sed 's,/,+,'| sed 's,LTE B,LTE | B,')
 if [ "${LAC_DEC}" = "0" ]; then
 	LAC_DEC="-"
 	LAC_HEX="-"
-fi 
+fi
 
 # Modem
-GETNFO=$(gcom -d $DEVICE -s /usr/share/3ginfo-lite/vendorproduct.gcom)
-FW=$(echo "$GETNFO" | awk -F [:] '/^\+CGMR:/{print $2}' | xargs)
+FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n" | xargs)
+FW=$(echo $FWA | sed s/"AT+GMR "//)
 
-MVENDOR=$(echo "$GETNFO" | awk -F [:] '/^\+CGMI:/{print $2}' | xargs)
-MPRODUCT=$(echo "$GETNFO" | awk -F [:] '/^\+CGMM:/{print $2}' | xargs)
-MODEL="$MVENDOR "$MPRODUCT
+MODELA=$(sms_tool -d $DEVICE at "AT+CGMM" | tr -s "\n" | xargs)
+MODELB=$(sms_tool -d $DEVICE at "AT+CGMI" | tr -s "\n" | xargs)
+MODELACUT=$(echo $MODELA | sed s/"AT+CGMM "//)
+MODELBCUT=$(echo $MODELB | sed s/"AT+CGMI "//)
+MODEL="$MODELBCUT "$MODELACUT
 
 # Slot SIM
 O=$(sms_tool -d $DEVICE at "AT+QUIMSLOT?")
@@ -470,19 +496,22 @@ if [ -n "$T" ]; then
 fi
 
 # International Mobile Equipment Identity (IMEI)
-NR_I=$(echo "$GETNFO" | awk -F [:] '/^\+CGSN:/{print $2}' | xargs)
+O=$(sms_tool -d $DEVICE at "AT+GSN" | xargs)
+NR_I=$(echo "$O" | sed s/"AT+GSN "//)
 if [ -n "$NR_I" ]; then
 	NR_IMEI="$NR_I"
 fi
 
 # International Mobile Subscriber Identity (IMSI)
-NR_C=$(echo "$GETNFO" | awk -F [:] '/^\+CIMI:/{print $2}' | xargs)
+O=$(sms_tool -d $DEVICE at "AT+CIMI" | xargs)
+NR_C=$(echo "$O" | sed s/"AT+CIMI "//)
 if [ -n "$NR_C" ]; then
 	NR_IMSI="$NR_C"
 fi
 
 #  Integrated Circuit Card Identifier (ICCID)
-NR_D=$(echo "$GETNFO" | awk -F [:] '/^\+ICCID: /{print $2}' | xargs)
+O=$(sms_tool -d $DEVICE at "AT+QCCID")
+NR_D=$(echo "$O" | awk -F [:] '/^\+QCCID/{print $2}' | xargs)
 if [ -n "$NR_D" ]; then
 	NR_ICCID="$NR_D"
 fi
