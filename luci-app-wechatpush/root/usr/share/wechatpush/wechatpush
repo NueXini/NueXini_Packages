@@ -808,11 +808,10 @@ function check_connect(){
 	local network_state="unknown"
 	while true; do
 		if is_online; then
-			[ ! -z "$network_state" ] && [ "$network_state" == "down" ] && echo "`date "+%Y-%m-%d %H:%M:%S"` 【网络状态】网络恢复正常.." >> ${logfile}
-			local network_state="up"
+			[ "$network_state" == "down" ] && echo "`date "+%Y-%m-%d %H:%M:%S"` 【网络状态】网络恢复正常.." >> ${logfile}
 			break
 		else
-			[ -z "$network_state" ] || [ "$network_state" == "up" ] && echo "`date "+%Y-%m-%d %H:%M:%S"` 【！！！！】当前网络不通！停止检测！ " >> ${logfile}
+			[ "$network_state" == "unknown" ] && echo "`date "+%Y-%m-%d %H:%M:%S"` 【！！！！】当前网络不通！停止检测！ " >> ${logfile}
 			local network_state="down"
 			# 无人值守、待弃用或改进
 			[ -z "$network_unattended_time" ] && network_unattended_time=`date +%s`
@@ -1133,24 +1132,43 @@ function cputop(){
 function get_disk() {
 	mkdir -p "${dir}disk_info"
 	local_disk_names=()
-	pve_disk_names=()
+	remote_disk_names=()
 
 	# 查询本地硬盘名
-	local_disk_names=($(lsblk 2>/dev/null | awk '$NF=="disk" {print $1}' | sort -u))
+	local_disk_names=($(lsblk -dno NAME,TYPE | awk '$2=="disk" {print $1}' | sort -u))
 	# 如未安装 lsblk，查找以 /dev/ 开头，但挂载点不是根目录 / 的设备，然后提取硬盘的名称(准确性较低)
-	[ -z "$local_disk_names" ] && local_disk_names=($(df -h 2>/dev/null | awk '$1 ~ /^\/dev/ {if ($NF ~ /^\/[a-zA-Z0-9]/) { sub("/dev/", "", $1); sub(/[0-9]+$/, "", $1); print $1 }}' | sort -u))
+	[ -z "$local_disk_names" ] && local_disk_names=($(df -h 2>/dev/null | awk '$1 ~ /^\/dev/ && !/^\/dev\/(mtd|ubiblock)/ {if ($NF ~ /^\/[a-zA-Z0-9]/) { sub("/dev/", "", $1); sub(/[0-9]+$/, "", $1); print $1 }}' | sort -u))
 	local_disk_tags=($(for _ in "${local_disk_names[@]}"; do echo "local"; done))
 
 	# 查询远程硬盘名
 	if [ -n "$server_host" ]; then
 		ssh_command="ssh -o StrictHostKeyChecking=yes -o BatchMode=yes -i /root/.ssh/id_rsa root@${server_host} -p ${server_port}"
-		pve_disk_names=($(eval ${ssh_command} lsblk | awk '$NF=="disk" {print $1}' | sort -u))
-		pve_disk_tags=($(for _ in "${pve_disk_names[@]}"; do echo "pve"; done))
+		remote_disk_names=($(eval ${ssh_command} lsblk -dno NAME,TYPE | awk '$2=="disk" {print $1}' | sort -u))
+		[ -z "$remote_disk_names" ] && remote_disk_names=($(eval ${ssh_command} df -h 2>/dev/null | awk '$1 ~ /^\/dev/ {if ($NF ~ /^\/[a-zA-Z0-9]/) { sub("/dev/", "", $1); sub(/[0-9]+$/, "", $1); print $1 }}' | sort -u))
+		remote_disk_tags=($(for _ in "${remote_disk_names[@]}"; do echo "remote"; done))
+	fi
+	
+# 获取磁盘名称函数
+get_disk_names() {
+	local disk_names=($(lsblk -dno NAME,TYPE 2>/dev/null | awk '$2=="disk" {print $1}' | sort -u))
+	[ -z "$disk_names" ] && disk_names=($(df -h 2>/dev/null | awk '$1 ~ /^\/dev/ {if ($NF ~ /^\/[a-zA-Z0-9]/) { sub("/dev/", "", $1); sub(/[0-9]+$/, "", $1); print $1 }}' | sort -u))
+	echo "${disk_names[@]}"
+}
+
+	# 查询本地硬盘名
+	local_disk_names=($(get_disk_names))
+	local_disk_tags=($(for _ in "${local_disk_names[@]}"; do echo "local"; done))
+
+	# 查询远程硬盘名
+	if [ -n "$server_host" ]; then
+		ssh_command="ssh -o StrictHostKeyChecking=yes -o BatchMode=yes -i /root/.ssh/id_rsa root@${server_host} -p ${server_port}"
+		remote_disk_names=($(eval ${ssh_command} "$(declare -f get_disk_names); get_disk_names"))
+		remote_disk_tags=($(for _ in "${remote_disk_names[@]}"; do echo "remote"; done))
 	fi
 
 	# 合并本地和远程硬盘名及标记
-	all_disk_names=("${local_disk_names[@]}" "${pve_disk_names[@]}")
-	all_disk_tags=("${local_disk_tags[@]}" "${pve_disk_tags[@]}")
+	all_disk_names=("${local_disk_names[@]}" "${remote_disk_names[@]}")
+	all_disk_tags=("${local_disk_tags[@]}" "${remote_disk_tags[@]}")
 
 	for i in "${!all_disk_names[@]}"; do
 		tmp_name=${all_disk_names[i]}
@@ -1159,9 +1177,9 @@ function get_disk() {
 		unset tmp_command disk_type disk_err
 
 		# 判断硬盘类型
-		if [ "$tmp_tag" == "pve" ]; then
+		if [ "$tmp_tag" == "remote" ]; then
 			tmp_command="$ssh_command"
-			disk_type="_pve"
+			disk_type="_remote"
 		fi
 		file_path="${dir}disk_info/${tmp_name}${disk_type}"
 
@@ -1547,13 +1565,15 @@ function set_ip_black(){
 	[ -z "$nftables_version" ] && fw_info_blacklist=$(ipset list wechatpush_blacklist | grep "timeout" 2>/dev/null)
 	[ -z "$nftables_version" ] && fw_info_blacklistv6=$(ipset list wechatpush_blacklistv6 | grep "timeout" 2>/dev/null)
 
-	fw_info_blacklist="${fw_info_blacklist}\n${fw_info_blacklistv6}"
+	[ -n "$fw_info_blacklist" ] && [ -n "$fw_info_blacklistv6" ] && combined_fw_info_blacklist="${fw_info_blacklist}\n${fw_info_blacklistv6}"
+	[ -z "$fw_info_blacklist" ] && combined_fw_info_blacklist="${fw_info_blacklistv6}" || combined_fw_info_blacklist="${fw_info_blacklist}"
+	
 	while IFS= read -r ip_black_info; do
 		ip_black=$(echo "$ip_black_info"|grep -Eo "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")
 		[ -z "$ip_black" ] && ip_black=$(echo "$ip_black_info"|grep -Eo "([\da-fA-F0-9]{1,4}(:{1,2})){1,15}[\da-fA-F0-9]{1,4}")
 		[ -z "$ip_black" ] && continue
 		cat ${ip_blacklist_path}|grep -q -w -i ${ip_black} && sed -i "/^${ip_black}/d" ${ip_blacklist_path} && echo ${ip_black_info} >> ${ip_blacklist_path} || del_ip_black ${ip_black}
-	done <<< "$fw_info_blacklist"
+	done <<< "$combined_fw_info_blacklist"
 }
 
 # 发送定时数据
@@ -1830,6 +1850,9 @@ while [ "$enable" -eq "1" ]; do
 	# 登录提醒通知
 	#[ ! -f "${dir}send_enable.lock" ] && login_send
 	# 因修改为实时推送，白名单设备并不会再更新时间，暂时性修复
+	# 修改为实时推送后，防火墙列表读取和设置需单独列出，移除黑名单无法实时，待改善
+	set_ip_black
+
 	tmp_ip_list=`echo "$login_ip_white_list"|grep -v "^$"|sort -u`
 	while IFS= read -r tmp_ip; do
 		[ -n "$tmp_ip" ] && add_ip_white "$tmp_ip" "0"
