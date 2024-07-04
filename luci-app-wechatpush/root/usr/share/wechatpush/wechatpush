@@ -305,16 +305,16 @@ function getname(){
 }
 
 #  查询 http/https 端口
-function check_http_access() {
-    local ip=$1
+function check_http_access(){
+	local ip=$1
 
-    curl --head --silent --fail --connect-timeout 2 "http://$ip" >/dev/null
+	curl --head --silent --fail --connect-timeout 2 "http://$ip" >/dev/null
 	[ $? -eq 0 ] && echo "http" && return
 
-    curl --head --silent --fail --connect-timeout 2 "https://$ip" >/dev/null
+	curl --head --silent --fail --connect-timeout 2 "https://$ip" >/dev/null
 	[ $? -eq 0 ] && echo "https" && return
 
-    echo "" && return 1
+	echo "" && return 1
 }
 
 # 从光猫处获取设备信息
@@ -630,7 +630,7 @@ function first(){
 # 创建计划任务
 function cron(){
 	function del_cron(){
-		( echo `crontab -l 2>/dev/null`|grep -q "wechatpush" ) && crontab -l > conf && sed -i "/wechatpush/d" conf && crontab conf && rm -f conf >/dev/null 2>&1
+		crontab -l | grep -v "wechatpush" | crontab -
 	}
 	function re_cron(){
 		/etc/init.d/cron stop
@@ -644,21 +644,22 @@ function cron(){
 
 	# 重置流量
 	if [ ! -z "$reset_regularly" ] && [ "$reset_regularly" -eq "1" ]; then
-		crontab -l 2>/dev/null > conf && echo -e "0 0 * * * rm ${dir}usage.db >/dev/null 2>&1" >> conf && crontab conf && rm -f conf >/dev/null 2>&1
-		crontab -l 2>/dev/null > conf && echo -e "0 0 * * * rm ${dir}usage6.db >/dev/null 2>&1" >> conf && crontab conf && rm -f conf >/dev/null 2>&1
+		(crontab -l 2>/dev/null; echo "0 0 * * * rm ${dir}usage.db >/dev/null 2>&1") | crontab -
+		(crontab -l 2>/dev/null; echo "0 0 * * * rm ${dir}usage6.db >/dev/null 2>&1") | crontab -
 	fi
 
 	# 定时发送
 	if [ -n "$crontab_regular_time" ]; then
-		crontab_regular_time=`echo $crontab_regular_time|sed 's/ /,/g'` 2>/dev/null
-		crontab -l 2>/dev/null > conf && echo -e "0 $crontab_regular_time * * * /usr/share/wechatpush/wechatpush send &" >> conf && crontab conf && rm -f conf >/dev/null 2>&1
+		crontab_regular_time=$(echo "$crontab_regular_time" | sed 's/ /,/g')
+		(crontab -l 2>/dev/null; echo "0 $crontab_regular_time * * * /usr/share/wechatpush/wechatpush send &") | crontab -
 	# 间隔发送
 	elif [ -n "$crontab_interval_time" ]; then
-		crontab -l 2>/dev/null > conf && echo -e "0 */$crontab_interval_time * * * /usr/share/wechatpush/wechatpush send &" >> conf && crontab conf && rm -f conf >/dev/null 2>&1
+		(crontab -l 2>/dev/null; echo "0 */$crontab_interval_time * * * /usr/share/wechatpush/wechatpush send &") | crontab -
 	fi
 
 	re_cron
 }
+
 
 # 免打扰检测
 function disturb(){
@@ -777,16 +778,16 @@ function unattended(){
 function check_connect(){
 	# 获取网络状态
 	is_online() {
-        local urls=(http://connect.rom.miui.com/generate_204 http://wifi.vivo.com.cn/generate_204 http://connectivitycheck.platform.hicloud.com/generate_204 http://www.apple.com/library/test/success.html)
-        local shuffled_urls=($(for i in "${urls[@]}"; do echo "$i"; done | awk 'BEGIN {srand()} {print rand(), $0}' | sort -n | cut -d' ' -f2-))
+		local urls=(http://connect.rom.miui.com/generate_204 http://wifi.vivo.com.cn/generate_204 http://connectivitycheck.platform.hicloud.com/generate_204 http://www.apple.com/library/test/success.html)
+		local shuffled_urls=($(for i in "${urls[@]}"; do echo "$i"; done | awk 'BEGIN {srand()} {print rand(), $0}' | sort -n | cut -d' ' -f2-))
 
-        for url in "${shuffled_urls[@]}"; do
-            local status_code
-            status_code=$(curl -o /dev/null -sI -w "%{http_code}" "$url")
-            [[ "$status_code" -eq 204 || "$status_code" -eq 200 ]] && return 0
-        done
-        return 1 
-    }
+		for url in "${shuffled_urls[@]}"; do
+			local status_code
+			status_code=$(curl -o /dev/null -sI -w "%{http_code}" "$url")
+			[[ "$status_code" -eq 204 || "$status_code" -eq 200 ]] && return 0
+		done
+		return 1 
+	}
 
 	local network_state="unknown"
 	while true; do
@@ -849,14 +850,14 @@ function ip_changes(){
 		local last_IPv4=$(cat "${dir}ip"|grep IPv4|awk '{print $2}'|grep -v "^$"|sort -u|head -n1)
 		local last_IPv6=$(cat "${dir}ip"|grep IPv6|awk '{print $2}'|grep -v "^$"|sort -u|head -n1)
 		if [ "$get_ipv4_mode" -ne "0" ] && [ ! -z "$IPv4" ] && ( ! echo ${IPv4}|grep -w -q ${last_IPv4} ); then
-			echo "`date "+%Y-%m-%d %H:%M:%S"` ${disturb_text}当前 IP：${IPv4}    from：${IPv4_URL}" >> ${logfile}
+			echo "`date "+%Y-%m-%d %H:%M:%S"` ${disturb_text}当前 IP：${IPv4}	from：${IPv4_URL}" >> ${logfile}
 			echo IPv4 $IPv4 > ${dir}ip && echo -e IPv6 $last_IPv6 >> ${dir}ip
 			title="IP 地址变化"
 			content="${content}${str_splitline}${str_title_start} IP 地址变化${str_title_end}${str_linefeed}${str_tab}当前 IP：${IPv4}"
 		fi
 
 		if [ "$get_ipv6_mode" -ne "0" ] && [ ! -z "$IPv6" ] && ( ! echo "$IPv6"|grep -w -q ${last_IPv6} ); then
-			echo "`date "+%Y-%m-%d %H:%M:%S"` ${disturb_text}当前 IPv6：${IPv6}    from：${IPv6_URL}" >> ${logfile}
+			echo "`date "+%Y-%m-%d %H:%M:%S"` ${disturb_text}当前 IPv6：${IPv6}	from：${IPv6_URL}" >> ${logfile}
 			echo IPv4 $IPv4 > ${dir}ip && echo -e IPv6 $IPv6 >> ${dir}ip
 			[ -z "$title" ] && title="IPv6 地址变化"
 			[ ! -z "$title" ] && title="IP 地址变化"
@@ -866,8 +867,8 @@ function ip_changes(){
 	# 临时文件目录为空
 	else
 		echo "`date "+%Y-%m-%d %H:%M:%S"` ${disturb_text}路由器已经重启!" >> ${logfile}
-		[ "$get_ipv4_mode" -ne "0" ] && echo "`date "+%Y-%m-%d %H:%M:%S"` ${disturb_text}当前 IP: ${IPv4}    from：${IPv4_URL}" >> ${logfile}
-		[ "$get_ipv6_mode" -ne "0" ] && echo "`date "+%Y-%m-%d %H:%M:%S"` ${disturb_text}当前 IPv6: ${IPv6}    from：${IPv6_URL}" >> ${logfile}
+		[ "$get_ipv4_mode" -ne "0" ] && echo "`date "+%Y-%m-%d %H:%M:%S"` ${disturb_text}当前 IP: ${IPv4}	from：${IPv4_URL}" >> ${logfile}
+		[ "$get_ipv6_mode" -ne "0" ] && echo "`date "+%Y-%m-%d %H:%M:%S"` ${disturb_text}当前 IPv6: ${IPv6}	from：${IPv6_URL}" >> ${logfile}
 		echo IPv4 $IPv4 > ${dir}ip && echo -e IPv6 $IPv6 >> ${dir}ip
 		title="路由器重新启动"
 		content="${content}${str_splitline}${str_title_start} 路由器重新启动${str_title_end}"
@@ -898,7 +899,7 @@ function up(){
 	if [ "$ping_online" -eq "0" ]; then
 		LockFile lock
 		time_up=`date +%s`
-		[ -f "${dir}client/${ip}" ] && local http_access=`jq -r '.http_access' "${dir}${ip}"` || local http_access=`check_http_access ${ip}`
+		[ -f "${dir}client/${ip}" ] && local http_access=`jq -r '.http_access' "${dir}client/${ip}"` || local http_access=`check_http_access ${ip}`
 		echo "{\"ip\": \"${ip}\", \"mac\": \"${ip_mac}\", \"name\": \"${ip_name}\", \"uptime\": \"${time_up}\", \"interface\": \"${ip_interface}\", \"usage\": \"\", \"http_access\": \"${http_access}\"}" > ${dir}client/${ip}
 
 		# 从离线二次验证区恢复信息
@@ -909,7 +910,7 @@ function up(){
 		# up
 		else
 			usage down ${ip}
-			echo "${ip} ${ip_mac} ${ip_name// /_} `date +%s` ${ip_interface}" >> ${dir}ipAddress
+			echo "${ip} ${ip_mac} ${ip_name// /_} $(date +%s) ${ip_interface}" >> ${dir}ipAddress
 			blackwhitelist ${ip_mac};local ip_blackwhite=$?
 			[ -f "${dir}send_enable.lock" ] || [ -z "$notification_online" ] || [ -z "$ip_blackwhite" ] && LockFile unlock && return
 			[ -z "$ip_blackwhite" ] || [ "$ip_blackwhite" -ne "0" ] && LockFile unlock && return
@@ -940,6 +941,7 @@ function down(){
 	local ip="$1"
 	local ip_mac=`getmac ${ip}`
 	local ip_name=`getname ${ip} ${ip_mac}`
+	local time_up=$(cat ${dir}ipAddress|grep -w ${ip}|awk '{print $4}'|grep -v "^$"|sort -u|head -n1)
 	local ip_interface=`getinterface ${ip_mac}`
 
 	tmp_timeout=$down_timeout && tmp_retry_count=$timeout_retry_count
@@ -958,14 +960,15 @@ function down(){
 		local tmp_name=`cat ${dir}ipAddress|grep -w ${ip}|awk '{print $3}'|grep -v "^$"|sort -u|head -n1`
 		local tmp_mac=`cat ${dir}ipAddress|grep -w ${ip}|awk '{print $2}'|grep -v "^$"|sort -u|head -n1`
 		if [ "${ip_name// /_}" != "${tmp_name}" ] || [ "${ip_mac}" != "${tmp_mac}" ]; then
-			local time_up=$(cat ${dir}ipAddress|grep -w ${ip}|awk '{print $4}'|grep -v "^$"|sort -u|head -n1)
-			sed -i "/^${ip} /d" ${dir}ipAddress
 			[ "${ip_mac}" != "${tmp_mac}" ] && ip_name="unknown" # MAC 变化时应删除主机名重新获取
-			echo "${ip}  ${ip_mac} ${ip_name// /_} ${time_up} ${ip_interface}" >> ${dir}ipAddress
-			[ -f "${dir}client/${ip}" ] && local http_access=`jq -r '.http_access' "${dir}${ip}"` || local http_access=`check_http_access ${ip}`
-			echo "{\"ip\": \"${ip}\", \"mac\": \"${ip_mac}\", \"name\": \"${ip_name}\", \"uptime\": \"${time_up}\", \"interface\": \"${ip_interface}\", \"usage\": \"`usage get $ip_mac`\", \"http_access\": \"${http_access}\"}" > ${dir}client/${ip}
+			sed -i "/^${ip} /d" ${dir}ipAddress
+			echo "${ip} ${ip_mac} ${ip_name// /_} ${time_up} ${ip_interface}" >> ${dir}ipAddress
+			rm -f ${dir}client/${ip} >/dev/null 2>&1
 		fi
-		local ip_total=`usage get $ip_mac` && [ ! -z "$ip_total" ] && jq --arg new_usage "$usage_date" '.usage = $new_usage' ${dir}client/${ip} > ${dir}tmp.json && mv ${dir}tmp.json ${dir}client/${ip}
+		# 客户端列表文件不存在或需要更新
+		[ -f "${dir}client/${ip}" ] && local ip_total=`usage get $ip_mac` && [ ! -z "$ip_total" ] && jq -c --arg new_usage "$ip_total" '.usage = $new_usage' "${dir}client/${ip}" > "${dir}tmp.json" && mv "${dir}tmp.json" "${dir}client/${ip}"
+		[ ! -f "${dir}client/${ip}" ] && local http_access=`check_http_access ${ip}`
+		[ ! -f "${dir}client/${ip}" ] && echo "{\"ip\": \"${ip}\", \"mac\": \"${ip_mac}\", \"name\": \"${ip_name}\", \"uptime\": \"${time_up}\", \"interface\": \"${ip_interface}\", \"usage\": \"`usage get $ip_mac`\", \"http_access\": \"${http_access}\"}" > ${dir}client/${ip}
 		LockFile unlock
 	fi
 }
@@ -1107,7 +1110,7 @@ function get_disk() {
 	# 获取磁盘名称函数
 	get_disk_names() {
 		local disk_names=($(lsblk -dno NAME,TYPE | awk '$2=="disk" && $1 !~ /^mtd/ && $1 !~ /^ubiblock/ {print $1}' | sort -u))
-		[ -z "$disk_names" ] && disk_names=($(df -h 2>/dev/null | awk '$1 ~ /^\/dev/ {if ($NF ~ /^\/[a-zA-Z0-9]/) { sub("/dev/", "", $1); sub(/[0-9]+$/, "", $1); print $1 }}' | sort -u))
+		[ -z "$disk_names" ] && disk_names=($(df -h 2>/dev/null | awk '$1 ~ /^\/dev/ && !/^\/dev\/(mtd|ubiblock)/ {if ($NF ~ /^\/[a-zA-Z0-9]/) { sub("/dev/", "", $1); sub(/[0-9]+$/, "", $1); print $1 }}' | sort -u))
 		echo "${disk_names[@]}"
 	}
 
@@ -1619,7 +1622,11 @@ function send(){
 
 	if [ -z "$1" ] && ( echo "$send_notification"|grep -q "client_list" ); then
 		wait
-		awk '{ lines[i++] = $0 } END { for (j = i-1; j >= 0; j--) print lines[j] }' "${dir}ipAddress" > "${dir}tmp_sort_file"
+		# 按在线时间（短到长）
+		#awk '{ lines[i++] = $0 } END { for (j = i-1; j >= 0; j--) print lines[j] }' "${dir}ipAddress" > "${dir}tmp_sort_file"
+		# 按 IP 顺序
+		sort -V -k 1,1 "${dir}ipAddress" > "${dir}tmp_sort_file"
+
 		logrow=$(awk 'END {print NR}' ${dir}ipAddress)
 		send_content="${send_content}${str_splitline}${str_title_start} 现有在线设备 ${logrow} 台${str_title_end}"
 		[ "$logrow" -eq "0" ] && send_content="${send_content}${str_splitline}${str_title_start} 当前无在线设备${str_title_end}"
@@ -1630,7 +1637,7 @@ function send(){
 			time_online=$(time_for_humans $((time_now - time_up)))
 			ip_total=$(usage get "$tmp_mac")
 			[ -n "$ip_total" ] && ip_total="总计流量：${ip_total}  "
-			send_content="${send_content}${str_linefeed}【${tmp_name}】  ${ip_total}${str_linefeed}${str_tab}${tmp_ip}    在线 ${time_online}"
+			send_content="${send_content}${str_linefeed}【${tmp_name}】  ${ip_total}${str_linefeed}${str_tab}${tmp_ip}	在线 ${time_online}"
 		done < "${dir}tmp_sort_file"
 	fi
 
