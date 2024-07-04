@@ -2,13 +2,13 @@
 'require view';
 'require fs';
 'require ui';
+'require poll';
 
 return view.extend({
     load: function () {
         return L.resolveDefault(fs.exec_direct('/usr/libexec/wechatpush-call', ['get_client'], 'json'), { devices: [] });
     },
     render: function (data) {
-
         var devices = data.devices;
         var totalDevices = devices.length;
         var headers = [_('Hostname'), _('IPv4 address'), _('MAC address'), _('Interfaces'), _('Online time'), _('Details')];
@@ -16,6 +16,23 @@ return view.extend({
         var visibleColumns = [];
         var hasData = false;
 
+        // 将 IP 列设置为默认排序列
+        var defaultSortColumn = 'ip';
+        var defaultSortDirection = 'asc';
+
+        devices.sort(function (a, b) {
+            var value1 = ipToNumber(a[defaultSortColumn]);
+            var value2 = ipToNumber(b[defaultSortColumn]);
+
+            if (value1 < value2) {
+                return defaultSortDirection === 'asc' ? -1 : 1;
+            } else if (value1 > value2) {
+                return defaultSortDirection === 'asc' ? 1 : -1;
+            }
+            return 0;
+        });
+
+        // 根据数据源决定可见列
         for (var i = 0; i < columns.length; i++) {
             var column = columns[i];
             var hasColumnData = false;
@@ -132,7 +149,20 @@ return view.extend({
                 for (var i = 0; i < columns.length; i++) {
                     if (visibleColumns.includes(i)) {
                         var cell = document.createElement('td');
-                        cell.textContent = device[columns[i]];
+                        if (columns[i] === 'uptime') {
+                            cell.textContent = calculateUptime(device['uptime']);
+                            poll.add(L.bind(function () {
+                                cell.textContent = calculateUptime(device['uptime']);
+                            }));
+                        } else if (columns[i] === 'ip' && device['http_access']) {
+                            var link = document.createElement('a');
+                            link.href = `${device['http_access']}://${device['ip']}`;
+                            link.textContent = device['ip'];
+                            link.target = '_blank';
+                            cell.appendChild(link);
+                        } else {
+                            cell.textContent = device[columns[i]];
+                        }
                         row.appendChild(cell);
                     }
                 }
@@ -144,10 +174,76 @@ return view.extend({
             return table;
         }
 
+        function calculateUptime(uptime) {
+            // 将时间戳转换为时间格式
+            var startTimeStamp = parseInt(uptime);
+            var currentTimeStamp = Math.floor(Date.now() / 1000);
+            var uptimeInSeconds = currentTimeStamp - startTimeStamp;
+
+            var days = Math.floor(uptimeInSeconds / (3600 * 24));
+            var hours = Math.floor((uptimeInSeconds % (3600 * 24)) / 3600);
+            var minutes = Math.floor((uptimeInSeconds % 3600) / 60);
+            var seconds = uptimeInSeconds % 60;
+
+            if (days > 0) {
+                return days + ' 天 ' + hours + ' 小时';
+            } else if (hours > 0) {
+                return hours + ' 小时 ' + minutes + ' 分钟';
+            } else if (minutes > 0) {
+                return minutes + ' 分钟 ' + seconds + ' 秒';
+            } else {
+                return seconds + ' 秒';
+            }
+        }
+
+        function calculateUptimeInSeconds(uptime) {
+            // 转换时间格式以排序
+            var parts = uptime.split(' ');
+            var totalSeconds = 0;
+
+            for (var i = 0; i < parts.length; i += 2) {
+                var value = parseInt(parts[i]);
+                var unit = parts[i + 1];
+
+                if (unit === '天') {
+                    totalSeconds += value * 24 * 3600;
+                } else if (unit === '小时') {
+                    totalSeconds += value * 3600;
+                } else if (unit === '分钟') {
+                    totalSeconds += value * 60;
+                } else if (unit === '秒') {
+                    totalSeconds += value;
+                }
+            }
+
+            return totalSeconds;
+        }
+
+        function ipToNumber(ipAddress) {
+            var parts = ipAddress.split('.');
+            var number = 0;
+
+            for (var i = 0; i < parts.length; i++) {
+                number = number * 256 + parseInt(parts[i]);
+            }
+
+            return number;
+        }
+
         var container = document.createElement('div');
         container.appendChild(document.createElement('h2')).textContent = _('当前共 ') + totalDevices + _(' 台设备在线');
         container.appendChild(createTable());
         container.appendChild(document.createElement('style')).textContent = style;
+
+        container.addEventListener('click', function (event) {
+            if (
+                event.target.tagName === 'TH' &&
+                event.target.parentNode.rowIndex === 0
+            ) {
+                var columnIndex = event.target.cellIndex;
+                sortTable(columns[columnIndex]);
+            }
+        });
 
         function sortTable(column) {
             var table = container.querySelector('.device-table');
@@ -161,8 +257,16 @@ return view.extend({
             }
 
             rows.sort(function (row1, row2) {
-                var value1 = row1.querySelector('td:nth-of-type(' + (visibleColumns.indexOf(column) + 1) + ')').textContent.toLowerCase();
-                var value2 = row2.querySelector('td:nth-of-type(' + (visibleColumns.indexOf(column) + 1) + ')').textContent.toLowerCase();
+                var value1 = row1.querySelector('td:nth-of-type(' + (visibleColumns.indexOf(columns.indexOf(column)) + 1) + ')').textContent;
+                var value2 = row2.querySelector('td:nth-of-type(' + (visibleColumns.indexOf(columns.indexOf(column)) + 1) + ')').textContent;
+
+                if (column === 'uptime') {
+                    value1 = calculateUptimeInSeconds(row1.querySelector('td:nth-of-type(' + (visibleColumns.indexOf(columns.indexOf(column)) + 1) + ')').textContent);
+                    value2 = calculateUptimeInSeconds(row2.querySelector('td:nth-of-type(' + (visibleColumns.indexOf(columns.indexOf(column)) + 1) + ')').textContent);
+                } else if (column === 'ip') {
+                    value1 = ipToNumber(value1);
+                    value2 = ipToNumber(value2);
+                }
 
                 if (value1 < value2) {
                     return isAscending ? -1 : 1;
@@ -188,74 +292,6 @@ return view.extend({
             table.dataset.sortColumn = column;
         }
 
-        container.addEventListener('click', function (event) {
-            if (
-                event.target.tagName === 'TH' &&
-                event.target.parentNode.rowIndex === 0
-            ) {
-                var columnIndex = event.target.cellIndex;
-                var table = container.querySelector('.device-table');
-                var tbody = table.querySelector('tbody');
-                var rows = Array.from(tbody.querySelectorAll('tr'));
-
-                rows.sort(function (row1, row2) {
-                    var value1 = row1.cells[columnIndex].textContent.trim();
-                    var value2 = row2.cells[columnIndex].textContent.trim();
-
-                    if (columnIndex === 0) {
-                        return value1.length - value2.length;
-                    } else if (columnIndex === 1) {
-                        value1 = ipToNumber(value1);
-                        value2 = ipToNumber(value2);
-                    } else if (columnIndex === 4) {
-                        value1 = parseOnlineTime(value1);
-                        value2 = parseOnlineTime(value2);
-                    }
-
-                    if (value1 < value2) {
-                        return -1;
-                    } else if (value1 > value2) {
-                        return 1;
-                    }
-
-                    return 0;
-                });
-
-                rows.forEach(function (row) {
-                    tbody.appendChild(row);
-                });
-            }
-        });
-
-        function ipToNumber(ipAddress) {
-            var parts = ipAddress.split('.');
-            var number = 0;
-
-            for (var i = 0; i < parts.length; i++) {
-                number = number * 256 + parseInt(parts[i]);
-            }
-
-            return number;
-        }
-
-        function parseOnlineTime(time) {
-            var regex = /(\d+)\s+(小时|分钟|秒)/g;
-            var matches = time.matchAll(regex);
-            var minutes = 0;
-
-            for (var match of matches) {
-                var value = parseInt(match[1]);
-                var unit = match[2];
-
-                if (unit === '小时') {
-                    minutes += value * 60;
-                } else if (unit === '分钟') {
-                    minutes += value;
-                }
-            }
-
-            return minutes;
-        }
         return container;
     },
     handleSave: null,
