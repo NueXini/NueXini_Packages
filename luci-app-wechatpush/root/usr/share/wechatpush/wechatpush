@@ -65,6 +65,7 @@ read_config() {
 	done
 	(opkg list-installed | grep -w -q "^firewall4") && nftables_version="true"
 	devices_json="${dir}/devices.json"
+	tmp_devices_json="${devices_json}.tmp"
 	tempjsonpath="${dir}/temp.json"
 	ip_blacklist_path="/usr/share/wechatpush/api/ip_blacklist"
 	oui_base="${dir}/oui_base.txt"
@@ -116,7 +117,7 @@ log_change() {
 # 初始化
 init() {
 	enable_detection
-	[ -f ${logfile} ] && local logrow=$(grep -c "" ${logfile}) || local logrow="0"
+	[ -f "$logfile" ] && local logrow=$(grep -c "" "$logfile") || local logrow="0"
 	[ "$logrow" -ne 0 ] && echo "---------------------------------------------------------------------------------------" >>${logfile}
 	log_change "【初始化】start running..."
 	if [ -f "/usr/share/wechatpush/errlog" ]; then
@@ -146,7 +147,6 @@ init() {
 		[ -n "$tmp_ip" ] && add_ip_white "$tmp_ip" "0"
 	done <<<"$tmp_ip_list"
 	set_ip_black
-	rm -f "${dir}/scan_info" >/dev/null 2>&1
 	return 0
 }
 
@@ -154,14 +154,12 @@ init() {
 deltemp() {
 	unset title content gateway_iplist
 	rm -f "${dir}/title" "${dir}/content" "${dir}/send_enable.lock" "${dir}/send.lock" "${tempjsonpath}" "${dir}/cookies.txt" >/dev/null 2>&1
-	LockFile unlock
-	[ -f "$logfile "] && local logrow=$(grep -c "" ${logfile}) || local logrow="0"
-	[ "$logrow" -gt 500 ] && sed -i '1,100d' ${logfile} && log_change "【清理】日志超出上限，删除前 100 条"
+	silent_run LockFile unlock
+	[ -f "$logfile" ] && local logrow=$(grep -c "" "$logfile") || local logrow="0"
+	[ "$logrow" -gt 500 ] && sed -i '1,100d' "$logfile" && log_change "【清理】日志超出上限，删除前 100 条"
 	# 检查 JSON 文件格式是否有效
 	if ! jq empty "$devices_json" >/dev/null 2>&1 || ! jq -e 'has("address") and has("devices") and has("disks")' "$devices_json" >/dev/null 2>&1; then
-		[ ! -f "$devices_json" ] && echo "" >"$devices_json"
-		log_change "【！！！】设备列表文件格式错误，需重新初始化，原文件已保存至 ${devices_json}.err"
-		mv "$devices_json" "${devices_json}.err"
+		[ -f "$devices_json" ] && log_change "【！！！】设备列表文件格式错误，需重新初始化，原文件已保存至 ${devices_json}.err" && mv "$devices_json" "${devices_json}.err"
 	fi
 	# 如果设备列表文件为空，初始化
 	[ ! -s "$devices_json" ] && echo '{"address": [], "devices": [], "disks": []}' >"$devices_json"
@@ -174,6 +172,7 @@ enable_detection() {
 		get_config enable
 		[ -z "$enable" ] || [ "$enable" -eq "0" ] && exit || sleep 1
 	done
+	unset i
 }
 
 # 获取 ip
@@ -304,7 +303,7 @@ getmac() {
 
 	# 某些路由器中继模式，会进行 MAC 克隆，如果是重复值，全都重置为 unknown
 	local mac_count=$(jq -r --arg mac "$tmp_mac" '.devices[] | select(.mac == $mac) | .mac' "$devices_json" | wc -l)
-	[ "$mac_count" -gt 1 ] && jq -c --arg mac "$tmp_mac" --arg new_mac "unknown" '.devices |= map(if .mac == $mac then .mac = $new_mac else . end)' "$devices_json" >"${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
+	[ "$mac_count" -gt 1 ] && jq -c --arg mac "$tmp_mac" --arg new_mac "unknown" '.devices |= map(if .mac == $mac then .mac = $new_mac else . end)' "$devices_json" >"$tmp_devices_json" && mv "$tmp_devices_json" "$devices_json"
 
 	# 已保存的 MAC
 	tmp_mac=$(jq -r --arg ip "$ip" '.devices[] | select(.ip == $ip) | .mac' "$devices_json")
@@ -318,7 +317,7 @@ getmac() {
 	tmp_mac=$(cat /proc/net/arp | grep "0x2\|0x6" | grep -w "${ip}" | awk '{print $4}')
 	process_and_check "$tmp_mac" && return
 
-	# 查询 NetBIOS，跳过离线设备
+	# 因 NetBIOS 查询时间过长，跳过离线设备
 	jq -e --arg ip "$ip" '.devices[] | select(.ip == $ip and .status == "online") | .ip' "$devices_json" >/dev/null && tmp_mac=$(nmblookup_timeout "${ip}" "mac" "5")
 	process_and_check "$tmp_mac" && return
 
@@ -331,6 +330,7 @@ getname() {
 	local ip="$1"
 	local mac="$2"
 	local tmp_name
+	local oui_name
 	[ -z "$ip" ] && return 1
 	[ -z "$mac" ] && return 1
 
@@ -343,39 +343,34 @@ getname() {
 
 	# 已保存的主机名
 	tmp_name=$(jq -r --arg ip "$ip" --arg mac "$mac" '.devices[] | select(.ip == $ip and .mac == $mac) | .name' "$devices_json")
-	# 如果来源是 oui 数据库，重新读取
-	jq -e --arg mac "$mac" '.devices[] | select(.mac == $mac and .hostname_source == "oui") | .mac' "$devices_json" >/dev/null && local oui_name="$tmp_name" && tmp_name=""
+	[ -n "$oui_name" ] && [ -n "$tmp_name" ] && [ "$oui_name" == "$tmp_name" ] && tmp_name=""
 	process_and_check "$tmp_name" && return
 
 	# 静态地址备注名
 	local dhcp_config=$(uci show dhcp | grep -i -w "${ip}\|${mac}" | sed -n 's/\(dhcp\..*\)\..*/\1/p')
 	[ -n "$dhcp_config" ] && tmp_name=$(uci get ${dhcp_config}.name)
-	[ -n "$oui_name" ] && [ -n "$tmp_name" ] && [ "$oui_name" != "$tmp_name" ] && log_change "【info】从 静态地址备注名 处成功更新 ${ip} 主机名：${$oui_name} → ${tmp_name}" # 观察用，待删除
 	process_and_check "$tmp_name" && return
 
 	# DHCP
 	[ -f "/tmp/dhcp.leases" ] && tmp_name=$(grep -w "${ip}" /tmp/dhcp.leases | awk '{print $4}')
-	[ -n "$oui_name" ] && [ -n "$tmp_name" ] && [ "$oui_name" != "$tmp_name" ] && log_change "【info】从 DHCP 处成功更新 ${ip} 主机名：${$oui_name} → ${tmp_name}" # 观察用，待删除
 	process_and_check "$tmp_name" && return
 
 	# 光猫
 	[ -f "${dir}/gateway_info" ] && tmp_name=$(cut_str "$(grep -w "${ip}" "${dir}/gateway_info" | awk '{print $2}')" "30")
-	[ -n "$oui_name" ] && [ -n "$tmp_name" ] && [ "$oui_name" != "$tmp_name" ] && log_change "【info】从 光猫 处成功更新 ${ip} 主机名：${$oui_name} → ${tmp_name}" # 观察用，待删除
 	process_and_check "$tmp_name" && return
 
-	# 查询 NetBIOS ，跳过离线设备
-	jq -e --arg ip "$ip" '.devices[] | select(.ip == $ip and .status == "online") | .ip' "$devices_json" >/dev/null && tmp_name=$(nmblookup_timeout "${ip}" "name" "5")
-	[ -n "$oui_name" ] && [ -n "$tmp_name" ] && [ "$oui_name" != "$tmp_name" ] && log_change "【info】从 NetBIOS 处成功更新 ${ip} 主机名：${$oui_name} → ${tmp_name}" # 观察用，待删除
-	process_and_check "$tmp_name" && return
+	# 因 NetBIOS 查询时间过长，跳过离线设备
+	# 设备刚上线时设备信息未保存，json 中无法检查在线状态，应避免使用 oui 数据库，否则无法使用 NetBIOS 查询
+	if jq -e --arg ip "$ip" '.devices[] | select(.ip == $ip and .status == "online") | .ip' "$devices_json" >/dev/null; then
+		tmp_name=$(nmblookup_timeout "${ip}" "name" "5")
+		process_and_check "$tmp_name" && return
 
-	# MAC 设备信息数据库
-	[ -n "$oui_name" ] && echo "$oui_name" && return
-	[ -f "$oui_base" ] && tmp_name=$(grep -i "$(echo "$mac" | cut -c 1,2,4,5,7,8)" "$oui_base" | sed -nr 's#^.*16)..(.*)#\1#gp')
-	[ -n "$oui_data" ] && [ "$oui_data" -eq "4" ] && tmp_name=$(curl -sS "https://standards-oui.ieee.org/oui/oui.txt" | grep -i "$(echo "$mac" | cut -c 1,2,4,5,7,8)" | sed -nr 's#^.*16)..(.*)#\1#gp')
-	# 存疑，待观察上面的命令是否会在连接后一段时间获取到主机名，如果能获取，将 oui 数据库的优先级设置为可被替换
-	# 如果从光猫处能获取到信息，此条应该保留
-	[ -n "$tmp_name" ] && jq -c --arg mac "$mac" '.devices |= map(if .mac == $mac then .hostname_source = "oui" else . end)' "$devices_json" >"${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
-	process_and_check "$tmp_name" && return
+		# MAC 设备信息数据库
+		[ -f "$oui_base" ] && oui_name=$(grep -i "$(echo "$mac" | cut -c 1,2,4,5,7,8)" "$oui_base" | sed -nr 's#^.*16)..(.*)#\1#gp')
+		[ -n "$oui_data" ] && [ "$oui_data" -eq "4" ] && oui_name=$(curl -sS "https://standards-oui.ieee.org/oui/oui.txt" | grep -i "$(echo "$mac" | cut -c 1,2,4,5,7,8)" | sed -nr 's#^.*16)..(.*)#\1#gp')
+		tmp_name="$oui_name"
+		process_and_check "$tmp_name" && return
+	fi
 
 	echo "unknown"
 }
@@ -385,19 +380,18 @@ check_http_access() {
 	local ip="$1"
 	[ -z "$ip" ] && return 1
 
-	curl --head --silent --fail --connect-timeout 2 "http://$ip" >/dev/null
+	curl --head --silent --fail --connect-timeout 3 "http://$ip" >/dev/null
 	[ $? -eq 0 ] && echo "http" && return
 
-	curl --head --silent --fail --connect-timeout 2 "https://$ip" >/dev/null
+	curl --head --silent --fail --connect-timeout 3 "https://$ip" >/dev/null
 	[ $? -eq 0 ] && echo "https" && return
 
 	return 1
 }
 
-# 获取文件最后修改时间和行数
+# 获取文件最后修改时间（距离现在过去了多少秒）
 file_date() {
 	local file_dir="$1"
-	local filerow=$(grep -c "" "${file_dir}" 2>/dev/null || echo "0")
 	local datetime=$(date -r "${file_dir}" +%s 2>/dev/null || echo "0")
 	expr $(date +%s) - ${datetime}
 }
@@ -429,23 +423,34 @@ getgateway() {
 # 扫描范围内 IP
 scanlocalip() {
 	[ -z "$scan_ip_range" ] && return
-	last_scan_ip_time=$(file_date "${dir}/scan_info")
+	[ -z "$last_scan_ip_time" ] && last_scan_ip_time=0
 
-	if [ ! -f "${dir}/scan_info" ]; then
-		start_ip=$(echo "$scan_ip_range" | cut -d "-" -f 1)
-		end_ip=$(echo "$scan_ip_range" | cut -d "-" -f 2)
+	local current_time=$(date +%s)
+	local elapsed_time=$((current_time - last_scan_ip_time))
 
-		i=$(echo "$start_ip" | awk -F '.' '{print $NF}')
-		end_i=$(echo "$end_ip" | awk -F '.' '{print $NF}')
-		while [ "$i" -le "$end_i" ]; do
-			if ping -c 1 "${start_ip%.*}.$i" >/dev/null 2>&1 & then
-				echo "${start_ip%.*}.$i" >>"${dir}/scan_info"
-			fi
-			i=$((i + 1))
+	# 判断是否需要重新扫描
+	if [ "$elapsed_time" -ge "$device_info_helper_sleeptime" ]; then
+		local start_ip=$(echo "$scan_ip_range" | cut -d "-" -f 1)
+		local end_ip=$(echo "$scan_ip_range" | cut -d "-" -f 2)
+
+		local start_num=$(echo "$start_ip" | awk -F '.' '{print $NF}')
+		local end_num=$(echo "$end_ip" | awk -F '.' '{print $NF}')
+		local base_ip=$(echo "$start_ip" | awk -F '.' '{print $1"."$2"."$3}')
+
+		for i in $(seq "$start_num" "$end_num"); do
+			# 获取一个令牌
+			read -u 5
+			{
+				ping -c 1 "${base_ip}.${i}" >/dev/null 2>&1
+				# 释放令牌
+				echo >&5
+			} &
 		done
-	fi
+		wait
 
-	[ "$last_scan_ip_time" -ge "$device_info_helper_sleeptime" ] && cat "${dir}/scan_info"
+		last_scan_ip_time="$current_time"
+	fi
+	unset i
 }
 
 # 查询设备接口
@@ -486,12 +491,13 @@ getping() {
 
 	interface=$(cat /proc/net/arp | grep -w "$ip" | awk '{print $6}' | grep -v "^$" | sort -u | head -n1)
 	for i in $(seq 1 "$retry_count"); do
-		# arping 应使用 br-lan，有 WiFi 的设备接口为 wlan*，重新获取
+		# arping 应使用 br-lan 等接口，有 WiFi 的设备接口为 wlan*，重新获取
 		[ -n "$interface" ] && ip_ms=$(arping -I ${interface} -c 20 -f -w "$timeout" "$ip") 2>/dev/null
 		(! echo "$ip_ms" | grep -q "ms") && ip_ms=$(ping -c 5 -w "$timeout" "$ip" | grep -v '100% packet loss') 2>/dev/null
 		(! echo "$ip_ms" | grep -q "ms") && sleep 1
 	done
 	echo "$ip_ms" | grep -q "ms"
+	unset i
 }
 
 # CPU 占用率
@@ -585,7 +591,7 @@ get_client_usage() {
 		>${dir}/client_usage_aliases
 		for mac in $MACLIST; do
 			# 查找在线设备中是否存在这个mac，不存在则退出
-			! jq -e --arg mac "$mac" '.devices[] | select(.mac == $mac and .status == "online")' "${devices_json}" >/dev/null && continue
+			! jq -e --arg mac "$mac" '.devices[] | select(.mac == $mac and .status == "online")' "$devices_json" >/dev/null && continue
 
 			echo "$mac" $(usage get ${mac} bytes) >>${dir}/client_usage_aliases
 			[ -f "${dir}/old_client_usage_aliases" ] && get_client_usage_bytes=$(cat ${dir}/old_client_usage_aliases | grep -i -w $mac | awk '{print $2}' | grep -v "^$" | sort -u | head -n1) || continue
@@ -680,6 +686,8 @@ cut_str() {
 				max_column=$i
 			fi
 		done
+		unset i
+
 		local text=$(echo -n "$1" | cut -d ' ' -f $max_column)
 		if [ $(length_str "$text") -le "$2" ]; then
 			echo "$text" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
@@ -711,13 +719,15 @@ rand() {
 first() {
 	local IPLIST=$(jq -r '.devices[] | select(.status == "online") | .ip' "$devices_json" | sort -u)
 	getgateway
-	scan_iplist=$(scanlocalip)
+	silent_run scanlocalip
 	for ip in $IPLIST; do
 		[ -n "$passive_mode" ] && [ "$passive_mode" -eq "1" ] && break
+		# 获取一个令牌
 		read -u 5
 		{
 			down "$ip"
-			echo "" >&5
+			# 释放令牌
+			echo >&5
 		} &
 	done
 	wait
@@ -726,13 +736,15 @@ first() {
 	[ -n "$IP_INFO" ] && local SUBNET=$(echo $IP_INFO | cut -d'/' -f1 | cut -d'.' -f1-3)
 	[ -n "$SUBNET" ] && local IPLIST=$(cat /proc/net/arp | grep "0x2\|0x6" | awk '{print $1}' | grep -v "^169.254." | grep -v "^$" | sort -u | grep -oE "${SUBNET}\.[0-9]{1,3}") || local IPLIST=$(cat /proc/net/arp | grep "0x2\|0x6" | awk '{print $1}' | grep -v "^169.254." | grep -v "^$" | sort -u | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')
 
-	local IPLIST=$(echo -e "${IPLIST}\n${gateway_iplist}\n${scanlocalip}\n${always_check_ip_list}" | grep -v "^$" | sort -u)
+	local IPLIST=$(echo -e "${IPLIST}\n${gateway_iplist}\n${always_check_ip_list}" | grep -v "^$" | sort -u)
 	for ip in $IPLIST; do
 		[ -n "$passive_mode" ] && [ "$passive_mode" -eq "1" ] && break
+		# 获取一个令牌
 		read -u 5
 		{
 			up "$ip"
-			echo "" >&5
+			# 释放令牌
+			echo >&5
 		} &
 	done
 	wait
@@ -922,12 +934,12 @@ check_connect() {
 	is_online() {
 		local urls=(http://connect.rom.miui.com/generate_204 http://wifi.vivo.com.cn/generate_204 http://connectivitycheck.platform.hicloud.com/generate_204 http://www.apple.com/library/test/success.html)
 		local shuffled_urls=($(for i in "${urls[@]}"; do echo "$i"; done | awk 'BEGIN {srand()} {print rand(), $0}' | sort -n | cut -d' ' -f2-))
-
 		for url in "${shuffled_urls[@]}"; do
 			local status_code
 			status_code=$(curl -o /dev/null -sI -w "%{http_code}" "$url")
 			[[ "$status_code" -eq 204 || "$status_code" -eq 200 ]] && return 0
 		done
+		unset i url
 		return 1
 	}
 
@@ -989,7 +1001,7 @@ ip_changes() {
 
 	local last_IPv4=$(jq -r '.address[] | select(.IPv4 != null) | .IPv4' "$devices_json")
 	local last_IPv6=$(jq -r '.address[] | select(.IPv6 != null) | .IPv6' "$devices_json")
-	LockFile lock
+	silent_run LockFile lock
 
 	if [ -z "$last_IPv4" ] && [ -z "$last_IPv6" ]; then
 		log_change "${disturb_text}路由器已经重启!"
@@ -1001,7 +1013,7 @@ ip_changes() {
 		[ -z "$title" ] && title="IP 地址变化"
 		[ -z "$content" ] && content="${content}${str_splitline}${str_title_start} IP 地址变化${str_title_end}"
 		content="${content}${str_linefeed}${str_tab}当前 IP：  ${IPv4}"
-		jq -c --arg IPv4 "$IPv4" '.address[0].IPv4 = $IPv4' "$devices_json" >"${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
+		jq -c --arg IPv4 "$IPv4" '.address[0].IPv4 = $IPv4' "$devices_json" >"$tmp_devices_json" && mv "$tmp_devices_json" "$devices_json"
 
 	fi
 	if [ "$get_ipv6_mode" -ne "0" ] && [ -n "$IPv6" ] && [ "$IPv6" != "$last_IPv6" ]; then
@@ -1009,7 +1021,7 @@ ip_changes() {
 		[ -z "$title" ] && title="IPv6 地址变化"
 		[ -z "$content" ] && content="${content}${str_splitline}${str_title_start} IPv6 地址变化${str_title_end}"
 		content="${content}${str_linefeed}${str_tab}当前 IPv6：${IPv6}"
-		jq -c --arg IPv6 "$IPv6" '.address[0].IPv6 = $IPv6' "$devices_json" >"${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
+		jq -c --arg IPv6 "$IPv6" '.address[0].IPv6 = $IPv6' "$devices_json" >"$tmp_devices_json" && mv "$tmp_devices_json" "$devices_json"
 	fi
 
 	# IP 变化，悄咪咪的重启 zerotier
@@ -1019,7 +1031,7 @@ ip_changes() {
 			/etc/init.d/zerotier restart >/dev/null 2>&1
 		fi
 	fi
-	LockFile unlock
+	silent_run LockFile unlock
 }
 
 # 检测设备上线
@@ -1034,27 +1046,29 @@ up() {
 
 	# 连通
 	if [ "$ping_online" -eq "0" ]; then
-		LockFile lock
+		silent_run LockFile lock
 		local time_up=$(date +%s)
 
 		# 如果 IP 不存在，或者 http_access 键值为空，检查 http_access 参数
+		# 检查 http_access 参数时间过长，考虑只在第一次连通时检查
 		#jq -e --arg ip "$ip" 'any(.devices[]; .ip == $ip and (.http_access | length == 0)) or (.devices | map(select(.ip == $ip)) | length == 0)' "$devices_json" >/dev/null && local http_access=$(check_http_access "$ip")
 
 		# 如果 json 文件中能找到相同的 MAC，恢复数据
 		if [ "$mac" != "unknown" ] && jq -e --arg mac "$mac" '.devices[] | select(.mac == $mac) | .mac' "$devices_json" >/dev/null; then
 			# 如果是离线设备，json 文件中依然有信息，重置 IP、在线时间、流量
 			if jq -e --arg mac "$mac" '.devices[] | select(.mac == $mac and .status == "offline") | .mac' "$devices_json" >/dev/null; then
-				jq -c --arg ip "$ip" --arg mac "$mac" --arg time_up "$time_up" '.devices |= map(if .mac == $mac then .ip = $ip | .uptime = $time_up | .usage = "" else . end)' "$devices_json" >"${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
+				jq -c --arg ip "$ip" --arg mac "$mac" --arg time_up "$time_up" '.devices |= map(if .mac == $mac then .ip = $ip | .uptime = $time_up | .usage = "" else . end)' "$devices_json" >"$tmp_devices_json" && mv "$tmp_devices_json" "$devices_json"
 			fi
 			# 离线、待确认离线设备，修改在线状态为 online
-			jq -c --arg ip "$ip" '.devices |= map(if .ip == $ip then .status = "online" else . end)' "$devices_json" >"${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
+			jq -c --arg ip "$ip" '.devices |= map(if .ip == $ip then .status = "online" else . end)' "$devices_json" >"$tmp_devices_json" && mv "$tmp_devices_json" "$devices_json"
 		# up
 		else
 			usage down ${ip}
+			# 删除当前 IP 对应的键值，重新写入
+			jq -c --arg ip "$ip" 'del(.devices[] | select(.ip == $ip))' "$devices_json" >"$tmp_devices_json" && mv "$tmp_devices_json" "$devices_json"
 			local name=$(getname "$ip" "$mac")
 			local interface=$(getinterface "$mac")
-			# 删除当前 IP 对应的键值，重新写入
-			jq -c --arg ip "$ip" 'del(.devices[] | select(.ip == $ip))' "$devices_json" >"${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
+			local http_access=$(check_http_access "$ip")
 			new_device='{
 				"name": "'"${name}"'",
 				"ip": "'"${ip}"'",
@@ -1065,12 +1079,12 @@ up() {
 				"http_access": "'"${http_access}"'",
 				"status": "online"
 			}'
-			jq -c --argjson newdevice "$new_device" '.devices += [$newdevice]' "$devices_json" >"${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
+			jq -c --argjson newdevice "$new_device" '.devices += [$newdevice]' "$devices_json" >"$tmp_devices_json" && mv "$tmp_devices_json" "$devices_json"
 
 			blackwhitelist ${mac}
 			local ip_blackwhite=$?
-			[ -f "${dir}/send_enable.lock" ] || [ -z "$notification_online" ] || [ -z "$ip_blackwhite" ] && LockFile unlock && return
-			[ -z "$ip_blackwhite" ] || [ "$ip_blackwhite" -ne "0" ] && LockFile unlock && return
+			[ -f "${dir}/send_enable.lock" ] || [ -z "$notification_online" ] || [ -z "$ip_blackwhite" ] && silent_run LockFile unlock && return
+			[ -z "$ip_blackwhite" ] || [ "$ip_blackwhite" -ne "0" ] && silent_run LockFile unlock && return
 
 			[ -f "${dir}/title" ] && local title=$(cat "${dir}/title")
 			[ -f "${dir}/content" ] && local content=$(cat "${dir}/content")
@@ -1098,7 +1112,7 @@ up() {
 			[ -n "$content" ] && echo -n "$content" >>"${dir}/content"
 		fi
 	fi
-	LockFile unlock
+	silent_run LockFile unlock
 }
 
 # 检测设备离线
@@ -1106,25 +1120,42 @@ down() {
 	local ip="$1"
 	[ -z "$ip" ] && return 1
 	local mac=$(getmac "$ip")
-	local name=$(getname "$ip" "$mac")
 
 	tmp_timeout=$down_timeout && tmp_retry_count=$timeout_retry_count
 	[ -n "$only_timeout_push" ] && blackwhitelist "$mac"
 	local ip_blackwhite=$? && [ "$ip_blackwhite" -ne "0" ] && tmp_timeout=10 && tmp_retry_count=2
 	getping "$ip" "$mac" "$tmp_timeout" "$tmp_retry_count"
 	local ping_online=$?
-	LockFile lock
+	silent_run LockFile lock
 	# 离线，置入待验证区
 	if [ "$ping_online" -eq "1" ]; then
 		# 修改为 unknown
-		jq -c --arg ip "$ip" '.devices |= map(if .ip == $ip then .status = "unknown" else . end)' "$devices_json" >"${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
+		jq -c --arg ip "$ip" '.devices |= map(if .ip == $ip then .status = "unknown" else . end)' "$devices_json" >"$tmp_devices_json" && mv "$tmp_devices_json" "$devices_json"
 	# 更新主机名或 MAC
 	else
-		jq -c --arg ip "$ip" --arg new_mac "$mac" --arg new_name "${name}" '
-		.devices |= map(if .ip == $ip then .mac = $new_mac | .name = $new_name else . end)
-		' "$devices_json" >"${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
+		local name=$(getname "$ip" "$mac")
+		local interface=$(getinterface "$mac")
+
+		# 检查是否有变化
+		local current_mac=$(jq -r --arg ip "$ip" '.devices[] | select(.ip == $ip) | .mac' "$devices_json")
+		local current_name=$(jq -r --arg ip "$ip" '.devices[] | select(.ip == $ip) | .name' "$devices_json")
+		local current_interface=$(jq -r --arg ip "$ip" '.devices[] | select(.ip == $ip) | .interface' "$devices_json")
+
+		if [[ "$current_mac" != "$mac" || "$current_name" != "$name" || "$current_interface" != "$interface" ]]; then
+			jq -c --arg ip "$ip" --arg new_mac "$mac" --arg new_name "$name" --arg new_interface "$interface" '
+				.devices |= map(
+					if .ip == $ip then 
+						.mac = $new_mac | 
+						.name = $new_name | 
+						.interface = $new_interface
+					else . 
+					end
+				)
+			' "$devices_json" >"$tmp_devices_json" && mv "$tmp_devices_json" "$devices_json"
+		fi
+
 	fi
-	LockFile unlock
+	silent_run LockFile unlock
 }
 
 # 设备离线通知
@@ -1134,9 +1165,9 @@ down_send() {
 
 	local IPLIST=$(jq -r '.devices[] | select(.status == "unknown") | .ip' "$devices_json" | sort -u)
 	for ip in $IPLIST; do
-		LockFile lock
-		jq -c --arg ip "$ip" '.devices |= map(if .ip == $ip then .status = "offline" else . end)' "$devices_json" >"${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
-		LockFile unlock
+		silent_run LockFile lock
+		jq -c --arg ip "$ip" '.devices |= map(if .ip == $ip then .status = "offline" else . end)' "$devices_json" >"$tmp_devices_json" && mv "$tmp_devices_json" "$devices_json"
+		silent_run LockFile unlock
 
 		local mac=$(getmac "$ip")
 		blackwhitelist "$mac"
@@ -1424,6 +1455,7 @@ get_disk() {
 			[ -n "$disk_err" ] && echo -e -n "${str_linefeed}${str_tab}${str_title_start}硬盘存在错误，请及时备份数据！！！${str_title_end}" >>"$output_dir/get_disk"
 		fi
 	done
+	unset i
 }
 
 # 查询 IP 归属地
@@ -1951,7 +1983,6 @@ while [ "$enable" -eq "1" ]; do
 	usage update
 	disturb
 	disturb=$?
-	device_aliases=$(cat "$device_aliases_path" 2>/dev/null)
 
 	# 网络状态与 IP 变动
 	if [ "$get_ipv4_mode" -ne "0" ] || [ "$get_ipv6_mode" -ne "0" ]; then
