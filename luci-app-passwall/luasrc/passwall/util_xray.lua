@@ -17,6 +17,20 @@ local function get_new_port()
 	return new_port
 end
 
+local function get_noise_packets()
+	local noises = {}
+	uci:foreach(appname, "xray_noise_packets", function(n)
+		local noise = (n.enabled == "1") and {
+			type = n.type,
+			packet = n.packet,
+			delay = string.find(n.delay, "-") and n.delay or tonumber(n.delay)
+		} or nil
+		table.insert(noises, noise)
+	end)
+	if #noises == 0 then noises = nil end
+	return noises
+end
+
 local function get_domain_excluded()
 	local path = string.format("/usr/share/%s/rules/domains_excluded", appname)
 	local content = fs.readfile(path)
@@ -43,10 +57,12 @@ function gen_outbound(flag, node, tag, proxy_table)
 		local proxy = 0
 		local proxy_tag = "nil"
 		local fragment = nil
+		local noise = nil
 		if proxy_table ~= nil and type(proxy_table) == "table" then
 			proxy = proxy_table.proxy or 0
 			proxy_tag = proxy_table.tag or "nil"
 			fragment = proxy_table.fragment or nil
+			noise = proxy_table.noise or nil
 		end
 
 		if node.type == "Xray" then
@@ -102,6 +118,15 @@ function gen_outbound(flag, node, tag, proxy_table)
 			end
 		end
 
+		if node.type == "Xray" and node.transport == "splithttp" then
+			if node.xhttp_download_tls and node.xhttp_download_tls == "1" then
+				node.xhttp_download_stream_security = "tls"
+				if node.xhttp_download_reality and node.xhttp_download_reality == "1" then
+					node.xhttp_download_stream_security = "reality"
+				end
+			end
+		end
+
 		if node.protocol == "wireguard" and node.wireguard_reserved then
 			local bytes = {}
 			if not node.wireguard_reserved:match("[^%d,]+") then
@@ -135,7 +160,7 @@ function gen_outbound(flag, node, tag, proxy_table)
 					mark = 255,
 					tcpMptcp = (node.tcpMptcp == "1") and true or nil,
 					tcpNoDelay = (node.tcpNoDelay == "1") and true or nil,
-					dialerProxy = fragment and "fragment" or nil
+					dialerProxy = (fragment or noise) and "dialerproxy" or nil
 				},
 				network = node.transport,
 				security = node.stream_security,
@@ -205,6 +230,36 @@ function gen_outbound(flag, node, tag, proxy_table)
 					path = node.httpupgrade_path or "/",
 					host = node.httpupgrade_host
 				} or nil,
+				splithttpSettings = (node.transport == "splithttp") and {
+					path = node.splithttp_path or "/",
+					host = node.splithttp_host,
+					downloadSettings = (node.xhttp_download == "1") and {
+						address = node.xhttp_download_address,
+						port = tonumber(node.xhttp_download_port),
+						network = "xhttp",
+						xhttpSettings = {
+							path = node.xhttp_download_path,
+							host = node.xhttp_download_host,
+						},
+						security = node.xhttp_download_stream_security,
+						tlsSettings = (node.xhttp_download_stream_security == "tls") and {
+							serverName = node.xhttp_download_tls_serverName,
+							allowInsecure = false,
+							fingerprint = (node.xhttp_download_utls == "1" and
+								node.xhttp_download_fingerprint and
+								node.xhttp_download_fingerprint ~= "") and node.xhttp_download_fingerprint or nil
+						} or nil,
+						realitySettings = (node.xhttp_download_stream_security == "reality") and {
+							serverName = node.xhttp_download_tls_serverName,
+							publicKey = node.xhttp_download_reality_publicKey,
+							shortId = node.xhttp_download_reality_shortId or "",
+							spiderX = node.xhttp_download_reality_spiderX or "/",
+							fingerprint = (
+								node.xhttp_download_fingerprint and
+								node.xhttp_download_fingerprint ~= "") and node.xhttp_download_fingerprint or nil
+						} or nil,
+					} or nil
+				} or nil,
 			} or nil,
 			settings = {
 				vnext = (node.protocol == "vmess" or node.protocol == "vless") and {
@@ -268,6 +323,29 @@ function gen_outbound(flag, node, tag, proxy_table)
 				result.streamSettings.tlsSettings.alpn = alpn
 			end
 		end
+
+		local xmux = {}
+		if (node.xhttp_xmux == "1") then
+			xmux.maxConcurrency = node.maxConcurrency and (string.find(node.maxConcurrency, "-") and node.maxConcurrency or tonumber(node.maxConcurrency)) or 0
+			xmux.maxConnections = node.maxConnections and (string.find(node.maxConnections, "-") and node.maxConnections or tonumber(node.maxConnections)) or 0
+			xmux.cMaxReuseTimes = node.cMaxReuseTimes and (string.find(node.cMaxReuseTimes, "-") and node.cMaxReuseTimes or tonumber(node.cMaxReuseTimes)) or 0
+			xmux.cMaxLifetimeMs = node.cMaxLifetimeMs and (string.find(node.cMaxLifetimeMs, "-") and node.cMaxLifetimeMs or tonumber(node.cMaxLifetimeMs)) or 0
+			if result.streamSettings.splithttpSettings then
+				result.streamSettings.splithttpSettings.xmux = xmux
+			end
+		end
+
+		local xmux_download = {}
+		if (node.xhttp_download_xmux == "1") then
+			xmux_download.maxConcurrency = node.download_maxConcurrency and (string.find(node.download_maxConcurrency, "-") and node.download_maxConcurrency or tonumber(node.download_maxConcurrency)) or 0
+			xmux_download.maxConnections = node.download_maxConnections and (string.find(node.download_maxConnections, "-") and node.download_maxConnections or tonumber(node.download_maxConnections)) or 0
+			xmux_download.cMaxReuseTimes = node.download_cMaxReuseTimes and (string.find(node.download_cMaxReuseTimes, "-") and node.download_cMaxReuseTimes or tonumber(node.download_cMaxReuseTimes)) or 0
+			xmux_download.cMaxLifetimeMs = node.download_cMaxLifetimeMs and (string.find(node.download_cMaxLifetimeMs, "-") and node.download_cMaxLifetimeMs or tonumber(node.download_cMaxLifetimeMs)) or 0
+			if result.streamSettings.splithttpSettings.downloadSettings.xhttpSettings then
+				result.streamSettings.splithttpSettings.downloadSettings.xhttpSettings.xmux = xmux_download
+			end
+		end
+
 	end
 	return result
 end
@@ -481,6 +559,10 @@ function gen_config_server(node)
 						path = node.httpupgrade_path or "/",
 						host = node.httpupgrade_host
 					} or nil,
+					splithttpSettings = (node.transport == "splithttp") and {
+						path = node.splithttp_path or "/",
+						host = node.splithttp_host
+					} or nil,
 					sockopt = {
 						acceptProxyProtocol = (node.acceptProxyProtocol and node.acceptProxyProtocol == "1") and true or false
 					}
@@ -682,7 +764,7 @@ function gen_config(var)
 				end
 				if is_new_blc_node then
 					local blc_node = uci:get_all(appname, blc_node_id)
-					local outbound = gen_outbound(flag, blc_node, blc_node_tag, { fragment = xray_settings.fragment == "1" or nil })
+					local outbound = gen_outbound(flag, blc_node, blc_node_tag, { fragment = xray_settings.fragment == "1" or nil, noise = xray_settings.noise == "1" or nil })
 					if outbound then
 						table.insert(outbounds, outbound)
 						valid_nodes[#valid_nodes + 1] = blc_node_tag
@@ -705,7 +787,7 @@ function gen_config(var)
 				if is_new_node then
 					local fallback_node = uci:get_all(appname, fallback_node_id)
 					if fallback_node.protocol ~= "_balancing" then
-						local outbound = gen_outbound(flag, fallback_node, fallback_node_id, { fragment = xray_settings.fragment == "1" or nil })
+						local outbound = gen_outbound(flag, fallback_node, fallback_node_id, { fragment = xray_settings.fragment == "1" or nil, noise = xray_settings.noise == "1" or nil })
 						if outbound then
 							table.insert(outbounds, outbound)
 						else
@@ -854,11 +936,18 @@ function gen_config(var)
 					if xray_settings.fragment == "1" and not proxy_table.tag then
 						proxy_table.fragment = true
 					end
+					if xray_settings.noise == "1" and not proxy_table.tag then
+						proxy_table.noise = true
+					end
 					local outbound = gen_outbound(flag, _node, rule_name, proxy_table)
 					local outbound_tag
 					if outbound then
 						set_outbound_detour(_node, outbound, outbounds, rule_name)
-						table.insert(outbounds, outbound)
+						if rule_name == "default" then
+							table.insert(outbounds, 1, outbound)
+						else
+							table.insert(outbounds, outbound)
+						end
 						outbound_tag = outbound.tag
 					end
 					return outbound_tag, nil
@@ -995,6 +1084,7 @@ function gen_config(var)
 				end
 			end)
 
+		--[[
 			if default_outbound_tag or default_balancer_tag then
 				table.insert(rules, {
 					type = "field",
@@ -1003,6 +1093,7 @@ function gen_config(var)
 					network = "tcp,udp"
 				})
 			end
+		]]--
 
 			routing = {
 				domainStrategy = node.domainStrategy or "AsIs",
@@ -1037,7 +1128,7 @@ function gen_config(var)
 				sys.call("touch /tmp/etc/passwall/iface/" .. node.iface)
 			end
 		else
-			local outbound = gen_outbound(flag, node, nil, { fragment = xray_settings.fragment == "1" or nil })
+			local outbound = gen_outbound(flag, node, nil, { fragment = xray_settings.fragment == "1" or nil, noise = xray_settings.fragment == "1" or nil })
 			if outbound then
 				set_outbound_detour(node, outbound, outbounds)
 				table.insert(outbounds, outbound)
@@ -1280,17 +1371,18 @@ function gen_config(var)
 			}
 		}
 
-		if xray_settings.fragment == "1" then
+		if xray_settings.fragment == "1" or xray_settings.noise == "1" then
 			table.insert(outbounds, {
 				protocol = "freedom",
-				tag = "fragment",
+				tag = "dialerproxy",
 				settings = {
 					domainStrategy = (direct_dns_query_strategy and direct_dns_query_strategy ~= "") and direct_dns_query_strategy or "UseIP",
-					fragment = {
+					fragment = (xray_settings.fragment == "1") and {
 						packets = (xray_settings.fragment_packets and xray_settings.fragment_packets ~= "") and xray_settings.fragment_packets,
 						length = (xray_settings.fragment_length and xray_settings.fragment_length ~= "") and xray_settings.fragment_length,
 						interval = (xray_settings.fragment_interval and xray_settings.fragment_interval ~= "") and xray_settings.fragment_interval
-					}
+					} or nil,
+					noises = (xray_settings.noise == "1") and get_noise_packets() or nil
 				},
 				streamSettings = {
 					sockopt = {

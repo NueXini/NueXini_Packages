@@ -247,7 +247,7 @@ o.optional = true
 o = s:taboption("ya", ListValue, "ya_wifi", translate("Interface:"), translate("Select the Wi-Fi interface for Yandex locator"))
 local iwinfo = sys.exec("iwinfo")
 no_device = true
-for device in string.gmatch(iwinfo, "(%S+)(%s%s%s%s%s)(%S+)") do
+for device in string.gmatch(iwinfo, "(%w[%w%-_]+)%s%sESSID:") do
     o:value(device, device)
     no_device = false
 end

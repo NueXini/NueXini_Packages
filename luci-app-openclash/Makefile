@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-openclash
-PKG_VERSION:=0.46.014
+PKG_VERSION:=0.46.050
 PKG_RELEASE:=beta
 PKG_MAINTAINER:=vernesong <https://github.com/vernesong/OpenClash>
 
@@ -27,6 +27,15 @@ define Package/$(PKG_NAME)/config
 
 	config PACKAGE_iptables-mod-extra
 	default y if ! PACKAGE_firewall4
+
+	config PACKAGE_dnsmasq_full_ipset
+	default y if ! PACKAGE_firewall4
+
+	config PACKAGE_dnsmasq_full_nftset
+	default y if PACKAGE_firewall4
+
+	config PACKAGE_ipset
+	default y if ! PACKAGE_firewall4
 endef
 
 define Package/$(PKG_NAME)
@@ -34,7 +43,7 @@ define Package/$(PKG_NAME)
 	SUBMENU:=3. Applications
 	TITLE:=LuCI support for clash
 	PKGARCH:=all
-	DEPENDS:=+dnsmasq-full +coreutils +coreutils-nohup +bash +curl +ca-certificates +ipset +ip-full \
+	DEPENDS:=+dnsmasq-full +coreutils +coreutils-nohup +bash +curl +ca-certificates +ip-full \
 	+libcap +libcap-bin +ruby +ruby-yaml +kmod-tun +unzip
 	MAINTAINER:=vernesong
 endef
@@ -64,10 +73,7 @@ define Build/Prepare
 	cp -f "$(PKG_BUILD_DIR)/root/etc/openclash/custom/openclash_custom_domain_dns.list" "$(PKG_BUILD_DIR)/root/usr/share/openclash/backup/openclash_custom_domain_dns.list" >/dev/null 2>&1
 	cp -f "$(PKG_BUILD_DIR)/root/etc/openclash/custom/openclash_custom_domain_dns_policy.list" "$(PKG_BUILD_DIR)/root/usr/share/openclash/backup/openclash_custom_domain_dns_policy.list" >/dev/null 2>&1
 	cp -f "$(PKG_BUILD_DIR)/root/etc/openclash/custom/openclash_custom_fallback_filter.yaml" "$(PKG_BUILD_DIR)/root/usr/share/openclash/backup/openclash_custom_fallback_filter.yaml" >/dev/null 2>&1
-	cp -f "$(PKG_BUILD_DIR)/root/etc/openclash/custom/openclash_custom_netflix_domains.list" "$(PKG_BUILD_DIR)/root/usr/share/openclash/backup/openclash_custom_netflix_domains.list" >/dev/null 2>&1
-	cp -f "$(PKG_BUILD_DIR)/root/etc/openclash/custom/openclash_force_sniffing_domain.yaml" "$(PKG_BUILD_DIR)/root/usr/share/openclash/backup/openclash_force_sniffing_domain.yaml" >/dev/null 2>&1
-	cp -f "$(PKG_BUILD_DIR)/root/etc/openclash/custom/openclash_sniffing_domain_filter.yaml" "$(PKG_BUILD_DIR)/root/usr/share/openclash/backup/openclash_sniffing_domain_filter.yaml" >/dev/null 2>&1
-	cp -f "$(PKG_BUILD_DIR)/root/etc/openclash/custom/openclash_sniffing_ports_filter.yaml" "$(PKG_BUILD_DIR)/root/usr/share/openclash/backup/openclash_sniffing_ports_filter.yaml" >/dev/null 2>&1
+	cp -f "$(PKG_BUILD_DIR)/root/etc/openclash/custom/openclash_custom_sniffer.yaml" "$(PKG_BUILD_DIR)/root/usr/share/openclash/backup/openclash_custom_sniffer.yaml" >/dev/null 2>&1
 	cp -f "$(PKG_BUILD_DIR)/root/etc/openclash/custom/openclash_custom_localnetwork_ipv4.list" "$(PKG_BUILD_DIR)/root/usr/share/openclash/backup/openclash_custom_localnetwork_ipv4.list" >/dev/null 2>&1
 	cp -f "$(PKG_BUILD_DIR)/root/etc/openclash/custom/openclash_custom_localnetwork_ipv6.list" "$(PKG_BUILD_DIR)/root/usr/share/openclash/backup/openclash_custom_localnetwork_ipv6.list" >/dev/null 2>&1
 	cp -f "$(PKG_BUILD_DIR)/root/etc/openclash/custom/openclash_custom_chnroute_pass.list" "$(PKG_BUILD_DIR)/root/usr/share/openclash/backup/openclash_custom_chnroute_pass.list" >/dev/null 2>&1
@@ -132,11 +138,9 @@ define Package/$(PKG_NAME)/postrm
 	rm -rf ${dnsmasqconfdir}/dnsmasq_openclash_custom_domain.conf >/dev/null 2>&1
 	rm -rf ${dnsmasqconfdir}/dnsmasq_openclash_chnroute_pass.conf >/dev/null 2>&1
 	rm -rf ${dnsmasqconfdir}/dnsmasq_openclash_chnroute6_pass.conf >/dev/null 2>&1
-	rm -rf ${dnsmasqconfdir}/dnsmasq_accelerated-domains.china.conf >/dev/null 2>&1
 	rm -rf /tmp/dler* >/dev/null 2>&1
 	rm -rf /tmp/etc/openclash >/dev/null 2>&1
 	rm -rf /tmp/openclash_edit_file_name >/dev/null 2>&1
-	rm -rf /tmp/openclash_*_region>/dev/null 2>&1
 	sed -i '/OpenClash Append/,/OpenClash Append End/d' "/usr/lib/lua/luci/model/network.lua" >/dev/null 2>&1
 	sed -i '/.*kB maximum content size*/c\HTTP_MAX_CONTENT      = 1024*100		-- 100 kB maximum content size' /usr/lib/lua/luci/http.lua >/dev/null 2>&1
 	sed -i '/.*kB maximum content size*/c\export let HTTP_MAX_CONTENT = 1024*100;		// 100 kB maximum content size' /usr/share/ucode/luci/http.uc >/dev/null 2>&1

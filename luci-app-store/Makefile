@@ -7,17 +7,17 @@ include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI based ipk store
 LUCI_DESCRIPTION:=luci-app-store is a ipk store developed by LinkEase team
-LUCI_DEPENDS:=+curl +opkg +luci-lib-ipkg +tar +coreutils +coreutils-stat +libuci-lua +mount-utils +luci-lib-taskd
+LUCI_DEPENDS:=+curl +opkg +luci-lib-ipkg +tar +libuci-lua +mount-utils +luci-lib-taskd
 LUCI_EXTRA_DEPENDS:=luci-lib-taskd (>=1.0.19)
 LUCI_PKGARCH:=all
 
-PKG_VERSION:=0.1.25-0
+PKG_VERSION:=0.1.26-3
 # PKG_RELEASE MUST be empty for luci.mk
 PKG_RELEASE:=
 
-ISTORE_UI_VERSION:=0.1.16
-ISTORE_UI_RELEASE:=1
-PKG_HASH:=993c6c1fd59bf48f9583be4c91898b355a5fe79dc7274bd3d795a8828d59ec1d
+ISTORE_UI_VERSION:=0.1.26
+ISTORE_UI_RELEASE:=2
+PKG_HASH:=01eb10649514c4ea0a86e848db1129b642f0ad5b5d371021821c2488454463fc
 
 PKG_SOURCE_URL_FILE:=v$(ISTORE_UI_VERSION)-$(ISTORE_UI_RELEASE).tar.gz
 PKG_SOURCE:=istore-ui-$(PKG_SOURCE_URL_FILE)

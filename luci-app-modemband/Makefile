@@ -12,7 +12,8 @@ MAINTAINER:=Rafał Wabik <4Rafal@gmail.com>
 LUCI_DESCRIPTION:=LuCI JS interface for the modemband. The package allows set LTE/5G bands for selected 4G/5G modems.
 LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+sms-tool +modemband
-PKG_VERSION:=1.0.25-20240519
+PKG_VERSION:=1.0.25
+PKG_RELEASE:=20241111
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

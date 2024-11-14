@@ -9,7 +9,7 @@ require "luci.model.uci"
 local icount = 0
 local args = arg[1]
 local uci = luci.model.uci.cursor()
-local TMP_DNSMASQ_PATH = "/tmp/dnsmasq.d/dnsmasq-ssrplus.d"
+local TMP_DNSMASQ_PATH = luci.sys.exec("find /tmp/dnsmasq.*/dnsmasq-ssrplus.d -type d -print 2>/dev/null"):gsub("%s+", "")
 local TMP_PATH = "/var/etc/ssrplus"
 -- match comments/title/whitelist/ip address/excluded_domain
 local comment_pattern = "^[!\\[@]+"
@@ -44,48 +44,50 @@ local function base64_dec(data)
 		return string.char(c)
 	end))
 end
--- check excluded domain
+-- check if domain is excluded
 local function check_excluded_domain(value)
-	for k, v in ipairs(excluded_domain) do
-		if value:find(v) then
+	for _, domain in ipairs(excluded_domain) do
+		if value:find(domain) then
 			return true
 		end
 	end
 end
 -- gfwlist转码至dnsmasq格式
 local function generate_gfwlist(type)
-	local domains = {}
-	local out = io.open("/tmp/ssr-update." .. type, "w")
-	for line in io.lines("/tmp/ssr-update.tmp") do
-		if not (string.find(line, comment_pattern) or string.find(line, ip_pattern) or check_excluded_domain(line)) then
-			local start, finish, match = string.find(line, domain_pattern)
-			if (start) then
-				domains[match] = true
-			end
-		end
-	end
-	for k, v in pairs(domains) do
-		out:write(string.format("server=/%s/%s#%s\n", k, mydnsip, mydnsport))
-		out:write(string.format("ipset=/%s/%s\n", k, ipsetname))
-	end
-	out:close()
-	os.remove("/tmp/ssr-update.tmp")
+    local domains, domains_map = {}, {}
+    local out = io.open("/tmp/ssr-update." .. type, "w")
+    for line in io.lines("/tmp/ssr-update.tmp") do
+        if not (string.find(line, comment_pattern) or string.find(line, ip_pattern) or check_excluded_domain(line)) then
+            local start, finish, match = string.find(line, domain_pattern)
+            if start and not domains_map[match] then
+                domains_map[match] = true
+                table.insert(domains, match)
+            end
+        end
+    end
+    for _, domain in ipairs(domains) do
+        out:write(string.format("server=/%s/%s#%s\n", domain, mydnsip, mydnsport))
+        out:write(string.format("ipset=/%s/%s\n", domain, ipsetname))
+    end
+    out:close()
+    os.remove("/tmp/ssr-update.tmp")
 end
 
 -- adblock转码至dnsmasq格式
 local function generate_adblock(type)
-	local domains = {}
+	local domains, domains_map = {}, {}
 	local out = io.open("/tmp/ssr-update." .. type, "w")
 	for line in io.lines("/tmp/ssr-update.tmp") do
 		if not (string.find(line, comment_pattern)) then
 			local start, finish, match = string.find(line, domain_pattern)
-			if (start) then
-				domains[match] = true
+			if start and not domains_map[match] then
+				domains_map[match] = true
+				table.insert(domains, match)
 			end
 		end
 	end
-	for k, v in pairs(domains) do
-		out:write(string.format("address=/%s/\n", k))
+	for _, domain in ipairs(domains) do
+		out:write(string.format("address=/%s/\n", domain))
 	end
 	out:close()
 	os.remove("/tmp/ssr-update.tmp")
@@ -154,7 +156,7 @@ local function update(url, file, type, file2)
 			if args then
 				log(0, tonumber(icount) / Num)
 			else
-				log("更新成功！ 新的总纪录数：" .. tostring(tonumber(icount) / Num))
+				log("更新成功！ 新的总记录数：" .. tostring(tonumber(icount) / Num))
 			end
 		end
 	else

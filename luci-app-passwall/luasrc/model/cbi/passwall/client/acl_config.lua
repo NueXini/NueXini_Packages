@@ -54,6 +54,10 @@ o = s:option(Value, "remarks", translate("Remarks"))
 o.default = arg[1]
 o.rmempty = true
 
+o = s:option(Flag, "use_interface", translate("Use Interface With ACLs"))
+o.default = 0
+o.rmempty = false
+
 local mac_t = {}
 sys.net.mac_hints(function(e, t)
 	mac_t[#mac_t + 1] = {
@@ -73,6 +77,17 @@ table.sort(mac_t, function(a,b)
 	end
 	return false
 end)
+
+local device_list = {}
+device_list = sys.net.devices()
+table.sort(device_list)
+interface = s:option(ListValue, "interface", translate("Source Interface"))
+
+for k, name in ipairs(device_list) do
+	interface:value(name)
+end
+
+interface:depends({ use_interface = 1 })
 
 ---- Source
 sources = s:option(DynamicList, "sources", translate("Source"))
@@ -139,6 +154,7 @@ sources.validate = function(self, value, t)
 	return value
 end
 sources.write = dynamicList_write
+sources:depends({ use_interface = 0 })
 
 ---- TCP No Redir Ports
 local TCP_NO_REDIR_PORTS = uci:get(appname, "@global_forwarding[0]", "tcp_no_redir_ports")
@@ -263,7 +279,7 @@ o:depends({ tcp_node = "",  ['!reverse'] = true })
 o = s:option(ListValue, "dns_shunt", "DNS " .. translate("Shunt"))
 o:depends({ tcp_node = "",  ['!reverse'] = true })
 o:value("dnsmasq", "Dnsmasq")
-o:value("chinadns-ng", "Dnsmasq + ChinaDNS-NG")
+o:value("chinadns-ng", translate("ChinaDNS-NG (recommended)"))
 
 o = s:option(Flag, "filter_proxy_ipv6", translate("Filter Proxy Host IPv6"), translate("Experimental feature."))
 o.default = "0"
@@ -282,7 +298,7 @@ if has_xray then
 	o:value("xray", "Xray")
 end
 
-o = s:option(ListValue, "xray_dns_mode", " ")
+o = s:option(ListValue, "xray_dns_mode", translate("Request protocol"))
 o:value("tcp", "TCP")
 o:value("tcp+doh", "TCP + DoH (" .. translate("A/AAAA type") .. ")")
 o:depends("dns_mode", "xray")
@@ -295,7 +311,7 @@ o.write = function(self, section, value)
 	end
 end
 
-o = s:option(ListValue, "singbox_dns_mode", " ")
+o = s:option(ListValue, "singbox_dns_mode", translate("Request protocol"))
 o:value("tcp", "TCP")
 o:value("doh", "DoH")
 o:depends("dns_mode", "sing-box")
@@ -369,16 +385,21 @@ if has_singbox or has_xray then
 	end
 end
 
-o = s:option(ListValue, "chinadns_ng_default_tag", translate("ChinaDNS-NG Domain Default Tag"))
+o = s:option(ListValue, "chinadns_ng_default_tag", translate("Default DNS"))
 o.default = "none"
-o:value("none", translate("Default"))
 o:value("gfw", translate("Remote DNS"))
 o:value("chn", translate("Direct DNS"))
-o.description = "<ul>"
+o:value("none", translate("Smart, Do not accept no-ip reply from Direct DNS"))
+o:value("none_noip", translate("Smart, Accept no-ip reply from Direct DNS"))
+local desc = "<ul>"
 		.. "<li>" .. translate("When not matching any domain name list:") .. "</li>"
-		.. "<li>" .. translate("Default: Forward to both direct and remote DNS, if the direct DNS resolution result is a mainland China ip, then use the direct result, otherwise use the remote result.") .. "</li>"
 		.. "<li>" .. translate("Remote DNS: Can avoid more DNS leaks, but some domestic domain names maybe to proxy!") .. "</li>"
 		.. "<li>" .. translate("Direct DNS: Internet experience may be better, but DNS will be leaked!") .. "</li>"
+o.description = desc
+		.. "<li>" .. translate("Smart: Forward to both direct and remote DNS, if the direct DNS resolution result is a mainland China IP, then use the direct result, otherwise use the remote result.") .. "</li>"
+		.. "<li>" .. translate("In smart mode, no-ip reply from Direct DNS:") .. "</li>"
+		.. "<li>" .. translate("Do not accept: Wait and use Remote DNS Reply.") .. "</li>"
+		.. "<li>" .. translate("Accept: Trust the Reply, using this option can improve DNS resolution speeds for some mainland IPv4-only sites.") .. "</li>"
 		.. "</ul>"
 o:depends({dns_shunt = "chinadns-ng", tcp_proxy_mode = "proxy", chn_list = "direct"})
 
@@ -386,11 +407,7 @@ o = s:option(ListValue, "use_default_dns", translate("Default DNS"))
 o.default = "direct"
 o:value("remote", translate("Remote DNS"))
 o:value("direct", translate("Direct DNS"))
-o.description = "<ul>"
-		.. "<li>" .. translate("When not matching any domain name list:") .. "</li>"
-		.. "<li>" .. translate("Remote DNS: Can avoid more DNS leaks, but some domestic domain names maybe to proxy!") .. "</li>"
-		.. "<li>" .. translate("Direct DNS: Internet experience may be better, but DNS will be leaked!") .. "</li>"
-		.. "</ul>"
+o.description = desc .. "</ul>"
 o:depends({dns_shunt = "dnsmasq", tcp_proxy_mode = "proxy", chn_list = "direct"})
 
 return m

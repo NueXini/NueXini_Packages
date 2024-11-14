@@ -219,28 +219,28 @@ getpath() {
 
 # --- modemdefine - WAN config ---
 CONFIG=modemdefine
-MODEMZ=$(uci show $CONFIG | grep -o "@modemdefine\[[0-9]*\]\.modem" | wc -l | xargs)
-if [[ $MODEMZ > 1 ]]; then
+MODEMZ=$(uci show $CONFIG 2>/dev/null | grep -o "@modemdefine\[[0-9]*\]\.modem" | wc -l | xargs)
+if [[ $MODEMZ -gt 1 ]]; then
 	SEC=$(uci -q get modemdefine.@general[0].main_network)
-	fi	
-	if [[ $MODEMZ = "0" ]]; then
+fi
+if [[ $MODEMZ -eq 0 ]]; then
 	SEC=$(uci -q get 3ginfo.@3ginfo[0].network)
-	fi
-	if [[ $MODEMZ = 1 ]]; then
+fi
+if [[ $MODEMZ -eq 1 ]]; then
 	SEC=$(uci -q get modemdefine.@modemdefine[0].network)
 fi
 
-	if [ -z "$SEC" ]; then
-		getpath $DEVICE
-		PORIG=$P
-		for DEV in /sys/class/tty/* /sys/class/usbmisc/*; do
-			getpath "/dev/"${DEV##/*/}
-			if [ "x$PORIG" = "x$P" ]; then
-				SEC=$(uci show network | grep "/dev/"${DEV##/*/} | cut -f2 -d.)
-				[ -n "$SEC" ] && break
-			fi
-		done
-	fi	
+if [ -z "$SEC" ]; then
+	getpath $DEVICE
+	PORIG=$P
+	for DEV in /sys/class/tty/* /sys/class/usbmisc/*; do
+		getpath "/dev/"${DEV##/*/}
+		if [ "x$PORIG" == "x$P" ]; then
+			SEC=$(uci show network | grep "/dev/"${DEV##/*/} | cut -f2 -d.)
+			[ -n "$SEC" ] && break
+		fi
+	done
+fi
 # --- modemdefine config ---
 
 CONN_TIME="-"
@@ -278,7 +278,7 @@ fi
 # CSQ
 CSQ=$(echo "$O" | awk -F[,\ ] '/^\+CSQ/ {print $2}')
 
-[ "x$CSQ" = "x" ] && CSQ=-1
+[ "x$CSQ" == "x" ] && CSQ=-1
 if [ $CSQ -ge 0 -a $CSQ -le 31 ]; then
 	CSQ_PER=$(($CSQ * 100/31))
 else
@@ -308,24 +308,29 @@ if [ -z "$COPS" ]; then
 	fi
 fi
 [ -z "$COPS" ] && COPS=$COPS_NUM
+case "$COPS" in
+    *\ *) 
+        COPS=$(echo "$COPS" | awk '{if(NF==2 && tolower($1)==tolower($2)){print $1}else{print $0}}')
+        ;;
+esac
 
-if [[ $COPS =~ " " ]]; then
-	COPS=$(echo "$COPS" | awk '{if(NF==2 && tolower($1)==tolower($2)){print $1}else{print $0}}')
-fi
-
-isp=$(sms_tool -d $DEVICE at "AT+COPS?"|sed -n '2p'|cut -d '"' -f2|tr -d '\r')
+isp=$(sms_tool -d "$DEVICE" at "AT+COPS?" | sed -n '2p' | cut -d '"' -f2 | tr -d '\r')
 isp_num="$COPS_MCC $COPS_MNC"
 isp_numws="$COPS_MCC$COPS_MNC"
 
-if [[ $COPS =~ ^[0-9]+$ ]]; then
-    if [[ "$COPS" = "$isp_num" || "$COPS" = "$isp_numws" ]]; then
-	if [[ -n "$isp" ]]; then
-		COPS=$(awk -F[\;] '/^'$isp';/ {print $3}' $RES/mccmnc.dat | xargs)
-		LOC=$(awk -F[\;] '/^'$isp';/ {print $2}' $RES/mccmnc.dat)
-	fi
-    fi
-fi
-
+case "$COPS" in
+    *[!0-9]* | '')
+	# Non-numeric characters or is blank
+        ;;
+    *) 
+        if [ "$COPS" = "$isp_num" ] || [ "$COPS" = "$isp_numws" ]; then
+            if [ -n "$isp" ]; then
+                COPS=$(awk -F[\;] '/^'"$isp"';/ {print $3}' $RES/mccmnc.dat | xargs)
+                LOC=$(awk -F[\;] '/^'"$isp"';/ {print $2}' $RES/mccmnc.dat)
+            fi
+        fi
+	;;
+esac
 
 # operator location from temporary config
 LOCATIONFILE=/tmp/location
@@ -348,19 +353,24 @@ if [ -e "$LOCATIONFILE" ]; then
 			fi
 	fi
 else
-	if [[ "$COPS_MCC$COPS_MNC" =~ ^[0-9]+$ ]]; then
-		if [ -n "$LOC" ]; then
-			LOC=$(awk -F[\;] '/^'$COPS_MCC$COPS_MNC';/ {print $2}' $RES/mccmnc.dat)
-				echo "$LOC" > /tmp/location
-			else
-				echo "-" > /tmp/location
-		fi
-	fi
+	case "$COPS_MCC$COPS_MNC" in
+    		*[!0-9]* | '')
+        	# Non-numeric characters or is blank
+        	;;
+    		*) 
+        		if [ -n "$LOC" ]; then
+            			LOC=$(awk -F[\;] '/^'"$COPS_MCC$COPS_MNC"';/ {print $2}' $RES/mccmnc.dat)
+            			echo "$LOC" > /tmp/location
+        		else
+            			echo "-" > /tmp/location
+        		fi
+        	;;
+	esac
 fi
 
 T=$(echo "$O" | awk -F[,\ ] '/^\+CPIN:/ {print $0;exit}' | xargs)
 if [ -n "$T" ]; then
-	[ "$T" = "+CPIN: READY" ] || REG=$(echo "$T" | cut -f2 -d: | xargs)
+	[ "$T" == "+CPIN: READY" ] || REG=$(echo "$T" | cut -f2 -d: | xargs)
 fi
 
 T=$(echo "$O" | awk -F[,\ ] '/^\+CME ERROR:/ {print $0;exit}')
@@ -392,8 +402,8 @@ case "$T" in
 esac
 
 # MODE
-if [ -z "$MODE_NUM" ] || [ "x$MODE_NUM" = "x0" ]; then
-	MODE_NUM=$(echo "$O" | awk -F[,] '/^\+COPS/ {print $4;exit}')
+if [ -z "$MODE_NUM" ] || [ "x$MODE_NUM" == "x0" ]; then
+	MODE_NUM=$(echo "$O" | awk -F[,] '/^\+COPS/ {print $4;exit}' | xargs)
 fi
 case "$MODE_NUM" in
 	2*) MODE="UMTS";;
@@ -432,7 +442,7 @@ else
 
 if [ -e /usr/bin/sms_tool ]; then
 	REGOK=0
-	[ "x$REG" = "x1" ] || [ "x$REG" = "x5" ] || [ "x$REG" = "x6" ] || [ "x$REG" = "x7" ] && REGOK=1
+	[ "x$REG" == "x1" ] || [ "x$REG" == "x5" ] || [ "x$REG" == "x6" ] || [ "x$REG" == "x7" ] && REGOK=1
 	VIDPID=$(getdevicevendorproduct $DEVICE)
 	if [ -e "$RES/modem/$VIDPID" ]; then
 		case $(cat /tmp/sysinfo/board_name) in

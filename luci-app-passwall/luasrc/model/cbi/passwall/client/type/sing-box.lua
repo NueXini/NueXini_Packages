@@ -334,7 +334,15 @@ if singbox_tags:find("with_quic") then
 	o.default = "3"
 	o:depends({ [option_name("protocol")] = "tuic" })
 
-	o = s:option(Value, option_name("tuic_alpn"), translate("QUIC TLS ALPN"))
+	o = s:option(ListValue, option_name("tuic_alpn"), translate("QUIC TLS ALPN"))
+	o.default = "default"
+	o:value("default", translate("Default"))
+	o:value("h3")
+	o:value("h2")
+	o:value("h3,h2")
+	o:value("http/1.1")
+	o:value("h2,http/1.1")
+	o:value("h3,h2,http/1.1")
 	o:depends({ [option_name("protocol")] = "tuic" })
 end
 
@@ -364,13 +372,17 @@ o:depends({ [option_name("protocol")] = "vmess" })
 o:depends({ [option_name("protocol")] = "vless" })
 o:depends({ [option_name("protocol")] = "http" })
 o:depends({ [option_name("protocol")] = "trojan" })
+o:depends({ [option_name("protocol")] = "shadowsocks" })
 
 o = s:option(ListValue, option_name("alpn"), translate("alpn"))
 o.default = "default"
 o:value("default", translate("Default"))
-o:value("h2,http/1.1")
+o:value("h3")
 o:value("h2")
+o:value("h3,h2")
 o:value("http/1.1")
+o:value("h2,http/1.1")
+o:value("h3,h2,http/1.1")
 o:depends({ [option_name("tls")] = true })
 
 o = s:option(Value, option_name("tls_serverName"), translate("Domain"))
@@ -378,6 +390,7 @@ o:depends({ [option_name("tls")] = true })
 o:depends({ [option_name("protocol")] = "hysteria"})
 o:depends({ [option_name("protocol")] = "tuic" })
 o:depends({ [option_name("protocol")] = "hysteria2" })
+o:depends({ [option_name("protocol")] = "shadowsocks" })
 
 o = s:option(Flag, option_name("tls_allowInsecure"), translate("allowInsecure"), translate("Whether unsafe connections are allowed. When checked, Certificate validation will be skipped."))
 o.default = "0"
@@ -385,6 +398,7 @@ o:depends({ [option_name("tls")] = true })
 o:depends({ [option_name("protocol")] = "hysteria"})
 o:depends({ [option_name("protocol")] = "tuic" })
 o:depends({ [option_name("protocol")] = "hysteria2" })
+o:depends({ [option_name("protocol")] = "shadowsocks" })
 
 if singbox_tags:find("with_ech") then
 	o = s:option(Flag, option_name("ech"), translate("ECH"))
@@ -394,9 +408,19 @@ if singbox_tags:find("with_ech") then
 	o:depends({ [option_name("protocol")] = "hysteria" })
 	o:depends({ [option_name("protocol")] = "hysteria2" })
 
-	o = s:option(Value, option_name("ech_config"), translate("ECH Config"))
+	o = s:option(TextValue, option_name("ech_config"), translate("ECH Config"))
 	o.default = ""
+	o.rows = 5
+	o.wrap = "off"
 	o:depends({ [option_name("ech")] = true })
+	o.validate = function(self, value)
+		value = value:gsub("^%s+", ""):gsub("%s+$","\n"):gsub("\r\n","\n"):gsub("[ \t]*\n[ \t]*", "\n")
+		value = value:gsub("^%s*\n", "")
+		if value:sub(-1) == "\n" then  
+			value = value:sub(1, -2)  
+		end
+		return value
+	end
 
 	o = s:option(Flag, option_name("pq_signature_schemes_enabled"), translate("PQ signature schemes"))
 	o.default = "0"

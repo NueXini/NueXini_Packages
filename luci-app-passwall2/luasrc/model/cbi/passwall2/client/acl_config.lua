@@ -70,6 +70,11 @@ o = s:option(Value, "remarks", translate("Remarks"))
 o.default = arg[1]
 o.rmempty = true
 
+use_if = s:option(Flag, "use_interface", translate("Use Interface With ACLs"))
+use_if.default = 0
+use_if.rmempty = false
+
+
 local mac_t = {}
 sys.net.mac_hints(function(e, t)
 	mac_t[#mac_t + 1] = {
@@ -90,6 +95,17 @@ table.sort(mac_t, function(a,b)
 	return false
 end)
 
+local device_list = {}
+device_list = sys.net.devices()
+table.sort(device_list)
+interface = s:option(ListValue, "interface", translate("Source Interface"))
+
+for k, name in ipairs(device_list) do
+	interface:value(name)
+end
+
+interface:depends({ use_interface = 1 })
+
 ---- Source
 sources = s:option(DynamicList, "sources", translate("Source"))
 sources.description = "<ul><li>" .. translate("Example:")
@@ -103,6 +119,8 @@ sources.cast = "string"
 for _, key in pairs(mac_t) do
 	sources:value(key.mac, "%s (%s)" % {key.mac, key.ip})
 end
+sources:depends({ use_interface = 0 })
+
 sources.cfgvalue = function(self, section)
 	local value
 	if self.tag_error[section] then
@@ -202,6 +220,17 @@ o:value("default", translate("Use global config") .. "(" .. UDP_REDIR_PORTS .. "
 o:value("1:65535", translate("All"))
 o.validate = port_validate
 
+o = s:option(ListValue, "direct_dns_query_strategy", translate("Direct Query Strategy"))
+o.default = "UseIP"
+o:value("UseIP")
+o:value("UseIPv4")
+o:value("UseIPv6")
+o:depends({ node = "default",  ['!reverse'] = true })
+
+o = s:option(Flag, "write_ipset_direct", translate("Direct DNS result write to IPSet"), translate("Perform the matching direct domain name rules into IP to IPSet/NFTSet, and then connect directly (not entering the core). Maybe conflict with some special circumstances."))
+o.default = "1"
+o:depends({ node = "default",  ['!reverse'] = true })
+
 o = s:option(ListValue, "remote_dns_protocol", translate("Remote DNS Protocol"))
 o:value("tcp", "TCP")
 o:value("doh", "DoH")
@@ -290,9 +319,5 @@ for k, v in pairs(nodes_table) do
 		s.fields["dns_hosts"]:depends({ node = v.id })
 	end
 end
-
-o = s:option(Flag, "write_ipset_direct", translate("Direct DNS result write to IPSet"), translate("Perform the matching direct domain name rules into IP to IPSet/NFTSet, and then connect directly (not entering the core). Maybe conflict with some special circumstances."))
-o.default = "1"
-o:depends({ node = "default",  ['!reverse'] = true })
 
 return m

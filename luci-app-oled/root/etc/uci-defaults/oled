@@ -1,0 +1,31 @@
+#!/bin/sh
+
+uci_write_config() {
+	uci -q set oled.@oled[0].path="$1"
+	uci -q set oled.@oled[0].rotate="$2"
+	uci -q commit oled
+}
+
+. /lib/functions/system.sh
+
+case "$(board_name)" in
+hinlink,opc-h69k)
+	uci_write_config '/dev/i2c-5' 1
+	;;
+widora,mangopi-m28k)
+	uci_write_config '/dev/i2c-6' 0
+	;;
+widora,mangopi-m28k-pro)
+	uci_write_config '/dev/i2c-8' 0
+	;;
+esac
+
+uci -q batch <<-EOF >/dev/null
+	delete ucitrack.@oled[-1]
+	add ucitrack oled
+	set ucitrack.@oled[-1].init=oled
+	commit ucitrack
+EOF
+
+rm -rf /tmp/luci-*
+exit 0

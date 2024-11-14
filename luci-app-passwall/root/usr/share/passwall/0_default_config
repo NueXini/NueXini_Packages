@@ -105,8 +105,7 @@ config nodes 'myshunt'
 
 config shunt_rules 'DirectGame'
 	option remarks 'DirectGame'
-	option domain_list 'api.steampowered.com
-regexp:\.cm.steampowered.com$
+	option domain_list 'regexp:\.cm.steampowered.com$
 regexp:\.steamserver.net$
 geosite:category-games@cn'
 	option ip_list '103.10.124.0/24
@@ -163,21 +162,7 @@ domain:store.steampowered.com'
 
 config shunt_rules 'AIGC'
 	option remarks 'AIGC'
-	option domain_list 'geosite:openai
-geosite:anthropic
-domain:aistudio.google.com
-domain:ai.google.dev
-domain:gemini.google.com
-domain:generativelanguage.googleapis.com
-domain:makersuite.google.com
-domain:alkalicore-pa.clients6.google.com
-domain:alkalimakersuite-pa.clients6.google.com
-domain:deepmind.com
-domain:deepmind.google
-domain:geller-pa.googleapis.com
-domain:proactivebackend-pa.googleapis.com
-domain:generativeai.google
-domain:meta.ai'
+	option domain_list 'geosite:category-ai-chat-!cn'
 
 config shunt_rules 'Streaming'
 	option remarks 'Streaming'

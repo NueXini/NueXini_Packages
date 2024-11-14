@@ -67,13 +67,11 @@ function Act_status()
 end
 
 function Get_log()
-    local log_file_path = sys.exec("/usr/share/mosdns/mosdns.sh logfile")
-    handle_file_content(log_file_path, true)
+	luci.http.write(luci.sys.exec("cat $(/usr/share/mosdns/mosdns.sh logfile)"))
 end
 
 function Clear_log()
-    local log_file_path = sys.exec("/usr/share/mosdns/mosdns.sh logfile")
-    handle_file_content(log_file_path, false)
+	luci.sys.call("cat /dev/null > $(/usr/share/mosdns/mosdns.sh logfile)")
 end
 
 function index()

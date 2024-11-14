@@ -1,0 +1,223 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+msgid "Information about 3G/4G/5G connection"
+msgstr "Информация о статусе соединения 3G/4G/5G"
+
+msgid "More information about the 3ginfo on the %seko.one.pl forum%s."
+msgstr "Вся информация о 3ginfo на %sforum eko.one.pl%s."
+
+msgid "eko.one.pl forum"
+msgstr "форум eko.one.pl"
+
+msgid "Details"
+msgstr "Подробности"
+
+msgid "USB debug information"
+msgstr "Отладка порта USB"
+
+msgid "Configuration"
+msgstr "Конфигурация"
+
+msgid "General Information"
+msgstr "Общая информация"
+
+msgid "Modem Information"
+msgstr "Информация о модеме"
+
+msgid "Cell / Signal Information"
+msgstr "Информация о соте / сигнале"
+
+msgid "Technology"
+msgstr "Технология"
+
+msgid "Operator"
+msgstr "Оператор"
+
+msgid "Signal strength"
+msgstr "Качество сигнала"
+
+msgid "Connection statistics"
+msgstr "Статистика соединения"
+
+msgid "Modem type"
+msgstr "Тип модема"
+
+msgid "Additional information"
+msgstr "Дополнительная информация"
+
+msgid "Revision / Firmware"
+msgstr "Ревизия / Прошивка"
+
+msgid "IP adress / Communication Port"
+msgstr "Адрес IP / Порт связи"
+
+msgid "Chip Temperature"
+msgstr "Температура чипа"
+
+msgid "Configuration 3ginfo-lite"
+msgstr "Конфигурация 3ginfo-lite"
+
+msgid "Configuration panel for the 3ginfo-lite application."
+msgstr "Панель конфигурации приложения 3ginfo-lite."
+
+msgid "Network"
+msgstr "Сеть"
+
+msgid "IP adress / Port for communication with the modem"
+msgstr "IP-адрес / Порт связи с модемом"
+
+msgid "Protocol"
+msgstr "Протокол"
+
+msgid ""
+"Select the appropriate settings. <br /> <br />Traditional "
+"modem. <br /> Select one of the available ttyUSBX "
+"ports.<br /> <br />HiLink modem. <br /> Enter the IP address "
+"192.168.X.X under which the modem is available."
+msgstr ""
+"Выберите соответствующие настройки. <br /> <br />Обычный "
+"модем. <br /> Выберите один из доступных портов "
+"ttyUSBX.<br /> <br />Модем типа HiLink. <br /> Введите IP-адрес "
+"192.168.X.X под которым доступен модем."
+
+msgid "Very good"
+msgstr "Очень хороший"
+
+msgid "Good"
+msgstr "Хороший"
+
+msgid "Weak"
+msgstr "Слабый"
+
+msgid "Very weak"
+msgstr "Очень слабый"
+
+msgid "Excellent"
+msgstr "Отлично"
+
+msgid "Good"
+msgstr "Хорошо"
+
+msgid "Mid cell"
+msgstr "Удовлетворительно"
+
+msgid "Cell edge"
+msgstr "На грани"
+
+msgid "SIM status"
+msgstr "Статус SIM-карты"
+
+msgid "Not registered"
+msgstr "Не зарегистрирован в сети"
+
+msgid "Registered"
+msgstr "Зарегистрирован в сети"
+
+msgid "Registered (roaming)"
+msgstr "Зарегистрирован в другой сети (роуминг)"
+
+msgid "Registered, only SMS"
+msgstr "Зарегистрирован в сети, только SMS"
+
+msgid "Registered (roaming), only SMS"
+msgstr "Зарегистрирован в другой сети (роуминг), только SMS"
+
+msgid "Searching.."
+msgstr "Поиск.."
+
+msgid "Registering denied"
+msgstr "Отказано в регистрации в сети"
+
+msgid "Waiting to read data from the modem..."
+msgstr "Ожидание считывания данных с модема..."
+
+msgid "Waiting for connection data..."
+msgstr "Ожидание данных для соединения..."
+
+msgid "BTS Search"
+msgstr "Поиск базовой станции"
+
+msgid "Search"
+msgstr "Поиск"
+
+msgid "Search BTS using Cell ID"
+msgstr "Поиск базовой станции по Cell ID"
+
+msgid "Hint: To set up a BTS search engine, all you have to do is select the dedicated website for your location."
+msgstr "Совет: Чтобы настроить поиск базовой станции, просто выберите сайт, соответствующий вашему местоположению."
+
+msgid "BTS search settings"
+msgstr "Настройки поиска базовой станции"
+
+msgid "Website to search for BTS"
+msgstr "Сайт для поиска базовой станции"
+
+msgid "Select a website for searching."
+msgstr "Выберите сайт для поиска."
+
+msgid "SIM Slot"
+msgstr "Слот SIM"
+
+msgid "Problem with registering to the network, check the SIM card."
+msgstr "Проблема с регистрацией в сети оператора, проверьте SIM-карту."
+
+msgid "SIM PIN required"
+msgstr "Требуется код PUK2 для SIM-карты"
+
+msgid "SIM PUK required"
+msgstr "Требуется код PUK для SIM-карты"
+
+msgid "SIM failure"
+msgstr "Сбой SIM-карты"
+
+msgid "SIM busy"
+msgstr "SIM-карта занята"
+
+msgid "SIM wrong"
+msgstr "Некорректная SIM-карта"
+
+msgid "SIM PIN2 required"
+msgstr "Требуется код PIN2 для SIM-карты"
+
+msgid "SIM PUK2 required"
+msgstr "Требуется код PUK2 для SIM-карты"
+
+msgid ""
+"There is a problem reading data from the modem. <br /><br /><b>Please "
+"check:</b> <ul><li>1. Modem availability in the system.</li><li>2. The correct "
+"installation of the SIM card in the modem.</li><li> 3. Port for communication with the modem.</li><li><ul>"
+msgstr ""
+"Возникла проблема со считыванием данных с модема. <br /><br /><b>Пожалуйста "
+"проверьте:</b> <ul><li>1. Наличие модема в системе.</li><li>2. Правильность "
+"установки SIM-карты в модем.</li><li> 3. Правильно указан порт для связи с модемом.</li><li><ul>"
+
+msgid ""
+"There is a problem reading connection data. <br /><br /><b>Please "
+"check:</b> <ul><li>1. Connection of the modem to the internet, the correctness of the entered APN. Some modems need to force the APN on the modem using at commands "
+"to connect to internet.</li><li> 2. Check that the correct interface assigned to the modem is selected. The default name of the interface in the package is wan.</li><li><ul>"
+msgstr ""
+"При чтении данных о соединении возникла проблема. <br /><br /><b>Пожалуйста "
+"проверьте:</b> <ul><li>1. Подключение модема к Интернету, правильность введенного APN. Некоторые модемы требуют ввести APN на модеме с помощью AT команд, чтобы "
+"подключиться к Интернету.</li><li> 2. Убедитесь, что выбран правильный интерфейс, назначенный модему. По умолчанию в комплекте поставки используется имя интерфейса wan.</li><li><ul>"
+
+msgid "Defined modems"
+msgstr "Добавленные модемы"
+
+msgid "Interface for selecting user defined modems."
+msgstr "Интерфейс выбора добавленных пользователем модемов."
+
+msgid "Modem selection menu"
+msgstr "Меню выбора модема"
+
+msgid "SIM card menu"
+msgstr "Меню SIM-карты"
+
+msgid "Information read from the SIM card and device."
+msgstr "Чтение информации с SIM-карты и устройства."
+
+msgid "Hint"
+msgstr "Подсказка"
+
+msgid "CLICK ME TO SEE NEW MENU"
+msgstr "НАЖМИ МЕНЯ ЧТОБЫ УВИДЕТЬ НОВОЕ МЕНЮ"

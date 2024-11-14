@@ -124,6 +124,9 @@ msgstr "TCP 节点必须是 '%s' 类型才能使用 FakeDNS。"
 msgid "Direct DNS"
 msgstr "直连 DNS"
 
+msgid "Direct DNS DoT"
+msgstr "直连 DNS DoT"
+
 msgid "Remote DNS"
 msgstr "远程 DNS"
 
@@ -142,6 +145,9 @@ msgstr "配置不当"
 msgid "Make sure socks service is available on this address."
 msgstr "请确保此 Socks 服务可用。"
 
+msgid "%s request address"
+msgstr "%s 请求地址"
+
 msgid "Format must be:"
 msgstr "格式必须为："
 
@@ -151,6 +157,9 @@ msgstr "请求协议"
 msgid "Remote DNS DoH"
 msgstr "远程 DNS DoH"
 
+msgid "Remote DNS DoT"
+msgstr "远程 DNS DoT"
+
 msgid "Notify the DNS server when the DNS query is notified, the location of the client (cannot be a private IP address)."
 msgstr "用于 DNS 查询时通知 DNS 服务器，客户端所在的地理位置（不能是私有 IP 地址）。"
 
@@ -159,6 +168,9 @@ msgstr "此功能需要 DNS 服务器支持 EDNS Client Subnet（RFC7871）。"
 
 msgid "The effect is better, recommend."
 msgstr "效果更好，推荐使用。"
+
+msgid "ChinaDNS-NG (recommended)"
+msgstr "ChinaDNS-NG (推荐)"
 
 msgid "Default DNS"
 msgstr "默认 DNS"
@@ -832,6 +844,9 @@ msgstr "备用"
 msgid "Check update"
 msgstr "检查更新"
 
+msgid "Force update"
+msgstr "强制更新"
+
 msgid "Manually update"
 msgstr "手动更新"
 
@@ -924,6 +939,9 @@ msgstr "点击更新"
 
 msgid "Updating..."
 msgstr "更新中"
+
+msgid "Retry"
+msgstr "重试"
 
 msgid "Unexpected error"
 msgstr "意外错误"
@@ -1032,6 +1050,12 @@ msgstr "例："
 
 msgid "IP range"
 msgstr "IP 范围"
+
+msgid "Source Interface"
+msgstr "源接口"
+
+msgid "Use Interface With ACLs"
+msgstr "使用接口控制"
 
 msgid "Remarks"
 msgstr "备注"
@@ -1498,6 +1522,30 @@ msgstr "客户端文件不适合当前设备。"
 msgid "Can't move new file to path: %s"
 msgstr "无法移动新文件到：%s"
 
+msgid "XHTTP download splitting"
+msgstr "XHTTP 下行分离"
+
+msgid "Must be the same as upload path."
+msgstr "必须与上行 path 相同。"
+
+msgid "Enable XHTTP XMUX. It's not recommended to enable Mux.Cool at the same time."
+msgstr "启用 XHTTP XMUX。不建议与 Mux.Cool 同时启用。"
+
+msgid "XMUX Max Concurrency"
+msgstr "XMUX 连接最大复用流数"
+
+msgid "XMUX Max Connections"
+msgstr "XMUX 最大连接数"
+
+msgid "XMUX Connection Max Reuse Times"
+msgstr "XMUX 连接最多复用次数"
+
+msgid "XMUX Connection Max Lifetime (ms)"
+msgstr "XMUX 连接最大存活时间（ms）"
+
+msgid "Enable Mux.Cool"
+msgstr "启用 Mux.Cool"
+
 msgid "Mux concurrency"
 msgstr "最大并发连接数"
 
@@ -1635,6 +1683,24 @@ msgstr "分片间隔"
 
 msgid "Fragmentation interval (ms)"
 msgstr "分片间隔（ms）"
+
+msgid "Noise"
+msgstr "噪声"
+
+msgid "UDP noise, Under some circumstances it can bypass some UDP based protocol restrictions."
+msgstr "UDP 噪声，在某些情况下可以绕过一些针对 UDP 协议的限制。"
+
+msgid "To send noise packets, select \"Noise\" in Xray Settings."
+msgstr "在 Xray 设置中勾选 “噪声” 以发送噪声包。"
+
+msgid "Xray Noise Packets"
+msgstr "Xray 噪声数据包"
+
+msgid "Packet"
+msgstr "数据包"
+
+msgid "Delay (ms)"
+msgstr "延迟（ms）"
 
 msgid "If is domain name, The requested domain name will be resolved to IP before connect."
 msgstr "如果是域名，域名将在请求发出之前解析为 IP。"

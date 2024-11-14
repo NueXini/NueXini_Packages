@@ -4,6 +4,7 @@ local appname = "passwall"
 
 local var = api.get_args(arg)
 local FLAG = var["-FLAG"]
+local DNSMASQ_CONF_DIR = var["-DNSMASQ_CONF_DIR"]
 local TMP_DNSMASQ_PATH = var["-TMP_DNSMASQ_PATH"]
 local DNSMASQ_CONF_FILE = var["-DNSMASQ_CONF_FILE"]
 local DEFAULT_DNS = var["-DEFAULT_DNS"]
@@ -185,41 +186,46 @@ if USE_DEFAULT_DNS == "chinadns_ng" and CHINADNS_DNS ~= "0" then
 	dnsmasq_default_dns = CHINADNS_DNS
 end
 
-local setflag_4= (NFTFLAG == "1") and "4#inet#fw4#" or ""
-local setflag_6= (NFTFLAG == "1") and "6#inet#fw4#" or ""
+local setflag_4= (NFTFLAG == "1") and "4#inet#passwall#" or ""
+local setflag_6= (NFTFLAG == "1") and "6#inet#passwall#" or ""
 
 if not fs.access(CACHE_DNS_PATH) then
-	fs.mkdir("/tmp/dnsmasq.d")
+	fs.mkdir(DNSMASQ_CONF_DIR)
 	fs.mkdir(CACHE_DNS_PATH)
 
 	--屏蔽列表
-	if USE_BLOCK_LIST == "1" then
-		for line in io.lines("/usr/share/passwall/rules/block_host") do
-			if line ~= "" and not line:find("#") then
-				set_domain_address(line, "")
+	if USE_DEFAULT_DNS ~= "chinadns_ng" or CHINADNS_DNS == "0" then
+		if USE_BLOCK_LIST == "1" then
+			for line in io.lines("/usr/share/passwall/rules/block_host") do
+				line = api.get_std_domain(line)
+				if line ~= "" and not line:find("#") then
+					set_domain_address(line, "")
+				end
 			end
 		end
-	end
-
-	--始终用国内DNS解析节点域名
-	if true then
-		if USE_DEFAULT_DNS == "chinadns_ng" and CHINADNS_DNS ~= "0" then
-		else
-			uci:foreach(appname, "nodes", function(t)
-				local address = t.address
-				if address == "engage.cloudflareclient.com" then return end
-				if datatypes.hostname(address) then
-					set_domain_dns(address, LOCAL_DNS)
-					set_domain_ipset(address, setflag_4 .. "passwall_vpslist," .. setflag_6 .. "passwall_vpslist6")
-				end
-			end)
-		end
-		log(string.format("  - 节点列表中的域名(vpslist)：%s", LOCAL_DNS or "默认"))
 	end
 
 	local fwd_dns
 	local ipset_flag
 	local no_ipv6
+
+	--始终用国内DNS解析节点域名
+	if true then
+		fwd_dns = LOCAL_DNS
+		if USE_DEFAULT_DNS == "chinadns_ng" and CHINADNS_DNS ~= "0" then
+			fwd_dns = nil
+		else
+			uci:foreach(appname, "nodes", function(t)
+				local address = t.address
+				if address == "engage.cloudflareclient.com" then return end
+				if datatypes.hostname(address) then
+					set_domain_dns(address, fwd_dns)
+					set_domain_ipset(address, setflag_4 .. "passwall_vpslist," .. setflag_6 .. "passwall_vpslist6")
+				end
+			end)
+			log(string.format("  - 节点列表中的域名(vpslist)：%s", fwd_dns or "默认"))
+		end
+	end
 
 	--直连（白名单）列表
 	if USE_DIRECT_LIST == "1" then
@@ -231,14 +237,15 @@ if not fs.access(CACHE_DNS_PATH) then
 			if fwd_dns then
 				--始终用国内DNS解析直连（白名单）列表
 				for line in io.lines("/usr/share/passwall/rules/direct_host") do
+					line = api.get_std_domain(line)
 					if line ~= "" and not line:find("#") then
 						add_excluded_domain(line)
 						set_domain_dns(line, fwd_dns)
 						set_domain_ipset(line, setflag_4 .. "passwall_whitelist," .. setflag_6 .. "passwall_whitelist6")
 					end
 				end
+				log(string.format("  - 域名白名单(whitelist)：%s", fwd_dns or "默认"))
 			end
-			log(string.format("  - 域名白名单(whitelist)：%s", fwd_dns or "默认"))
 		end
 	end
 
@@ -252,6 +259,7 @@ if not fs.access(CACHE_DNS_PATH) then
 			if fwd_dns then
 				--始终使用远程DNS解析代理（黑名单）列表
 				for line in io.lines("/usr/share/passwall/rules/proxy_host") do
+					line = api.get_std_domain(line)
 					if line ~= "" and not line:find("#") then
 						add_excluded_domain(line)
 						local ipset_flag = setflag_4 .. "passwall_blacklist," .. setflag_6 .. "passwall_blacklist6"
@@ -266,8 +274,8 @@ if not fs.access(CACHE_DNS_PATH) then
 						set_domain_ipset(line, ipset_flag)
 					end
 				end
+				log(string.format("  - 代理域名表(blacklist)：%s", fwd_dns or "默认"))
 			end
-			log(string.format("  - 代理域名表(blacklist)：%s", fwd_dns or "默认"))
 		end
 	end
 
@@ -300,8 +308,8 @@ if not fs.access(CACHE_DNS_PATH) then
 						set_domain_ipset(line, ipset_flag)
 					end
 				end
+				log(string.format("  - 防火墙域名表(gfwlist)：%s", fwd_dns or "默认"))
 			end
-			log(string.format("  - 防火墙域名表(gfwlist)：%s", fwd_dns or "默认"))
 		end
 	end
 
@@ -342,13 +350,13 @@ if not fs.access(CACHE_DNS_PATH) then
 						set_domain_ipset(line, ipset_flag)
 					end
 				end
+				log(string.format("  - 中国域名表(chnroute)：%s", fwd_dns or "默认"))
 			end
-			log(string.format("  - 中国域名表(chnroute)：%s", fwd_dns or "默认"))
 		end
 	end
 
 	--分流规则
-	if uci:get(appname, TCP_NODE, "protocol") == "_shunt" then
+	if uci:get(appname, TCP_NODE, "protocol") == "_shunt" and (USE_DEFAULT_DNS ~= "chinadns_ng" or CHINADNS_DNS == "0") then
 		local t = uci:get_all(appname, TCP_NODE)
 		local default_node_id = t["default_node"] or "_direct"
 		uci:foreach(appname, "shunt_rules", function(s)
@@ -385,6 +393,7 @@ if not fs.access(CACHE_DNS_PATH) then
 						if line:find("domain:") or line:find("full:") then
 							line = string.match(line, ":([^:]+)$")
 						end
+						line = api.get_std_domain(line)
 						add_excluded_domain(line)
 
 						if no_ipv6 then
@@ -395,7 +404,7 @@ if not fs.access(CACHE_DNS_PATH) then
 					end
 				end
 				if _node_id ~= "_direct" then
-					log(string.format("  - V2ray/Xray分流规则(%s)：%s", s.remarks, fwd_dns or "默认"))
+					log(string.format("  - Sing-Box/Xray分流规则(%s)：%s", s.remarks, fwd_dns or "默认"))
 				end
 			end
 		end)
@@ -469,7 +478,9 @@ if DNSMASQ_CONF_FILE ~= "nil" then
 		conf_out:write("no-poll\n")
 		conf_out:write("no-resolv\n")
 		conf_out:close()
-		log(string.format("  - 默认：%s", dnsmasq_default_dns))
+		if USE_DEFAULT_DNS ~= "chinadns_ng" or CHINADNS_DNS == "0" then
+			log(string.format("  - 默认：%s", dnsmasq_default_dns))
+		end
 
 		if FLAG == "default" then
 			local f_out = io.open("/tmp/etc/passwall/default_DNS", "a")
@@ -479,4 +490,6 @@ if DNSMASQ_CONF_FILE ~= "nil" then
 	end
 end
 
-log("  - PassWall必须依赖于Dnsmasq，如果你自行配置了错误的DNS流程，将会导致域名(直连/代理域名)分流失效！！！")
+if USE_DEFAULT_DNS ~= "chinadns_ng" or CHINADNS_DNS == "0" then
+	log("  - PassWall必须依赖于Dnsmasq，如果你自行配置了错误的DNS流程，将会导致域名(直连/代理域名)分流失效！！！")
+end

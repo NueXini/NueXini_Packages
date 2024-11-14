@@ -10,11 +10,11 @@ include $(TOPDIR)/rules.mk
 PKG_ARCH_LINKEASE:=$(ARCH)
 
 PKG_NAME:=linkease
-PKG_VERSION:=1.6.3
+PKG_VERSION:=1.6.7
 PKG_RELEASE:=$(PKG_ARCH_LINKEASE)-1
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://fw0.koolcenter.com/binary/LinkEase/LinuxStorage/
-PKG_HASH:=e5a03430a883a33497312ba9495d61b2f7b4bf6a53d2456489c93929475db5a1
+PKG_HASH:=641083ec699ca0e52ac8badf11be5ff963a6796cb0b960eefada7ca9b9afe647
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_VERSION)
 
@@ -28,7 +28,7 @@ define Package/$(PKG_NAME)
 	CATEGORY:=Network
 	SUBMENU:=Web Servers/Proxies
 	TITLE:=LinkEase - the file cloud
-	DEPENDS:=@(arm||x86_64||aarch64) +ffmpeg-remux +linkmount
+	DEPENDS:=@(arm||x86_64||aarch64) +linkmount
 	PKGARCH:=all
 	URL:=https://www.linkease.com/
 endef
@@ -58,6 +58,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/sbin/linkease-plugins $(1)/etc/config $(1)/etc/init.d $(1)/etc/uci-defaults
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/linkease.$(PKG_ARCH_LINKEASE) $(1)/usr/sbin/linkease
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/heif-converter.$(PKG_ARCH_LINKEASE) $(1)/usr/sbin/heif-converter
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/linkease-media.$(PKG_ARCH_LINKEASE) $(1)/usr/sbin/linkease-media
 	$(INSTALL_BIN) ./files/linkease-config.sh $(1)/usr/sbin/linkease-config.sh
 	$(INSTALL_CONF) ./files/linkease.config $(1)/etc/config/linkease
 	$(INSTALL_BIN) ./files/linkease.init $(1)/etc/init.d/linkease

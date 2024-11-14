@@ -69,7 +69,7 @@ plugins:
     args:
       size: 20480
       lazy_cache_ttl: 259200
-      dump_file: "/tmp/mosdns.cache"
+      dump_file: "/etc/mosdns/rule/cache.dump"
       dump_interval: 43200
 
   # 转发至本地服务器
