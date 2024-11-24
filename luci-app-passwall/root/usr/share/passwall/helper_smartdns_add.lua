@@ -98,9 +98,50 @@ if not fs.access(CACHE_PATH) then
 	fs.mkdir(CACHE_PATH)
 end
 
+local LOCAL_EXTEND_ARG = ""
 if LOCAL_GROUP == "nil" then
 	LOCAL_GROUP = nil
-	log("  * 注意：国内分组名未设置，可能会导致 DNS 解析异常！")
+	log("  * 注意：国内分组名未设置，可能会导致 DNS 分流错误！")
+else
+	--从smartdns配置中读取参数
+	local custom_conf_path = "/etc/smartdns/custom.conf"
+	local options = {
+		{key = "dualstack_ip_selection", config_key = "dualstack-ip-selection", yes_no = true, arg_yes = "-d yes", arg_no = "-d no", default = "yes"},
+		{key = "speed_check_mode", config_key = "speed-check-mode", prefix = "-c ", default = "ping,tcp:80,tcp:443"},
+		{key = "serve_expired", config_key = "serve-expired", yes_no = true, arg_yes = "", arg_no = "-no-serve-expired", default = "yes"},
+		{key = "response_mode", config_key = "response-mode", prefix = "-r ", default = "first-ping"},
+		{key = "rr_ttl", config_key = "rr-ttl", prefix = "-rr-ttl "},
+		{key = "rr_ttl_min", config_key = "rr-ttl-min", prefix = "-rr-ttl-min "},
+		{key = "rr_ttl_max", config_key = "rr-ttl-max", prefix = "-rr-ttl-max "}
+	}
+	-- 从 custom.conf 中读取值，以最后出现的值为准
+	local custom_config = {}
+	local f_in = io.open(custom_conf_path, "r")
+	if f_in then
+		for line in f_in:lines() do
+			line = line:match("^%s*(.-)%s*$")
+			if line ~= "" and not line:match("^#") then
+				local param, value = line:match("^(%S+)%s+(%S+)$")
+				if param and value then custom_config[param] = value end
+			end
+		end
+		f_in:close()
+	end
+	-- 从 smartdns 配置中读取值，优先级以 custom.conf 为准
+	for _, opt in ipairs(options) do
+		local val = custom_config[opt.config_key] or uci:get("smartdns", "@smartdns[0]", opt.key) or opt.default
+		if val == "yes" then val = "1" elseif val == "no" then val = "0" end
+		if opt.yes_no then
+			local arg = (val == "1" and opt.arg_yes or opt.arg_no)
+			if arg and arg ~= "" then
+				LOCAL_EXTEND_ARG = LOCAL_EXTEND_ARG .. (LOCAL_EXTEND_ARG ~= "" and " " or "") .. arg
+			end
+		else
+			if val and (not opt.value or (opt.invert and val ~= opt.value) or (not opt.invert and val == opt.value)) then
+				LOCAL_EXTEND_ARG = LOCAL_EXTEND_ARG .. (LOCAL_EXTEND_ARG ~= "" and " " or "") .. (opt.prefix or "") .. (opt.arg or val)
+			end
+		end
+	end
 end
 
 if not REMOTE_GROUP or REMOTE_GROUP == "nil" then
@@ -167,6 +208,8 @@ if DEFAULT_DNS_GROUP then
 		if NO_PROXY_IPV6 == "1" and only_global == 1 and uci:get(appname, TCP_NODE, "protocol") ~= "_shunt" then
 			domain_rules_str = domain_rules_str .. " -address #6"
 		end
+	elseif DEFAULT_DNS_GROUP == LOCAL_GROUP then
+		domain_rules_str = domain_rules_str .. (LOCAL_EXTEND_ARG ~= "" and " " .. LOCAL_EXTEND_ARG or "")
 	end
 	table.insert(config_lines, domain_rules_str)
 end
@@ -226,6 +269,7 @@ if is_file_nonzero(file_vpslist) then
 	}
 	local domain_rules_str = string.format('domain-rules /domain-set:%s/ %s', domain_set_name, LOCAL_GROUP and "-nameserver " .. LOCAL_GROUP or "")
 	domain_rules_str = domain_rules_str .. " " .. set_type .. " #4:" .. setflag .. "passwall_vpslist,#6:" .. setflag .. "passwall_vpslist6"
+	domain_rules_str = domain_rules_str .. (LOCAL_EXTEND_ARG ~= "" and " " .. LOCAL_EXTEND_ARG or "")
 	table.insert(tmp_lines, domain_rules_str)
 	insert_array_after(config_lines, tmp_lines, "#--8")
 	log(string.format("  - 节点列表中的域名(vpslist)使用分组：%s", LOCAL_GROUP or "默认"))
@@ -256,6 +300,7 @@ if USE_DIRECT_LIST == "1" and is_file_nonzero(file_direct_host) then
 	}
 	local domain_rules_str = string.format('domain-rules /domain-set:%s/ %s', domain_set_name, LOCAL_GROUP and "-nameserver " .. LOCAL_GROUP or "")
 	domain_rules_str = domain_rules_str .. " " .. set_type .. " #4:" .. setflag .. "passwall_whitelist,#6:" .. setflag .. "passwall_whitelist6"
+	domain_rules_str = domain_rules_str .. (LOCAL_EXTEND_ARG ~= "" and " " .. LOCAL_EXTEND_ARG or "")
 	table.insert(tmp_lines, domain_rules_str)
 	insert_array_after(config_lines, tmp_lines, "#--6")
 	log(string.format("  - 域名白名单(whitelist)使用分组：%s", LOCAL_GROUP or "默认"))
@@ -328,6 +373,7 @@ if CHN_LIST ~= "0" and is_file_nonzero(RULES_PATH .. "/chnlist") then
 	if CHN_LIST == "direct" then
 		local domain_rules_str = string.format('domain-rules /domain-set:%s/ %s', domain_set_name, LOCAL_GROUP and "-nameserver " .. LOCAL_GROUP or "")
 		domain_rules_str = domain_rules_str .. " " .. set_type .. " #4:" .. setflag .. "passwall_chnroute,#6:" .. setflag .. "passwall_chnroute6"
+		domain_rules_str = domain_rules_str .. (LOCAL_EXTEND_ARG ~= "" and " " .. LOCAL_EXTEND_ARG or "")
 		table.insert(tmp_lines, domain_rules_str)
 		insert_array_after(config_lines, tmp_lines, "#--2")
 		log(string.format("  - 中国域名表(chnroute)使用分组：%s", LOCAL_GROUP or "默认"))
@@ -419,6 +465,7 @@ if uci:get(appname, TCP_NODE, "protocol") == "_shunt" then
 		}
 		local domain_rules_str = string.format('domain-rules /domain-set:%s/ %s', domain_set_name, LOCAL_GROUP and "-nameserver " .. LOCAL_GROUP or "")
 		domain_rules_str = domain_rules_str .. " " .. set_type .. " #4:" .. setflag .. "passwall_whitelist,#6:" .. setflag .. "passwall_whitelist6"
+		domain_rules_str = domain_rules_str .. (LOCAL_EXTEND_ARG ~= "" and " " .. LOCAL_EXTEND_ARG or "")
 		table.insert(tmp_lines, domain_rules_str)
 		insert_array_after(config_lines, tmp_lines, "#--3")
 	end
