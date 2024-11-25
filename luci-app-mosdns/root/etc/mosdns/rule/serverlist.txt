@@ -6154,6 +6154,7 @@ aa.analog.com
 aa.athome.com
 aa.avvo.com
 aa.bathandbodyworks.com
+aa.birdgesdk.com
 aa.cbs.com
 aa.cbsi.com
 aa.cbsnews.com
@@ -11935,6 +11936,7 @@ apm-engine.meteor.com
 apm.suning.cn
 apm.tnet.nl
 apmebf.com
+apmplus.volces.com
 apnmedia.ask.com
 apnpr.com
 apns.ios.ijinshan.com
@@ -21071,6 +21073,7 @@ cmtrkg.com
 cmttvv.bonprix.se
 cmx.autohome.com.cn
 cmzaly.gebrueder-goetz.de
+cn-api.anythinktech.com
 cn-go.experian.com
 cn.adpinfo.com
 cn.api.push.le.com
@@ -25778,6 +25781,7 @@ datingstyle.top
 datingtoday.top
 datingtopgirls.com
 datingvr.ru
+datk.anythinktech.com
 datouniao.com
 datqagdkurce.com
 datum.appfleet.com
@@ -27695,6 +27699,7 @@ dlxpix.net
 dlzbax.street-academy.com
 dlziqh9bo7.boring.fm
 dm-event.net
+dm-hl.toutiao.com
 dm-target.fishersci.com
 dm-target.thermofisher.com
 dm.17xuexiba.com
@@ -28593,6 +28598,7 @@ dspmega.com
 dspmnt.autohome.com.cn
 dspmulti.com
 dspmy.ge95.com
+dspsdk.pinduoduo.com
 dspserver.ad.cmvideo.cn
 dspultra.com
 dspwin.adsame.com
@@ -35417,6 +35423,7 @@ gannetsmechant.com
 gannett.gcion.com
 ganon.yahoo.com
 gao.ynet.com
+gaode-jmacs.m.taobao.com
 gaoduan.cc
 gaoguai.com
 gaothings.com
@@ -35629,6 +35636,7 @@ geckad.com
 geckibou.com
 gecko-hl.snssdk.com
 gecko-lq.snssdk.com
+gecko.snssdk.com
 gecl.xyz
 ged46.xyz
 gedafdshb7.fun
@@ -57269,6 +57277,7 @@ msphoneclick.kuwo.cn
 msr.p-antiaging.com
 msre2lp.com
 msrvt.net
+mssdk-bu.bytedance.com
 mssdk.volces.com
 mssdk.zijieapi.com
 mssheng.com
@@ -91983,6 +91992,7 @@ volc.bj.ad.track.66mobi.com
 volcanoexhibitmeaning.com
 volcanostricken.com
 volceapplog.com
+volctrack.com
 voldarinis.com
 volform.online
 volgograd-info.ru
