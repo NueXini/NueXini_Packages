@@ -64,6 +64,12 @@ set_lan_ping() {
 	/etc/init.d/firewall reload 2>&1
 }
 
+safe_sleep() {
+	local sec="$1"
+	[[ "$sec" -lt 1 ]] && sec=1
+	sleep $sec
+}
+
 . /lib/functions.sh
 
 fallback_loop() {
@@ -108,16 +114,16 @@ fallback_loop() {
 			else
 				dead_counter=0
 			fi
-			[[ $consume_time -lt 10 ]] && sleep $((10 - $consume_time))
+			safe_sleep $((10 - $consume_time))
 			continue
 		fi
 		if [[ $floatip_up = 1 ]]; then
-			[[ $consume_time -lt 5 ]] && sleep $((5 - $consume_time))
+			safe_sleep $((5 - $consume_time))
 			continue
 		fi
 		dead_counter=$(($dead_counter + 1))
 		if [[ $dead_counter -lt 3 ]]; then
-			[[ $consume_time -lt 10 ]] && sleep $((10 - $consume_time))
+			safe_sleep $((10 - $consume_time))
 			continue
 		fi
 		echo "no host alive, set up floatip $ipaddr" >&2
@@ -176,14 +182,16 @@ main_loop() {
 					set_up "$ipaddr"
 					floatip_up=1
 				fi
+			else
+				set_lan_ping 0
 			fi
-			[[ $consume_time -lt 5 ]] && sleep $((5 - $consume_time))
+			safe_sleep $((5 - $consume_time))
 			continue
 		else
 			if [[ $url_pass = 0 ]]; then
 				dead_counter=$(($dead_counter + 1))
 				if [[ $dead_counter -lt 3 ]]; then
-					[[ $consume_time -lt 5 ]] && sleep $((5 - $consume_time))
+					safe_sleep $((5 - $consume_time))
 					continue
 				fi
 				echo "set down floatip, and disable ping" >&2
