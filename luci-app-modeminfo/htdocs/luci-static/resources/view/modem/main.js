@@ -328,11 +328,11 @@ return view.extend({
 						} else {
 							view.innerHTML = String.format(json.modem[i].cops +'<img style="padding-left: 10px;" src="%s"/>'  + " " +  '<span class="ifacebadge"><p style="color:'+ json.modem[i].csq_col +'"><b>%d%%</b></p></span>' + distance, icon, p);
 						}
-					} else if (rg == 5 || rg == 7 || rg == 10) {
+					} else if (rg == 3 || rg == 5 || rg == 7 || rg == 10) {
 						if( dist== "--" || dist == "" || dist == "0.00"){
-							view.innerHTML = String.format(json.modem[i].cops + "(" + reg + ')<img style="padding-left: 10px;" src="%s"/>'  + " " +  '<span class="ifacebadge"><p style="color:'+ json.modem[i].csq_col +'"><b>%d%%</b></p></span>', icon, p);
+							view.innerHTML = String.format(json.modem[i].cops + " (" + reg + ')<img style="padding-left: 10px;" src="%s"/>'  + " " +  '<span class="ifacebadge"><p style="color:'+ json.modem[i].csq_col +'"><b>%d%%</b></p></span>', icon, p);
 						} else {
-							viev.innerHTML = String.format(json.modem[i].cops + "(" + reg + ')<img style="padding-left: 10px;" src="%s"/>'  + " " +  '<span class="ifacebadge"><p style="color:'+ json.modem[i].csq_col +'"><b>%d%%</b></p></span>' + distance, icon, p);
+							viev.innerHTML = String.format(json.modem[i].cops + " (" + reg + ')<img style="padding-left: 10px;" src="%s"/>'  + " " +  '<span class="ifacebadge"><p style="color:'+ json.modem[i].csq_col +'"><b>%d%%</b></p></span>' + distance, icon, p);
 						}
 					} else {
 						view.innerHTML = String.format(reg);
