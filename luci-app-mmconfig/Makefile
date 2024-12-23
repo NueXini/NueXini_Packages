@@ -4,7 +4,7 @@ LUCI_TITLE:=Configrure modem bands via mmcli utility
 LUCI_DEPENDS:=+luci-proto-modemmanager +luci-app-modeminfo
 PKG_LICENSE:=GPLv3
 PKG_VERSION:=0.1.0
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

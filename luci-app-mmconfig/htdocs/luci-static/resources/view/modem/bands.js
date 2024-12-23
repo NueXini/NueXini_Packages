@@ -33,7 +33,7 @@ return view.extend({
 	},
 
 	render: function(modems) {
-		var m, s, o;
+		var m, s, o, i;
 		
 		m = new form.Map('mmconfig', _('MMConfig'), _('Manipulate modem bands via mmcli utility'));
 		s = m.section(form.TypedSection, 'modem', null);
