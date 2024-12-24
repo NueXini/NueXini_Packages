@@ -9126,6 +9126,7 @@ adx-ad.smart-tv.cn
 adx-bid.tianzhuobj.com
 adx-bj.anythinktech.com
 adx-cn.anythinktech.com
+adx-data.yfanads.com
 adx-drcn.op.dbankcloud.cn
 adx-exchange.toast.com
 adx-open-service.youku.com
@@ -11768,6 +11769,7 @@ api.wsq.umeng.com
 api.xiaohuxi.cn
 api.xk.miui.com
 api.y.igexin.com
+api.yfanads.com
 api.yidaomobi.com
 api.youngle.tech
 api.youtu.qq.com
@@ -85857,6 +85859,7 @@ tracker.unbxdapi.com
 tracker.wigzopush.com
 tracker.winload.de
 tracker.wpserveur.net
+tracker.yfanads.com
 tracker.yhd.com
 trackerapi.truste.com
 trackercloud.net
@@ -89364,6 +89367,7 @@ utmostsecond.com
 utndln.com
 utnwxhjv.xyz
 utokapa.com
+utoken.umeng.com
 utop.umengcloud.com
 utorrent-backup-server.top
 utorrent-backup-server2.top
@@ -95486,6 +95490,8 @@ yeyou.3393.com
 yezilm.com
 yezztf.pinkelephant.co.kr
 yf5.voyage-prive.at
+yfanads.cn
+yfanads.com
 yfaqgk.xyz
 yfasjfk.icu
 yfaygn.natureetdecouvertes.com
