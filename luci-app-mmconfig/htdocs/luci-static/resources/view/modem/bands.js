@@ -42,7 +42,7 @@ return view.extend({
 		modems.reverse().forEach(L.bind(function (modem) {
 			var generic = modem.modem.generic;
 			var modem3gpp = modem.modem['3gpp'];
-			o = s.option(form.Value, 'device'+i, generic.manufacturer + ' ' + generic.model);
+			o = s.option(form.Value, 'device'+i, generic.manufacturer + ' ' + generic.model, _('Operator')+ ': '+ modem3gpp['operator-name']);
 			o.value(generic.device, generic.device);
 			o.default = generic.device;
 			o.readonly = true;
