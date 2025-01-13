@@ -1,9 +1,16 @@
 local api = require "luci.passwall.api"
 local appname = "passwall"
-local has_singbox = api.finded_com("singbox")
-local has_xray = api.finded_com("xray")
 
 m = Map(appname)
+m.redirect = api.url()
+api.set_apply_on_parse(m)
+
+if not arg[1] or not m:get(arg[1]) then
+	luci.http.redirect(m.redirect)
+end
+
+local has_singbox = api.finded_com("singbox")
+local has_xray = api.finded_com("xray")
 
 local nodes_table = {}
 for k, e in ipairs(api.get_valid_nodes()) do

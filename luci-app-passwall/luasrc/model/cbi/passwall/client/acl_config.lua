@@ -1,5 +1,14 @@
 local api = require "luci.passwall.api"
 local appname = "passwall"
+
+m = Map(appname)
+m.redirect = api.url("acl")
+api.set_apply_on_parse(m)
+
+if not arg[1] or not m:get(arg[1]) then
+	luci.http.redirect(m.redirect)
+end
+
 local fs = api.fs
 local sys = api.sys
 local has_singbox = api.finded_com("singbox")
@@ -11,8 +20,6 @@ local has_chnroute = fs.access("/usr/share/passwall/rules/chnroute")
 local port_validate = function(self, value, t)
 	return value:gsub("-", ":")
 end
-
-m = Map(appname)
 
 local nodes_table = {}
 for k, e in ipairs(api.get_valid_nodes()) do
