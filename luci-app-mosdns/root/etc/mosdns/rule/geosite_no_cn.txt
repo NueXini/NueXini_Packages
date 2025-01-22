@@ -4154,6 +4154,7 @@ blz-contentstack.com
 bm14.ac.uk
 bmac.ac.uk
 bmc.ac.uk
+bmdru.com
 bme.ac.uk
 bmet.ac.uk
 bmetc.ac.uk
@@ -17946,6 +17947,7 @@ moeero-library.com
 moeerolibrary.com
 moefuns.co
 moeimg.net
+moeshare.cc
 moez-m.com
 mof.kemomi.me
 mofaxiehui.com
@@ -19049,6 +19051,7 @@ newsadds.com.au
 newsamerica.com
 newsancai.com
 newsapi.com.au
+newsblur.com
 newscareers.co.uk
 newscdn.com.au
 newschinacomment.org
@@ -19073,7 +19076,6 @@ newsmax.com
 newsmax.in
 newsmaxtv.com
 newsnowfox.com
-newspeak.cc
 newsprestigenetwork.com.au
 newsprinters.co.uk
 newssyndication.com
@@ -21129,6 +21131,7 @@ pixiv.co.jp
 pixiv.me
 pixiv.net
 pixiv.org
+pixivsketch.net
 pixlr-o-matic.com
 pixlromatic.com
 pixnet.cc
@@ -21144,6 +21147,7 @@ pk.com
 pki-post.ch
 pki-posta.ch
 pki-poste.ch
+pkqjiasu.com
 placemix.com
 placemyad.com.au
 placesdocs.com
@@ -22051,6 +22055,7 @@ qhigh.com
 qi-gong.me
 qianbai.tw
 qiandao.today
+qianglie.com
 qiangwaikan.com
 qiangyou.org
 qiao-cn.com
@@ -22276,8 +22281,6 @@ rarbgunblock.com
 rarbgunblock.org
 rarbgunblocked.org
 rarbgway.org
-raremovie.cc
-raremovie.net
 rareview.ac.uk
 ras.ac.uk
 rascal.ac.uk
@@ -22301,7 +22304,6 @@ razer.com
 razerofficial.com
 razersupport.com
 razerzone.jp
-razyboard.com
 rb-crisis.com
 rb.com
 rb.gy
@@ -22749,6 +22751,7 @@ robotoffice.com
 robustnessiskey.com
 rochdalesfc.ac.uk
 rocket-inc.net
+rocket.chat
 rocketfishproducts.com
 rockettube.com
 rocksdb.com
@@ -26146,6 +26149,7 @@ timtales.com
 tinc-vpn.org
 tineye.com
 ting53.xyz
+tingtalk.me
 tinhduc.org
 tinkerboxapp.com
 tinkercad.com
@@ -27261,6 +27265,7 @@ uug23.com
 uug25.com
 uug26.com
 uug27.com
+uujiasu.com
 uuk.ac.uk
 uuk28.com
 uukanshu.com
@@ -28201,6 +28206,7 @@ voyeurstyle.com
 voyeurweb.com
 vpl.bibliocommons.com
 vpn.ac
+vpn.net
 vpn4all.com
 vpnaccount.org
 vpnaccounts.com
@@ -28305,7 +28311,6 @@ waikeung.org
 wailaike.net
 wainao.me
 waisongcha.com
-waittingfor001.weebly.com
 waiwaier.com
 wakcoll.ac.uk
 wakefield.ac.uk
@@ -28507,6 +28512,7 @@ webtype.com
 webwarper.net
 webworkerdaily.com
 wechatlawsuit.com
+weebly.com
 weekly-economist.com
 weeklytimesnow.com.au
 weekmag.info
@@ -28726,7 +28732,6 @@ wikawika.xyz
 wiki.cnitter.com
 wiki.gamerp.jp
 wiki.keso.cn
-wiki.moegirl.org
 wiki.oauth.net
 wiki.phonegap.com
 wikia.com
@@ -29229,6 +29234,7 @@ xfm.pp.ru
 xfockers.com
 xfreehd.com
 xfuckonline.com
+xfxssr.me
 xgames.zone
 xgaytube.com
 xgaytube.tv
@@ -29376,6 +29382,7 @@ xn--kput3imi374g.xn--hxt814e
 xn--mts47c3w9b1qr.net
 xn--mtswd61ejxq.com
 xn--ngstr-lra8j.com
+xn--noss43i.com
 xn--oiq.cc
 xn--p8j9a0d9c9a.xn--q9jyb4c
 xn--pearsonenespaol-brb.com
