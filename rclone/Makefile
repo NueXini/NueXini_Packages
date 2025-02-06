@@ -6,29 +6,24 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=rclone
-PKG_VERSION:=1.61.1
+PKG_VERSION:=1.69.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/rclone/rclone/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=f9fb7bae1f19896351db64e3713b67bfd151c49b2b28e6c6233adf67dbc2c899
+PKG_HASH:=9b360793108d0b9a3208dacece76e72f5d9253c6710da1c08a1eb8a91eeb9854
 
 PKG_LICENSE:=MIT
-PKG_LICENSE_FILE:=LICENSE
+PKG_LICENSE_FILES:=LICENSE
 PKG_MAINTAINER:=Elon Huang <elonhhuang@gmail.com> \
 		Tianling Shen <cnsztl@immortalwrt.org>
 
-PKG_CONFIG_DEPENDS:= \
-	CONFIG_RCLONE_COMPRESS_GOPROXY \
-	CONFIG_RCLONE_COMPRESS_UPX
-
-PKG_BUILD_DEPENDS:=golang/host upx/host
+PKG_BUILD_DEPENDS:=golang/host
 PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
 
 GO_PKG:=github.com/rclone/rclone
 GO_PKG_EXCLUDES:=test
-GO_PKG_LDFLAGS:=-s -w
 GO_PKG_LDFLAGS_X:= \
 	github.com/rclone/rclone/fs.Version=v$(PKG_VERSION) \
 	main.Version=v$(PKG_VERSION) \
@@ -48,7 +43,7 @@ endef
 
 define Package/rclone
   $(call Package/rclone/Default)
-  DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle +fuse-utils
+  DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle +fuse3-utils
   USERID:=rclone:rclone
 endef
 
@@ -63,29 +58,8 @@ define Package/rclone/description
   files and directories to and from different cloud storage providers.
 endef
 
-define Package/rclone/config
-config RCLONE_COMPRESS_GOPROXY
-	bool "Compiling with GOPROXY proxy"
-	default n
-
-config RCLONE_COMPRESS_UPX
-	bool "Compress executable files with UPX"
-	default n
-endef
-
-ifeq ($(CONFIG_RCLONE_COMPRESS_GOPROXY),y)
-	export GO111MODULE=on
-endif
-
 define Package/rclone-config/conffiles
 /etc/config/rclone
-endef
-
-define Build/Compile
-	$(call GoPackage/Build/Compile)
-ifeq ($(CONFIG_RCLONE_COMPRESS_UPX),y)
-	$(STAGING_DIR_HOST)/bin/upx --lzma --best $(GO_PKG_BUILD_BIN_DIR)/rclone
-endif
 endef
 
 define Package/rclone/install

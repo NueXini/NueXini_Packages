@@ -20,7 +20,7 @@ msgid "LAN DHCP reserved start-to-end IP addresses with the same subnet mask"
 msgstr "使用和 LAN 同一网段。请使用 DHCP分配地址以外的空余IP地址范围，例如 192.168.0.20-30"
 
 msgid "Remote Client DNS"
-msgstr "客户端分配IP的DNS服务器"
+msgstr "客户端分配 IP 的 DNS 服务器"
 
 msgid "Debug Logging"
 msgstr "记录日志"
@@ -49,5 +49,5 @@ msgstr "关闭"
 msgid "PPTP VPN Server"
 msgstr "PPTP VPN 服务器"
 
-msgid "PPTP VPN Server connectivity using the native built-in VPN Client on Windows/Linux or Andriod"
-msgstr "使用Windows/Linux 或者 Andriod 内置的 PPTP VPN 客户端进行连接 "
+msgid "PPTP VPN Server connectivity using the native built-in VPN Client on Windows/Linux or Android"
+msgstr "使用 Windows/Linux 或者 Android 内置的 PPTP VPN 客户端进行连接"
