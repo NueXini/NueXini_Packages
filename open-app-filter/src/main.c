@@ -37,6 +37,7 @@ THE SOFTWARE.
 int current_log_level = LOG_LEVEL_INFO;
 af_run_time_status_t g_af_status;
 int g_oaf_config_change = 0;
+af_config_t g_af_config;
 
 void af_init_time_status(void){
     g_af_status.filter = 0;
@@ -282,7 +283,6 @@ void dev_list_timeout_handler(struct uloop_timeout *t)
     if (count % 10 == 0){
         update_dev_list();
         dump_dev_list();
-        update_oaf_status();
     }
     if (count % 60 == 0){
         check_dev_visit_info_expire();
@@ -291,6 +291,7 @@ void dev_list_timeout_handler(struct uloop_timeout *t)
             flush_dev_expire_node();
         }
         flush_expire_visit_info();
+        update_oaf_status();
     }
     if (g_oaf_config_change == 1){
         af_load_config(&g_af_config);
