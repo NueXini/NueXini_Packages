@@ -7576,6 +7576,7 @@ adalso.com
 adalyser.com
 adamantsnail.com
 adamatic.co
+adanxing.com
 adaos-ads.net
 adap.tv
 adapd.com
@@ -11913,6 +11914,7 @@ api.ppoi.org
 api.primecaster.net
 api.push.daoyoudao.com
 api.push.le.com
+api.qttunion.com
 api.qvpublish.com
 api.rappel-coinbase.com
 api.rees46.com
@@ -64606,6 +64608,7 @@ promos.trustedtours.com
 promoshq.wildfireapp.com
 promote.biz.weibo.cn
 promote.caixin.com
+promotion-partner.kuaishou.com
 promotion.gomlab.com
 promotion.lginnotek.com
 promotion.lindt.az
@@ -79195,6 +79198,7 @@ staticiv.com
 staticjs.cn
 statics.3987.com
 statics.9669.com
+statics.adanxing.com
 statics.woozooo.com
 staticsfs.host
 statictapcdn-a.akamaihd.net
