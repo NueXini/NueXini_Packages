@@ -282,8 +282,8 @@ OCC=$(sms_tool -d $DEVICE at "AT+ICCID")
 NR_ICCID=$(echo "$OCC" | awk -F [,:] '/\+ICCID:/ {print $2}' | xargs)
 
 # Temp
-OT=$(sms_tool -d $DEVICE at "AT+GTSENRDTEMP=1")
-TM=$(echo "$OT" | awk -F, '/\+GTSENRDTEMP:/{printf "%.1f", $2/1000}' | xargs)
+OT=$(sms_tool -d "$DEVICE" at "AT+ETHERMAL?")
+TM=$(echo "$OT" | awk -F, '/\+ETHERMAL:/{ sum+=$2; count++ } END { if(count > 0) { printf "%.1f", sum/count } else { print 0 } }' | xargs)
 if [ -n "$TM" ]; then
   TEMP="$TM &deg;C"
 fi
