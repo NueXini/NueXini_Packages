@@ -1,0 +1,32 @@
+msgid "SSW - SIM Card switch"
+msgstr "SSW - управление SIM картами"
+
+msgid "Enable"
+msgstr "Включить"
+
+msgid "Disable"
+msgstr "Отключить"
+
+msgid "Default SIM Slot"
+msgstr "SIM cлот по-умолчанию"
+
+msgid "Revert"
+msgstr "Вернуть"
+
+msgid "Revert to default sim slot. Each failed attempt doubles revert time."
+msgstr "Вернуть на SIM слот по-умолчанию. Каждая неудачная попытка увеличивает время возврата."
+
+msgid "RSRP value"
+msgstr "Значение RSRP"
+
+msgid "Switch sim lower by value."
+msgstr "Переключить sim ниже значения."
+
+msgid "Interval check. sec"
+msgstr "Интервал проверки. сек"
+
+msgid "Probes"
+msgstr "Попытки"
+
+msgid "RSRP check average value.<br />NOTE: all time check is <code>Interval*Probes</code><br />Example: <code>Interval=60</code> sec, <code>Probes=5</code> times, all time check <code>300</code> sec."
+msgstr "Проверяется усреднённое значение RSRP.<br />ВНИМАНИЕ: общее время итоговой проверки равно <code>Интервал*Попытки</code><br />Например: <code>интервал=60</code> sec, <code>попыток=5</code>, время до переключения <code>300</code> сек."

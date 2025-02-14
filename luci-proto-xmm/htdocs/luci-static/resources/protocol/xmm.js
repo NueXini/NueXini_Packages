@@ -11,7 +11,7 @@ var callFileList = rpc.declare({
 	filter: function(list, params) {
 		var rv = [];
 		for (var i = 0; i < list.length; i++)
-			if (list[i].name.match(/^ttyACM/))
+			if (list[i].name.match(/^ttyACM/) || list[i].name.match(/^ttyUSB/))
 				rv.push(params.path + list[i].name);
 		return rv.sort();
 	}
@@ -21,7 +21,7 @@ network.registerPatternVirtual(/^xmm-.+$/);
 
 return network.registerProtocol('xmm', {
 	getI18n: function() {
-		return _('Intel XMM Cellular');
+		return _('Intel Cellular');
 	},
 
 	getIfname: function() {
