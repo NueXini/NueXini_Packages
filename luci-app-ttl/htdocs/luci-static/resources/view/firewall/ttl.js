@@ -10,33 +10,35 @@
 'require tools.firewall as fwtool';
 'require tools.widgets as widgets';
 
-var briefInfo = _('In Method proxy Proxy server must be configured in transparent mode on port 3128 tcp.<br />Disable masquerade recommened.');
+//var briefInfo = _('In Method proxy Proxy server must be configured in transparent mode on port 3128 tcp.<br />Disable masquerade recommened.');
 
 return view.extend({
-	
+
 	render: function() {
 		var m, s, o;
 
-		m = new form.Map('ttl', _('Antitethering Config'),
-			briefInfo);
+		//m = new form.Map('ttl', _('Antitethering Config'),
+		//	briefInfo);
+		m = new form.Map('ttl', _('Antitethering Config')),
 
 		s = m.section(form.TypedSection, 'ttl');
 		s.anonymous = true;
 
-		s = m.section(form.TypedSection, 'ttl', _('TTL or Proxy antitether'));
+		//s = m.section(form.TypedSection, 'ttl', _('TTL or Proxy antitether'));
+		s = m.section(form.TypedSection, 'ttl', _('TTL antitether'));
 		s.anonymous = true;
 		s.addremove = true;
-		
+
 		o = s.option(widgets.NetworkSelect, 'iface', _('Set interface'));
 		o.exclude = s.section;
 		o.nocreate = true;
 		o.optional = true;
-
+		/*
 		o = s.option(form.ListValue, 'method', _('Method'),
 			_('TTL method outgoing interface<br />Proxy method incoming interface'));
 		o.value('ttl', 'TTL');
 		o.value('proxy', 'Proxy');
-
+		*/
 		o = s.option(form.Flag, 'advanced', _('Advanced Option'));
 		o.default = '0';
 		o.rmempty = false;
@@ -56,8 +58,9 @@ return view.extend({
 		o.default = '64';
 		o.rmempty = true;
 		o.editable = true;
-		o.depends({advanced: '1', method: /ttl/});
-
+		//o.depends({advanced: '1', method: /ttl/});
+		o.depends('advanced', '1');
+		/*
 		o = s.option(form.Value, 'ports', _('Ports'),
 			_('Incoming ports route to proxy-server<br />Custom ports range: 0-65535'));
 		o.editable = true;
@@ -66,7 +69,7 @@ return view.extend({
 		o.value('http', _('HTTP Ports'));
 		o.default = 'all';
 		o.depends({advanced: '1', method: /proxy/})
-
+		*/
 		return m.render();
 	},
 });

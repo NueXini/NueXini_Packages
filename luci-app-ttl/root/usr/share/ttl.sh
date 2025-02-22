@@ -114,15 +114,15 @@ for T in $IPT; do
 done
 
 # Create and flush nat table
-for T in $IPT; do
-	for t in N F; do
-		$T -t nat -${t} PROXY
-		$T -t nat -${t} FIXPROXY
-	done
-	for a in D I; do
-		$T -t nat -${a} PREROUTING -j PROXY
-	done
-done
+#for T in $IPT; do
+#	for t in N F; do
+#		$T -t nat -${t} PROXY
+#		$T -t nat -${t} FIXPROXY
+#	done
+#	for a in D I; do
+#		$T -t nat -${a} PREROUTING -j PROXY
+#	done
+#done
 
 for s in $SECTIONS; do
 	if [ "$s" ]; then
@@ -139,8 +139,9 @@ for s in $SECTIONS; do
 		IPT="iptables"
 	fi
 	DEV=$(ifstatus $iface | jsonfilter -e '@["l3_device"]')
-	case $method in
-		ttl) method_ttl ;;
-		proxy) method_proxy ;;
-	esac
+	#case $method in
+	#	ttl) method_ttl ;;
+	#	proxy) method_proxy ;;
+	#esac
+	method_ttl
 done

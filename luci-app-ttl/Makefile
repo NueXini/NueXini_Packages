@@ -11,7 +11,7 @@ LUCI_DEPENDS:= +luci-app-firewall +iptables-mod-ipopt +kmod-ipt-ipopt
 
 PKG_LICENSE:=Apache-2.0
 PKG_VERSION:=0.0.3
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
