@@ -12,11 +12,19 @@ function send_msg(){
 
 
 function recv_msg(){
+	local from srecv drecv msg
 	from=$(echo "$1" | awk '/From:/{print $2}')
 	srecv=$(echo "$1" | awk '/Sent:/{gsub("Sent: ","");print $0}')
 	drecv=$(echo "$1" | awk '/Received:/{gsub("Received: ","");print $0}')
 	msg=$(echo "$1" |sed -e '1,/^$/ d' -e 's/[]["]/\\&/g' -e 's/[\r\n\^M]//g')
-	string="{ \"from\": \"$from\", \"srecv\": \"$srecv\", \"drecv\": \"$drecv\", \"content\": \"$msg\" },"
+
+	# jq processing
+	from_json=$(jq -Rn --arg str "$from" '$str')
+	srecv_json=$(jq -Rn --arg str "$srecv" '$str')
+	drecv_json=$(jq -Rn --arg str "$drecv" '$str')
+	msg_json=$(jq -Rn --arg str "$msg" '$str')
+
+	string="{ \"from\": $from_json, \"srecv\": $srecv_json, \"drecv\": $drecv_json, \"content\": $msg_json },"
 }
 
 
