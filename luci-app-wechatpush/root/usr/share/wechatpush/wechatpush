@@ -135,6 +135,33 @@ init() {
 	# 如果设备列表文件为空，初始化
 	[ ! -s "$devices_json" ] && echo '{"address": [], "devices": [], "disks": []}' >"$devices_json"
 
+	# 判断 WLAN 接口频段
+	if [ -n "$wlan_interface" ]; then
+		# 初始化一个空的 JSON 数组
+		local wlan_info="[]"
+
+		# 遍历每个接口
+		for iface in $wlan_interface; do
+			local info=$(iw dev $iface info 2>/dev/null)
+			local channel=$(echo "$info" | grep "channel" | awk '{print $2}')
+			local band="unknown"
+
+			# 判断频段
+			if [[ -n "$channel" ]]; then
+				if [[ "$channel" -ge 1 && "$channel" -le 14 ]]; then
+					band="2.4G"
+				elif [[ "$channel" -ge 36 ]]; then
+					band="5G"
+				fi
+			fi
+
+			# 将接口信息添加到 JSON 数组
+			wlan_info=$(echo "$wlan_info" | jq --arg iface "$iface" --arg band "$band" '. += [{"interface": $iface, "band": $band}]')
+		done
+
+		jq --argjson wlan_info "$wlan_info" '.wlan = $wlan_info' "$devices_json" > "${devices_json}.tmp" && mv "${devices_json}.tmp" "$devices_json"
+	fi
+
 	# 文件下载
 	/usr/libexec/wechatpush-call "down_oui"
 
@@ -240,8 +267,14 @@ main() {
 			ip_changes getip && exit $?
 		}
 		silent_run read_config
-		[ $1 == "send" ] && send && exit $?
-		[ $1 == "test" ] && send test && exit $?
+		[ "$1" == "send" ] && {
+			send
+			exit $?
+		}
+		[ "$1" == "test" ] && {
+			send test
+			exit $?
+		}
 	else
 		silent_run read_config
 	fi
@@ -560,7 +593,7 @@ getinterface() {
 	fi
 
 	# 查询 ARP 表获取接口
-	interface=$(cat /proc/net/arp | grep "0x2\|0x6" | grep -i -w "$mac" | awk '{print $6}')
+	interface=$(cat /proc/net/arp | grep "0x2\|0x6" | grep -v "^169.254." | grep -i -w "$mac" | awk '{print $6}' | grep -v "^$" | sort -u)
 	process_and_check "$interface" && return
 }
 
@@ -759,9 +792,9 @@ getping() {
 getcpu() {
 	local AT=$(cat /proc/stat | grep "^cpu " | awk '{print $2+$3+$4+$5+$6+$7+$8 " " $2+$3+$4+$7+$8}')
 	sleep 1
-   	local BT=$(cat /proc/stat | grep "^cpu " | awk '{print $2+$3+$4+$5+$6+$7+$8 " " $2+$3+$4+$7+$8}')
-   	local CPU_USAGE=$(echo ${AT} ${BT} | awk '{printf "%.01f%%", (($4-$2)/($3-$1))*100}')
-   	echo $CPU_USAGE
+	local BT=$(cat /proc/stat | grep "^cpu " | awk '{print $2+$3+$4+$5+$6+$7+$8 " " $2+$3+$4+$7+$8}')
+	local CPU_USAGE=$(echo ${AT} ${BT} | awk '{printf "%.01f%%", (($4-$2)/($3-$1))*100}')
+	echo $CPU_USAGE
 }
 
 # 获取SOC温度 （取所有传感器温度最大值）
@@ -1227,7 +1260,7 @@ get_disk() {
 			}
 			# 如果获取到了多个分区，屏蔽使用空间为 0% 的分区
 			[ -n "$disk_use" ] && [ $(echo "$disk_use" | wc -l) -ne "1" ] && disk_use=$(echo "$disk_use" | grep -v -w "0%")
-			[ -n "$disk_use" ] && disk_use=$(echo "$disk_use" | sed ':a;N;$!ba;s/\n/'"${str_linefeed}${str_tab}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}"'/g')
+			[ -n "$disk_use" ] && disk_use=$(echo "$disk_use" | sed ':a;N;$!ba;s/\n/'"${str_linefeed}${str_tab}${str_space}${str_tab}${str_space}${str_space}"'/g')
 			[ -n "$disk_use" ] && [ -n "${disk_use// /}" ] && echo -e -n "${str_linefeed}${str_tab}空间使用：${disk_use}" >>"$output_dir/get_disk"
 			# 寿命使用
 			local disk_health=$(jq -r .nvme_smart_health_information_log.percentage_used ${file_path})
@@ -1491,10 +1524,10 @@ current_device() {
 	local logrow=$(jq '.devices | map(select(.status == "online")) | length' "$devices_json")
 	[ $logrow -eq "0" ] && return
 
-	[ -f "${dir}/usage.db" ] && local ip_total_db="总计流量${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}"
+	[ -f "${dir}/usage.db" ] && local ip_total_db="总计流量${str_space}${str_tab}${str_space}${str_space}${str_space}"
 	local explain="${str_splitline}${str_title_start} 现有在线设备 ${logrow} 台，具体如下${str_title_end}"
 	[ $logrow -eq "0" ] && local explain="${send_content}${str_splitline}${str_title_start} 当前无在线设备${str_title_end}"
-	local header="${str_linefeed}${str_tab}IP 地址${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${ip_total_db}${str_space}${str_space}${str_space}${str_space}在线时间${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}客户端名"
+	local header="${str_linefeed}${str_space}IP 地址${str_space}${str_tab}${str_space}${ip_total_db}${str_space}${str_tab}${str_space}${str_space}在线时间${str_space}${str_tab}${str_space}${str_space}${str_space}${str_space}客户端名"
 
 	content="${content}${explain}${header}"
 
@@ -1531,9 +1564,9 @@ current_device() {
 				total="${total}${str_space}"
 			done
 			unset i n
-			total="${total}${str_space}|${str_space}"
+			total="${total}${str_space}${str_tab}${str_space}"
 		fi
-		content="${content}${str_linefeed}${str_space}${ip}${str_space}|${str_space}${total}${time_online}${str_space}|${str_space}${name}"
+		content="${content}${str_linefeed}${str_space}${ip}${str_space}${str_tab}${str_space}${total}${time_online}${str_space}${str_tab}${str_space}${name}"
 	done
 	[ -f "${dir}/send_pid" ] && echo "$content" >"$output_dir/current_device" && unset content
 }
@@ -1720,13 +1753,13 @@ init_ip_black() {
 # 添加黑名单
 add_ip_black() {
 	local login_ip=$1
-	[ -z "$login_ip" ] && return 1
+	[ -z "$login_ip" ] && return 0
 	echo "$login_ip_white_list" | grep -w -q "$login_ip" && return 1
 	# 检查 IP 版本
 	unset ipset_name
 	(echo "$login_ip" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$') && ipset_name="wechatpush_blacklist"
 	(echo "$login_ip" | grep -Eq '^([\da-fA-F0-9]{1,4}(:{1,2})){1,15}[\da-fA-F0-9]{1,4}$') && ipset_name="wechatpush_blacklistv6"
-	[ -z "$ipset_name" ] && log_change "【！！！】黑名单添加失败，IP 格式错误" && return 1
+	[ -z "$ipset_name" ] && sed -i "/^$login_ip /d" "$ip_blacklist_path" && log_change "【！！！】黑名单添加失败，IP $login_ip 格式错误，已从列表中移除" && return 1
 
 	! cat "$ip_blacklist_path" | grep -q -w -i $login_ip && echo "$login_ip timeout $login_ip_black_timeout" >>"$ip_blacklist_path"
 
@@ -1747,7 +1780,7 @@ del_ip_black() {
 	unset ipset_name
 	(echo "$1" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$') && ipset_name="wechatpush_blacklist"
 	(echo "$1" | grep -Eq '^([\da-fA-F0-9]{1,4}(:{1,2})){1,15}[\da-fA-F0-9]{1,4}$') && ipset_name="wechatpush_blacklistv6"
-	[ -z "$ipset_name" ] && log_change "【！！！】黑名单删除失败，IP 格式错误" && return
+	[ -z "$ipset_name" ] && return
 
 	[ -n "$nftables_version" ] && {
 		nft delete element inet fw4 ${ipset_name} { $1 } >/dev/null 2>&1
@@ -1893,6 +1926,7 @@ send() {
 	>"${dir}/send_enable.lock"
 	disturb
 	disturb_RETVAL=$?
+	[ "$disturb_RETVAL" -ne "0" ] && log_change "${disturb_text}免打扰时间，退出定时推送" && return
 	get_config "send_title" "send_notification"
 
 	[ -z "$1" ] && cpuload=$(getcpu)
@@ -1983,9 +2017,9 @@ send() {
 
 	[ -n "$device_name" ] && send_title="【$device_name】${send_title}"
 	[ -z "$send_content" ] && send_content="${str_splitline}${str_title_start} 我遇到了一个难题${str_title_end}${str_linefeed}${str_tab}定时发送选项错误，你没有选择需要发送的项目，该怎么办呢${str_splitline}"
-	[ "$disturb_RETVAL" -eq "0" ] && diy_send "${send_title}" "${send_content}" "${jsonpath}" "$1" >/dev/null 2>&1
+	diy_send "${send_title}" "${send_content}" "${jsonpath}" "$1" >/dev/null 2>&1
 	RETVAL=$?
-	[ $RETVAL -eq 1 ] && [ "$send_disturb" -eq "0" ] && log_change "【！！！】定时推送失败，请检查网络或设置信息" || log_change "${disturb_text}定时推送任务完成"
+	[ $RETVAL -eq 1 ] && log_change "【！！！】定时推送失败，请检查网络或设置信息" || log_change "${disturb_text}定时推送任务完成"
 	deltemp
 	rm -f "${dir}/send_pid"
 	return $RETVAL
@@ -2006,12 +2040,16 @@ login_send() {
 	echo "$login_ip_white_list" | grep -w -q "$login_ip" && [ -n "$login_log_enable" ] && return
 
 	[[ "$log_type" == "web"* ]] && local log_type_short="Web" || local log_type_short="SSH"
-	if [ -n "$login_disturb" ] && [ "$login_disturb" -eq 2 ]; then
+	if [ -n "$login_disturb" ]; then
 		[ -f "$logfile" ] && login_log=$(grep -w "$login_ip" "$logfile" | grep -v "\【info\】" | tail -n 1)
 		[ -n "$login_log" ] && log_timestamp=$(date -d "$(echo "$login_log" | awk '{print $1, $2}')" +%s) || log_timestamp=0
-		[ $(($(date +%s) - log_timestamp)) -lt $login_notification_delay ] && local log_only="1" && [ -n "$login_log_enable" ] && return
+		if [ "$login_disturb" -eq 1 ]; then
+			log_change "【info】设备 ${login_ip} 通过 ${log_type_short} 登录了路由器 " && return
+		fi
+		if [ "$login_disturb" -eq 2 ]; then
+			[ $(($(date +%s) - log_timestamp)) -lt $login_notification_delay ] && [ -n "$login_log_enable" ] && return
+		fi
 	fi
-	[ -n "$log_only" ] && log_change "【info】设备 ${login_ip} 通过 ${log_type_short} 登录了路由器 " && return
 
 	# 查询 IP 归属地
 	local login_ip_attribution=$(get_ip_attribution "${login_ip}")
@@ -2029,16 +2067,16 @@ login_send() {
 
 	if [ -z "$login_disturb" ] || [ "$login_disturb" -ne "1" ]; then
 		if [[ "$log_type" == *"failed"* ]]; then
-			local log_message="频繁尝试登录"
-			local login_title="${login_ip} ${log_message}"
+			local login_title="${login_ip} 频繁尝试 ${log_type_short} 登录"
 			local login_content_info="${str_splitline}${str_title_start} 封禁信息${str_title_end}"
+			log_change "${disturb_text}设备 ${login_ip} (${login_ip_attribution}) 频繁尝试 ${log_type_short} ${login_mode} 登录"
 		else
-			local log_message="登录了路由器"
-			local login_title="${login_ip} ${log_message}"
+			local login_title="${login_ip} 通过 ${log_type_short} 登录了路由器"
 			local login_content_info="${str_splitline}${str_title_start} 登录信息${str_title_end}"
+			log_change "${disturb_text}设备 ${login_ip} (${login_ip_attribution}) 通过 ${log_type_short} ${login_mode} 登录了路由器"
 		fi
 
-		log_change "${disturb_text}设备 ${login_ip} (${login_ip_attribution}) 通过 ${log_type_short} ${login_mode} ${log_message}"
+		
 
 		local login_content_time="${str_linefeed}${str_tab}时间：${str_space}${str_space}${str_space}${str_space}${login_time}"
 		local login_content_ip="${str_linefeed}${str_tab}设备 IP：${str_space}${str_space}${login_ip}"
