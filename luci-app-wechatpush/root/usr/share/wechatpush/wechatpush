@@ -429,51 +429,59 @@ time_for_humans() {
 length_str() {
 	[ -z "$1" ] && return
 
-	local str="$1"
-	local length=0
+	local result
+	# 调试模式不要输出信息
+	{
+		local str="$1"
+		local length=0
 
-	while IFS= read -r -n1 char; do
-		local char_width
-		char_width=$(printf "%s" "$char" | awk '{
-			if (match($0, /[一-龥]/)) print 2;
-			else print 1;
-		}')
+		while IFS= read -r -n1 char; do
+			local char_width
+			char_width=$(printf "%s" "$char" | awk '{
+				if (match($0, /[一-龥]/)) print 2;
+				else print 1;
+			}')
 
-		length=$((length + char_width))
-	done <<< "$str"
+			length=$((length + char_width))
+		done <<< "$str"
 
-	echo "$length"
+		result="$length"
+	} > /dev/null 2>&1
+
+	echo "$result"
 }
 
 # 字符串显示宽度处理
 cut_str() {
 	[ -z "$1" ] && return
-	[ -z "$2" ] && return
+		[ -z "$2" ] && return
+	local result
+	# 调试模式不要输出信息
+	{
+		local str="$1"
+		local max_width="$2"
+		local current_width=0
 
-	local str="$1"
-	local max_width="$2"
-	local result=""
-	local current_width=0
+		# 遍历字符串的每个字符
+		for ((i = 0; i < ${#str}; i++)); do
+			local char="${str:$i:1}"
+			local char_width=$(length_str "$char")
 
-	# 遍历字符串的每个字符
-	for ((i = 0; i < ${#str}; i++)); do
-		local char="${str:$i:1}"
-		local char_width=$(length_str "$char")
+			# 如果当前宽度加上当前字符的宽度超过最大宽度，则停止
+			if [ $((current_width + char_width)) -gt "$max_width" ]; then
+				break
+			fi
 
-		# 如果当前宽度加上当前字符的宽度超过最大宽度，则停止
-		if [ $((current_width + char_width)) -gt "$max_width" ]; then
-			break
+			result="${result}${char}"
+			current_width=$((current_width + char_width))
+		done
+
+		# 如果裁剪了字符串，则添加 ".."
+		if [ "$current_width" -lt $(length_str "$str") ]; then
+			result=$(echo "$result" | sed 's/ *$//')
+			result="${result}.."
 		fi
-
-		result="${result}${char}"
-		current_width=$((current_width + char_width))
-	done
-
-	# 如果裁剪了字符串，则添加 ".."
-	if [ "$current_width" -lt $(length_str "$str") ]; then
-		result=$(echo "$result" | sed 's/ *$//')
-		result="${result}.."
-	fi
+	} > /dev/null 2>&1
 
 	echo "$result"
 }
@@ -1005,7 +1013,7 @@ ip_changes() {
 	local last_IPv6=$(jq -r '.address[0].IPv6 // empty' "$devices_json")
 	silent_run LockFile lock
 
-	if [ -z "$last_IPv4" ] && [ -z "$last_IPv6" ]; then
+	if [ -z "$last_IPv4" ] && [ -z "$last_IPv6" ] && [[ -n "$IPv4" || -n "$IPv6" ]]; then
 		log_change "${disturb_text}路由器已经重启!"
 		title="路由器重新启动"
 		content="${content}${str_splitline}${str_title_start} 路由器重新启动${str_title_end}"
@@ -1265,7 +1273,7 @@ get_disk() {
 				local disk_name=$(cut_str "$disk_name" "20")
 				local disk_name="${disk_name}_$(eval ${tmp_command} lsblk -o NAME,SIZE | awk "/^${tmp_name}/ {print \$NF}")"
 			}
-			printf "${str_linefeed}${str_title_start} 硬盘名称：${disk_name}${disk_type}${str_title_end}${str_linefeed}${str_tab}硬盘休眠中" >>"$output_dir/get_disk"
+			echo -n "${str_linefeed}${str_title_start} 硬盘名称：${disk_name}${disk_type}${str_title_end}${str_linefeed}${str_tab}硬盘休眠中" >>"$output_dir/get_disk"
 		elif [ -f "${file_path}" ]; then
 			# 硬盘名称
 			local disk_name=$(jq -r .model_name ${file_path})
@@ -1276,13 +1284,13 @@ get_disk() {
 				[ -z "$disk_size" ] && disk_size=$(eval ${tmp_command} df -h 2>/dev/null | awk -v tmp_disk_name="${tmp_name}" '$1 ~ "^/dev/"tmp_disk_name && !disk_found {print $2; disk_found=1}')
 				local disk_name="${disk_name}_${disk_size}"
 			}
-			printf "${str_linefeed}${str_title_start} 硬盘名称：${disk_name}${disk_type}${str_title_end}" >>"$output_dir/get_disk"
+			echo -n "${str_linefeed}${str_title_start} 硬盘名称：${disk_name}${disk_type}${str_title_end}" >>"$output_dir/get_disk"
 			# 硬盘温度
 			local disk_temp=$(jq -r .temperature.current ${file_path})
-			[[ -n $disk_temp && $disk_temp != null && $disk_temp != 0 ]] && printf "${str_linefeed}${str_tab}硬盘温度：${disk_temp}℃" >>"$output_dir/get_disk"
+			[[ -n $disk_temp && $disk_temp != null && $disk_temp != 0 ]] && echo -n "${str_linefeed}${str_tab}硬盘温度：${disk_temp}℃" >>"$output_dir/get_disk"
 			# 通电时间
 			local disk_time=$(jq -r .power_on_time.hours ${file_path})
-			[[ -n $disk_time && $disk_time != null ]] && printf "${str_linefeed}${str_tab}通电时间：${disk_time}h" >>"$output_dir/get_disk"
+			[[ -n $disk_time && $disk_time != null ]] && echo -n "${str_linefeed}${str_tab}通电时间：${disk_time}h" >>"$output_dir/get_disk"
 			# 空间使用
 			local disk_use=$(eval ${tmp_command} lsblk -no NAME,FSUSE% "/dev/${tmp_name}" 2>/dev/null | awk '$2 != "" { gsub(/^[^a-zA-Z0-9]+/, "", $1); printf "%s: %s\n", $1, $2 }')
 			[ -z "$disk_use" ] && disk_use=$(eval ${tmp_command} df -h 2>/dev/null | awk -v part_name="${tmp_name}" '$1 ~ "^/dev/"part_name && NF > 1 {sub("/dev/", "", $1); if (!seen[$1]) { printf "%s: %s  ", $1, $5; seen[$1] = 1; }} END {print ""}')
@@ -1301,13 +1309,13 @@ get_disk() {
 			[[ -n $disk_health && $disk_health != null ]] && echo -e -n "${str_linefeed}${str_tab}寿命使用：${disk_health}%" >>"$output_dir/get_disk"
 			# 错误日志
 			local disk_log_err=$(jq -r .ata_smart_error_log.summary.count ${file_path})
-			[[ -n $disk_log_err && $disk_log_err != null && $disk_log_err != 0 ]] && local disk_err="true" && printf "${str_linefeed}${str_tab}错误日志：${disk_log_err}" >>"$output_dir/get_disk"
+			[[ -n $disk_log_err && $disk_log_err != null && $disk_log_err != 0 ]] && local disk_err="true" && echo -n "${str_linefeed}${str_tab}错误日志：${disk_log_err}" >>"$output_dir/get_disk"
 			# 自检错误
 			local disk_test_err=$(jq -r .ata_smart_self_test_log.standard.error_count_total ${file_path})
-			[[ -n $disk_test_err && $disk_test_err != null && $disk_test_err != 0 ]] && local disk_err="true" && printf "${str_linefeed}${str_tab}自检错误：${disk_test_err}" >>"$output_dir/get_disk"
+			[[ -n $disk_test_err && $disk_test_err != null && $disk_test_err != 0 ]] && local disk_err="true" && echo -n "${str_linefeed}${str_tab}自检错误：${disk_test_err}" >>"$output_dir/get_disk"
 			# 0E 错误
 			local disk_0e_err=$(jq -r .nvme_smart_health_information_log.media_errors ${file_path})
-			[[ -n $disk_0e_err && $disk_0e_err != null && $disk_0e_err != 0 ]] && local disk_err="true" && printf "${str_linefeed}${str_tab}0E 错误：${disk_0e_err}" >>"$output_dir/get_disk"
+			[[ -n $disk_0e_err && $disk_0e_err != null && $disk_0e_err != 0 ]] && local disk_err="true" && echo -n "${str_linefeed}${str_tab}0E 错误：${disk_0e_err}" >>"$output_dir/get_disk"
 			# 整体健康
 			local smart_status=$(jq -r .smart_status.passed ${file_path})
 			[[ -n $smart_status && $smart_status != null && $smart_status != "true" ]] && {
@@ -1763,7 +1771,10 @@ down() {
 
 # 当前设备列表
 current_device() {
-	(echo "$lite_enable" | grep -q "content") || (echo "$lite_enable" | grep -q "device") && return
+	# 定时推送中已有设备列表选项，不应被精简模式设置项控制
+	[ ! -f "${dir}/send_pid" ] && {
+		(echo "$lite_enable" | grep -q "content") || (echo "$lite_enable" | grep -q "device") && return
+	}
 	local logrow=$(jq '.devices | map(select(.status == "online")) | length' "$devices_json")
 	local has_usage=0
 	[ -f "${dir}/usage.db" ] && has_usage=1
@@ -1843,7 +1854,7 @@ current_device() {
 	}
 
 	# 表头
-	local header="${str_linefeed}${str_space}"
+	local header="${str_linefeed}${str_tab}"
 	header+=$(pad_field "IP 地址" "$ip_max")"${str_space}"
 	if [ "$has_usage" -eq 1 ]; then
 		header+=$(pad_field "总计流量" "$total_max")
@@ -1855,7 +1866,7 @@ current_device() {
 
 	# 内容
 	for i in "${!ips[@]}"; do
-		local line="${str_linefeed}${str_space}"
+		local line="${str_linefeed}${str_tab}"
 		line+=$(pad_field "${ips[i]}" "$ip_max")
 		if [ "$has_usage" -eq 1 ]; then
 			line+=$(pad_field "${totals[i]}" "$total_max")
@@ -2229,8 +2240,8 @@ send() {
 
 	[ -z "$1" ] && cpuload=$(getcpu)
 	[ -z "$1" ] && service_status=$(ubus call service list '{"name": "wechatpush"}' | grep -o '"running": true')
-	# 只有当主程序没有运行，且定时任务中选择了推送设备列表，免打扰选项中也没屏蔽设备列表时，才进行在线设备扫描
-	[ -z "$1" ] && [ -z "$service_status" ] && echo "$send_notification" | grep -q "client_list" && echo "$lite_enable" | grep -v -q "device" && first &
+	# 只有当主程序没有运行，且定时任务中选择了推送设备列表，才进行在线设备扫描
+	[ -z "$1" ] && [ -z "$service_status" ] && echo "$send_notification" | grep -q "client_list" && first &
 	if [ -z "$1" ] && (echo "$send_notification" | grep -q "router_status"); then
 		cat /proc/loadavg | awk '{print $1" "$2" "$3}' >"$output_dir/systemload" &
 		free -m | sed -n '2p' | awk '{printf "%.2f%%\n",($3/$2)*100}' >"$output_dir/ramload" &
@@ -2386,7 +2397,7 @@ login_send() {
 	disturb_RETVAL=$?
 	[ -z "$login_title" ] && return
 	[ -n "$device_name" ] && login_title="【$device_name】$login_title"
-	(echo "$lite_enable" | grep -q "login_content") && login_content="$login_title"
+	(echo "$lite_enable" | grep -q "content") && login_content="$login_title"
 	[ "$disturb_RETVAL" -eq 0 ] && [ -n "$login_title" ] && diy_send "${login_title}" "${login_content}" "${jsonpath}" >/dev/null 2>&1
 }
 
