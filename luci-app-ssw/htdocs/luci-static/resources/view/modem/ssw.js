@@ -27,6 +27,12 @@ return view.extend({
 		s = m.section(form.TypedSection, 'failover');
 		o = s.option(form.Flag, 'enable', _('Enable'));
 
+		o = s.option(form.Value, 'apn1', _('APN Default SIM'));
+		o.depends({enable: '1'});
+
+		o = s.option(form.Value, 'apn2', _('APN Reserved SIM'));
+		o.depends({enable: '1'});
+
 		o = s.option(form.Flag, 'revert', _('Revert'),
 			_('Revert to default sim slot. Each failed attempt doubles revert time.'));
 		o.depends({enable: '1'});
@@ -40,9 +46,18 @@ return view.extend({
 
 		o = s.option(form.Value, 'interval',
 			_('Interval check. sec'));
-		for (var sec = 5; sec <= 60; sec+=5) {
+		o.value('5', 5 +' '+ _('sec'));
+		for (var sec = 10; sec <= 60; sec+=10) {
 			o.value(sec,sec +' '+  _('sec'));
 		};
+		o.value('2m', 2 +' '+ _('minute'));
+		o.value('5m', 5 +' '+ _('minute'));
+		for (var d = 10; d <= 60; d+=10) {
+			o.value(d+'m',d +' '+  _('minute'));
+		};
+		o.value('2h', 2 +' '+ _('hour'));
+		o.value('4h', 4 +' '+ _('hour'));
+		
 		o.depends({enable: '1'});
 
 		o = s.option(form.Value, 'times_rsrp', _('Probes'),
