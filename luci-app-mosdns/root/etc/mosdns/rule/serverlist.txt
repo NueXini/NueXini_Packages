@@ -7480,6 +7480,7 @@ adashbc.ut.taobao.com
 adashx.m.taobao.com
 adashx.ut.amap.com
 adashx.ut.ele.me
+adashx.ut.uc.cn
 adashx.ut.youku.com
 adashx4ae.ut.taobao.com
 adashx4yt.m.taobao.com
@@ -12773,6 +12774,7 @@ applinks.xdressr.com
 applinks.zerista.com
 applixir.com
 applk.cn
+applog-perf.uc.cn
 applog.lc.quark.cn
 applog.musical.ly
 applog.reader.qq.com
@@ -37167,8 +37169,10 @@ gzxnlk.com
 gzzbb.net
 gzzkjdam.cn
 gzzuwo.com
+h-adashx.ut.amap.com
 h-adashx.ut.ele.me
 h-adashx.ut.taobao.com
+h-adashx.ut.uc.cn
 h-adashx.ut.youku.com
 h-adashx4yt.ut.taobao.com
 h-bid.com
@@ -67516,6 +67520,7 @@ rzpjyz.pasona.co.jp
 rztrkr.com
 rzuokcobzru.com
 rzzlhfx.com
+s-adashx.ut.uc.cn
 s-adobe.wacoal.jp
 s-adobeanalytics.vice.com
 s-adzone.com
