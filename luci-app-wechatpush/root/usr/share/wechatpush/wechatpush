@@ -533,9 +533,9 @@ LockFile() {
 
 # 检测退出信号
 cleanup() {
+	LockFile unlock
 	local pids=$(ps | grep "{wechatpush}_${MAIN_PID}" | grep -v grep | awk '{print $1}')
 	[ -n "$pids" ] && echo "$pids" | xargs kill 2>/dev/null
-	LockFile unlock
 	$EXIT_FLAG && exit 0
 }
 
