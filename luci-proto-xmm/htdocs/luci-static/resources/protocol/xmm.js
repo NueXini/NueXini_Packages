@@ -18,6 +18,12 @@ var callFileList = rpc.declare({
 });
 
 network.registerPatternVirtual(/^xmm-.+$/);
+network.registerErrorCode('NO_DEVICE_SUPPORT', _('Unsupported modem'));
+network.registerErrorCode('NO_PORT_FOUND', _('No control device specified'));
+network.registerErrorCode('NO_PORT_ANSWER', _('Failed to get modem information'));
+network.registerErrorCode('NO_DEVICE_FOUND', _('Failed to initialize modem'));
+network.registerErrorCode('NO_IFACE', _('The interface could not be found'));
+network.registerErrorCode('CONFIGURE_FAILED', _('Failed to configure modem'));
 
 return network.registerProtocol('xmm', {
 	getI18n: function() {
@@ -73,7 +79,7 @@ return network.registerProtocol('xmm', {
 			return true;
 		};
 
-		s.taboption('general', form.Value, 'username', _('PAP/CHAP username'));
+		o = s.taboption('general', form.Value, 'username', _('PAP/CHAP username'));
 
 		o = s.taboption('general', form.Value, 'password', _('PAP/CHAP password'));
 
