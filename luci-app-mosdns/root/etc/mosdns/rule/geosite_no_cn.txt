@@ -31209,7 +31209,6 @@ full:publicca.googleapis.com
 full:push-apple.com.akadns.net
 full:pvr-hamivideo.cdn.hinet.net
 full:qualcomm.sc.omtrdc.net
-full:reddit.map.fastly.net
 full:rink.hockeyapp.net
 full:rtm.tnt-ea.com
 full:sa78gs.wpc.edgecastcdn.net
