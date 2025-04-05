@@ -5,10 +5,10 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 # https://github.com/oldcat618
 
 msgid "Information about 3G/4G/5G connection"
-msgstr "关于3G/4G/5G连接的信息"
+msgstr "3G/4G/5G 信息"
 
 msgid "More information about the 3ginfo on the %seko.one.pl forum%s."
-msgstr "关于 "3ginfo" 在 eko.one.pl 论坛."
+msgstr "更多信息关于3ginfo请访问%seko.one.pl%s 论坛."
 
 msgid "eko.one.pl forum"
 msgstr "forum eko.one.pl"
@@ -29,13 +29,13 @@ msgid "Modem Information"
 msgstr "modem信息"
 
 msgid "Cell / Signal Information"
-msgstr "单元/信号信息"
+msgstr "小区/信号信息"
 
 msgid "Technology"
-msgstr "技术"
+msgstr "网络制式"
 
 msgid "Operator"
-msgstr "操作人员"
+msgstr "运营商"
 
 msgid "Signal strength"
 msgstr "信号强度"
@@ -44,7 +44,7 @@ msgid "Connection statistics"
 msgstr "连接统计信息"
 
 msgid "Modem type"
-msgstr "modem类型"
+msgstr "modem型号"
 
 msgid "Additional information"
 msgstr "附加资料"
@@ -71,7 +71,7 @@ msgid "IP adress / Port for communication with the modem"
 msgstr "IP地址/与调制解调器通信的端口"
 
 msgid "Protocol"
-msgstr "协议"
+msgstr "拨号方式"
 
 msgid ""
 "Select the appropriate settings. <br /> <br />Traditional "
@@ -121,7 +121,7 @@ msgid "Registered (roaming)"
 msgstr "已注册（漫游）"
 
 msgid "Searching.."
-msgstr "搜索.."
+msgstr "注册中.."
 
 msgid "Registering denied"
 msgstr "注册被拒绝"
@@ -167,3 +167,21 @@ msgstr "进度条的宽度"
 
 msgid "Select the width of the progress bars."
 msgstr "选择进度条的宽度."
+
+msgid "Information read from the SIM card and device."
+msgstr "SIM卡信息及无线通讯模组信息."
+
+msgid "SIM card menu"
+msgstr "SIM卡菜单"
+
+msgid "Execution of various commands to check the availability of the modem and eliminate errors in the data collected by the scripts."
+msgstr "执行相关命令检查调制解调器是否可用并且手机相关错误信息."
+
+msgid "Check availability of ttyX ports."
+msgstr "检查所有可用的串口(ttyX)."
+
+msgid "Check data read by the 3ginfo scripts."
+msgstr "通过3ginfo脚本检查."
+
+msgid "Show devices"
+msgstr "显示设备"

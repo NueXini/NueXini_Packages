@@ -1,0 +1,50 @@
+# Fibocom NL668-CN
+
+# Modem
+OA=$(sms_tool -d $DEVICE at "AT+CGMM?")
+MODELA=$(echo "$OA" | awk -F [:,] '/\+CGMM/{print $2}' | xargs)
+OB=$(sms_tool -d $DEVICE at "AT+CGMI?")
+MODELB=$(echo "$OB" | awk -F [:,] '/\+CGMI/{print $2}' | xargs)
+MODELBCUT=$(echo $MODELB | sed s/"Wireless Inc."//)
+MODEL="$MODELBCUT $MODELA"
+
+OF=$(sms_tool -d $DEVICE at "AT+GMR?")
+FW=$(echo "$OF" | awk -F[,:] '/\+GMR:/ {print $2}' | xargs)
+
+# International Mobile Equipment Identity (IMEI)
+OAA=$(sms_tool -d $DEVICE at "AT+CGSN?")
+NR_IMEI=$(echo "$OAA" | awk -F[,:] '/\+CGSN:/ {print $2}' | xargs)
+
+# International Mobile Subscriber Identity (IMSI)
+OBB=$(sms_tool -d $DEVICE at "AT+CIMI?")
+NR_IMSI=$(echo "$OBB" | awk -F [,:] '/\+CIMI:/ {print $2}' | xargs)
+
+# Integrated Circuit Card Identifier (ICCID)
+OCC=$(sms_tool -d $DEVICE at "AT+ICCID")
+NR_ICCID=$(echo "$OCC" | awk -F [,:] '/\+ICCID:/ {print $2}' | xargs)
+
+# Temp
+OT=$(sms_tool -d $DEVICE at "AT+MTSM=1")
+TM=$(echo "$OT" | awk '/\+MTSM:/{print $2}')
+if [ -n "$TM" ]; then
+	TEMP="$TM &deg;C"
+fi
+
+# Protocol
+# DRIVER=QMI_WWAN & DRIVER=CDC_MBIM & DRIVER=CDC_ETHER
+
+TTY=$(basename $DEVICE)
+devpath=$(readlink -f /sys/class/tty/$TTY/device)
+BASE=$(readlink -f ${devpath%/*/*})
+
+NETIF=$(for a in /sys/class/net/*; do readlink -f $a; done | grep "$BASE")
+NETDRV=$(basename $(readlink -f $NETIF/../../driver))
+
+case $NETDRV in
+	"qmi_wwan")
+		PROTO="QMI";;
+	"cdc_mbim")
+		PROTO="MBIM";;
+	"cdc_ether")
+		 PROTO="ECM";;
+esac
