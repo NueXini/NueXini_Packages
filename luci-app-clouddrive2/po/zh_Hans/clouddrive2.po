@@ -1,0 +1,32 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Configure and manage CloudDrive2"
+msgstr "配置和管理CloudDrive2"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Enable"
+msgstr "启用"
+
+msgid "Port"
+msgstr "端口"
+
+msgid "Mount Point"
+msgstr "挂载点"
+
+msgid "CloudDrive2 Status"
+msgstr "CloudDrive2状态"
+
+msgid "Running Status"
+msgstr "运行状态"
+
+msgid "Collecting data..."
+msgstr "正在收集数据..."
+
+msgid "CloudDrive2 is running"
+msgstr "CloudDrive2 正在运行"
+
+msgid "CloudDrive2 is not running"
+msgstr "CloudDrive2 未运行"

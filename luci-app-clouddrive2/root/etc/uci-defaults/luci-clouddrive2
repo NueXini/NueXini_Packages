@@ -1,0 +1,16 @@
+#!/bin/sh
+
+uci -q batch <<-EOF >/dev/null
+	delete ucitrack.@clouddrive2[-1]
+	add ucitrack clouddrive2
+	set ucitrack.@clouddrive2[-1].init=clouddrive2
+	commit ucitrack
+EOF
+
+mkdir -p /lib/upgrade/keep.d
+cat > "/lib/upgrade/keep.d/luci-clouddrive2" <<-EOF
+/Waytech/CloudDrive2/
+EOF
+
+rm -f /tmp/luci-indexcache
+exit 0
