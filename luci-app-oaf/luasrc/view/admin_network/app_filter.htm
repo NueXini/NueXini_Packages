@@ -1,26 +1,28 @@
+<link rel="stylesheet" href="<%=resource%>/css/common.css">
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-    }
-    h1, h2 {
-        color: #333;
-    }
+ 
     #appContainer {
         display: flex;
         flex-wrap: wrap;
         margin-top: 20px;
     }
+    
 
-    .button-check {
-        padding: 3px 8px;
-        background-color: transparent; /* Set background color to transparent */
-        color: green; /* Set font color to black */
-        border: 1px solid green; /* Set border color to green */
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 12px; /* Reduce font size */
-    }
+.arrow {
+    width: 12px; 
+    height: 12px; 
+    background-image: url('<%=resource%>/icons/arrow.png'); 
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    transition: transform 0.3s ease; 
+    display: inline-block; 
+    transform: rotate(0deg); 
+}
+.arrow.expanded {
+    transform: rotate(90deg); 
+}
+
     .category {
         width: 100%;
         margin-bottom: 20px;
@@ -29,7 +31,8 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
-        margin-top: 10px;
+        margin-top: 5px;
+        flex-direction: column;
     }
     .app-item {
         width: 140px; /* 固定宽度 */
@@ -38,24 +41,35 @@
         display: flex;
         align-items: center; 
     }
+    .app-items-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
     .app-item label {
         display: flex;
         align-items: center; 
         width: 100%; 
         text-align: left; 
     }
-    input[type="checkbox"],
-    input[type="radio"] {
-        margin: 0; /* Reset all margins */
-        padding: 0; /* Reset padding */
-        width: 16px; /* Set a specific width */
-        height: 16px; /* Set a specific height */
-        border: 1px solid #ccc; /* Add a border */
-        border-radius: 3px; /* Add slight rounding */
-        background-color: #fff; /* Set background color */
-        vertical-align: middle; /* Align vertically in the middle */
-        appearance: none; /* Remove default styling */
-        position: relative; /* Ensure relative positioning */
+    
+
+    .app-item input[type="checkbox"] {
+        margin: 0;
+        vertical-align: middle;
+        position: relative;
+        top: 0;
+    }
+    
+    .app-item img {
+        vertical-align: middle;
+        display: inline-block;
+    }
+    
+    .app-item label div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
     }
 
     h2 {
@@ -73,23 +87,55 @@
         font-size: 14px; 
         font-weight: normal;
     }
-    .arrow {
-        width: 12px; 
-        height: 12px; 
-    
 
-		background-image: url('<%=resource%>/icons/arrow.png'); 
-        background-size: contain; 
-        background-repeat: no-repeat; 
-        transition: transform 0.3s ease; 
-        display: inline-block; 
-        transform: rotate(0deg); 
-    }
-    .arrow.expanded {
-        transform: rotate(90deg); 
-    }
     .category-title div {
         gap: 6px; 
+    }
+
+    .select-all-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 4px 8px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+        margin-left: 10px;
+    }
+
+    .select-all-btn:hover {
+        background-color: #45a049;
+    }
+
+    .select-all-btn.selected {
+        background-color: #f44336;
+    }
+
+    .select-all-btn.selected:hover {
+        background-color: #da190b;
+    }
+
+    .select-all-container {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+        padding: 3px 0;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+        gap: 5px;
+    }
+    
+    .select-all-container input[type="checkbox"] {
+        margin: 0;
+        vertical-align: middle;
+        position: relative;
+        top: 0;
+    }
+
+    .select-all-label {
+        font-size: 12px;
+        color: #666;
+        cursor: pointer;
     }
 
     @media (max-width: 600px) {
@@ -98,70 +144,6 @@
         }
     }
 
-    .button-container {
-        display: flex;
-        justify-content: right; 
-        margin-top: 5px; 
-    }
-
-    .submit-button {
-        margin-top: 30px;
-        width: 150px; 
-        height: 30px; 
-        background-color: #2885e8;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    .submit-button:hover {
-        background-color: #0f77e6;
-    }
-
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 40px;
-        height: 20px;
-    }
-
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: .4s;
-        border-radius: 20px;
-    }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 16px;
-        width: 16px;
-        left: 2px;
-        bottom: 2px;
-        background-color: white;
-        transition: .4s;
-        border-radius: 50%;
-    }
-
-    input:checked + .slider {
-        background-color: #2196F3;
-    }
-
-    input:checked + .slider:before {
-        transform: translateX(20px);
-    }
 
 </style>
 
@@ -216,8 +198,9 @@
 			return new Promise((resolve, reject) => {
 				new XHR().get('<%=url('admin/network/get_app_filter')%>', null,
 					function (x, data) {
-							if (Array.isArray(data.app_list))
-						app_filter_data = data.app_list;
+						if (Array.isArray(data.app_list)) {
+							app_filter_data = data.app_list;
+						}
 						resolve(); 
 					}
 				);
@@ -241,7 +224,7 @@
                 categoryTitle.className = 'category-title'; 
 
                 const categoryName = document.createElement('span');
-                categoryName.textContent = `${category.name} (${category.app_list.length}个)`;
+                categoryName.textContent = `${category.name} (${category.app_list.length} <%:items%>)`;
                 categoryName.className = 'category-name';
 
                 const rightContainer = document.createElement('div');
@@ -252,7 +235,7 @@
                 const selectedCount = category.app_list.filter(app => 
                     app_filter_data.includes(parseInt(app.split(',')[0]))
                 ).length;
-                appCount.textContent = `已选${selectedCount}个`; 
+                appCount.textContent = `<%:Selected%> ${selectedCount} <%:items%>`; 
                 appCount.className = 'app-count'; 
 
                 const arrow = document.createElement('span');
@@ -275,7 +258,30 @@
                     appList.style.display = 'none';
                 }
 
-                categoryTitle.onclick = function() {
+                // 添加全选容器到应用列表内部
+                const selectAllContainer = document.createElement('div');
+                selectAllContainer.className = 'select-all-container';
+
+                // 添加全选复选框
+                const selectAllCheckbox = document.createElement('input');
+                selectAllCheckbox.type = 'checkbox';
+                selectAllCheckbox.checked = selectedCount === category.app_list.length;
+                selectAllCheckbox.title = selectedCount === category.app_list.length ? '<%:Deselect All%>' : '<%:Select All%>';
+
+                // 添加全选标签
+                const selectAllLabel = document.createElement('span');
+                selectAllLabel.className = 'select-all-label';
+                selectAllLabel.textContent = '<%:Select All%>';
+
+                selectAllContainer.appendChild(selectAllCheckbox);
+                selectAllContainer.appendChild(selectAllLabel);
+                appList.appendChild(selectAllContainer);
+
+                // 创建应用项目行容器
+                const appItemsRow = document.createElement('div');
+                appItemsRow.className = 'app-items-row';
+
+                categoryTitle.onclick = function(e) {
                     if (appList.style.display === 'none') {
                         appList.style.display = 'flex';
                         arrow.classList.add('expanded');
@@ -283,6 +289,19 @@
                         appList.style.display = 'none';
                         arrow.classList.remove('expanded');
                     }
+                };
+
+                // 为全选复选框添加change事件
+                selectAllCheckbox.onchange = function(e) {
+                    e.stopPropagation(); // 阻止事件冒泡
+                    toggleSelectAll(category, selectAllCheckbox, appCount);
+                };
+
+                // 为全选标签添加点击事件
+                selectAllLabel.onclick = function(e) {
+                    e.stopPropagation(); // 阻止事件冒泡
+                    selectAllCheckbox.checked = !selectAllCheckbox.checked;
+                    toggleSelectAll(category, selectAllCheckbox, appCount);
                 };
 
                 category.app_list.forEach(app => {
@@ -294,6 +313,7 @@
                     const containerDiv = document.createElement('div');
                     containerDiv.style.display = 'flex'; 
                     containerDiv.style.alignItems = 'center';
+                    containerDiv.style.gap = '5px';
 
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
@@ -303,6 +323,10 @@
                     if (app_filter_data.includes(parseInt(checkbox.value))) {
                         checkbox.checked = true;
                     }
+
+                    checkbox.onchange = function() {
+                        updateCategorySelection(category, selectAllCheckbox, appCount);
+                    };
 
                     const appDetails = app.split(',');
                     const appId = appDetails[0];
@@ -314,19 +338,52 @@
                     icon.alt = `Icon for ${appName}`;
                     icon.style.width = '20px'; 
                     icon.style.height = '20px'; 
-                    icon.style.marginRight = '5px'; 
-                    icon.style.marginLeft = '5px'; 
                     icon.style.borderRadius = '7px';
+                    icon.style.verticalAlign = 'middle';
                     containerDiv.appendChild(checkbox);
                     containerDiv.appendChild(icon);
                     containerDiv.appendChild(document.createTextNode(appName));
 
                     label.appendChild(containerDiv);
                     appItem.appendChild(label);
-                    appList.appendChild(appItem);
+                    appItemsRow.appendChild(appItem);
                 });
+                
+                appList.appendChild(appItemsRow);
                 container.appendChild(appList);
             });
+        }
+
+        function toggleSelectAll(category, selectAllCheckbox, appCount) {
+            const checkboxes = document.querySelectorAll(`input[name="app"]`);
+            const categoryAppIds = category.app_list.map(app => parseInt(app.split(',')[0]));
+            const isAllSelected = selectAllCheckbox.checked;
+            
+            checkboxes.forEach(checkbox => {
+                const appId = parseInt(checkbox.value);
+                if (categoryAppIds.includes(appId)) {
+                    checkbox.checked = isAllSelected;
+                }
+            });
+            
+            updateCategorySelection(category, selectAllCheckbox, appCount);
+        }
+
+        function updateCategorySelection(category, selectAllCheckbox, appCount) {
+            const checkboxes = document.querySelectorAll(`input[name="app"]`);
+            const categoryAppIds = category.app_list.map(app => parseInt(app.split(',')[0]));
+            let selectedCount = 0;
+            
+            checkboxes.forEach(checkbox => {
+                const appId = parseInt(checkbox.value);
+                if (categoryAppIds.includes(appId) && checkbox.checked) {
+                    selectedCount++;
+                }
+            });
+            
+            appCount.textContent = `<%:Selected%> ${selectedCount} <%:items%>`;
+            
+            selectAllCheckbox.checked = selectedCount === category.app_list.length;
         }
 
         function submitAppSelection() {
@@ -435,34 +492,34 @@
 
                     if (data.data.engine_status === 1) {
                         if (data.data.config_enable == 0) {
-                            runStatusElement.textContent = '未配置';
+                            runStatusElement.textContent = '<%:Not Configured%>';
                             runStatusElement.style.color = 'red';
                         } else {
                             if (data.data.enable === 1) {
-                                runStatusElement.textContent = '运行中';
+                                runStatusElement.textContent = '<%:Running%>';
                                 runStatusElement.style.color = 'green'; 
                                 if (data.data.time_mode == 1 && data.data.filter == 1) {
-                                    runDescElement.textContent = `(${data.data.remain_time}分钟后关闭)`;
+                                    runDescElement.textContent = `(<%:Will close in%> ${data.data.remain_time} <%:minutes%>)`;
                                 }
                             } else {
-                                runStatusElement.textContent = '未运行';
+                                runStatusElement.textContent = '<%:Not Running%>';
                                 runStatusElement.style.color = 'red'; 
                                 if (data.data.time_mode == 1) {
                                     if (data.data.match_time == 0) {
-                                        runDescElement.textContent = `(当前时间不在时间范围内)`;
+                                        runDescElement.textContent = `(<%:Current time is not within the time range%>)`;
                                     } else {
-                                        runDescElement.textContent = `(${data.data.remain_time}分钟后开启)`;
+                                        runDescElement.textContent = `(<%:Will start in%> ${data.data.remain_time} <%:minutes%>)`;
                                     }
                                 } else {
-                                    runDescElement.textContent = `(当前时间不在时间范围内)`;
+                                    runDescElement.textContent = `(<%:Current time is not within the time range%>)`;
                                 }
                             }
                         }
                     }
                     else{
-                        runStatusElement.textContent = '未运行';
+                        runStatusElement.textContent = '<%:Not Running%>';
                         runStatusElement.style.color = 'red'; 
-                        runDescElement.textContent = `(oaf驱动未加载,请下载该固件对应内核版本的oaf.ko驱动文件进行安装，并开启自动加载，当前内核版本为${data.data.kernel_version})`;
+                        runDescElement.textContent = `(<%:oaf driver not loaded, please download the oaf.ko driver file corresponding to the kernel version of this firmware for installation, and enable auto-loading. Current kernel version is%> ${data.data.kernel_version})`;
                     }
                 }
             );
@@ -477,7 +534,7 @@
 
 <div id="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center;">
     <div style="background-color: rgba(0, 0, 0, 0.5); padding: 10px; border-radius: 5px; text-align: center; width: 100px; height: 70px; color: white; display: flex; justify-content: center; align-items: center;">
-        <p style="margin: 0;color: white;">设置成功</p>
+        <p style="margin: 0;color: white;"><%:Settings saved successfully%></p>
     </div>
 </div>
 
@@ -485,16 +542,16 @@
     <div style="max-width: 1000px; margin-left: 5px;padding: 5px;">
 
         <div class="app_filter_status">
-            <label>运行状态:</label>
-            <span id="run_status">运行中</span><span id="run_desc"></span>
+            <label><%:Running Status%>:</label>
+            <span id="run_status"><%:Running%></span><span id="run_desc"></span>
         </div>
         <div style="margin-top: 10px; display: flex; align-items: center;">
-            <label for="filterSwitch" style="margin-right: 5px;">应用过滤</label>
+            <label for="filterSwitch" style="margin-right: 5px;"><%:App Filter%></label>
             <label class="switch">
                 <input type="checkbox" id="filterSwitch" name="filterSwitch" />
                 <span class="slider"></span>
             </label>
-            <label for="recordSwitch" style="margin-left: 20px;margin-right: 5px;">应用记录</label>
+            <label for="recordSwitch" style="margin-left: 20px;margin-right: 5px;"><%:App Record%></label>
             <label class="switch">
                 <input type="checkbox" id="recordSwitch" name="recordSwitch" />
                 <span class="slider"></span>
@@ -502,33 +559,36 @@
         </div>
 
         <div style="margin-top: 10px;">
-            <label for="workMode">工作模式:</label>
+            <label for="workMode"><%:Work Mode%>:</label>
             <select id="workMode" name="workMode">
-                <option value="0">网关模式</option>
-                <option value="1">旁路模式</option>
+                <option value="0"><%:Gateway Mode%></option>
+                <option value="1"><%:Bypass Mode%></option>
             </select>
         </div>
  
 
         <div style="margin-top: 10px;">
-            <span>应用选择:</span>
+            <span><%:App Selection%>:</span>
+        </div>
+        <div style="margin-top: 5px; margin-bottom: 10px;">
+            <span style="font-size: 12px; color: #999;"><%:If the APP you want is not in the list, you can upgrade the feature library of the official website or customize the APP%></span>
         </div>
         <div id="appContainer"></div>
 
         <div style="display: flex; justify-content: flex-start; align-items: center;width: 600px;margin-top: 10px;">
             <div style="width: 280px; display: inline-block;">
-                <label>生效时间:</label> 
-                <button type="button" class="button-check" onclick="redirectToTimeConfig()">查看</button>
+                <label><%:Effective Time%>:</label> 
+                <button type="button" class="button-check" onclick="redirectToTimeConfig()"><%:View%></button>
             </div>
 
             <div style="width: 280px; display: inline-block; margin-left: 10px;">
-                <label>生效用户:</label> 
+                <label><%:Effective User%>:</label> 
                 <!-- <span style="color: green;">5个</span> -->
-                <button type="button" class="button-check" onclick="redirectToUserConfig()">查看</button>
+                <button type="button" class="button-check" onclick="redirectToUserConfig()"><%:View%></button>
             </div>
         </div>
         <div class="button-container">
-            <button type="button" class="submit-button" onclick="submitHandle()">保存</button>
+            <button type="button" class="submit-button" onclick="submitHandle()"><%:Save%></button>
         </div>
     </div>
 </div>

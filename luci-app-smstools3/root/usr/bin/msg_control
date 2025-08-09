@@ -3,28 +3,36 @@
 IFS=$'\n'
 
 function send_msg(){
+	modem=$(echo "$1" | awk '/Modem:/{print $2}')
 	to=$(echo "$1" | awk '/To:/{print $2}')
 	sent=$(echo "$1" | awk '/Sent:/{gsub("Sent: ","");print $0}')
 	time=$(echo "$1" | awk '/Sending_time:/{print $2}')
 	msg=$(echo "$1" |sed -e '1,/^$/ d' -e 's/[]["]/\\&/g')
-	string="{ \"to\": \"$to\", \"sent\": \"$sent\", \"time\": \"$time\", \"content\": \"$msg\" },"
+
+	# jq processing
+	modem_json=$(jq -Rn --arg str "$modem" '$str')
+	msg_json=$(jq -Rn --arg str "$msg" '$str')
+
+	string="{ \"modem\": $modem_json, \"to\": \"$to\", \"sent\": \"$sent\", \"time\": \"$time\", \"content\": $msg_json },"
 }
 
 
 function recv_msg(){
-	local from srecv drecv msg
+	local modem from srecv drecv msg
+	modem=$(echo "$1" | awk '/Modem:/{print $2}')
 	from=$(echo "$1" | awk '/From:/{print $2}')
 	srecv=$(echo "$1" | awk '/Sent:/{gsub("Sent: ","");print $0}')
 	drecv=$(echo "$1" | awk '/Received:/{gsub("Received: ","");print $0}')
 	msg=$(echo "$1" |sed -e '1,/^$/ d' -e 's/[]["]/\\&/g' -e 's/[\r\n\^M]//g' | awk '{printf "%s<br />",$0} END {print ""}')
 
 	# jq processing
+	modem_json=$(jq -Rn --arg str "$modem" '$str')
 	from_json=$(jq -Rn --arg str "$from" '$str')
 	srecv_json=$(jq -Rn --arg str "$srecv" '$str')
 	drecv_json=$(jq -Rn --arg str "$drecv" '$str')
 	msg_json=$(jq -Rn --arg str "$msg" '$str')
 
-	string="{ \"from\": $from_json, \"srecv\": $srecv_json, \"drecv\": $drecv_json, \"content\": $msg_json },"
+	string="{ \"modem\": $modem_json, \"from\": $from_json, \"srecv\": $srecv_json, \"drecv\": $drecv_json, \"content\": $msg_json },"
 }
 
 

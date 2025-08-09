@@ -23,7 +23,9 @@ network.registerErrorCode('NO_PORT_FOUND', _('No control device specified'));
 network.registerErrorCode('NO_PORT_ANSWER', _('Failed to get modem information'));
 network.registerErrorCode('NO_DEVICE_FOUND', _('Failed to initialize modem'));
 network.registerErrorCode('NO_IFACE', _('The interface could not be found'));
+network.registerErrorCode('NO_SIM_CARD', _('SIM-card not insert!'));
 network.registerErrorCode('CONFIGURE_FAILED', _('Failed to configure modem'));
+
 
 return network.registerProtocol('xmm', {
 	getI18n: function() {

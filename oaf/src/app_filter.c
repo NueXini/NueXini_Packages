@@ -20,6 +20,10 @@
 #include <linux/tcp.h>
 #include <linux/ip.h>
 #include <linux/netfilter_ipv4.h>
+#include <linux/netfilter_ipv6.h>
+#include <linux/ipv6.h>
+#include <linux/in6.h>
+#include <linux/timer.h>
 #include "app_filter.h"
 #include "af_utils.h"
 #include "af_log.h"
@@ -36,6 +40,8 @@ struct list_head af_feature_head = LIST_HEAD_INIT(af_feature_head);
 
 DEFINE_RWLOCK(af_feature_lock);
 
+u_int32_t g_update_jiffies = 0;
+
 #define feature_list_read_lock() read_lock_bh(&af_feature_lock);
 #define feature_list_read_unlock() read_unlock_bh(&af_feature_lock);
 #define feature_list_write_lock() write_lock_bh(&af_feature_lock);
@@ -48,6 +54,7 @@ DEFINE_RWLOCK(af_feature_lock);
 #define MAX_HOST_LEN 64
 #define MIN_HOST_LEN 4
 
+
 #if LINUX_VERSION_CODE > KERNEL_VERSION(5,10,197)
 extern void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb, int hook);
 #elif LINUX_VERSION_CODE > KERNEL_VERSION(4,4,1)
@@ -56,16 +63,23 @@ extern void nf_send_reset(struct net *net,  struct sk_buff *oldskb, int hook);
 extern void nf_send_reset(sk_buff *oldskb, int hook);
 #endif
 
+char *ipv6_to_str(const struct in6_addr *addr, char *str)
+{
+    sprintf(str, "%pI6c", addr);
+    return str;
+}
+
+
 int __add_app_feature(char *feature, int appid, char *name, int proto, int src_port,
 					  port_info_t dport_info, char *host_url, char *request_url, char *dict, char *search_str, int ignore)
 {
 	af_feature_node_t *node = NULL;
 	char *p = dict;
 	char *begin = dict;
-	char pos[32] = {0};
+	char pos[64] = {0};
 	int index = 0;
 	int value = 0;
-	node = kzalloc(sizeof(af_feature_node_t), GFP_KERNEL);
+	node = kzalloc(sizeof(af_feature_node_t), GFP_ATOMIC);
 	if (node == NULL)
 	{
 		printk("malloc feature memory error\n");
@@ -83,6 +97,9 @@ int __add_app_feature(char *feature, int appid, char *name, int proto, int src_p
 		strcpy(node->search_str, search_str);
 		node->ignore = ignore;
 		strcpy(node->feature, feature);
+		if (ignore)
+			AF_DEBUG("add feature %s, ignore = %d\n", feature, ignore);
+
 		// 00:0a-01:11
 		p = dict;
 		begin = dict;
@@ -99,6 +116,8 @@ int __add_app_feature(char *feature, int appid, char *name, int proto, int src_p
 				node->pos_info[node->pos_num].pos = index;
 				node->pos_info[node->pos_num].value = value;
 				node->pos_num++;
+				if (node->pos_num >= MAX_POS_INFO_PER_FEATURE - 1)
+					break;
 			}
 		}
 
@@ -257,18 +276,22 @@ int add_app_feature(int appid, char *name, char *feature)
 	char request_url[128] = {0};
 	char dict[128] = {0};
 	int proto = IPPROTO_TCP;
-	char *p = feature;
-	char *begin = feature;
 	int param_num = 0;
 	int dst_port = 0;
 	int src_port = 0;
 	char tmp_buf[128] = {0};
 	int ignore = 0;
 	char search_str[128] = {0};
+	char *p = feature;
+	char *begin = feature;
 
 	if (!name || !feature)
 	{
 		AF_ERROR("error, name or feature is null\n");
+		return -1;
+	}
+	
+	if (strlen(feature) < MIN_FEATURE_STR_LEN){
 		return -1;
 	}
 	// tcp;8000;www.sina.com;0:get_name;00:0a-01:11
@@ -415,7 +438,7 @@ void load_feature_buf_from_file(char **config_buf)
 	{
 		return;
 	}
-	*config_buf = (char *)kzalloc(sizeof(char) * size, GFP_KERNEL);
+	*config_buf = (char *)kzalloc(sizeof(char) * size, GFP_ATOMIC);
 	if (NULL == *config_buf)
 	{
 		AF_ERROR("alloc buf fail\n");
@@ -569,8 +592,8 @@ int parse_flow_proto(struct sk_buff *skb, flow_info_t *flow)
 		break;
 	case htons(ETH_P_IPV6):
 		ip6h = ipv6_hdr(skb);
-		flow->src6 = ip6h->saddr.s6_addr;
-		flow->dst6 = ip6h->daddr.s6_addr;
+		flow->src6 = &ip6h->saddr;
+		flow->dst6 = &ip6h->daddr;
 		flow->l4_protocol = ip6h->nexthdr;
 		ipp = ((unsigned char *)ip6h) + sizeof(struct ipv6hdr);
 		ipp_len = ntohs(ip6h->payload_len);
@@ -609,7 +632,7 @@ int check_domain(char *h, int len)
 	for (i = 0; i < len; i++)
 	{
 		if ((h[i] >= 'a' && h[i] <= 'z') || (h[i] >= 'A' && h[i] <= 'Z') ||
-			(h[i] >= '0' && h[i] <= '9') || h[i] == '.' || h[i] == '-')
+			(h[i] >= '0' && h[i] <= '9') || h[i] == '.' || h[i] == '-' ||  h[i] == ':')
 		{
 			continue;
 		}
@@ -631,11 +654,11 @@ int dpi_https_proto(flow_info_t *flow)
 		AF_ERROR("flow is NULL\n");
 		return -1;
 	}
-	if (NULL == p || data_len == 0)
+	if (NULL == p || data_len < 16)
 	{
 		return -1;
 	}
-	if (!((p[0] == 0x16 && p[1] == 0x03 && p[2] == 0x01) || flow->client_hello))
+	if (!((p[0] == 0x16 && p[1] == 0x03 && p[5] == 0x01) || flow->client_hello))
 		return -1;
 
 	for (i = 0; i < data_len; i++)
@@ -662,13 +685,13 @@ int dpi_https_proto(flow_info_t *flow)
 
 			if (i + HTTPS_URL_OFFSET + ntohs(url_len) < data_len)
 			{
-				// may invalid
-				if (!check_domain( p + i + HTTPS_URL_OFFSET, ntohs(url_len)))
+				if (!check_domain( p + i + HTTPS_URL_OFFSET, ntohs(url_len))){
+					AF_INFO("invalid url, len = %d\n", ntohs(url_len));
 					continue;
+				}
 				flow->https.match = AF_TRUE;
 				flow->https.url_pos = p + i + HTTPS_URL_OFFSET;
 				flow->https.url_len = ntohs(url_len);
-				AF_LMT_INFO("match https host ok, data_len = %d, client hello = %d\n", data_len, flow->client_hello);
 				flow->client_hello = 0;
 				return 0;
 			}
@@ -992,15 +1015,18 @@ int match_app_filter_rule(int appid, af_client_info_t *client)
 	}
 	if (af_get_app_status(appid))
 	{
-		AF_LMT_INFO("drop appid = %d\n", appid);
 		return AF_TRUE;
 	}
 	return AF_FALSE;
 }
 
 
+/*1000 0000 0000 0000 0000 0000 0000 0000*/
 #define NF_DROP_BIT 0x80000000
+/*0100 0000 0000 0000 0000 0000 0000 0000*/
 #define NF_CLIENT_HELLO_BIT 0x40000000
+/*0010 0000 0000 0000 0000 0000 0000 0000*/
+#define NF_IGNORE_BIT 0x20000000
 
 
 static int af_get_visit_index(af_client_info_t *node, int app_id)
@@ -1032,6 +1058,10 @@ int af_update_client_app_info(af_client_info_t *node, int app_id, int drop)
 	node->visit_info[index].app_id = app_id;
 	node->visit_info[index].latest_time = af_get_timestamp_sec();
 	node->visit_info[index].latest_action = drop;
+	if (app_id > 0){
+		node->visiting.app_time = af_get_timestamp_sec();
+		node->visiting.visiting_app = app_id;
+	}
 	return 0;
 }
 
@@ -1055,6 +1085,31 @@ int af_match_local_packet(flow_info_t *f)
 	}
 	return 0;
 }
+
+int update_url_visiting_info(af_client_info_t *client, flow_info_t *flow)
+{
+	char *host = NULL;
+	unsigned int len = 0;
+    if (!client || !flow)
+        return -1;
+	
+    if (flow->https.match){
+        host = flow->https.url_pos;
+        len = flow->https.url_len;
+    }
+    else if (flow->http.match){
+        host = flow->http.host_pos;
+        len = flow->http.host_len;
+    }
+    if (!host || len < MIN_REPORT_URL_LEN || len >= MAX_REPORT_URL_LEN)
+        return -1;
+
+    memcpy(client->visiting.visiting_url, host, len);
+    client->visiting.visiting_url[len] = 0x0; 
+    client->visiting.url_time = af_get_timestamp_sec();
+    return 0;
+}
+
 
 int dpi_main(struct sk_buff *skb, flow_info_t *flow)
 {
@@ -1099,6 +1154,33 @@ int af_check_bcast_ip(flow_info_t *f)
 
 	return 0;
 }
+
+/*
+	action: 0: accept, 1: drop
+	return: 0: no change, 1: change
+*/
+u_int32_t check_app_action_changed(int action, u_int32_t app_id, af_client_info_t *client)
+{
+	u_int8_t drop = 0;
+	int changed = 0;
+	u_int32_t max_jiffies = 30 * HZ;
+	u_int32_t interval_jiffies = jiffies - g_update_jiffies;
+	// config changed, update app action
+	if (interval_jiffies < max_jiffies){     
+		AF_LMT_DEBUG("config changed, update app action\n");
+		if (match_app_filter_rule(app_id, client)){
+			AF_LMT_DEBUG("match appid = %d, action = %d\n", app_id, action);
+			if (!action) // accept --> drop
+				changed = 1;
+		}    
+		else{
+			if (action) // drop --> accept
+				changed = 1;
+		}    
+	} 
+	return changed;
+}
+
 u_int32_t app_filter_hook_bypass_handle(struct sk_buff *skb, struct net_device *dev)
 {
 	flow_info_t flow;
@@ -1118,6 +1200,7 @@ u_int32_t app_filter_hook_bypass_handle(struct sk_buff *skb, struct net_device *
 	memset((char *)&flow, 0x0, sizeof(flow_info_t));
 	if (parse_flow_proto(skb, &flow) < 0)
 		return NF_ACCEPT;
+	// bypass mode, only handle ipv4
 	if (flow.src || flow.dst)
 	{
 		if (af_lan_ip == flow.src || af_lan_ip == flow.dst)
@@ -1131,14 +1214,6 @@ u_int32_t app_filter_hook_bypass_handle(struct sk_buff *skb, struct net_device *
 		{
 			return NF_ACCEPT;
 		}
-	}
-	else if (flow.src6 && flow.dst6)
-	{
-		if (flow.src6[0] == 0xff || flow.dst6[0] == 0xff)
-		{
-			return NF_ACCEPT;
-		}
-		return NF_DROP;
 	}
 	else
 	{
@@ -1168,33 +1243,36 @@ u_int32_t app_filter_hook_bypass_handle(struct sk_buff *skb, struct net_device *
 	conn->last_jiffies = jiffies;
 	conn->total_pkts++;
     spin_unlock(&af_conn_lock);
-	#if 1
-	if (g_by_pass_accl) {
-		if (conn->total_pkts > MAX_DPI_PKT_NUM)	{
-			return NF_ACCEPT;
-		}
-	}
-	#endif
-
-
-	if (skb_is_nonlinear(skb) && flow.l4_len < MAX_AF_SUPPORT_DATA_LEN)
-	{
-		flow.l4_data = read_skb(skb, flow.l4_data - skb->data, flow.l4_len);
-		if (!flow.l4_data)
-			return NF_ACCEPT;
-		AF_LMT_DEBUG("##match nonlinear skb, len = %d\n", flow.l4_len);
-		malloc_data = 1;
-	}
-	flow.client_hello = conn->client_hello;
 
 	if (conn->app_id != 0)
 	{
 		flow.app_id = conn->app_id;
 		flow.drop = conn->drop;
+
+		if (check_app_action_changed(flow.drop, flow.app_id, client)){
+			flow.drop = !flow.drop;
+			AF_LMT_DEBUG("update appid %d action, new action = %s\n", flow.app_id, flow.drop ? "drop" : "accept");
+		}
 	}
 	else{
+		if (g_by_pass_accl) {
+			if (conn->total_pkts > 256)	{
+				return NF_ACCEPT;
+			}
+		}
+		if (skb_is_nonlinear(skb) && flow.l4_len < MAX_AF_SUPPORT_DATA_LEN)
+		{
+			flow.l4_data = read_skb(skb, flow.l4_data - skb->data, flow.l4_len);
+			if (!flow.l4_data)
+				return NF_ACCEPT;
+			AF_LMT_DEBUG("##match nonlinear skb, len = %d\n", flow.l4_len);
+			malloc_data = 1;
+		}
+		flow.client_hello = conn->client_hello;
+
 		dpi_main(skb, &flow);
 		conn->client_hello = flow.client_hello;
+		update_url_visiting_info(client, &flow);
 
 		if (!match_feature(&flow))
 			goto EXIT;
@@ -1203,12 +1281,13 @@ u_int32_t app_filter_hook_bypass_handle(struct sk_buff *skb, struct net_device *
 		if (g_oaf_filter_enable){
 			if (match_app_filter_rule(flow.app_id, client)){
 				flow.drop = 1;
-				AF_LMT_INFO("##Drop appid %d\n",flow.app_id);
+				AF_INFO("##Drop appid %d\n",flow.app_id);
 				if (skb->protocol == htons(ETH_P_IP) && g_tcp_rst){
 				#if LINUX_VERSION_CODE > KERNEL_VERSION(5,10,197)
 					nf_send_reset(&init_net, skb->sk, skb, NF_INET_PRE_ROUTING);
 				#elif LINUX_VERSION_CODE > KERNEL_VERSION(4,4,1)
-					nf_send_reset(&init_net, skb, NF_INET_PRE_ROUTING);
+				// 5.4 kernel panic
+			//		nf_send_reset(&init_net, skb, NF_INET_PRE_ROUTING);
 				#else
 					nf_send_reset(skb, NF_INET_PRE_ROUTING);
 				#endif
@@ -1216,13 +1295,26 @@ u_int32_t app_filter_hook_bypass_handle(struct sk_buff *skb, struct net_device *
 
 			}
 		}
-		conn->drop = flow.drop;
 		conn->app_id = flow.app_id;
+		conn->drop = flow.drop;
+		if (flow.feature && flow.feature->ignore){
+			AF_LMT_DEBUG("match ignore feature, feature = %s, appid = %d\n", flow.feature->feature ,flow.app_id);
+			conn->ignore = 1;
+		}
+		else{
+			conn->ignore = 0;
+		}
 		conn->state = AF_CONN_DPI_FINISHED;
 	}
 
 	if (g_oaf_record_enable	){
-		af_update_client_app_info(client, flow.app_id, flow.drop);
+		if (!conn->ignore){
+			af_update_client_app_info(client, flow.app_id, flow.drop);
+		}
+		else{
+			AF_LMT_DEBUG("update ignore appid = %d, drop = %d\n", flow.app_id, flow.drop);
+		}
+	
 	}
 
 	if (flow.drop)
@@ -1241,6 +1333,7 @@ EXIT:
 	}
 	return ret;
 }
+
 
 u_int32_t app_filter_hook_gateway_handle(struct sk_buff *skb, struct net_device *dev)
 {
@@ -1271,11 +1364,14 @@ u_int32_t app_filter_hook_gateway_handle(struct sk_buff *skb, struct net_device 
 		return NF_ACCEPT;
 	}
 
-	if (!flow.src)
-		af_get_smac(skb, smac);
-
 	AF_CLIENT_LOCK_R();
-	client = flow.src ? find_af_client_by_ip(flow.src) : find_af_client(smac);
+	if (flow.src){
+		client = find_af_client_by_ip(flow.src);
+	}
+	else if (flow.src6){
+		client = find_af_client_by_ipv6(flow.src6);
+	}
+
 	if (!client)
 	{
 		AF_CLIENT_UNLOCK_R();
@@ -1284,24 +1380,48 @@ u_int32_t app_filter_hook_gateway_handle(struct sk_buff *skb, struct net_device 
 	client->update_jiffies = jiffies;
 	AF_CLIENT_UNLOCK_R();
 
+
 	if (ct->mark != 0)
 	{
 		app_id = ct->mark & 0xffff;
-		if (app_id > 1000 && app_id < 9999)
+		u_int32_t orig_mark = ct->mark;
+		// 1: drop , 0: accept
+		int ct_action = (NF_DROP_BIT == (ct->mark & NF_DROP_BIT)) ? 1 : 0;
+		flow.ignore = (NF_IGNORE_BIT == (ct->mark & NF_IGNORE_BIT)) ? 1 : 0;
+		if (flow.ignore){
+			AF_LMT_DEBUG("match ignore appid = %d, drop = %d\n", app_id, ct_action);
+		}
+	
+		if (app_id > 1000 && app_id < 32000)
 		{
-			if (g_oaf_filter_enable) {
-				if (NF_DROP_BIT == (ct->mark & NF_DROP_BIT))
-					drop = 1; 
-			}
-			if (g_oaf_record_enable){
-				AF_CLIENT_LOCK_W();
-				af_update_client_app_info(client, app_id, drop);
-				AF_CLIENT_UNLOCK_W();
+			AF_LMT_DEBUG("appid = %d, ct_action = %d\n", app_id, ct_action);
+			if (check_app_action_changed(ct_action, app_id, client)){
+				if (ct_action) // drop --> accept
+					ct->mark &= ~NF_DROP_BIT;
+				else
+					ct->mark |= NF_DROP_BIT;
+				ct_action = !ct_action;
+				AF_LMT_DEBUG("update appid %d action to %s, mark = %x-->%x\n",
+					 app_id, ct_action ? "drop" : "accept", orig_mark, ct->mark);
 			}
 
-			if (drop)
-			{
+			if (g_oaf_record_enable){
+				AF_CLIENT_LOCK_W();
+				if (!flow.ignore){
+					af_update_client_app_info(client, app_id, ct_action);
+				}
+				else{
+					AF_LMT_DEBUG(" ignore appid = %d, drop = %d, not update status\n", app_id, ct_action);
+				}
+				AF_CLIENT_UNLOCK_W();
+			}
+			if (g_oaf_filter_enable && ct_action) {
+				AF_LMT_DEBUG("drop appid = %d, ct_action = %d\n", app_id, ct_action);
 				return NF_DROP;
+			}
+			else{
+				AF_LMT_DEBUG("accept appid = %d, ct_action = %d\n", app_id, ct_action);
+				return NF_ACCEPT;
 			}
 		}
 		else {
@@ -1312,6 +1432,7 @@ u_int32_t app_filter_hook_gateway_handle(struct sk_buff *skb, struct net_device 
 			}
 		}
 	}
+
 	acct = nf_conn_acct_find(ct);
 	if (!acct)
 		return NF_ACCEPT;
@@ -1329,6 +1450,7 @@ u_int32_t app_filter_hook_gateway_handle(struct sk_buff *skb, struct net_device 
 	}
 	dpi_main(skb, &flow);
 
+	update_url_visiting_info(client, &flow);
 	if (flow.client_hello) {
 		ct->mark |= NF_CLIENT_HELLO_BIT;
 	}
@@ -1349,8 +1471,14 @@ u_int32_t app_filter_hook_gateway_handle(struct sk_buff *skb, struct net_device 
 			}
 		}
 	}
-	ct->mark = (ct->mark & 0xFFFF0000) | (flow.app_id & 0xFFFF);
 
+
+	ct->mark = (ct->mark & 0xFFFF0000) | (flow.app_id & 0xFFFF);
+	if (flow.feature && flow.feature->ignore){
+		ct->mark |= NF_IGNORE_BIT;
+		flow.ignore = 1;
+		AF_LMT_DEBUG("gateway set ignore bit, ct->mark = %x\n", ct->mark);
+	}
 	
 	if (g_oaf_filter_enable){
 		if (match_app_filter_rule(flow.app_id, client))
@@ -1362,7 +1490,8 @@ u_int32_t app_filter_hook_gateway_handle(struct sk_buff *skb, struct net_device 
 			#if LINUX_VERSION_CODE > KERNEL_VERSION(5,10,197)
 				nf_send_reset(&init_net, skb->sk, skb, NF_INET_PRE_ROUTING);
 			#elif LINUX_VERSION_CODE > KERNEL_VERSION(4,4,1)
-				nf_send_reset(&init_net, skb, NF_INET_PRE_ROUTING);
+				//5.4 kernel panic
+				//nf_send_reset(&init_net, skb, NF_INET_PRE_ROUTING);
 			#else
 				nf_send_reset(skb, NF_INET_PRE_ROUTING);
 			#endif
@@ -1371,10 +1500,12 @@ u_int32_t app_filter_hook_gateway_handle(struct sk_buff *skb, struct net_device 
 		}
 	}
 
-
 	if (g_oaf_record_enable){
 		AF_CLIENT_LOCK_W();
-		af_update_client_app_info(client, flow.app_id, flow.drop);
+		if (!flow.ignore){
+			af_update_client_app_info(client, flow.app_id, flow.drop);
+		}
+
 		AF_CLIENT_UNLOCK_W();
 		AF_LMT_INFO("match %s %pI4(%d)--> %pI4(%d) len = %d, %d\n ", IPPROTO_TCP == flow.l4_protocol ? "tcp" : "udp",
 					&flow.src, flow.sport, &flow.dst, flow.dport, skb->len, flow.app_id);
@@ -1388,7 +1519,6 @@ EXIT:
 			kfree(flow.l4_data);
 		}
 	}
-
 	return ret;
 }
 
@@ -1504,11 +1634,7 @@ static void oaf_timer_func(unsigned long ptr)
 	static int count = 0;
 	if (count % 60 == 0)
 		check_client_expire();
-	if (count % 60 == 0 || report_flag)
-	{
-		report_flag = 0;
-		af_visit_info_report();
-	}
+
 	count++;
 	af_conn_clean_timeout();
 
@@ -1662,7 +1788,8 @@ static int __init app_filter_init(void)
 		AF_ERROR("oaf register filter hooks failed!\n");
 	}
 	init_oaf_timer();
-	AF_INFO("init app filter ........ok\n");
+	printk("oaf: Driver ver. %s - Copyright(c) 2019-2025, destan19(TT), <www.openappfilter.com>\n", AF_VERSION);
+	printk("oaf: init ok\n");
 	return 0;
 }
 

@@ -28,11 +28,12 @@ if [ -n "$2" ] && [ "$2" != "one_key_update" ]; then
 fi
 CORE_TYPE="$1"
 C_CORE_TYPE=$(uci -q get openclash.config.core_type)
+SMART_ENABLE=$(uci -q get openclash.config.smart_enable || echo 0)
+[ "$SMART_ENABLE" -eq 1 ] && CORE_TYPE="Smart"
 [ -z "$CORE_TYPE" ] && CORE_TYPE="Meta"
 small_flash_memory=$(uci -q get openclash.config.small_flash_memory)
 CPU_MODEL=$(uci -q get openclash.config.core_version)
 RELEASE_BRANCH=$(uci -q get openclash.config.release_branch || echo "master")
-DOWNLOAD_FILE="/tmp/clash_meta.tar.gz"
 
 if [ "$github_address_mod" != "0" ]; then
    [ ! -f "/tmp/clash_last_version" ] && /usr/share/openclash/clash_version.sh "$github_address_mod" 2>/dev/null
@@ -55,79 +56,131 @@ else
 fi
 
 CORE_CV=$($meta_core_path -v 2>/dev/null |awk -F ' ' '{print $3}' |head -1)
-CORE_LV=$(sed -n 3p /tmp/clash_last_version 2>/dev/null)
+DOWNLOAD_FILE="/tmp/clash_meta.tar.gz"
+TMP_FILE="/tmp/clash_meta"
+TARGET_CORE_PATH="$meta_core_path"
 
-   
+if [ "$CORE_TYPE" = "Smart" ]; then
+   CORE_URL_PATH="$RELEASE_BRANCH/smart"
+   CORE_LV=$(sed -n 2p /tmp/clash_last_version 2>/dev/null)
+else
+   CORE_URL_PATH="$RELEASE_BRANCH/meta"
+   CORE_LV=$(sed -n 1p /tmp/clash_last_version 2>/dev/null)
+fi
+
 [ "$C_CORE_TYPE" = "$CORE_TYPE" ] || [ -z "$C_CORE_TYPE" ] && if_restart=1
 
 if [ "$CORE_CV" != "$CORE_LV" ] || [ -z "$CORE_CV" ]; then
    if [ "$CPU_MODEL" != 0 ]; then
-      LOG_OUT "【Meta】Core Downloading, Please Try to Download and Upload Manually If Fails"
+      LOG_OUT "Tip:【$CORE_TYPE】Core Downloading, Please Try to Download and Upload Manually If Fails"
       if [ "$github_address_mod" != "0" ]; then
          if [ "$github_address_mod" == "https://cdn.jsdelivr.net/" ] || [ "$github_address_mod" == "https://fastly.jsdelivr.net/" ] || [ "$github_address_mod" == "https://testingcf.jsdelivr.net/" ]; then
-            DOWNLOAD_URL="${github_address_mod}gh/vernesong/OpenClash@core/${RELEASE_BRANCH}/meta/clash-${CPU_MODEL}.tar.gz"
+            DOWNLOAD_URL="${github_address_mod}gh/vernesong/OpenClash@core/${CORE_URL_PATH}/clash-${CPU_MODEL}.tar.gz"
          else
-            DOWNLOAD_URL="${github_address_mod}https://raw.githubusercontent.com/vernesong/OpenClash/core/${RELEASE_BRANCH}/meta/clash-${CPU_MODEL}.tar.gz"
+            DOWNLOAD_URL="${github_address_mod}https://raw.githubusercontent.com/vernesong/OpenClash/core/${CORE_URL_PATH}/clash-${CPU_MODEL}.tar.gz"
          fi
       else
-         DOWNLOAD_URL="https://raw.githubusercontent.com/vernesong/OpenClash/core/${RELEASE_BRANCH}/meta/clash-${CPU_MODEL}.tar.gz"
+         DOWNLOAD_URL="https://raw.githubusercontent.com/vernesong/OpenClash/core/${CORE_URL_PATH}/clash-${CPU_MODEL}.tar.gz"
       fi
 
-      DOWNLOAD_FILE_CURL "$DOWNLOAD_URL" "$DOWNLOAD_FILE"
+      retry_count=0
+      max_retries=3
 
-      if [ "$?" -eq 0 ]; then
-         gzip -t "$DOWNLOAD_FILE" >/dev/null 2>&1
+      while [ "$retry_count" -lt "$max_retries" ]; do
+         retry_count=$((retry_count + 1))
 
-         if [ "$?" -eq 0 ]; then
-            LOG_OUT "【"$CORE_TYPE"】Core Download Successful, Start Update..."
-            [ -s "$DOWNLOAD_FILE" ] && {
-               tar zxvfo "$DOWNLOAD_FILE" -C /tmp >/dev/null 2>&1
-               mv /tmp/clash /tmp/clash_meta >/dev/null 2>&1
-               rm -rf "$DOWNLOAD_FILE" >/dev/null 2>&1
-               chmod 4755 /tmp/clash_meta >/dev/null 2>&1
-               /tmp/clash_meta -v >/dev/null 2>&1
-            }
-               
-            if [ "$?" != "0" ]; then
-               LOG_OUT "【"$CORE_TYPE"】Core Update Failed. Please Make Sure Enough Flash Memory Space or Selected Correct Core Platform And Try Again!"
-               rm -rf /tmp/clash_meta >/dev/null 2>&1
-               SLOG_CLEAN
-               del_lock
-               exit 0
-            fi
+         rm -rf "$DOWNLOAD_FILE" "$TMP_FILE" >/dev/null 2>&1
+         
+         SHOW_DOWNLOAD_PROGRESS=1 DOWNLOAD_FILE_CURL "$DOWNLOAD_URL" "$DOWNLOAD_FILE"
+         download_result=$?
+         
+         if [ "$download_result" -eq 0 ]; then
+            gzip -t "$DOWNLOAD_FILE" >/dev/null 2>&1
 
-            mv /tmp/clash_meta "$meta_core_path" >/dev/null 2>&1
-
-            if [ "$?" == "0" ]; then
-               LOG_OUT "【"$CORE_TYPE"】Core Update Successful!"
-               if [ "$if_restart" -eq 1 ]; then
-                  uci -q set openclash.config.restart=1
-                  uci -q commit openclash
-                  if ([ -z "$2" ] || ([ -n "$2" ] && [ "$2" != "one_key_update" ])) && [ "$(unify_ps_prevent)" -eq 0 ]; then
-                     uci -q set openclash.config.restart=0
-                     uci -q commit openclash
-                     /etc/init.d/openclash restart >/dev/null 2>&1 &
+            if [ "$?" -eq 0 ]; then
+               LOG_OUT "Tip:【"$CORE_TYPE"】Core Download Successful, Start Update..."
+               extract_success=true
+               [ -s "$DOWNLOAD_FILE" ] && {
+                  tar zxvfo "$DOWNLOAD_FILE" -C /tmp >/dev/null 2>&1 || extract_success=false
+                  mv /tmp/clash "$TMP_FILE" >/dev/null 2>&1 || extract_success=false
+                  rm -rf "$DOWNLOAD_FILE" >/dev/null 2>&1
+                  chmod 4755 "$TMP_FILE" >/dev/null 2>&1 || extract_success=false
+                  "$TMP_FILE" -v >/dev/null 2>&1 || extract_success=false
+               }
+                  
+               if [ "$extract_success" != "true" ]; then
+                  if [ "$retry_count" -lt "$max_retries" ]; then
+                     LOG_OUT "Error:【$retry_count/$max_retries】【"$CORE_TYPE"】Core Update Failed..."
+                     rm -rf "$TMP_FILE" >/dev/null 2>&1
+                     sleep 2
+                     continue
+                  else
+                     LOG_OUT "Error:【"$CORE_TYPE"】Core Update Failed, Please Make Sure Enough Flash Memory Space or Selected Correct Core Platform And Try Again!"
+                     rm -rf "$TMP_FILE" >/dev/null 2>&1
+                     SLOG_CLEAN
+                     del_lock
+                     exit 0
                   fi
+               fi
+
+               mv "$TMP_FILE" "$TARGET_CORE_PATH" >/dev/null 2>&1
+
+               if [ "$?" == "0" ]; then
+                  LOG_OUT "Tip:【"$CORE_TYPE"】Core Update Successful!"
+                  if [ "$if_restart" -eq 1 ]; then
+                     uci -q set openclash.config.restart=1
+                     uci -q commit openclash
+                     if ([ -z "$2" ] || ([ -n "$2" ] && [ "$2" != "one_key_update" ])) && [ "$(unify_ps_prevent)" -eq 0 ]; then
+                        uci -q set openclash.config.restart=0
+                        uci -q commit openclash
+                        /etc/init.d/openclash restart >/dev/null 2>&1 &
+                     fi
+                  else
+                     SLOG_CLEAN
+                  fi
+                  break
                else
-                  SLOG_CLEAN
+                  if [ "$retry_count" -lt "$max_retries" ]; then
+                     LOG_OUT "Error:【$retry_count/$max_retries】【"$CORE_TYPE"】Core Update Failed..."
+                     sleep 2
+                     continue
+                  else
+                     LOG_OUT "Error:【"$CORE_TYPE"】Core Update Failed, Please Make Sure Enough Flash Memory Space And Try Again!"
+                     SLOG_CLEAN
+                     break
+                  fi
                fi
             else
-               LOG_OUT "【"$CORE_TYPE"】Core Update Failed. Please Make Sure Enough Flash Memory Space And Try Again!"
-               SLOG_CLEAN
+               if [ "$retry_count" -lt "$max_retries" ]; then
+                  LOG_OUT "Error:【$retry_count/$max_retries】【"$CORE_TYPE"】Core Update Failed..."
+                  sleep 2
+                  continue
+               else
+                  LOG_OUT "Error:【"$CORE_TYPE"】Core Update Failed, Please Check The Network or Try Again Later!"
+                  SLOG_CLEAN
+                  break
+               fi
             fi
          else
-            LOG_OUT "【"$CORE_TYPE"】Core Update Failed, Please Check The Network or Try Again Later!"
-            SLOG_CLEAN
+            if [ "$retry_count" -lt "$max_retries" ]; then
+               LOG_OUT "Error:【$retry_count/$max_retries】【"$CORE_TYPE"】Core Download Failed..."
+               sleep 2
+               continue
+            else
+               LOG_OUT "Error:【"$CORE_TYPE"】Core Download Failed, Please Check The Network or Try Again Later!"
+               SLOG_CLEAN
+               break
+            fi
          fi
-      fi
+      done
    else
-      LOG_OUT "No Compiled Version Selected, Please Select In Update Page And Try Again!"
+      LOG_OUT "Warning: No Compiled Version Selected, Please Select In Update Page And Try Again!"
       SLOG_CLEAN
    fi
 else
-   LOG_OUT "【"$CORE_TYPE"】Core Has Not Been Updated, Stop Continuing Operation!"
+   LOG_OUT "Tip:【"$CORE_TYPE"】Core Has Not Been Updated, Stop Continuing Operation!"
    SLOG_CLEAN
 fi
 
-rm -rf /tmp/clash_meta >/dev/null 2>&1
+rm -rf "$TMP_FILE" >/dev/null 2>&1
 del_lock

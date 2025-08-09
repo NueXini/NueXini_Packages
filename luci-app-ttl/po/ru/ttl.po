@@ -4,8 +4,8 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 "Language: ru\n"
 "Last-Translator: Konstantine Shevlakov <shevlakov@132lan.ru\n"
 
-msgid "In Method proxy Proxy server must be configured in transparent mode on port 3128 tcp.<br />Disable masquerade recommened."
-msgstr "В режиме прокси, прокси-сервер должен быть настроен в прозрачном режиме на порту 3128 tcp.<br />Рекомендуется отключить NAT."
+msgid "'In Method proxy Proxy server must be configured in transparent mode.<br />Default on lan ipaddress interface and port 3128 tcp.<br />Disable masquerade recommended.'"
+msgstr "В режиме прокси, прокси-сервер должен быть настроен в прозрачном режиме.<br />По-умолчанию прокси-сервер ожидается на адресе lan-интерфейса на порту 3128 tcp.<br />Рекомендуется отключить NAT."
 
 msgid "Antitethering Config"
 msgstr "Настройки антитетеринга"
@@ -49,3 +49,8 @@ msgstr "Все порты"
 msgid "HTTP Ports"
 msgstr "Порты HTTP"
 
+msgid "Proxy Server Address"
+msgstr "Адрес прокси-сервера"
+
+msgid "IP-address proxy<br/>Format: <code>ipaddress:port</code><br />If not defined: use selected interface address.<br />Default: <code>lan</code> interface ipaddress"
+msgstr "IP-адрес прокси<br />Формат: <code>ip-адрес:порт</code><br />Если не задано: используется адрес выбранного интерфейса.<br />По-умолчанию: адрес интерфейса <code>lan</code>"

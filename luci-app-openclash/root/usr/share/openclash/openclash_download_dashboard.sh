@@ -40,11 +40,11 @@
 			DOWNLOAD_PATH="https://codeload.github.com/MetaCubeX/Yacd-meta/zip/refs/heads/gh-pages"
          FILE_PATH_INCLUDE="Yacd-meta-gh-pages"
       fi
-  elif [ "$DASH_NAME" == "zashboard" ]; then
+  elif [ "$DASH_NAME" == "Zashboard" ]; then
       UNPACK_FILE_DIR="/usr/share/openclash/ui/zashboard/"
       BACKUP_FILE_DIR="/usr/share/openclash/ui/zashboard_backup/"
-		DOWNLOAD_PATH="https://codeload.github.com/Zephyruso/zashboard/zip/refs/heads/gh-pages"
-      FILE_PATH_INCLUDE="zashboard-gh-pages"
+      DOWNLOAD_PATH="https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip"
+      FILE_PATH_INCLUDE="dist"
    else
       UNPACK_FILE_DIR="/usr/share/openclash/ui/metacubexd/"
       BACKUP_FILE_DIR="/usr/share/openclash/ui/metacubexd_backup/"

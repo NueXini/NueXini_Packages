@@ -10,13 +10,25 @@ include $(TOPDIR)/rules.mk
 PKG_ARCH_ISTOREENHANCE:=$(ARCH)
 
 PKG_NAME:=istoreenhance
-PKG_VERSION:=0.3.0
-PKG_RELEASE:=$(PKG_ARCH_ISTOREENHANCE)-1
-PKG_SOURCE:=iStoreEnhance-binary-$(PKG_VERSION).tar.gz
+# use PKG_SOURCE_DATE instead of PKG_VERSION for compitable
+PKG_SOURCE_DATE:=0.3.1
+PKG_RELEASE:=2
+ARCH_HEXCODE:=
+ifeq ($(ARCH),x86_64)
+ARCH_HEXCODE=8664
+else ifeq ($(ARCH),aarch64)
+ARCH_HEXCODE=aa64
+else ifeq ($(ARCH),arm)
+ARCH_HEXCODE=aa32
+else ifeq ($(ARCH),mipsel)
+ARCH_HEXCODE=1b0c
+endif
+PKG_SOURCE_VERSION:=$(ARCH_HEXCODE)
+PKG_SOURCE:=iStoreEnhance-binary-$(PKG_SOURCE_DATE).tar.gz
 PKG_SOURCE_URL:=http://dl.istoreos.com/binary/iStoreEnhance/
-PKG_HASH:=e01af9d6b7c49340f21614cd45f44cf8f15960c13060659edb2a11647d191b43
+PKG_HASH:=efa941685980634ae0c647d7cb4f3733b67b18de12c074c3958a39b66b6a615a
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/iStoreEnhance-binary-$(PKG_VERSION)
+PKG_BUILD_DIR:=$(BUILD_DIR)/iStoreEnhance-binary-$(PKG_SOURCE_DATE)
 
 PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
@@ -28,6 +40,8 @@ define Package/$(PKG_NAME)
 	CATEGORY:=Network
 	SUBMENU:=Web Servers/Proxies
 	TITLE:=iStoreEnhance - Fix some net issues for istore
+	DEPENDS:=@(arm||x86_64||aarch64)
+	PKGARCH:=all
 	URL:=https://www.istoreos.com/
 endef
 

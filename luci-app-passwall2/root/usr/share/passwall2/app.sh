@@ -176,10 +176,10 @@ get_last_dns() {
 }
 
 check_port_exists() {
-	port=$1
-	protocol=$2
+	local port=$1
+	local protocol=$2
 	[ -n "$protocol" ] || protocol="tcp,udp"
-	result=
+	local result=
 	if [ "$protocol" = "tcp" ]; then
 		result=$(netstat -tln | grep -c ":$port ")
 	elif [ "$protocol" = "udp" ]; then
@@ -188,6 +188,24 @@ check_port_exists() {
 		result=$(netstat -tuln | grep -c ":$port ")
 	fi
 	echo "${result}"
+}
+
+get_new_port() {
+	local port=$1
+	[ "$port" == "auto" ] && port=2082
+	local protocol=$(echo $2 | tr 'A-Z' 'a-z')
+	local result=$(check_port_exists $port $protocol)
+	if [ "$result" != 0 ]; then
+		local temp=
+		if [ "$port" -lt 65535 ]; then
+			temp=$(expr $port + 1)
+		elif [ "$port" -gt 1 ]; then
+			temp=$(expr $port - 1)
+		fi
+		get_new_port $temp $protocol
+	else
+		echo $port
+	fi
 }
 
 check_depends() {
@@ -204,24 +222,6 @@ check_depends() {
 		for depends in "kmod-nft-socket" "kmod-nft-tproxy" "kmod-nft-nat"; do
 			[ -s "${file_path}/${depends}${file_ext}" ] || echolog "$tables透明代理基础依赖 $depends 未安装..."
 		done
-	fi
-}
-
-get_new_port() {
-	port=$1
-	[ "$port" == "auto" ] && port=2082
-	protocol=$(echo $2 | tr 'A-Z' 'a-z')
-	result=$(check_port_exists $port $protocol)
-	if [ "$result" != 0 ]; then
-		temp=
-		if [ "$port" -lt 65535 ]; then
-			temp=$(expr $port + 1)
-		elif [ "$port" -gt 1 ]; then
-			temp=$(expr $port - 1)
-		fi
-		get_new_port $temp $protocol
-	else
-		echo $port
 	fi
 }
 
@@ -297,11 +297,11 @@ get_singbox_geoip() {
 	local geoip_code="$1"
 	local geoip_path=$(config_t_get global_singbox geoip_path)
 	[ -e "$geoip_path" ] || { echo ""; return; }
-	local has_geoip_tools=$($(first_type $(config_t_get global_app singbox_file) sing-box) geoip | grep "GeoIP tools")
+	local has_geoip_tools=$($(first_type $(config_t_get global_app sing_box_file) sing-box) geoip | grep "GeoIP tools")
 	if [ -n "${has_geoip_tools}" ]; then
 		[ -f "${geoip_path}" ] && local geoip_md5=$(md5sum ${geoip_path} | awk '{print $1}')
 		local output_file="${TMP_PATH2}/geoip-${geoip_md5}-${geoip_code}.json"
-		[ ! -f ${output_file} ] && $(first_type $(config_t_get global_app singbox_file) sing-box) geoip -f "${geoip_path}" export "${geoip_code}" -o "${output_file}"
+		[ ! -f ${output_file} ] && $(first_type $(config_t_get global_app sing_box_file) sing-box) geoip -f "${geoip_path}" export "${geoip_code}" -o "${output_file}"
 		case "$2" in
 			ipv4)
 				cat ${output_file} | grep -E "([0-9]{1,3}[\.]){3}[0-9]{1,3}" | awk -F '"' '{print $2}' | sed -e "/^$/d"
@@ -468,7 +468,7 @@ run_singbox() {
 	[ "$loglevel" = "warning" ] && loglevel="warn"
 	_extra_param="${_extra_param} -loglevel $loglevel"
 	
-	_extra_param="${_extra_param} -tags $($(first_type $(config_t_get global_app singbox_file) sing-box) version | grep 'Tags:' | awk '{print $2}')"
+	_extra_param="${_extra_param} -tags $($(first_type $(config_t_get global_app sing_box_file) sing-box) version | grep 'Tags:' | awk '{print $2}')"
 	
 	[ -n "$flag" ] && pgrep -af "$TMP_BIN_PATH" | awk -v P1="${flag}" 'BEGIN{IGNORECASE=1}$0~P1{print $1}' | xargs kill -9 >/dev/null 2>&1
 	[ -n "$flag" ] && _extra_param="${_extra_param} -flag $flag"
@@ -552,11 +552,11 @@ run_singbox() {
 	}
 
 	lua $UTIL_SINGBOX gen_config -node $node ${_extra_param} > $config_file
-	ln_run "$(first_type $(config_t_get global_app singbox_file) sing-box)" "sing-box" "${log_file}" run -c "$config_file"
+	ln_run "$(first_type $(config_t_get global_app sing_box_file) sing-box)" "sing-box" "${log_file}" run -c "$config_file"
 }
 
 run_socks() {
-	local flag node bind socks_port config_file http_port http_config_file relay_port log_file
+	local flag node bind socks_port config_file http_port http_config_file relay_port log_file no_run
 	eval_set_val $@
 	[ -n "$config_file" ] && [ -z "$(echo ${config_file} | grep $TMP_PATH)" ] && config_file=$TMP_PATH/$config_file
 	[ -n "$http_port" ] || http_port=0
@@ -569,20 +569,20 @@ run_socks() {
 	local type=$(echo $(config_n_get $node type) | tr 'A-Z' 'a-z')
 	local remarks=$(config_n_get $node remarks)
 	local server_host=$(config_n_get $node address)
-	local port=$(config_n_get $node port)
+	local server_port=$(config_n_get $node port)
 	[ -n "$relay_port" ] && {
 		server_host="127.0.0.1"
-		port=$relay_port
+		server_port=$relay_port
 	}
 	local error_msg tmp
 
-	if [ -n "$server_host" ] && [ -n "$port" ]; then
+	if [ -n "$server_host" ] && [ -n "$server_port" ]; then
 		check_host $server_host
 		[ $? != 0 ] && {
 			echolog "  - Socks节点：[$remarks]${server_host} 是非法的服务器地址，无法启动！"
 			return 1
 		}
-		tmp="${server_host}:${port}"
+		tmp="${server_host}:${server_port}"
 	else
 		error_msg="某种原因，此 Socks 服务的相关配置已失联，启动中止！"
 	fi
@@ -604,91 +604,110 @@ run_socks() {
 	sing-box)
 		[ "$http_port" != "0" ] && {
 			http_flag=1
-			config_file=$(echo $config_file | sed "s/SOCKS/HTTP_SOCKS/g")
+			config_file="${config_file//SOCKS/HTTP_SOCKS}"
 			local _extra_param="-local_http_address $bind -local_http_port $http_port"
 		}
-		[ -n "$relay_port" ] && _extra_param="${_extra_param} -server_host $server_host -server_port $port"
+		[ -n "$relay_port" ] && _extra_param="${_extra_param} -server_host $server_host -server_port $server_port"
 		[ "${log_file}" != "/dev/null" ] && {
 			local loglevel=$(config_t_get global loglevel "warn")
 			[ "$loglevel" = "warning" ] && loglevel="warn"
 			_extra_param="${_extra_param} -log 1 -loglevel $loglevel -logfile $log_file"
 		}
+		[ -n "$no_run" ] && _extra_param="${_extra_param} -no_run 1"
 		lua $UTIL_SINGBOX gen_config -flag SOCKS_$flag -node $node -local_socks_address $bind -local_socks_port $socks_port ${_extra_param} > $config_file
-		ln_run "$(first_type $(config_t_get global_app singbox_file) sing-box)" "sing-box" /dev/null run -c "$config_file"
+		[ -n "$no_run" ] || ln_run "$(first_type $(config_t_get global_app sing_box_file) sing-box)" "sing-box" /dev/null run -c "$config_file"
 	;;
 	xray)
 		[ "$http_port" != "0" ] && {
 			http_flag=1
-			config_file=$(echo $config_file | sed "s/SOCKS/HTTP_SOCKS/g")
+			config_file="${config_file//SOCKS/HTTP_SOCKS}"
 			local _extra_param="-local_http_address $bind -local_http_port $http_port"
 		}
-		[ -n "$relay_port" ] && _extra_param="${_extra_param} -server_host $server_host -server_port $port"
+		[ -n "$relay_port" ] && _extra_param="${_extra_param} -server_host $server_host -server_port $server_port"
+		[ -n "$no_run" ] && _extra_param="${_extra_param} -no_run 1"
 		lua $UTIL_XRAY gen_config -flag SOCKS_$flag -node $node -local_socks_address $bind -local_socks_port $socks_port ${_extra_param} > $config_file
-		ln_run "$(first_type $(config_t_get global_app xray_file) xray)" "xray" $log_file run -c "$config_file"
+		[ -n "$no_run" ] || ln_run "$(first_type $(config_t_get global_app xray_file) xray)" "xray" $log_file run -c "$config_file"
 	;;
 	naiveproxy)
-		lua $UTIL_NAIVE gen_config -node $node -run_type socks -local_addr $bind -local_port $socks_port -server_host $server_host -server_port $port > $config_file
-		ln_run "$(first_type naive)" naive $log_file "$config_file"
+		lua $UTIL_NAIVE gen_config -node $node -run_type socks -local_addr $bind -local_port $socks_port -server_host $server_host -server_port $server_port > $config_file
+		[ -n "$no_run" ] || ln_run "$(first_type naive)" naive $log_file "$config_file"
 	;;
 	ssr)
-		lua $UTIL_SS gen_config -node $node -local_addr $bind -local_port $socks_port -server_host $server_host -server_port $port > $config_file
-		ln_run "$(first_type ssr-local)" "ssr-local" $log_file -c "$config_file" -v -u
+		lua $UTIL_SS gen_config -node $node -local_addr $bind -local_port $socks_port -server_host $server_host -server_port $server_port > $config_file
+		[ -n "$no_run" ] || ln_run "$(first_type ssr-local)" "ssr-local" $log_file -c "$config_file" -v -u
 	;;
 	ss)
-		lua $UTIL_SS gen_config -node $node -local_addr $bind -local_port $socks_port -server_host $server_host -server_port $port -mode tcp_and_udp > $config_file
-		ln_run "$(first_type ss-local)" "ss-local" $log_file -c "$config_file" -v
+		[ -n "$no_run" ] || {
+			local plugin_sh="${config_file%.json}_plugin.sh"
+			local _extra_param="-plugin_sh $plugin_sh"
+		}
+		lua $UTIL_SS gen_config -node $node -local_addr $bind -local_port $socks_port -server_host $server_host -server_port $server_port -mode tcp_and_udp ${_extra_param} > $config_file
+		[ -n "$no_run" ] || ln_run "$(first_type ss-local)" "ss-local" $log_file -c "$config_file" -v
 	;;
 	ss-rust)
+		local _extra_param
 		[ "$http_port" != "0" ] && {
 			http_flag=1
-			config_file=$(echo $config_file | sed "s/SOCKS/HTTP_SOCKS/g")
-			local _extra_param="-local_http_address $bind -local_http_port $http_port"
+			config_file="${config_file//SOCKS/HTTP_SOCKS}"
+			_extra_param="-local_http_address $bind -local_http_port $http_port"
 		}
-		lua $UTIL_SS gen_config -node $node -local_socks_address $bind -local_socks_port $socks_port -server_host $server_host -server_port $port ${_extra_param} > $config_file
-		ln_run "$(first_type sslocal)" "sslocal" $log_file -c "$config_file" -v
+		[ -n "$no_run" ] || {
+			local plugin_sh="${config_file%.json}_plugin.sh"
+			_extra_param="${_extra_param:+$_extra_param }-plugin_sh $plugin_sh"
+		}
+		lua $UTIL_SS gen_config -node $node -local_socks_address $bind -local_socks_port $socks_port -server_host $server_host -server_port $server_port ${_extra_param} > $config_file
+		[ -n "$no_run" ] || ln_run "$(first_type sslocal)" "sslocal" $log_file -c "$config_file" -v
 	;;
 	hysteria2)
 		[ "$http_port" != "0" ] && {
 			http_flag=1
-			config_file=$(echo $config_file | sed "s/SOCKS/HTTP_SOCKS/g")
+			config_file="${config_file//SOCKS/HTTP_SOCKS}"
 			local _extra_param="-local_http_address $bind -local_http_port $http_port"
 		}
-		lua $UTIL_HYSTERIA2 gen_config -node $node -local_socks_address $bind -local_socks_port $socks_port -server_host $server_host -server_port $port ${_extra_param} > $config_file
-		ln_run "$(first_type $(config_t_get global_app hysteria_file))" "hysteria" $log_file -c "$config_file" client
+		lua $UTIL_HYSTERIA2 gen_config -node $node -local_socks_address $bind -local_socks_port $socks_port -server_host $server_host -server_port $server_port ${_extra_param} > $config_file
+		[ -n "$no_run" ] || ln_run "$(first_type $(config_t_get global_app hysteria_file))" "hysteria" $log_file -c "$config_file" client
 	;;
 	tuic)
-		lua $UTIL_TUIC gen_config -node $node -local_addr $bind -local_port $socks_port -server_host $server_host -server_port $port > $config_file
-		ln_run "$(first_type tuic-client)" "tuic-client" $log_file -c "$config_file"
+		lua $UTIL_TUIC gen_config -node $node -local_addr $bind -local_port $socks_port -server_host $server_host -server_port $server_port > $config_file
+		[ -n "$no_run" ] || ln_run "$(first_type tuic-client)" "tuic-client" $log_file -c "$config_file"
 	;;
 	esac
 
 	# http to socks
 	[ -z "$http_flag" ] && [ "$http_port" != "0" ] && [ -n "$http_config_file" ] && [ "$type" != "sing-box" ] && [ "$type" != "xray" ] && [ "$type" != "socks" ] && {
-		local bin=$(first_type $(config_t_get global_app singbox_file) sing-box)
+		local bin=$(first_type $(config_t_get global_app sing_box_file) sing-box)
 		if [ -n "$bin" ]; then
 			type="sing-box"
 			lua $UTIL_SINGBOX gen_proto_config -local_http_port $http_port -server_proto socks -server_address "127.0.0.1" -server_port $socks_port -server_username $_username -server_password $_password > $http_config_file
-			ln_run "$bin" ${type} /dev/null run -c "$http_config_file"
+			[ -n "$no_run" ] || ln_run "$bin" ${type} /dev/null run -c "$http_config_file"
 		else
 			bin=$(first_type $(config_t_get global_app xray_file) xray)
 			[ -n "$bin" ] && type="xray"
 			[ -z "$type" ] && return 1
 			lua $UTIL_XRAY gen_proto_config -local_http_port $http_port -server_proto socks -server_address "127.0.0.1" -server_port $socks_port -server_username $_username -server_password $_password > $http_config_file
-			ln_run "$bin" ${type} /dev/null run -c "$http_config_file"
+			[ -n "$no_run" ] || ln_run "$bin" ${type} /dev/null run -c "$http_config_file"
 		fi
 	}
 	unset http_flag
 
-	[ "${server_host}" != "127.0.0.1" ] && [ "$type" != "sing-box" ] && [ "$type" != "xray" ] && echo "${node}" >> $TMP_PATH/direct_node_list
+	[ -z "$no_run" ] && [ "${server_host}" != "127.0.0.1" ] && [ "$type" != "sing-box" ] && [ "$type" != "xray" ] && echo "${node}" >> $TMP_PATH/direct_node_list
 }
 
 socks_node_switch() {
 	local flag new_node
 	eval_set_val $@
 	[ -n "$flag" ] && [ -n "$new_node" ] && {
+		local prefix pf filename
+		# 结束 SS 插件进程
+		for prefix in "" "HTTP_"; do
+			pf="$TMP_PATH/${prefix}SOCKS_${flag}_plugin.pid"
+			[ -s "$pf" ] && kill -9 "$(head -n1 "$pf")" >/dev/null 2>&1
+		done
+
 		pgrep -af "$TMP_BIN_PATH" | awk -v P1="${flag}" 'BEGIN{IGNORECASE=1}$0~P1 && !/acl\/|acl_/{print $1}' | xargs kill -9 >/dev/null 2>&1
-		rm -rf $TMP_PATH/SOCKS_${flag}*
-		rm -rf $TMP_PATH/HTTP2SOCKS_${flag}*
+		for prefix in "" "HTTP_" "HTTP2"; do
+			rm -rf "$TMP_PATH/${prefix}SOCKS_${flag}"*
+		done
 
 		for filename in $(ls ${TMP_SCRIPT_FUNC_PATH}); do
 			cmd=$(cat ${TMP_SCRIPT_FUNC_PATH}/${filename})
@@ -815,6 +834,8 @@ run_global() {
 		GLOBAL_DNSMASQ_PORT=$(get_new_port 11400)
 		run_copy_dnsmasq flag="default" listen_port=$GLOBAL_DNSMASQ_PORT tun_dns="${TUN_DNS}"
 		DNS_REDIRECT_PORT=${GLOBAL_DNSMASQ_PORT}
+		#dhcp.leases to hosts
+		$APP_PATH/lease2hosts.sh > /dev/null 2>&1 &
 	fi
 
 	set_cache_var "ACL_GLOBAL_node" "$NODE"
@@ -1215,6 +1236,8 @@ acl_app() {
 							fi
 							dnsmasq_port=$(get_new_port $(expr $dnsmasq_port + 1))
 							run_copy_dnsmasq flag="$sid" listen_port=$dnsmasq_port tun_dns="127.0.0.1#${dns_port}"
+							#dhcp.leases to hostsMore actions
+							$APP_PATH/lease2hosts.sh > /dev/null 2>&1 &
 
 							set_cache_var "ACL_${sid}_node" "$node"
 							set_cache_var "ACL_${sid}_redir_port" "$redir_port"
@@ -1234,7 +1257,7 @@ start() {
 		#echolog "程序已启动，先停止再重新启动!"
 		stop
 	}
-	mkdir -p /tmp/etc $TMP_PATH $TMP_BIN_PATH $TMP_SCRIPT_FUNC_PATH $TMP_ROUTE_PATH $TMP_ACL_PATH $TMP_PATH2
+	mkdir -p /tmp/etc /tmp/log $TMP_PATH $TMP_BIN_PATH $TMP_SCRIPT_FUNC_PATH $TMP_ROUTE_PATH $TMP_ACL_PATH $TMP_PATH2
 	get_config
 	export V2RAY_LOCATION_ASSET=$(config_t_get global_rules v2ray_location_asset "/usr/share/v2ray/")
 	export XRAY_LOCATION_ASSET=$V2RAY_LOCATION_ASSET
@@ -1306,7 +1329,15 @@ stop() {
 	eval_cache_var
 	[ -n "$USE_TABLES" ] && source $APP_PATH/${USE_TABLES}.sh stop
 	delete_ip2route
-	kill_all v2ray-plugin obfs-local
+	# 结束 SS 插件进程
+	# kill_all xray-plugin v2ray-plugin obfs-local shadow-tls
+	local pid_file pid
+	find "$TMP_PATH" -type f -name '*_plugin.pid' | while read -r pid_file; do
+		read -r pid < "$pid_file"
+		if [ -n "$pid" ]; then
+			kill -9 "$pid" >/dev/null 2>&1
+		fi
+	done
 	pgrep -f "sleep.*(6s|9s|58s)" | xargs kill -9 >/dev/null 2>&1
 	pgrep -af "${CONFIG}/" | awk '! /app\.sh|subscribe\.lua|rule_update\.lua|tasks\.sh|ujail/{print $1}' | xargs kill -9 >/dev/null 2>&1
 	unset V2RAY_LOCATION_ASSET
@@ -1333,6 +1364,7 @@ stop() {
 	}
 	rm -rf $TMP_PATH
 	rm -rf /tmp/lock/${CONFIG}_socks_auto_switch*
+	rm -rf /tmp/lock/${CONFIG}_lease2hosts*
 	echolog "清空并关闭相关程序和缓存完成。"
 	exit 0
 }
@@ -1395,7 +1427,7 @@ get_config() {
 	set_cache_var GLOBAL_DNSMASQ_CONF_PATH ${GLOBAL_ACL_PATH}/dnsmasq.d
 
 	XRAY_BIN=$(first_type $(config_t_get global_app xray_file) xray)
-	SINGBOX_BIN=$(first_type $(config_t_get global_app singbox_file) sing-box)
+	SINGBOX_BIN=$(first_type $(config_t_get global_app sing_box_file) sing-box)
 }
 
 arg1=$1

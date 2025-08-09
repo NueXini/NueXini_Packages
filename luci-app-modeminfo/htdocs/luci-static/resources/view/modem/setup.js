@@ -87,8 +87,9 @@ return view.extend({
 		o = s.option(form.ListValue, 'device', _('Data port'), sdesc);
 		o.load = function(section_id) {
 			return callSerialPort('/dev/').then(L.bind(function(devices) {
-				for (var i = 0; i < devices.length; i++)
-					this.value(devices[i]);
+				this.keylist = [];
+				this.vallist = [];
+				devices.reverse().forEach(device => this.value(device));
 				return form.Value.prototype.load.apply(this, [section_id]);
 			}, this));
 		};
@@ -99,6 +100,8 @@ return view.extend({
 		o = s.option(form.ListValue, 'device_qmi', _('Data port'), qdesc);
 		o.load = function(section_id) {
 			return callQMIPort('/dev/').then(L.bind(function(devices) {
+				this.keylist = []; 
+				this.vallist = [];
 				for (var i = 0; i < devices.length; i++)
 					this.value(devices[i]);
 				return form.Value.prototype.load.apply(this, [section_id]);

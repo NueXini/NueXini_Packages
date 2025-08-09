@@ -306,7 +306,7 @@ o:value("https://8.8.8.8/dns-query", "Google 8888")
 o:value("https://9.9.9.9/dns-query", "Quad9-Recommended 9.9.9.9")
 o:value("https://149.112.112.112/dns-query", "Quad9-Recommended 149.112.112.112")
 o:value("https://208.67.222.222/dns-query", "OpenDNS")
-o:value("https://dns.adguard.com/dns-query,176.103.130.130", "AdGuard")
+o:value("https://dns.adguard.com/dns-query,94.140.14.14", "AdGuard")
 o:value("https://doh.libredns.gr/dns-query,116.202.176.26", "LibreDNS")
 o:value("https://doh.libredns.gr/ads,116.202.176.26", "LibreDNS (No Ads)")
 o.validate = doh_validate
@@ -322,7 +322,7 @@ o.default = "remote"
 o:value("remote", translate("Remote"))
 o:value("direct", translate("Direct"))
 
-o = s:taboption("DNS", Flag, "remote_fakedns", "FakeDNS", translate("Use FakeDNS work in the shunt domain that proxy."))
+o = s:taboption("DNS", Flag, "remote_fakedns", "FakeDNS", translate("Use FakeDNS work in the domain that proxy."))
 o.default = "0"
 o.rmempty = false
 
@@ -386,6 +386,10 @@ s:tab("faq", "FAQ")
 o = s:taboption("faq", DummyValue, "")
 o.template = appname .. "/global/faq"
 
+s:tab("maintain", translate("Maintain"))
+o = s:taboption("maintain", DummyValue, "")
+o.template = appname .. "/global/backup"
+
 -- [[ Socks Server ]]--
 o = s:taboption("Main", Flag, "socks_enabled", "Socks " .. translate("Main switch"))
 o.rmempty = false
@@ -414,6 +418,18 @@ o.default = 1
 o.rmempty = false
 
 o = s2:option(ListValue, "node", translate("Socks Node"))
+
+o = s2:option(DummyValue, "now_node", translate("Current Node"))
+o.rawhtml = true
+o.cfgvalue = function(_, n)
+	local current_node = api.get_cache_var("socks_" .. n)
+	if current_node then
+		local node = m:get(current_node)
+		if node then
+			return (api.get_node_remarks(node) or ""):gsub("(：)%[", "%1<br>[")
+		end
+	end
+end
 
 local n = 1
 m.uci:foreach(appname, "socks", function(s)

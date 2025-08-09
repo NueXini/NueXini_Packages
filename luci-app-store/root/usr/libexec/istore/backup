@@ -15,13 +15,15 @@ is_init() {
 }
 
 opkg_list_installed_packages() {
-    target=$1
+    local target=$1
+    local dir
+    local OPKG_INFO_DIR
     case $target in
         "preinstalled")
             OPKG_INFO_DIR="/rom/usr/lib/opkg/info"
         ;;
         "userinstalled")
-            OPKG_INFO_DIR="/overlay/upper/usr/lib/opkg/info"
+            OPKG_INFO_DIR="/overlay/upper/usr/lib/opkg/info /ext_overlay/upper/usr/lib/opkg/info"
         ;;
         "allinstalled")
             OPKG_INFO_DIR="/usr/lib/opkg/info"
@@ -31,7 +33,10 @@ opkg_list_installed_packages() {
             exit
         ;;
     esac
-    (cd $OPKG_INFO_DIR && find . -depth -maxdepth 1 -name "*.list" -type f | sed 's#^\./\(.*\)\.list$#\1#g')
+    for dir in $OPKG_INFO_DIR ; do
+        [ -d "$dir" ] || continue
+        (cd "$dir" && find . -depth -maxdepth 1 -name "*.list" -type f | sed 's#^\./\(.*\)\.list$#\1#g')
+    done
 }
 
 ipk_build() {
@@ -40,7 +45,7 @@ ipk_build() {
 
     UCI_BAK_DIR="/etc/istore/uci-defaults_bak/"
     UCI_DEF_DIR="etc/uci-defaults"
-    OPKG_INFO_DIR="/usr/lib/opkg/info/"
+    local OPKG_INFO_DIR="/usr/lib/opkg/info/"
 
     [ -n "${PKG_NAME_TEMP}" ] || exit 1
     #get real pkg name in opkg
@@ -170,7 +175,7 @@ backup() {
         ipk_build ${pkg_name} $BACKUP_PATH/backup_istore_$date
     done
 
-    # 5. create tar.gz file,and remove fir
+    # 5. create tar.gz file,and remove dir
     cd $BACKUP_PATH
     echo "write backup file to $BACKUP_PATH/backup_istore_$date.backup.tar.gz"
     tar -czf $BACKUP_PATH/backup_istore_$date.backup.tar.gz backup_istore_$date
@@ -246,10 +251,10 @@ get_backup_app_list() {
 }
 
 get_available_backup_file_list() {
+    local backup_file
     if [ -n "$1" ]; then
-        for backup_file in `ls $1/*.backup.tar.gz`; do
-            filename=${backup_file##*/}
-            echo "${filename}"
+        for backup_file in `cd $1 && ls backup_istore_*.backup.tar.gz`; do
+            echo "${backup_file}"
         done
     else
         echo "input backup path is null"

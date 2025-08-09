@@ -18,10 +18,11 @@
 
 <% local ver = require "luci.version" %>
 </div>
-<footer>
+<!-- added style="text-wrap: auto" but on this page it is still not the best solution. I will take it to consideration next time :) -->
+<footer style="text-wrap: auto">
 	<div>
-		<a class="luci-link" href="https://github.com/openwrt/luci" target="_blank">Powered by <%= ver.luciname %> (<%= ver.luciversion %>)</a> /
-						<a href="https://github.com/jerrykuku/luci-theme-argon" target="_blank">ArgonTheme <%# vPKG_VERSION %></a> /
+		<a class="luci-link" href="https://github.com/openwrt/luci" target="_blank">Powered by <%= ver.luciname %> (<%= ver.luciversion %>)</a> |
+						<a href="https://github.com/jerrykuku/luci-theme-argon" target="_blank">ArgonTheme <%# vPKG_VERSION %></a> |
 						<%= ver.distversion %>
 	</div>
 </footer>
@@ -30,15 +31,18 @@
 <script>
 	// thanks for Jo-Philipp Wich <jow@openwrt.org>
 	var luciLocation = <%= luci.http.write_json(luci.dispatcher.context.path) %>;
-	var winHeight = $(window).height();
-	$(window).resize(function () {
-		var winWidth = $(window).width()
+	var winHeight = window.innerHeight;
+	window.addEventListener('resize', function () {
+		var winWidth = window.innerWidth;
 		if(winWidth < 600){
-			var newHeight = $(this).height();
+			var newHeight = window.innerHeight;
 			var keyboradHeight = newHeight - winHeight;
-			$(".ftc").css("bottom", keyboradHeight + 30);
+			var ftcElement = document.querySelector(".ftc");
+			if (ftcElement) {
+				ftcElement.style.bottom = (keyboradHeight + 30) + "px";
+			}
 		}
-	})
+	});
 </script>
 </body>
 </html>

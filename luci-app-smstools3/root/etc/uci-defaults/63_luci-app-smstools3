@@ -1,9 +1,9 @@
-#!/bin/sh -x
+#!/bin/sh
 
 if [ ! -f /etc/config/smstools3 ]; then
         touch /etc/config/smstools3
-		touch /etc/smstools3.user
-		touch /etc/smstools3.pb
+	touch /etc/smstools3.user
+	touch /etc/smstools3.pb
         uci add smstools3 sms
 	uci add smstools3 root_phone
 	uci commit smstools3

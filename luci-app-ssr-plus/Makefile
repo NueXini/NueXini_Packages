@@ -1,8 +1,10 @@
 include $(TOPDIR)/rules.mk
 
+LUCI_TITLE:=luci-app-ssr-plus
+LUCI_PKGARCH:=all
 PKG_NAME:=luci-app-ssr-plus
-PKG_VERSION:=189
-PKG_RELEASE:=7
+PKG_VERSION:=190
+PKG_RELEASE:=3
 
 PKG_CONFIG_DEPENDS:= \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_NONE_V2RAY \
@@ -11,6 +13,7 @@ PKG_CONFIG_DEPENDS:= \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_ChinaDNS_NG \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_DNS2SOCKS \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_DNS2SOCKS_RUST \
+	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_DNS2TCP \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_DNSPROXY \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_MosDNS \
 	CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_Hysteria \
@@ -37,7 +40,7 @@ LUCI_PKGARCH:=all
 LUCI_DEPENDS:= \
 	+coreutils +coreutils-base64 +dns2tcp +dnsmasq-full +@PACKAGE_dnsmasq_full_ipset +ipset +kmod-ipt-nat +jq \
 	+ip-full +iptables +iptables-mod-tproxy +lua +lua-neturl +libuci-lua +microsocks \
-	+tcping +resolveip +shadowsocksr-libev-ssr-check +wget-ssl \
+	+tcping +resolveip +shadowsocksr-libev-ssr-check +curl \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_V2ray:curl \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_V2ray:v2ray-core \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_Xray:curl \
@@ -69,6 +72,7 @@ LUCI_DEPENDS:= \
 
 define Package/$(PKG_NAME)/config
 select PACKAGE_luci-lib-ipkg if PACKAGE_$(PKG_NAME)
+select PACKAGE_luci-lua-runtime if PACKAGE_$(PKG_NAME)
 
 choice
 	prompt "Shadowsocks Client Selection"

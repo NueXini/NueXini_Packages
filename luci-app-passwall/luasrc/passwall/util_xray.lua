@@ -37,7 +37,7 @@ local function get_domain_excluded()
 	if not content then return nil end
 	local hosts = {}
 	string.gsub(content, '[^' .. "\n" .. ']+', function(w)
-		local s = w:gsub("^%s*(.-)%s*$", "%1") -- Trim
+		local s = api.trim(w)
 		if s == "" then return end
 		if s:find("#") and s:find("#") == 1 then return end
 		if not s:find("#") or s:find("#") ~= 1 then table.insert(hosts, s) end
@@ -57,10 +57,12 @@ function gen_outbound(flag, node, tag, proxy_table)
 		local proxy_tag = nil
 		local fragment = nil
 		local noise = nil
+		local run_socks_instance = true
 		if proxy_table ~= nil and type(proxy_table) == "table" then
 			proxy_tag = proxy_table.tag or nil
 			fragment = proxy_table.fragment or nil
 			noise = proxy_table.noise or nil
+			run_socks_instance = proxy_table.run_socks_instance
 		end
 
 		if node.type ~= "Xray" then
@@ -74,17 +76,19 @@ function gen_outbound(flag, node, tag, proxy_table)
 				if tag and node_id and tag ~= node_id then
 					config_file = string.format("%s_%s_%s_%s.json", flag, tag, node_id, new_port)
 				end
-				sys.call(string.format('/usr/share/%s/app.sh run_socks "%s"> /dev/null',
-					appname,
-					string.format("flag=%s node=%s bind=%s socks_port=%s config_file=%s relay_port=%s",
-						new_port, --flag
-						node_id, --node
-						"127.0.0.1", --bind
-						new_port, --socks port
-						config_file, --config file
-						(proxy_tag and relay_port) and tostring(relay_port) or "" --relay port
-					)
-				))
+				if run_socks_instance then
+					sys.call(string.format('/usr/share/%s/app.sh run_socks "%s"> /dev/null',
+						appname,
+						string.format("flag=%s node=%s bind=%s socks_port=%s config_file=%s relay_port=%s",
+							new_port, --flag
+							node_id, --node
+							"127.0.0.1", --bind
+							new_port, --socks port
+							config_file, --config file
+							(proxy_tag and relay_port) and tostring(relay_port) or "" --relay port
+						)
+					))
+				end
 				node = {}
 				node.protocol = "socks"
 				node.transport = "tcp"
@@ -153,18 +157,20 @@ function gen_outbound(flag, node, tag, proxy_table)
 				tlsSettings = (node.stream_security == "tls") and {
 					serverName = node.tls_serverName,
 					allowInsecure = (node.tls_allowInsecure == "1") and true or false,
-					fingerprint = (node.type == "Xray" and node.utls == "1" and node.fingerprint and node.fingerprint ~= "") and node.fingerprint or nil
+					fingerprint = (node.type == "Xray" and node.utls == "1" and node.fingerprint and node.fingerprint ~= "") and node.fingerprint or nil,
+					echConfigList = (node.ech == "1") and node.ech_config or nil
 				} or nil,
 				realitySettings = (node.stream_security == "reality") and {
 					serverName = node.tls_serverName,
 					publicKey = node.reality_publicKey,
 					shortId = node.reality_shortId or "",
 					spiderX = node.reality_spiderX or "/",
-					fingerprint = (node.type == "Xray" and node.fingerprint and node.fingerprint ~= "") and node.fingerprint or "chrome"
+					fingerprint = (node.type == "Xray" and node.fingerprint and node.fingerprint ~= "") and node.fingerprint or "chrome",
+					mldsa65Verify = (node.use_mldsa65Verify == "1") and node.reality_mldsa65Verify or nil
 				} or nil,
-				rawSettings = ((node.transport == "raw" or node.transport == "tcp") and node.protocol ~= "socks") and {
+				rawSettings = ((node.transport == "raw" or node.transport == "tcp") and node.protocol ~= "socks" and (node.tcp_guise and node.tcp_guise ~= "none")) and {
 					header = {
-						type = node.tcp_guise or "none",
+						type = node.tcp_guise,
 						request = (node.tcp_guise == "http") and {
 							path = node.tcp_guise_http_path or {"/"},
 							headers = {
@@ -182,7 +188,10 @@ function gen_outbound(flag, node, tag, proxy_table)
 					readBufferSize = tonumber(node.mkcp_readBufferSize),
 					writeBufferSize = tonumber(node.mkcp_writeBufferSize),
 					seed = (node.mkcp_seed and node.mkcp_seed ~= "") and node.mkcp_seed or nil,
-					header = {type = node.mkcp_guise}
+					header = {
+						type = node.mkcp_guise,
+						domain = node.mkcp_domain
+					}
 				} or nil,
 				wsSettings = (node.transport == "ws") and {
 					path = node.ws_path or "/",
@@ -456,7 +465,8 @@ function gen_config_server(node)
 								certificateFile = node.tls_certificateFile,
 								keyFile = node.tls_keyFile
 							}
-						}
+						},
+						echServerKeys = (node.ech == "1") and node.ech_key or nil
 					} or nil,
 					rawSettings = (node.transport == "raw" or node.transport == "tcp") and {
 						header = {
@@ -478,7 +488,10 @@ function gen_config_server(node)
 						readBufferSize = tonumber(node.mkcp_readBufferSize),
 						writeBufferSize = tonumber(node.mkcp_writeBufferSize),
 						seed = (node.mkcp_seed and node.mkcp_seed ~= "") and node.mkcp_seed or nil,
-						header = {type = node.mkcp_guise}
+						header = {
+							type = node.mkcp_guise,
+							domain = node.mkcp_domain
+						}
 					} or nil,
 					wsSettings = (node.transport == "ws") and {
 						host = node.ws_host or nil,
@@ -538,7 +551,8 @@ function gen_config_server(node)
 				dest = node.reality_dest,
 				serverNames = node.reality_serverNames or {},
 				privateKey = node.reality_private_key,
-				shortIds = node.reality_shortId or ""
+				shortIds = node.reality_shortId or "",
+				mldsa65Seed = (node.use_mldsa65Seed == "1") and node.reality_mldsa65Seed or nil
 			} or nil
 		end
 	end
@@ -580,6 +594,7 @@ function gen_config(var)
 	local dns_socks_address = var["-dns_socks_address"]
 	local dns_socks_port = var["-dns_socks_port"]
 	local loglevel = var["-loglevel"] or "warning"
+	local no_run = var["-no_run"]
 
 	local dns_domain_rules = {}
 	local dns = nil
@@ -731,7 +746,7 @@ function gen_config(var)
 				end
 				if is_new_blc_node then
 					local blc_node = uci:get_all(appname, blc_node_id)
-					local outbound = gen_outbound(flag, blc_node, blc_node_tag, { fragment = xray_settings.fragment == "1" or nil, noise = xray_settings.noise == "1" or nil })
+					local outbound = gen_outbound(flag, blc_node, blc_node_tag, { fragment = xray_settings.fragment == "1" or nil, noise = xray_settings.noise == "1" or nil, run_socks_instance = not no_run })
 					if outbound then
 						outbound.tag = outbound.tag .. ":" .. blc_node.remarks
 						table.insert(outbounds, outbound)
@@ -757,7 +772,7 @@ function gen_config(var)
 				if is_new_node then
 					local fallback_node = uci:get_all(appname, fallback_node_id)
 					if fallback_node.protocol ~= "_balancing" then
-						local outbound = gen_outbound(flag, fallback_node, fallback_node_id, { fragment = xray_settings.fragment == "1" or nil, noise = xray_settings.noise == "1" or nil })
+						local outbound = gen_outbound(flag, fallback_node, fallback_node_id, { fragment = xray_settings.fragment == "1" or nil, noise = xray_settings.noise == "1" or nil, run_socks_instance = not no_run })
 						if outbound then
 							outbound.tag = outbound.tag .. ":" .. fallback_node.remarks
 							table.insert(outbounds, outbound)
@@ -789,7 +804,7 @@ function gen_config(var)
 						subjectSelector = { "blc-" },
 						pingConfig = {
 							destination = _node.useCustomProbeUrl and _node.probeUrl or nil,
-							interval = _node.probeInterval or "1m",
+							interval = (api.format_go_time(_node.probeInterval) ~= "0s") and api.format_go_time(_node.probeInterval) or "1m",
 							sampling = 3,
 							timeout = "5s"
 						}
@@ -931,7 +946,8 @@ function gen_config(var)
 						})
 					end
 					local proxy_table = {
-						tag = use_proxy and preproxy_tag or nil
+						tag = use_proxy and preproxy_tag or nil,
+						run_socks_instance = not no_run
 					}
 					if not proxy_table.tag then
 						if xray_settings.fragment == "1" then
@@ -1135,7 +1151,7 @@ function gen_config(var)
 				sys.call(string.format("mkdir -p %s && touch %s/%s", api.TMP_IFACE_PATH, api.TMP_IFACE_PATH, node.iface))
 			end
 		else
-			local outbound = gen_outbound(flag, node, nil, { fragment = xray_settings.fragment == "1" or nil, noise = xray_settings.fragment == "1" or nil })
+			local outbound = gen_outbound(flag, node, nil, { fragment = xray_settings.fragment == "1" or nil, noise = xray_settings.noise == "1" or nil, run_socks_instance = not no_run })
 			if outbound then
 				outbound.tag = outbound.tag .. ":" .. node.remarks
 				COMMON.default_outbound_tag, last_insert_outbound = set_outbound_detour(node, outbound, outbounds)
@@ -1481,7 +1497,7 @@ function gen_config(var)
 		end
 
 		for index, value in ipairs(config.outbounds) do
-			if not value["_flag_proxy_tag"] and value["_id"] and value.server and value.server_port then
+			if not value["_flag_proxy_tag"] and value["_id"] and value.server and value.server_port and not no_run then
 				sys.call(string.format("echo '%s' >> %s", value["_id"], api.TMP_PATH .. "/direct_node_list"))
 			end
 			for k, v in pairs(config.outbounds[index]) do

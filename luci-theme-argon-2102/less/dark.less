@@ -3,7 +3,7 @@
  *  Argon is a clean HTML5 theme for LuCI. It is based on luci-theme-material and Argon Template
  *
  *  luci-theme-argon
- *      Copyright 2023 Jerryk <jerrykuku@gmail.com>
+ *      Copyright 2025 Jerryk <jerrykuku@gmail.com>
  *
  *  Have a bug? Please create an issue here on GitHub!
  *      https://github.com/jerrykuku/luci-theme-argon/issues
@@ -992,6 +992,7 @@ input,
 
 }
 
+[data-page=""],
 [data-page="admin-dashboard"] {
     .main-right > #maincontent {
         .Dashboard {
@@ -1008,19 +1009,17 @@ input,
             .dashboard-bg {
                 background-color: #333333;
             }
-        }
 
-        .router-status-info .title img,
-        .lan-info .title img,
-        .wifi-info .title img {
-            filter: invert(90%);
-        }
+            img.svgmonochrome {
+                filter: invert(90%);
+            }
 
-        tr {
-            border-top: thin solid #4d4d4d;
+            tr {
+                border-top: thin solid #4d4d4d;
 
-            &:last-child {
-                border-bottom: thin solid #4d4d4d;
+                &:last-child {
+                    border-bottom: thin solid #4d4d4d;
+                }
             }
         }
     }
@@ -1034,9 +1033,34 @@ input,
     .fb-container td[class$="-icon"]::before {
         filter: invert(0.7);
     }
+
+    div#list-content {
+        table.cbi-section-table {
+            tbody {
+                tr:nth-child(1) {
+                    td.parent-icon {
+                        background: #1e1e1e !important;
+                    }
+                }
+            }
+        }
+    }
 }
 
 [data-page^="admin-services-openclash"] {
+    .oc {
+        --bg-light: #1e1e1e !important;
+        --bg-gray: #1e1e1e !important;
+
+        .developer-container {
+            background: transparent !important;
+        }
+    }
+
+    .config-upload-content{
+        background: #1e1e1e !important;
+    }
+
     .cbi-tabmenu::-webkit-scrollbar-thumb {
         background-color: #5b5b5b;
     }

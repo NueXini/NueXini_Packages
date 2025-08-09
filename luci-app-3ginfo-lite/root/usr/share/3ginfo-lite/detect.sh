@@ -1,9 +1,9 @@
 #!/bin/sh
 
 #
-# (c) 2023-2024 Cezary Jackiewicz <cezary@eko.one.pl>
+# (c) 2023-2025 Cezary Jackiewicz <cezary@eko.one.pl>
 #
-# (c) 2023-2024 modified by Rafał Wabik - IceG - From eko.one.pl forum
+# (c) 2023-2025 modified by Rafał Wabik - IceG - From eko.one.pl forum
 #
 
 

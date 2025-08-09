@@ -14,7 +14,6 @@ o = s:option(ListValue, "auto_detection_time", translate("Automatic detection de
 o:value("0", translate("Close"))
 o:value("icmp", "Ping")
 o:value("tcping", "TCP Ping")
-o.description = translate("To optimize performance, auto-detection is disabled when there are more than 30 nodes.")
 
 o = s:option(Flag, "show_node_info", translate("Show server address and port"))
 o.default = "0"
@@ -24,24 +23,6 @@ s:append(Template(appname .. "/node_list/link_add_node"))
 
 local auto_detection_time = m:get("@global_other[0]", "auto_detection_time") or "0"
 local show_node_info = m:get("@global_other[0]", "show_node_info") or "0"
-if auto_detection_time ~= "0" then
-	local node_count = 0
-	for k, e in ipairs(api.get_valid_nodes()) do
-		if e.node_type == "normal" then
-			node_count = node_count + 1
-		end
-	end
-	if node_count > 30 then auto_detection_time = "0" end
-end
-
--- Pass the auto_detection_time global variable to the webpage
-local o = s:option(DummyValue, "_auto_detection_time")
-o.rawhtml = true
-o.default = string.format([[
-	<script>
-		window.auto_detection_time = "%s";
-	</script>
-]], auto_detection_time)
 
 -- [[ Node List ]]--
 s = m:section(TypedSection, "nodes")
@@ -80,6 +61,47 @@ function s.remove(e, t)
 			m:set(s[".name"], "udp_node", "default")
 		end
 	end)
+	m.uci:foreach(appname, "nodes", function(s)
+		if s["preproxy_node"] == t then
+			m:del(s[".name"], "preproxy_node")
+			m:del(s[".name"], "chain_proxy")
+		end
+		if s["to_node"] == t then
+			m:del(s[".name"], "to_node")
+			m:del(s[".name"], "chain_proxy")
+		end
+		local list_name = s["urltest_node"] and "urltest_node" or (s["balancing_node"] and "balancing_node")
+		if list_name then
+			local nodes = m.uci:get_list(appname, s[".name"], list_name)
+			if nodes then
+				local changed = false
+				local new_nodes = {}
+				for _, node in ipairs(nodes) do
+					if node ~= t then
+						table.insert(new_nodes, node)
+					else
+						changed = true
+					end
+				end
+				if changed then
+					m.uci:set_list(appname, s[".name"], list_name, new_nodes)
+				end
+			end
+		end
+		if s["fallback_node"] == t then
+			m:del(s[".name"], "fallback_node")
+		end
+	end)
+	if (m:get(t, "add_mode") or "0") == "2" then
+		local add_from = m:get(t, "add_from") or ""
+		if add_from ~= "" then
+			m.uci:foreach(appname, "subscribe_list", function(s)
+				if s["remark"] == add_from then
+					m:del(s[".name"], "md5")
+				end
+			end)
+		end
+	end
 	TypedSection.remove(e, t)
 	local new_node = ""
 	local node0 = m:get("@nodes[0]") or nil
@@ -140,6 +162,8 @@ o.cfgvalue = function(t, n)
 			protocol = "HY"
 		elseif protocol == "hysteria2" then
 			protocol = "HY2"
+		elseif protocol == "anytls" then
+			protocol = "AnyTLS"
 		else
 			protocol = protocol:gsub("^%l",string.upper)
 		end
@@ -168,17 +192,13 @@ o = s:option(DummyValue, "ping", "Ping")
 o.width = "8%"
 o.rawhtml = true
 o.cfgvalue = function(t, n)
-	local type = m:get(n, "type") or ""
-	local protocol = m:get(n, "protocol") or ""
-	if (type == "sing-box" or type == "Xray") and
-	   (protocol == "_shunt" or protocol == "_balancing" or protocol == "_urltest" or protocol == "_iface") then
-		return string.format('<span class="ping_value" cbiid="%s">---</span>', n)
-	end
+	local result = "---"
 	if auto_detection_time ~= "icmp" then
-		return string.format('<span class="ping"><a href="javascript:void(0)" onclick="javascript:ping_node(\'%s\', this, \'icmp\')">%s</a></span>', n, translate("Test"))
+		result = string.format('<span class="ping"><a href="javascript:void(0)" onclick="javascript:ping_node(\'%s\', this, \'icmp\')">%s</a></span>', n, translate("Test"))
 	else
-		return string.format('<span class="ping_value" cbiid="%s">---</span>', n)
+		result = string.format('<span class="ping_value" cbiid="%s">---</span>', n)
 	end
+	return result
 end
 
 ---- TCP Ping
@@ -186,17 +206,13 @@ o = s:option(DummyValue, "tcping", "TCPing")
 o.width = "8%"
 o.rawhtml = true
 o.cfgvalue = function(t, n)
-	local type = m:get(n, "type") or ""
-	local protocol = m:get(n, "protocol") or ""
-	if (type == "sing-box" or type == "Xray") and
-	   (protocol == "_shunt" or protocol == "_balancing" or protocol == "_urltest" or protocol == "_iface") then
-		return string.format('<span class="tcping_value" cbiid="%s">---</span>', n)
-	end
+	local result = "---"
 	if auto_detection_time ~= "tcping" then
-		return  string.format('<span class="ping"><a href="javascript:void(0)" onclick="javascript:ping_node(\'%s\', this, \'tcping\')">%s</a></span>', n, translate("Test"))
+		result = string.format('<span class="ping"><a href="javascript:void(0)" onclick="javascript:ping_node(\'%s\', this, \'tcping\')">%s</a></span>', n, translate("Test"))
 	else
-		return  string.format('<span class="tcping_value" cbiid="%s">---</span>', n)
+		result = string.format('<span class="tcping_value" cbiid="%s">---</span>', n)
 	end
+	return result
 end
 
 o = s:option(DummyValue, "_url_test", translate("URL Test"))

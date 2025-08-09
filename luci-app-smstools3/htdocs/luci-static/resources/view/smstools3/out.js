@@ -28,6 +28,7 @@ return view.extend({
 	render: function (data) {
 		var obj = JSON.parse(data);
 		let tableHeaders = [
+			_('Modem'),
 			_('Send Date'),
 			_('Time(sec)'),
 			_('To'),
@@ -38,8 +39,9 @@ return view.extend({
 			E('tr', { 'class': 'tr cbi-section-table-titles' }, [
 				E('th', { 'class': 'th left', 'width': '15%' }, tableHeaders[0]),
 				E('th', { 'class': 'th left', 'width': '15%' }, tableHeaders[1]),
-				E('th', { 'class': 'th left', 'width': '20%' }, tableHeaders[2]),
-				E('th', { 'class': 'th left', 'width': '50%' }, tableHeaders[3]),
+				E('th', { 'class': 'th left', 'width': '15%' }, tableHeaders[2]),
+				E('th', { 'class': 'th left', 'width': '20%' }, tableHeaders[3]),
+				E('th', { 'class': 'th left', 'width': '50%' }, tableHeaders[4]),
 			]),
 		);
 		
@@ -52,10 +54,11 @@ return view.extend({
 			}
 			tableSMS.append(
 				E('tr', { 'class': 'cbi-rowstyle-'+s }, [
-					E('td', { 'class': 'td left', 'data-title': tableHeaders[0], 'width': '15%' }, obj.sent[i].sent),
-					E('td', { 'class': 'td left', 'data-title': tableHeaders[1], 'width': '15%' }, obj.sent[i].time),
-					E('td', { 'class': 'td left', 'data-title': tableHeaders[2], 'width': '20%' }, to),
-					E('td', { 'class': 'td left', 'data-title': tableHeaders[3], 'width': '50%' }, obj.sent[i].content),
+					E('td', { 'class': 'td left', 'data-title': tableHeaders[0], 'width': '10%' }, obj.sent[i].modem),
+					E('td', { 'class': 'td left', 'data-title': tableHeaders[1], 'width': '10%' }, obj.sent[i].sent),
+					E('td', { 'class': 'td left', 'data-title': tableHeaders[2], 'width': '10%' }, obj.sent[i].time),
+					E('td', { 'class': 'td left', 'data-title': tableHeaders[3], 'width': '20%' }, to),
+					E('td', { 'class': 'td left', 'data-title': tableHeaders[4], 'width': '50%' }, obj.sent[i].content),
 				]),
 			);
 			s = (s % 2) + 1;

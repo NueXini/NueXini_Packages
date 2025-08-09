@@ -81,6 +81,7 @@ if [ "x$MODE_NUM" = "x7" ]; then
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $16}')
 		[ -n "$T" ] && RSRQ="$T"
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {printf "%.1f\n", $18/5-20}' | xargs)
+#		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | xargs)
 		[ -n "$T" ] && SINR="$T"
 	else
 		B=$(echo $T | sed 's/"LTE BAND \(.*\)"/\1/')
@@ -112,6 +113,7 @@ if [ "x$MODE_NUM" = "x7" ]; then
 		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{print $9}')
 		[ -n "$T" ] && RSRQ="$T"
 		T=$(echo "$O" | awk -F[,:] '/^\+QCAINFO: "(pcc|PCC)"/{printf "%.1f\n", $11/5-20}' | xargs)
+#		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | xargs)
 		[ -n "$T" ] && SINR="$T"
 
 IFS="
@@ -189,7 +191,7 @@ fi
 fi
 
 
-MODE=$(echo $MODE | sed 's,/,+,'| sed 's,LTE B,LTE | B,')
+MODE=$(echo $MODE | sed 's,/,+,' | sed 's,LTE B,LTE | B,' | sed 's,LTE_A,LTE-A,' | sed 's,LTE-A B,LTE-A | B,')
 
 # Modem
 OF=$(sms_tool -d $DEVICE at "ati")

@@ -81,33 +81,38 @@ if [ -n "$NR_D" ]; then
 	NR_ICCID="$NR_D"
 fi
 
+if [[ "$MODE" == *"LTE"* ]]; then
+
 XFR=$(sms_tool -d $DEVICE at "at^hfreqinfo?")
 XFRCOUNT=$(echo -n "$XFR" | wc -c)
 
-if [ -n "$XFR" ] && [ "$XFRCOUNT" -gt "15" ]; then
+if [ -n "$XFR" ]; then
+    if [ -n "$XFRCOUNT" ]; then
+        if [ "$XFRCOUNT" -gt "15" ]; then
 
-# DL / UL / Band
-TBX=$(echo "$XFR" | awk -F [:] '/^\^HFREQINFO:/{print $2}' | xargs)
-TB=$(echo "$TBX" | cut -d ',' -f3-3 )
+        # DL / UL / Band
+        TBX=$(echo "$XFR" | awk -F [:] '/^\^HFREQINFO:/{print $2}' | xargs)
+        TB=$(echo "$TBX" | cut -d ',' -f3-3 )
 
-TDL=$(echo "$TBX" | cut -d ',' -f6-6 )
-DL=$(($TDL/1000))
+        TDL=$(echo "$TBX" | cut -d ',' -f6-6 )
+        DL=$(($TDL/1000))
 
-TUL=$(echo "$TBX" | cut -d ',' -f9-9 )
-UL=$(($TUL/1000))
+        TUL=$(echo "$TBX" | cut -d ',' -f9-9 )
+        UL=$(($TUL/1000))
 
-ULBW="UL: @$UL MHz"
-DLBW="DL: @$DL MHz"
+        ULBW="UL: @$UL MHz"
+        DLBW="DL: @$DL MHz"
+        
+        PBAND="$(band4g $TB "") $DLBW $ULBW"
+	EARFCN=$(echo "$TBX" | cut -d ',' -f4-4 )
+	PCI="-"
+        fi
+    fi
+fi
 
-PBAND="$(band4g $TB "") $DLBW $ULBW"
-EARFCN=$(echo "$TBX" | cut -d ',' -f4-4 )
-PCI="-"
-
-if [[ "$MODE" == *"LTE"* ]] && [ -n "$TB" ]; then
 MODE="LTE | "$(band4g $TB "")
 fi
-      
-fi
+
 
 # LAC & TAC
 T_HEX=$LAC_HEX

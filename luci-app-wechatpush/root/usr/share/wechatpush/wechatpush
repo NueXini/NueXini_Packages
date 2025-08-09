@@ -68,10 +68,17 @@ read_config() {
 	(echo "$device_info_helper" | grep -q "mikrotik_info") && mikrotik_info_enable="true"
 	(echo "$device_info_helper" | grep -q "openwrt_info") && openwrt_info_enable="true"
 	op_host_ips=$(echo "$op_host_ips" | sed 's/ /\n/g') 2>/dev/null
-	for str_version in "wrtbwmon" "iputils-arping" "curl" "iw"; do
-		eval $(echo ${str_version:0:2}"_version")=$(opkg list-installed | grep -w ^${str_version} | awk '{print $3}') 2>/dev/null
-	done
-	(opkg list-installed | grep -w -q "^firewall4") && nftables_version="true"
+	if [ -x "/usr/bin/apk" ]; then
+		for str_version in "wrtbwmon" "iputils-arping" "curl" "iw"; do
+			eval $(echo ${str_version:0:2}"_version")=$(apk list | grep -w ^${str_version} | grep 'installed' | awk '{print $1}' | awk -F ${str_version}"-" '{print $2}') 2>/dev/null
+		done
+		(apk list | grep -w -q "^firewall4" | grep 'installed') && nftables_version="true"
+	else
+		for str_version in "wrtbwmon" "iputils-arping" "curl" "iw"; do
+			eval $(echo ${str_version:0:2}"_version")=$(opkg list-installed | grep -w ^${str_version} | awk '{print $3}') 2>/dev/null
+		done
+		(opkg list-installed | grep -w -q "^firewall4") && nftables_version="true"
+	fi
 	devices_json="${dir}/devices.json"
 	tmp_devices_json="${dir}/devices.json.tmp"
 	tempjsonpath="${dir}/temp.json"
@@ -411,7 +418,7 @@ process_and_check() {
 	[ -z "$1" ] && return 1
 	local value=$(echo "$1" | tr -d '\n\r' | awk '$1=$1' | sed 's/_/ /g' | grep -v "^$" | sort -u | head -n1)
 	[ "$value" == "unknown" ] && value=""
-	[ -n "$value" ] && [ -n "$2" ] && echo $(cut_str "$value" "$2") && return 0
+	[ -n "$value" ] && [ -n "$2" ] && echo "$(cut_str "$value" "$2")" && return 0
 	[ -n "$value" ] && echo "$value" && return 0
 	return 1
 }
@@ -895,9 +902,9 @@ getping() {
 		# 避免无效的 arp 条目
 		if [ -n "$arp_entry_count" ] && [ "$arp_entry_count" -le 1 ]; then
 			ip_ms=$(run_with_tag arping -I "$interface" -c 20 -f -w "$timeout" "$ip" 2>/dev/null)
-			echo "$ip_ms" | grep -q "ms" && break || ip_ms=$(run_with_tag ping -c 5 -w "$timeout" "$ip" 2>/dev/null | grep -v '100% packet loss')
+			echo "$ip_ms" | grep -q "ms" && break || ip_ms=$(run_with_tag ping -c 5 -w 3 "$ip" 2>/dev/null | grep -v '100% packet loss')
 		else
-			ip_ms=$(run_with_tag ping -c 5 -w "$timeout" "$ip" 2>/dev/null | grep -v '100% packet loss')
+			ip_ms=$(run_with_tag ping -c 5 -w 3 "$ip" 2>/dev/null | grep -v '100% packet loss')
 			echo "$ip_ms" | grep -q "ms" && break || ip neigh del "$ip" dev "$interface" 2>/dev/null # 清理无效条目
 		fi
 		sleep 1
@@ -1503,7 +1510,7 @@ getgateway() {
 		echo "$get_gateway" | jq --arg gateway_host_ip "$gateway_host_ip" '
 			to_entries | map(select(.value | type == "object" and has("ip"))) | map({
 				ip: .value.ip,
-				name: (.value.devName // "unknown"),
+				name: (if .value.model != "" then .value.model else .value.devName end // "unknown"),
 				mac: "unknown",
 				type: (if .key | startswith("wifi") then "WiFi" else "LAN" end),
 				parent: (if .key | startswith("wifi") then $gateway_host_ip else "" end)
@@ -2651,31 +2658,31 @@ diy_send() {
 
 	if [[ "$diyurl" =~ ^https?:// ]]; then
 		[ -n "$proxy_address" ] && local proxy_cmd="-x $proxy_address"
-		run_with_tag curl $proxy_cmd --connect-timeout 30 --max-time 60 --retry 2 -X POST -H "$content_type" -d "$data" "${diyurl}"
+		local curl_response=$(run_with_tag curl $proxy_cmd --connect-timeout 30 --max-time 60 --retry 2 -X POST -H "$content_type" -d "$data" "${diyurl}")
 	else
 		local command=$(jq -r '.command' ${3}) && local command=$(eval echo ${command})
-		run_with_tag jq -r "$command" "$data" | eval "$diyurl"
+		local curl_response=$(run_with_tag jq -r "$command" "$data" | eval "$diyurl")
 	fi
 	local RETVAL=$?
 
 	if [ $RETVAL -ne 0 ] || [[ -n "$4" && "$4" == "test" ]]; then
 		[ $RETVAL -ne 0 ] && log_change "[ERROR] $(translate "Network or URL error, push failed, curl returned %s, please check the following debug information" "$RETVAL")"
 		[ -n "$4" ] && log_change "[DEBUG] $(translate "Push test enabled, current curl return value is %s" "$RETVAL")"
-		
+		log_change "[INFO] Response:  $curl_response"
+
 		echo '{"url":"'${diyurl}'","content_type":"'${content_type}'","type":'$(jq "$type" ${3})'}' >${dir}/debug_send_json
 		echo -e "${send_title}" "${send_content}" >${dir}/debug_send_content
 		cat ${tempjsonpath} >${dir}/debug_send_data
-		
-		! jq -r '.' ${dir}/debug_send_json && log_change "[ERROR] $(translate "Format error after variable substitution, please check %s for unescaped special characters or syntax errors" "$dir")"
-		
-		log_change "[DEBUG] $(translate "JSON file saved to: %s" "$dir")"
-		log_change "[DEBUG] $(translate "Push content preview saved to: %s" "$dir")"
-		log_change "[DEBUG] $(translate "If no message received, please check %s or use the following command to test manually" "$dir")"
+
+		! jq -r '.' ${dir}/debug_send_json && log_change "[ERROR] $(translate "Format error after variable substitution, please check %s for unescaped special characters or syntax errors" "${dir}/debug_send_json")"
+
+		log_change "[DEBUG] $(translate "JSON file saved to: %s" "${dir}/debug_send_json")"
+		log_change "[DEBUG] $(translate "Push content preview saved to: %s" "${dir}/debug_send_content")"
+		log_change "[DEBUG] $(translate "If no message received, please check %s or use the following command to test manually" "${dir}/debug_send_data")"
 		log_change "[DEBUG] curl -X POST -H \"$content_type\" -d \"@${dir}/debug_send_data\" \"${diyurl}\""
-		return 1
-	else
-		return 0
+		[ $RETVAL -ne 0 ] && return 1
 	fi
+	return 0
 }
 
 # ------------------------------------

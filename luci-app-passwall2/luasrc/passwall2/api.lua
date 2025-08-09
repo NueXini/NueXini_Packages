@@ -55,7 +55,8 @@ function uci_save(cursor, config, commit, apply)
 end
 
 function sh_uci_get(config, section, option)
-	exec_call(string.format("uci -q get %s.%s.%s", config, section, option))
+	local _, val = exec_call(string.format("uci -q get %s.%s.%s", config, section, option))
+	return val
 end
 
 function sh_uci_set(config, section, option, val, commit)
@@ -120,6 +121,11 @@ function base64Decode(text)
 	else
 		return raw
 	end
+end
+
+function base64Encode(text)
+	local result = nixio.bin.b64encode(text)
+	return result
 end
 
 --提取URL中的域名和端口(no ip)
@@ -189,11 +195,16 @@ function curl_direct(url, file, args)
 end
 
 function curl_auto(url, file, args)
-	local return_code, result = curl_proxy(url, file, args)
-	if not return_code or return_code ~= 0 then
-		return_code, result = curl_direct(url, file, args)
+	local localhost_proxy = uci:get(appname, "@global[0]", "localhost_proxy") or "1"
+	if localhost_proxy == "1" then
+		return curl_base(url, file, args)
+	else
+		local return_code, result = curl_proxy(url, file, args)
+		if not return_code or return_code ~= 0 then
+			return_code, result = curl_direct(url, file, args)
+		end
+		return return_code, result
 	end
-	return return_code, result
 end
 
 function url(...)
@@ -207,8 +218,9 @@ function url(...)
 	return require "luci.dispatcher".build_url(url)
 end
 
-function trim(s)
-	return (s:gsub("^%s*(.-)%s*$", "%1"))
+function trim(text)
+	if not text or text == "" then return "" end
+	return text:match("^%s*(.-)%s*$")
 end
 
 -- 分割字符串
@@ -471,6 +483,8 @@ function get_valid_nodes()
 							protocol = "HY"
 						elseif protocol == "hysteria2" then
 							protocol = "HY2"
+						elseif protocol == "anytls" then
+							protocol = "AnyTLS"
 						else
 							protocol = protocol:gsub("^%l",string.upper)
 						end
@@ -504,9 +518,22 @@ function get_node_remarks(n)
 					protocol = "VMess"
 				elseif protocol == "vless" then
 					protocol = "VLESS"
+				elseif protocol == "shadowsocks" then
+					protocol = "SS"
+				elseif protocol == "shadowsocksr" then
+					protocol = "SSR"
+				elseif protocol == "wireguard" then
+					protocol = "WG"
+				elseif protocol == "hysteria" then
+					protocol = "HY"
+				elseif protocol == "hysteria2" then
+					protocol = "HY2"
+				elseif protocol == "anytls" then
+					protocol = "AnyTLS"
 				else
 					protocol = protocol:gsub("^%l",string.upper)
 				end
+				if type2 == "sing-box" then type2 = "Sing-Box" end
 				type2 = type2 .. " " .. protocol
 			end
 			remarks = "%s：[%s]" % {type2, n.remarks}
@@ -834,7 +861,7 @@ local function auto_get_arch()
 		end
 	end
 
-	return util.trim(arch)
+	return trim(arch)
 end
 
 local default_file_tree = {
@@ -849,7 +876,8 @@ local default_file_tree = {
 	armv5   = "arm.*5",
 	armv6   = "arm.*6[^4]*",
 	armv7   = "arm.*7",
-	armv8   = "arm64"
+	armv8   = "arm64",
+	riscv64 = "riscv64"
 }
 
 function get_api_json(url)
@@ -959,7 +987,7 @@ function to_download(app_name, url, size)
 
 	sys.call("/bin/rm -f /tmp/".. app_name .."_download.*")
 
-	local tmp_file = util.trim(util.exec("mktemp -u -t ".. app_name .."_download.XXXXXX"))
+	local tmp_file = trim(util.exec("mktemp -u -t ".. app_name .."_download.XXXXXX"))
 
 	if size then
 		local kb1 = get_free_space("/tmp")
@@ -1022,7 +1050,7 @@ function to_extract(app_name, file, subfix)
 		return {code = 1, error = i18n.translatef("%s not enough space.", "/tmp")}
 	end
 
-	local tmp_dir = util.trim(util.exec("mktemp -d -t ".. app_name .."_extract.XXXXXX"))
+	local tmp_dir = trim(util.exec("mktemp -d -t ".. app_name .."_extract.XXXXXX"))
 
 	local output = {}
 
@@ -1181,6 +1209,9 @@ function is_js_luci()
 end
 
 function set_apply_on_parse(map)
+	if not map then
+		return
+	end
 	if is_js_luci() == true then
 		map.apply_on_parse = false
 		map.on_after_apply = function(self)
@@ -1189,6 +1220,10 @@ function set_apply_on_parse(map)
 				luci.http.redirect(self.redirect)
 			end
 		end
+	end
+	map.render = function(self, ...)
+		getmetatable(self).__index.render(self, ...) -- 保持原渲染流程
+		optimize_cbi_ui()
 	end
 end
 
@@ -1206,11 +1241,16 @@ function luci_types(id, m, s, type_name, option_prefix)
 				end
 
 				s.fields[key].cfgvalue = function(self, section)
-					if self.rewrite_option then
-						return m:get(section, self.rewrite_option)
+					-- 添加自定义 custom_cfgvalue 属性，如果有自定义的 custom_cfgvalue 函数，则使用自定义的 cfgvalue 逻辑
+					if self.custom_cfgvalue then
+						return self:custom_cfgvalue(section)
 					else
-						if self.option:find(option_prefix) == 1 then
-							return m:get(section, self.option:sub(1 + #option_prefix))
+						if self.rewrite_option then
+							return m:get(section, self.rewrite_option)
+						else
+							if self.option:find(option_prefix) == 1 then
+								return m:get(section, self.option:sub(1 + #option_prefix))
+							end
 						end
 					end
 				end
@@ -1258,4 +1298,57 @@ function luci_types(id, m, s, type_name, option_prefix)
 			end
 		end
 	end
+end
+function format_go_time(input)
+	input = input and trim(input)
+	local N = 0
+	if input and input:match("^%d+$") then
+		N = tonumber(input)
+	elseif input and input ~= "" then
+		for value, unit in input:gmatch("(%d+)%s*([hms])") do
+			value = tonumber(value)
+			if unit == "h" then
+				N = N + value * 3600
+			elseif unit == "m" then
+				N = N + value * 60
+			elseif unit == "s" then
+				N = N + value
+			end
+		end
+	end
+	if N <= 0 then
+		return "0s"
+	end
+	local result = ""
+	local h = math.floor(N / 3600)
+	local m = math.floor(N % 3600 / 60)
+	local s = N % 60
+	if h > 0 then result = result .. h .. "h" end
+	if m > 0 then result = result .. m .. "m" end
+	if s > 0 or result == "" then result = result .. s .. "s" end
+	return result
+end
+
+function optimize_cbi_ui()
+	luci.http.write([[
+		<script type="text/javascript">
+			//修正上移、下移按钮名称
+			document.querySelectorAll("input.btn.cbi-button.cbi-button-up").forEach(function(btn) {
+				btn.value = "]] .. i18n.translate("Move up") .. [[";
+			});
+			document.querySelectorAll("input.btn.cbi-button.cbi-button-down").forEach(function(btn) {
+				btn.value = "]] .. i18n.translate("Move down") .. [[";
+			});
+			//删除控件和说明之间的多余换行
+			document.querySelectorAll("div.cbi-value-description").forEach(function(descDiv) {
+				var prev = descDiv.previousSibling;
+				while (prev && prev.nodeType === Node.TEXT_NODE && prev.textContent.trim() === "") {
+					prev = prev.previousSibling;
+				}
+				if (prev && prev.nodeType === Node.ELEMENT_NODE && prev.tagName === "BR") {
+					prev.remove();
+				}
+			});
+		</script>
+	]])
 end

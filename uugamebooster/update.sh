@@ -19,7 +19,7 @@ for ARCH in "aarch64" "arm" "mipsel" "x86_64"; do
 		echo -e "Version mismatch. Expected version: $VERSION, got $FILE_VER."
 		exit 1
 	else
-		curl -fsSL "https://uu.gdl.netease.com/uuplugin/openwrt-$ARCH/v$VERSION/uu.tar.gz" -o "$CURDIR/uu-$ARCH.tar.gz"
+		curl -fsSL "http://uurouter.gdl.netease.com/uuplugin/openwrt-$ARCH/v$VERSION/uu.tar.gz" -o "$CURDIR/uu-$ARCH.tar.gz"
 		ACTUAL_MD5="$(md5sum "$CURDIR/uu-$ARCH.tar.gz" | awk '{print $1}')"
 		if [ "$ACTUAL_MD5" != "$FILE_MD5" ]; then
 			echo -e "HASH mismatch. Expected md5: $FILE_MD5, got $ACTUAL_MD5."

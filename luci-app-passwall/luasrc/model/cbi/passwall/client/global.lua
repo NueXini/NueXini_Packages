@@ -284,7 +284,7 @@ if (has_singbox or has_xray) and #nodes_table > 0 then
 			end
 		end
 	else
-		local tips = s:taboption("Main", DummyValue, "tips", " ")
+		local tips = s:taboption("Main", DummyValue, "tips", "　")
 		tips.rawhtml = true
 		tips.cfgvalue = function(t, n)
 			return string.format('<a style="color: red">%s</a>', translate("There are no available nodes, please add or subscribe nodes first."))
@@ -381,7 +381,10 @@ o = s:taboption("DNS", Flag, "filter_proxy_ipv6", translate("Filter Proxy Host I
 o.default = "0"
 
 ---- DNS Forward Mode
-o = s:taboption("DNS", ListValue, "dns_mode", translate("Filter Mode"))
+o = s:taboption("DNS", ListValue, "dns_mode", translate("Filter Mode"),
+			 "<font color='red'>" .. translate(
+				 "If the node uses Xray/Sing-Box shunt, select the matching filter mode (Xray/Sing-Box).") ..
+				 "</font>")
 o:value("udp", translatef("Requery DNS By %s", "UDP"))
 o:value("tcp", translatef("Requery DNS By %s", "TCP"))
 if chinadns_tls == 0 then
@@ -402,7 +405,10 @@ end
 
 ---- SmartDNS Forward Mode
 if api.is_finded("smartdns") then
-	o = s:taboption("DNS", ListValue, "smartdns_dns_mode", translate("Filter Mode"))
+	o = s:taboption("DNS", ListValue, "smartdns_dns_mode", translate("Filter Mode"),
+				 "<font color='red'>" .. translate(
+					 "If the node uses Xray/Sing-Box shunt, select the matching filter mode (Xray/Sing-Box).") ..
+					 "</font>")
 	o:value("socks", "Socks")
 	if has_singbox then
 		o:value("sing-box", "Sing-Box")
@@ -428,7 +434,7 @@ if api.is_finded("smartdns") then
 	o:value("https://8.8.8.8/dns-query")
 	o:value("https://9.9.9.9/dns-query")
 	o:value("https://208.67.222.222/dns-query")
-	o:value("https://dns.adguard.com/dns-query,176.103.130.130")
+	o:value("https://dns.adguard.com/dns-query,94.140.14.14")
 	o:value("https://doh.libredns.gr/dns-query,116.202.176.26")
 	o:value("https://doh.libredns.gr/ads,116.202.176.26")
 	o:depends({ dns_shunt = "smartdns", smartdns_dns_mode = "socks" })
@@ -552,8 +558,7 @@ o.description = translate("Notify the DNS server when the DNS query is notified,
 o.datatype = "ipaddr"
 o:depends({dns_mode = "sing-box"})
 o:depends({dns_mode = "xray"})
-o:depends("smartdns_dns_mode", "sing-box")
-o:depends("smartdns_dns_mode", "xray")
+o:depends("dns_shunt", "smartdns")
 
 o = s:taboption("DNS", Flag, "remote_fakedns", "FakeDNS", translate("Use FakeDNS work in the shunt domain that proxy."))
 o.default = "0"
@@ -602,6 +607,14 @@ o.description = desc .. "</ul>"
 o:depends({dns_shunt = "dnsmasq", tcp_proxy_mode = "proxy", chn_list = "direct"})
 if api.is_finded("smartdns") then
 	o:depends({dns_shunt = "smartdns", tcp_proxy_mode = "proxy", chn_list = "direct"})
+end
+
+o = s:taboption("DNS", Flag, "force_https_soa", translate("Force HTTPS SOA"), translate("Force queries with qtype 65 to respond with an SOA record."))
+o.default = "1"
+o.rmempty = false
+o:depends({dns_shunt = "chinadns-ng"})
+if api.is_finded("smartdns") then
+	o:depends({dns_shunt = "smartdns"})
 end
 
 o = s:taboption("DNS", Flag, "chinadns_ng_cert_verify", translate("DoT Cert verify"), translate("Verify DoT SSL cert. (May fail on some platforms!)"))
@@ -672,7 +685,7 @@ o = s:taboption("Proxy", Flag, "client_proxy", translate("Client Proxy"), transl
 o.default = "1"
 o.rmempty = false
 
-o = s:taboption("Proxy", DummyValue, "_proxy_tips", " ")
+o = s:taboption("Proxy", DummyValue, "_proxy_tips", "　")
 o.rawhtml = true
 o.cfgvalue = function(t, n)
 	return string.format('<a style="color: red" href="%s">%s</a>', api.url("acl"), translate("Want different devices to use different proxy modes/ports/nodes? Please use access control."))
@@ -718,7 +731,7 @@ o = s:taboption("log", Flag, "log_chinadns_ng", translate("Enable") .. " ChinaDN
 o.default = "0"
 o.rmempty = false
 
-o = s:taboption("log", DummyValue, "_log_tips", " ")
+o = s:taboption("log", DummyValue, "_log_tips", "　")
 o.rawhtml = true
 o.cfgvalue = function(t, n)
 	return string.format('<font color="red">%s</font>', translate("It is recommended to disable logging during regular use to reduce system overhead."))
@@ -727,6 +740,10 @@ end
 s:tab("faq", "FAQ")
 o = s:taboption("faq", DummyValue, "")
 o.template = appname .. "/global/faq"
+
+s:tab("maintain", translate("Maintain"))
+o = s:taboption("maintain", DummyValue, "")
+o.template = appname .. "/global/backup"
 
 -- [[ Socks Server ]]--
 o = s:taboption("Main", Flag, "socks_enabled", "Socks " .. translate("Main switch"))
@@ -757,6 +774,18 @@ o.rmempty = false
 
 o = s2:option(ListValue, "node", translate("Socks Node"))
 
+o = s2:option(DummyValue, "now_node", translate("Current Node"))
+o.rawhtml = true
+o.cfgvalue = function(_, n)
+	local current_node = api.get_cache_var("socks_" .. n)
+	if current_node then
+		local node = m:get(current_node)
+		if node then
+			return (api.get_node_remarks(node) or ""):gsub("(：)%[", "%1<br>[")
+		end
+	end
+end
+
 local n = 1
 m.uci:foreach(appname, "socks", function(s)
 	if s[".name"] == section then
@@ -771,7 +800,7 @@ o.datatype = "port"
 o.rmempty = false
 
 if has_singbox or has_xray then
-	o = s2:option(Value, "http_port", "HTTP " .. translate("Listen Port") .. " " .. translate("0 is not use"))
+	o = s2:option(Value, "http_port", "HTTP " .. translate("Listen Port"))
 	o.default = 0
 	o.datatype = "port"
 end

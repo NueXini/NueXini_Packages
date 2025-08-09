@@ -107,6 +107,9 @@ end
 if is_finded("dnsproxy") then
 	o:value("4", translate("Use DNSPROXY query and cache"))
 end
+if is_finded("chinadns-ng") then
+	o:value("5", translate("Use ChinaDNS-NG query and cache"))
+end
 o:depends("netflix_enable", "1")
 o.default = 1
 
@@ -188,6 +191,35 @@ if is_finded("dnsproxy") then
 	o:depends("shunt_parse_method", "parse_file")
 	o.rmempty = false
 	o.default = "1"
+end
+
+if is_finded("chinadns-ng") then
+	o = s:option(Value, "chinadns_ng_shunt_dnsserver", translate("Anti-pollution DNS Server For Shunt Mode"))
+	o:value("8.8.4.4:53", translate("Google Public DNS (8.8.4.4)"))
+	o:value("8.8.8.8:53", translate("Google Public DNS (8.8.8.8)"))
+	o:value("208.67.222.222:53", translate("OpenDNS (208.67.222.222)"))
+	o:value("208.67.220.220:53", translate("OpenDNS (208.67.220.220)"))
+	o:value("209.244.0.3:53", translate("Level 3 Public DNS (209.244.0.3)"))
+	o:value("209.244.0.4:53", translate("Level 3 Public DNS (209.244.0.4)"))
+	o:value("4.2.2.1:53", translate("Level 3 Public DNS (4.2.2.1)"))
+	o:value("4.2.2.2:53", translate("Level 3 Public DNS (4.2.2.2)"))
+	o:value("4.2.2.3:53", translate("Level 3 Public DNS (4.2.2.3)"))
+	o:value("4.2.2.4:53", translate("Level 3 Public DNS (4.2.2.4)"))
+	o:value("1.1.1.1:53", translate("Cloudflare DNS (1.1.1.1)"))
+	o:depends("shunt_dns_mode", "5")
+	o.description = translate(
+    	"<ul>" ..
+    	"<li>" .. translate("Custom DNS Server format as IP:PORT (default: 8.8.4.4:53)") .. "</li>" .. 
+    	"<li>" .. translate("Muitiple DNS server can saperate with ','") .. "</li>" ..
+    	"</ul>"
+	)
+
+	o = s:option(ListValue, "chinadns_ng_shunt_proto", translate("ChinaDNS-NG shunt query protocol"))
+	o:value("none", translate("UDP/TCP upstream"))
+	o:value("tcp", translate("TCP upstream"))
+	o:value("udp", translate("UDP upstream"))
+	o:value("tls", translate("DoT upstream (Need use wolfssl version)"))
+	o:depends("shunt_dns_mode", "5")
 end
 
 o = s:option(Flag, "apple_optimization", translate("Apple domains optimization"), translate("For Apple domains equipped with Chinese mainland CDN, always responsive to Chinese CDN IP addresses"))
@@ -312,78 +344,89 @@ o.rmempty = false
 
 -- [[ fragmen Settings ]]--
 if is_finded("xray") then
-s = m:section(TypedSection, "global_xray_fragment", translate("Xray Fragment Settings"))
-s.anonymous = true
+	s = m:section(TypedSection, "global_xray_fragment", translate("Xray Fragment Settings"))
+	s.anonymous = true
 
-o = s:option(Flag, "fragment", translate("Fragment"), translate("TCP fragments, which can deceive the censorship system in some cases, such as bypassing SNI blacklists."))
-o.default = 0
+	o = s:option(Flag, "fragment", translate("Fragment"), translate("TCP fragments, which can deceive the censorship system in some cases, such as bypassing SNI blacklists."))
+	o.default = 0
 
-o = s:option(ListValue, "fragment_packets", translate("Fragment Packets"), translate("\"1-3\" is for segmentation at TCP layer, applying to the beginning 1 to 3 data writes by the client. \"tlshello\" is for TLS client hello packet fragmentation."))
-o.default = "tlshello"
-o:value("tlshello", "tlshello")
-o:value("1-1", "1-1")
-o:value("1-2", "1-2")
-o:value("1-3", "1-3")
-o:value("1-5", "1-5")
-o:depends("fragment", true)
+	o = s:option(ListValue, "fragment_packets", translate("Fragment Packets"), translate("\"1-3\" is for segmentation at TCP layer, applying to the beginning 1 to 3 data writes by the client. \"tlshello\" is for TLS client hello packet fragmentation."))
+	o.default = "tlshello"
+	o:value("tlshello", "tlshello")
+	o:value("1-1", "1-1")
+	o:value("1-2", "1-2")
+	o:value("1-3", "1-3")
+	o:value("1-5", "1-5")
+	o:depends("fragment", true)
 
-o = s:option(Value, "fragment_length", translate("Fragment Length"), translate("Fragmented packet length (byte)"))
-o.default = "100-200"
-o:depends("fragment", true)
+	o = s:option(Value, "fragment_length", translate("Fragment Length"), translate("Fragmented packet length (byte)"))
+	o.default = "100-200"
+	o:depends("fragment", true)
 
-o = s:option(Value, "fragment_interval", translate("Fragment Interval"), translate("Fragmentation interval (ms)"))
-o.default = "10-20"
-o:depends("fragment", true)
+	o = s:option(Value, "fragment_interval", translate("Fragment Interval"), translate("Fragmentation interval (ms)"))
+	o.default = "10-20"
+	o:depends("fragment", true)
 
-o = s:option(Flag, "noise", translate("Noise"), translate("UDP noise, Under some circumstances it can bypass some UDP based protocol restrictions."))
-o.default = 0
+	o = s:option(Value, "fragment_maxsplit", translate("Fragment maxSplit"), translate("Fragmented maxSplit (byte)"))
+	o.default = "100-200"
+	o:depends("fragment", true)
 
-s = m:section(TypedSection, "xray_noise_packets", translate("Xray Noise Packets"))
-s.description = translate(
-    "<font style='color:red'>" .. translate("To send noise packets, select \"Noise\" in Xray Settings.") .. "</font>" ..
-    "<br/><font><b>" .. translate("For specific usage, see:") .. "</b></font>" ..
-    "<a href='https://xtls.github.io/config/outbounds/freedom.html' target='_blank'>" ..
-    "<font style='color:green'><b>" .. translate("Click to the page") .. "</b></font></a>")
-s.template = "cbi/tblsection"
-s.sortable = true
-s.anonymous = true
-s.addremove = true
+	o = s:option(Flag, "noise", translate("Noise"), translate("UDP noise, Under some circumstances it can bypass some UDP based protocol restrictions."))
+	o.default = 0
 
-s.remove = function(self, section)
-	for k, v in pairs(self.children) do
-		v.rmempty = true
-		v.validate = nil
+	s = m:section(TypedSection, "xray_noise_packets", translate("Xray Noise Packets"))
+	s.description = translate(
+		"<font style='color:red'>" .. translate("To send noise packets, select \"Noise\" in Xray Settings.") .. "</font>" ..
+		"<br/><font><b>" .. translate("For specific usage, see:") .. "</b></font>" ..
+		"<a href='https://xtls.github.io/config/outbounds/freedom.html' target='_blank'>" ..
+		"<font style='color:green'><b>" .. translate("Click to the page") .. "</b></font></a>")
+	s.template = "cbi/tblsection"
+	s.sortable = true
+	s.anonymous = true
+	s.addremove = true
+
+	s.remove = function(self, section)
+		for k, v in pairs(self.children) do
+			v.rmempty = true
+			v.validate = nil
+		end
+		TypedSection.remove(self, section)
 	end
-	TypedSection.remove(self, section)
-end
 
-o = s:option(Flag, "enabled", translate("Enable"))
-o.default = 1
-o.rmempty = false
+	o = s:option(Flag, "enabled", translate("Enable"))
+	o.default = 1
+	o.rmempty = false
 
-o = s:option(ListValue, "type", translate("Type"))
-o.default = "base64"
-o:value("rand", "rand")
-o:value("str", "str")
-o:value("hex", "hex")
-o:value("base64", "base64")
+	o = s:option(ListValue, "type", translate("Type"))
+	o.default = "base64"
+	o:value("rand", "rand")
+	o:value("str", "str")
+	o:value("hex", "hex")
+	o:value("base64", "base64")
 
-o = s:option(Value, "domainStrategy", translate("Domain Strategy"))
-o.default = "UseIP"
-o:value("AsIs", "AsIs")
-o:value("UseIP", "UseIP")
-o:value("UseIPv4", "UseIPv4")
-o:value("ForceIP", "ForceIP")
-o:value("ForceIPv4", "ForceIPv4")
-o.rmempty = false
+	o = s:option(Value, "domainStrategy", translate("Domain Strategy"))
+	o.default = "UseIP"
+	o:value("AsIs", "AsIs")
+	o:value("UseIP", "UseIP")
+	o:value("UseIPv4", "UseIPv4")
+	o:value("ForceIP", "ForceIP")
+	o:value("ForceIPv4", "ForceIPv4")
+	o.rmempty = false
 
-o = s:option(Value, "packet", translate("Packet"))
-o.datatype = "minlength(1)"
-o.rmempty = false
+	o = s:option(Value, "packet", translate("Packet"))
+	o.datatype = "minlength(1)"
+	o.rmempty = false
 
-o = s:option(Value, "delay", translate("Delay (ms)"))
-o.datatype = "or(uinteger,portrange)"
-o.rmempty = false
+	o = s:option(Value, "delay", translate("Delay (ms)"))
+	o.datatype = "or(uinteger,portrange)"
+	o.rmempty = false
+
+	o = s:option(Value, "applyto", translate("ApplyTo (IP type)"))
+	o.default = "IP"
+	o:value("IP", "IP")
+	o:value("IPV4", "IPv4")
+	o:value("IPV6", "IPv6")
+	o.rmempty = false
 end
 
 return m

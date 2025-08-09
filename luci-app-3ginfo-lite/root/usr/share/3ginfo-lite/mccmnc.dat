@@ -7,8 +7,8 @@
 41250;Afghanistan;Etisalat
 412299;Afghanistan;Failed Calls
 412999;Afghanistan;Fix Line
-41280;Afghanistan;Mobifone
 41288;Afghanistan;Mobifone
+41280;Afghanistan;Mobifone
 41240;Afghanistan;MTN
 41220;Afghanistan;Roshan
 27603;Albania;ALBtelecom Mobile / Eagle
@@ -40,21 +40,22 @@
 34493;Antigua and Barbuda;Digicel
 344299;Antigua and Barbuda;Failed Calls
 344999;Antigua and Barbuda;Fix Line
-344920;Antigua and Barbuda;Flow
 34492;Antigua and Barbuda;Flow
-34403;Antigua and Barbuda;imobile / APUA
+344920;Antigua and Barbuda;Flow
 34430;Antigua and Barbuda;imobile / APUA
-722330;Argentina;Claro
+34403;Antigua and Barbuda;imobile / APUA
 722320;Argentina;Claro
-722310;Argentina;Claro
 72231;Argentina;Claro
+722310;Argentina;Claro
+722330;Argentina;Claro
 722299;Argentina;Express
+722299;Argentina;Failed Calls
 722999;Argentina;Fix Line
 722299;Argentina;Imowi
 722299;Argentina;IPLAN
 722299;Argentina;Kallofer
-72207;Argentina;Movistar
 72270;Argentina;Movistar
+72207;Argentina;Movistar
 72210;Argentina;Movistar
 722299;Argentina;Nuestro
 72234;Argentina;Personal
@@ -74,43 +75,45 @@
 36301;Aruba;SETAR
 505299;Australia;ACMA
 50530;Australia;Compatel
+505299;Australia;Failed Calls
 505999;Australia;Fix Line
 505299;Australia;Get SIM
 50519;Australia;Lycamobile
 50535;Australia;MessageBird
 50510;Australia;Norfolk Telecom
 50590;Australia;Optus
-50550;Australia;Pivotel
 50588;Australia;Pivotel
+50550;Australia;Pivotel
 50513;Australia;RailCorp
 50526;Australia;Sinch
 50502;Australia;Optus
 505299;Australia;Symbio
-50501;Australia;Telstra
-50511;Australia;Telstra
-50539;Australia;Telstra
-50571;Australia;Telstra
 50572;Australia;Telstra
+50539;Australia;Telstra
+50501;Australia;Telstra
+50571;Australia;Telstra
+50511;Australia;Telstra
 50516;Australia;VicTrack
-50507;Australia;Vodafone
-50503;Australia;Vodafone
 50506;Australia;Vodafone
 50512;Australia;Vodafone
-23214;Austria;3
+50507;Australia;Vodafone
+50503;Australia;Vodafone 
 23205;Austria;3
+23219;Austria;3
 23216;Austria;3
 23210;Austria;3
-23219;Austria;3
-23209;Austria;A1 Telekom
-23212;Austria;A1 Telekom
-23202;Austria;A1 Telekom
+23214;Austria;3
 23211;Austria;A1 Telekom
+23209;Austria;A1 Telekom
+23202;Austria;A1 Telekom
+23212;Austria;A1 Telekom
 23201;Austria;A1 Telekom
 232299;Austria;ArgoNET
 232299;Austria;DIALOG telekom
 232299;Austria;Digital Privacy
 232299;Austria;DIMOCO
 232299;Austria;educom
+232299;Austria;Failed Calls
 232999;Austria;Fix Line
 23225;Austria;Holding Graz
 232299;Austria;Innsbrucker Kommunalbetriebe
@@ -118,6 +121,7 @@
 232299;Austria;Lenovo Connect
 232299;Austria;LINK Mobility
 23226;Austria;LIWEST Mobil
+23208;Austria;Lycamobile
 23217;Austria;MRS
 23220;Austria;Mtel
 23291;Austria;OBB Infrastruktur
@@ -126,10 +130,10 @@
 232299;Austria;Skymond Mobile
 23224;Austria;Smartel Services
 23218;Austria;smartspace
-23223;Austria;T-Mobile / Magenta
 23213;Austria;T-Mobile / Magenta
-23204;Austria;T-Mobile / Magenta
 23203;Austria;T-Mobile / Magenta
+23204;Austria;T-Mobile / Magenta
+23223;Austria;T-Mobile / Magenta
 232299;Austria;Telfoni
 23227;Austria;Tismi
 23207;Austria;Ventocom
@@ -142,8 +146,8 @@
 40006;Azerbaijan;Naxtel
 364490;Bahamas;Aliv
 364390;Bahamas;Cybercell / BaTelCo
-36439;Bahamas;Cybercell / BaTelCo
 36430;Bahamas;Cybercell / BaTelCo
+36439;Bahamas;Cybercell / BaTelCo
 364299;Bahamas;Failed Calls
 364999;Bahamas;Fix Line
 42601;Bahrain;Batelco
@@ -174,6 +178,7 @@
 20625;Belgium;Dense Air
 20623;Belgium;Dust Mobile
 20633;Belgium;Ericsson
+206299;Belgium;Failed Calls
 206299;Belgium;FEBO
 206999;Belgium;Fix Line
 206299;Belgium;GianCom
@@ -189,10 +194,10 @@
 20634;Belgium;onoff
 206299;Belgium;PM Factory
 20600;Belgium;Proximus
-20604;Belgium;Proximus
 20601;Belgium;Proximus
+20604;Belgium;Proximus
 20605;Belgium;Telenet
-20607;Belgium;Vectone Mobile
+20607;Belgium;Vectone Mobile 
 20608;Belgium;VOOmobile
 206299;Belgium;Voxbone / Bandwidth
 70267;Belize;DigiCell
@@ -208,8 +213,9 @@
 350299;Bermuda;Failed Calls
 350999;Bermuda;Fix Line
 35000;Bermuda;One
-40211;Bhutan;B-Mobile
 40217;Bhutan;B-Mobile
+40211;Bhutan;B-Mobile
+402299;Bhutan;Failed Calls
 402999;Bhutan;Fix Line
 40277;Bhutan;TashiCell
 73602;Bolivia;Entel Movil
@@ -227,45 +233,46 @@
 652999;Botswana;Fix Line
 65201;Botswana;Mascom
 65202;Botswana;Orange
-72432;Brazil;Algar Telecom
 72433;Brazil;Algar Telecom
 72434;Brazil;Algar Telecom
+72432;Brazil;Algar Telecom
 72426;Brazil;Americanet
 724299;Brazil;ARQIA
 724299;Brazil;Bbs Options
 724299;Brazil;Cinco
-72405;Brazil;Claro
 72438;Brazil;Claro
+72405;Brazil;Claro
 724299;Brazil;Failed Calls
 724999;Brazil;Fix Line
 72421;Brazil;Ligue
-72400;Brazil;Nextel
-72439;Brazil;Nextel
+72400;Brazil;Claro-nxt/Nextel
+72439;Brazil;Claro-nxt/Nextel
 724299;Brazil;NLT
-72416;Brazil;Oi Movel
 72431;Brazil;Oi Movel
+72416;Brazil;Oi Movel
 72415;Brazil;Sercomtel
 72417;Brazil;Surf
 724299;Brazil;Telecall
-72454;Brazil;TIM
-72403;Brazil;TIM
-72402;Brazil;TIM
 72404;Brazil;TIM
+72403;Brazil;TIM
+72454;Brazil;TIM
+72402;Brazil;TIM
 724299;Brazil;Vecto Mobile
-72411;Brazil;Vivo
 72423;Brazil;Vivo
 72406;Brazil;Vivo
 72410;Brazil;Vivo
+72411;Brazil;Vivo
 348570;British Virgin Islands;CCT
 348770;British Virgin Islands;Digicel
 348299;British Virgin Islands;Failed Calls
 348999;British Virgin Islands;Fix Line
 348170;British Virgin Islands;Flow
-52802;Brunei;B-Mobile
-52803;Brunei;DST
+52802;Brunei;Progresif Cellular / B-Mobile
 52811;Brunei;DST
+52803;Brunei;DST
 528299;Brunei;Failed Calls
 528999;Brunei;Fix Line
+52801;Brunei;imagine
 28401;Bulgaria;A1
 28411;Bulgaria;Bulsatcom
 284299;Bulgaria;Failed Calls
@@ -278,6 +285,7 @@
 61302;Burkina Faso;Orange
 61303;Burkina Faso;Telecel
 61301;Burkina Faso;Telmob
+642299;Burundi;Failed Calls
 642999;Burundi;Fix Line
 64201;Burundi;Leo
 64282;Burundi;Leo
@@ -286,74 +294,75 @@
 64207;Burundi;Smart
 45604;Cambodia;QB
 45601;Cambodia;Cellcard
-456299;Cambodia;CooTel
+45618;Cambodia;Cellcard
+45616;Cambodia;CooTel
 456299;Cambodia;Failed Calls
-456999;Cambodia;Fix Line
+456999;Cambodia;Fix Line 
 45608;Cambodia;Metfone
 456299;Cambodia;MPTC
 45611;Cambodia;Seatel
-45606;Cambodia;Smart
 45605;Cambodia;Smart
 45602;Cambodia;Smart
+45606;Cambodia;Smart
 624299;Cameroon;Failed Calls
 624999;Cameroon;Fix Line
 62401;Cameroon;MTN
 62404;Cameroon;Nextel
 62402;Cameroon;Orange
 302630;Canada;Bell Mobility
-302610;Canada;Bell Mobility
+30261;Canada;Bell Mobility
 302660;Canada;Bell Mobility
 30264;Canada;Bell Mobility
-30269;Canada;Bell Mobility
-30261;Canada;Bell Mobility
-302640;Canada;Bell Mobility
 302690;Canada;Bell Mobility
+30269;Canada;Bell Mobility
+302640;Canada;Bell Mobility
+302610;Canada;Bell Mobility
 30266;Canada;Bell Mobility
 30263;Canada;Bell Mobility
 302270;Canada;eastlink
 302299;Canada;Failed Calls
-302370;Canada;Fido
 30237;Canada;Fido
+302370;Canada;Fido
 302999;Canada;Fix Line
 30249;Canada;Freedom Mobile
 302491;Canada;Freedom Mobile
 302490;Canada;Freedom Mobile
 302620;Canada;Ice Wireless
 30262;Canada;Ice Wireless
+30253;Canada;K-Net Mobile
 302380;Canada;K-Net Mobile
 302530;Canada;K-Net Mobile
-30253;Canada;K-Net Mobile
 30238;Canada;K-Net Mobile
-302720;Canada;Rogers
-302721;Canada;Rogers
 30232;Canada;Rogers
 30282;Canada;Rogers
 302320;Canada;Rogers
 302820;Canada;Rogers
 30272;Canada;Rogers
-302780;Canada;SaskTel Mobility
+302720;Canada;Rogers
+302721;Canada;Rogers
 302781;Canada;SaskTel Mobility
 302750;Canada;SaskTel Mobility
-302680;Canada;SaskTel Mobility
 30275;Canada;SaskTel Mobility
-30278;Canada;SaskTel Mobility
+302680;Canada;SaskTel Mobility
 30268;Canada;SaskTel Mobility
+30278;Canada;SaskTel Mobility
 302681;Canada;SaskTel Mobility
-302860;Canada;Telus Mobility
-30286;Canada;Telus Mobility
+302780;Canada;SaskTel Mobility
+302760;Canada;Telus Mobility
 30222;Canada;Telus Mobility
 302360;Canada;Telus Mobility
-302760;Canada;Telus Mobility
 302221;Canada;Telus Mobility
 30236;Canada;Telus Mobility
 302220;Canada;Telus Mobility
-30222;Canada;Telus Mobility
+302860;Canada;Telus Mobility
 30276;Canada;Telus Mobility
-302520;Canada;Videotron
-302510;Canada;Videotron
-30251;Canada;Videotron
+30222;Canada;Telus Mobility
+30286;Canada;Telus Mobility
 30250;Canada;Videotron
+302510;Canada;Videotron
+302520;Canada;Videotron
 302500;Canada;Videotron
+30251;Canada;Videotron
 302299;Canada;Xplore Mobile
 62501;Cape Verde;CVMovel
 625299;Cape Verde;Failed Calls
@@ -380,15 +389,15 @@
 730299;Chile;CellOPS
 73022;Chile;Cellplus
 73011;Chile;Celupago
-73027;Chile;Cibeles Telecom
 73015;Chile;Cibeles Telecom
+73027;Chile;Cibeles Telecom
 73003;Chile;Claro
 73023;Chile;Claro
 73017;Chile;Compatel
 730299;Chile;Dotcom
 73018;Chile;Empresas Bunker
-73001;Chile;Entel
 73010;Chile;Entel
+73001;Chile;Entel 
 730299;Chile;Failed Calls
 730999;Chile;Fix Line
 730299;Chile;GTD Movil
@@ -415,21 +424,21 @@
 73013;Chile;Virgin Mobile
 730299;Chile;VOIP Analysis
 73008;Chile;VTR Movil
-73004;Chile;WOM
 73009;Chile;WOM
 73005;Chile;WOM
-46002;China;China Mobile
-46000;China;China Mobile
-46007;China;China Mobile
-46008;China;China Mobile
+73004;Chile;WOM
 46004;China;China Mobile
+46007;China;China Mobile
+46002;China;China Mobile
+46008;China;China Mobile
+46000;China;China Mobile
 46011;China;China Telecom
 46003;China;China Telecom
 46012;China;China Telecom
 46006;China;China Unicom
-46010;China;China Unicom
 46001;China;China Unicom
 46009;China;China Unicom
+46010;China;China Unicom
 460299;China;Failed Calls
 460999;China;Fix Line
 732299;Colombia;ATnet
@@ -439,22 +448,23 @@
 73202;Colombia;Edatel
 732187;Colombia;eTb
 732299;Colombia;Eztalk Mobile
+732299;Colombia;Failed Calls
 732999;Colombia;Fix Line
 732240;Colombia;Flash Mobile
 732299;Colombia;Gomobile
 732220;Colombia;Libre Tecnologias
 732299;Colombia;Movil Exito
-732123;Colombia;Movistar
 73201;Colombia;Movistar
+732123;Colombia;Movistar
 732299;Colombia;Plintron
 732230;Colombia;Setroc Mobile
 732199;Colombia;SUMA movil
-732165;Colombia;Tigo
 732103;Colombia;Tigo
+732165;Colombia;Tigo
 732111;Colombia;Tigo
 732299;Colombia;TuCEL
-73220;Colombia;UNE
 732142;Colombia;UNE
+73220;Colombia;UNE
 732299;Colombia;Vilacom Mobile
 732154;Colombia;Virgin Mobile
 732360;Colombia;WOM
@@ -473,8 +483,8 @@
 71203;Costa Rica;Claro
 712299;Costa Rica;Failed Calls
 712999;Costa Rica;Fix Line
-71201;Costa Rica;Kolbi / ICE
 71202;Costa Rica;Kolbi / ICE
+71201;Costa Rica;Kolbi / ICE
 71204;Costa Rica;Movistar
 712299;Costa Rica;MultiCom
 712299;Costa Rica;racsa
@@ -487,11 +497,11 @@
 21902;Croatia;Telemach / Tele2
 36801;Cuba;Cubacel
 368299;Cuba;Failed Calls
-368999;Cuba;Fix Line
+368999;Cuba;Fix Line 
 368299;Cuba;MoviTel
 28022;Cyprus;Cablenet / Lemontel
-28001;Cyprus;Cytamobile-Vodafone
 28002;Cyprus;Cytamobile-Vodafone
+28001;Cyprus;Cytamobile-Vodafone
 28010;Cyprus;Epic / MTN
 280299;Cyprus;Failed Calls
 280999;Cyprus;Fix Line
@@ -517,10 +527,10 @@
 230299;Czech Republic;Odorik
 23005;Czech Republic;PODA
 230299;Czech Republic;SAZKA
-230299;Czech Republic;SZDC
 23098;Czech Republic;SZDC
-23007;Czech Republic;T-Mobile
+230299;Czech Republic;SZDC
 23001;Czech Republic;T-Mobile
+23007;Czech Republic;T-Mobile
 230299;Czech Republic;Tesco Mobile
 230299;Czech Republic;TOPefekt
 230299;Czech Republic;TT Quality
@@ -553,6 +563,7 @@
 238299;Denmark;Firmafon
 238299;Denmark;Firstcom
 238999;Denmark;Fix Line
+238299;Denmark;Flexfone
 23817;Denmark;Gotanet
 23842;Denmark;Greenwave
 238299;Denmark;ipnordic
@@ -573,10 +584,10 @@
 23830;Denmark;Pareteum
 238299;Denmark;SimService
 23803;Denmark;Syniverse
-23810;Denmark;TDC
 23801;Denmark;TDC
-23802;Denmark;Telenor
+23810;Denmark;TDC
 23877;Denmark;Telenor
+23802;Denmark;Telenor
 238299;Denmark;Telenor Connexion
 23820;Denmark;Telia
 23896;Denmark;Telia
@@ -586,7 +597,7 @@
 23825;Denmark;Viahub
 238299;Denmark;Viptel
 23808;Denmark;Voxbone / Bandwidth
-310299;Diego Garcia;Failed Calls
+310299;Diego Garcia;Failed Calls 
 310999;Diego Garcia;Fix Line
 310299;Diego Garcia;Sure
 63801;Djibouti;Evatis
@@ -642,6 +653,7 @@
 63601;Ethiopia;Ethio Mobile
 636299;Ethiopia;Failed Calls
 636999;Ethiopia;Fix Line
+63602;Ethiopia;Safaricom
 750999;Falkland Islands;Fix Line
 750299;Falkland Islands;Failed Calls
 75001;Falkland Islands;Sure
@@ -658,13 +670,13 @@
 244299;Finland;Benemen
 24426;Finland;Compatel
 244299;Finland;Cuuma
-24412;Finland;DNA
 24413;Finland;DNA
-24404;Finland;DNA
+24412;Finland;DNA
 24403;Finland;DNA
+24404;Finland;DNA
+24406;Finland;Elisa
 24421;Finland;Elisa
 24405;Finland;Elisa
-24406;Finland;Elisa
 244299;Finland;Failed Calls
 244999;Finland;Fix Line
 244299;Finland;interactive digital media / IDM
@@ -673,27 +685,28 @@
 244299;Finland;MI Carrier Services
 244299;Finland;MobiWeb
 24424;Finland;Nord Connect
-24438;Finland;NSN
-24407;Finland;NSN
 24439;Finland;NSN
-24408;Finland;NSN
 24441;Finland;NSN
 24440;Finland;NSN
+24407;Finland;NSN
+24438;Finland;NSN
+24408;Finland;NSN
 24409;Finland;NSN
+244299;Finland;Premium Numbers
 244299;Finland;RAILI
 24443;Finland;Telavox
-24491;Finland;Telia
 24436;Finland;Telia
-24415;Finland;Telit
+24491;Finland;Telia
+24415;Finland;Telit 
 24437;Finland;Tismi
 244299;Finland;TravelSim
 244299;Finland;Twilio
 24435;Finland;Ukko Mobile
 24442;Finland;Viahub
-24445;Finland;VIRVE
 24447;Finland;VIRVE
 24446;Finland;VIRVE
 24433;Finland;VIRVE
+24445;Finland;VIRVE
 24432;Finland;Voxbone / Bandwidth
 208299;France;Add-On Multimedia
 208299;France;Afone Mobile
@@ -708,9 +721,9 @@
 208299;France;Bazile
 208299;France;BJT
 208299;France;BJT
-20820;France;Bouygues Telecom
 20888;France;Bouygues Telecom
 20821;France;Bouygues Telecom
+20820;France;Bouygues Telecom
 208299;France;Bretagne Telecom
 208299;France;CAT
 208299;France;CELESTE
@@ -726,10 +739,10 @@
 208299;France;Failed Calls
 208999;France;Fix Line
 208299;France;Foliateam
-20836;France;Free Mobile
+20815;France;Free Mobile
 20835;France;Free Mobile
 20816;France;Free Mobile
-20815;France;Free Mobile
+20836;France;Free Mobile
 20894;France;Halys
 208299;France;Happy Telecom
 208299;France;Hexatel
@@ -749,8 +762,8 @@
 208299;France;Linkt
 208299;France;LITEYEAR
 20825;France;Lycamobile
-20803;France;MobiquiThings
 20824;France;MobiquiThings
+20803;France;MobiquiThings
 208299;France;Netcom
 20839;France;Networth Telecom
 208299;France;Nordnet
@@ -759,8 +772,8 @@
 208299;France;OpenIP
 20801;France;Orange
 20891;France;Orange
-20832;France;Orange
 20802;France;Orange
+20832;France;Orange
 208299;France;Paritel
 208299;France;Prixtel
 208299;France;Prixtel
@@ -768,10 +781,10 @@
 208299;France;SCT TELECOM
 208299;France;Sewan Communications
 20813;France;SFR
-20809;France;SFR
-20811;France;SFR
 20808;France;SFR
+20811;France;SFR
 20810;France;SFR
+20809;France;SFR
 208299;France;SIMbioz
 20830;France;Syma Mobile
 208299;France;TDF
@@ -784,7 +797,7 @@
 20831;France;Vectone Mobile
 208299;France;VOIP Telecom
 547299;French Polynesia;Failed Calls
-547999;French Polynesia;Fix Line
+547999;French Polynesia;Fix Line 
 547299;French Polynesia;Ora
 54720;French Polynesia;Vini
 54715;French Polynesia;Vodafone
@@ -812,32 +825,34 @@
 26223;Germany;1&1
 262299;Germany;Argon Networks
 26210;Germany;DB Netz
-26220;Germany;Telefonica / E-Plus
+262299;Germany;Failed Calls
 262999;Germany;Fix Line
 26214;Germany;Lebara
 26243;Germany;Lycamobile
+26213;Germany;T-mobile
+26225;Germany;Mtel
 26221;Germany;Multiconnect
 26212;Germany;sipgate
 26222;Germany;sipgate
-26206;Germany;T-mobile
-26278;Germany;T-mobile
 26201;Germany;T-mobile
+26278;Germany;T-mobile
+26206;Germany;T-mobile
 26224;Germany;TelcoVillage
-26203;Germany;Telefonica / E-Plus
-26205;Germany;Telefonica / E-Plus
-26217;Germany;Telefonica / E-Plus
+26205;Germany;Telefonica / O2
+26220;Germany;Telefonica / O2
+26217;Germany;Telefonica / O2
+26203;Germany;Telefonica / O2
 26216;Germany;Telefonica / O2
-26207;Germany;Telefonica / O2
-26208;Germany;Telefonica / O2
 26211;Germany;Telefonica / O2
+26208;Germany;Telefonica / O2
+26207;Germany;Telefonica / O2
 262299;Germany;Tismi
-262299;Germany;Truphone
+26242;Germany;Truphone
+26202;Germany;Vodafone
 26209;Germany;Vodafone
 26204;Germany;Vodafone
-26242;Germany;Vodafone
-26202;Germany;Vodafone
-62003;Ghana;Airtel
 62006;Ghana;Airtel
+62003;Ghana;Airtel
 620299;Ghana;Comsys
 620299;Ghana;Failed Calls
 620999;Ghana;Fix Line
@@ -855,6 +870,7 @@
 20215;Greece;BWS
 20202;Greece;Cosmote
 20201;Greece;Cosmote
+202299;Greece;Failed Calls
 202999;Greece;Fix Line
 20216;Greece;Inter Telecom
 202299;Greece;Interconnect
@@ -881,7 +897,7 @@
 340299;Guadeloupe and Martinique and French Guiana;Failed Calls
 340999;Guadeloupe and Martinique and French Guiana;Fix Line
 34004;Guadeloupe and Martinique and French Guiana;Free
-34001;Guadeloupe and Martinique and French Guiana;Orange
+34001;Guadeloupe and Martinique and French Guiana;Orange 
 34002;Guadeloupe and Martinique and French Guiana;SFR
 310370;Guam;Docomo Pacific
 310470;Guam;Docomo Pacific
@@ -920,48 +936,49 @@
 70830;Honduras;HonduTel
 70802;Honduras;Tigo
 70802;Honduras;Tigo
+45414;Hong Kong;3
 45405;Hong Kong;3
 45404;Hong Kong;3
 45403;Hong Kong;3
-45414;Hong Kong;3
-45413;Hong Kong;China Mobile
 45412;Hong Kong;China Mobile
-45432;Hong Kong;HKBN
 45430;Hong Kong;China Mobile
+45413;Hong Kong;China Mobile
+45432;Hong Kong;HKBN
 45407;Hong Kong;China Unicom
 45411;Hong Kong;CHKTL
 45401;Hong Kong;Citic
 45431;Hong Kong;CTExcel
 45436;Hong Kong;Eascotel
 454999;Hong Kong;Fix Line
-454395;Hong Kong;Government
-45427;Hong Kong;Government
-454390;Hong Kong;Government
 45425;Hong Kong;Government
-454394;Hong Kong;Government
-454398;Hong Kong;Government
-454393;Hong Kong;Government
-45428;Hong Kong;Government
-454397;Hong Kong;Government
-45426;Hong Kong;Government
 454392;Hong Kong;Government
 454396;Hong Kong;Government
 454391;Hong Kong;Government
+454395;Hong Kong;Government
+454390;Hong Kong;Government
+454394;Hong Kong;Government
+45428;Hong Kong;Government
+454398;Hong Kong;Government
+454393;Hong Kong;Government
+45427;Hong Kong;Government
+45426;Hong Kong;Government
+454397;Hong Kong;Government
 45424;Hong Kong;Multibyte
 45417;Hong Kong;SmarTone
 45406;Hong Kong;SmarTone
 45415;Hong Kong;SmarTone
 45402;Hong Kong;SUN Mobile / CSL
-45416;Hong Kong;SUN Mobile / CSL
 45410;Hong Kong;SUN Mobile / CSL
 45420;Hong Kong;SUN Mobile / CSL
 45418;Hong Kong;SUN Mobile / CSL
-45400;Hong Kong;SUN Mobile / CSL
 45419;Hong Kong;SUN Mobile / CSL
+45400;Hong Kong;SUN Mobile / CSL
+45416;Hong Kong;SUN Mobile / CSL
 45408;Hong Kong;Tru
 45435;Hong Kong;Webbing
 216299;Hungary;Antenna
 21603;Hungary;Digi
+216299;Hungary;Failed Calls
 216999;Hungary;Fix line
 216299;Hungary;Invitech
 216299;Hungary;Mobil4
@@ -972,7 +989,6 @@
 21601;Hungary;Telenor
 216299;Hungary;Vidanet
 21670;Hungary;Vodafone
-21671;Hungary;Vodafone
 274299;Iceland;Failed Calls
 274999;Iceland;Fix Line
 27411;Iceland;NOVA
@@ -981,23 +997,45 @@
 27401;Iceland;Siminn
 27416;Iceland;Tismi
 27404;Iceland;Viking Wireless
-27412;Iceland;Vodafone
+27412;Iceland;Vodafone 
 27403;Iceland;Vodafone
 27402;Iceland;Vodafone
-40433;India;Aircel
-40491;India;Aircel
-40442;India;Aircel
-40429;India;Aircel
-40417;India;Aircel
+40537;India;Aircel
 40441;India;Aircel
+40593;India;Airtel
+40503;India;Airtel
 40428;India;Aircel
+40528;India;Aircel
+40598;India;Airtel
+40549;India;Airtel
+40541;India;Aircel
 40437;India;Aircel
-40435;India;Aircel
+40594;India;Airtel
+40506;India;Airtel
 40425;India;Aircel
-40416;India;Airtel
-40495;India;Airtel
-40470;India;Airtel
-40410;India;Airtel
+40435;India;Aircel
+40529;India;Aircel
+40570;India;Airtel
+40542;India;Aircel
+40595;India;Airtel
+40510;India;Airtel
+40533;India;Aircel
+40590;India;Airtel
+40591;India;Aircel
+40433;India;Aircel
+40517;India;Aircel
+40596;India;Airtel
+40516;India;Airtel
+40535;India;Aircel
+40491;India;Aircel
+40417;India;Aircel
+40442;India;Aircel
+40592;India;Airtel
+40502;India;Airtel
+40429;India;Aircel
+40525;India;Aircel
+40597;India;Airtel
+40531;India;Airtel
 40494;India;Airtel
 40498;India;Airtel
 40406;India;Airtel
@@ -1010,109 +1048,204 @@
 40496;India;Airtel
 40402;India;Airtel
 40490;India;Airtel
-40455;India;BSNL Mobile
-40473;India;BSNL Mobile
-40434;India;BSNL Mobile
-40462;India;BSNL Mobile
-40477;India;BSNL Mobile
-40454;India;BSNL Mobile
+40416;India;Airtel
+40495;India;Airtel
+40470;India;Airtel
+40410;India;Airtel
+40571;India;BSNL Mobile
 40472;India;BSNL Mobile
-40481;India;BSNL Mobile
+40553;India;BSNL Mobile
+40480;India;BSNL Mobile
+40576;India;BSNL Mobile
 40459;India;BSNL Mobile
+40559;India;BSNL Mobile
 40476;India;BSNL Mobile
 40453;India;BSNL Mobile
+40572;India;BSNL Mobile
 40471;India;BSNL Mobile
-40480;India;BSNL Mobile
+40554;India;BSNL Mobile
+40577;India;BSNL Mobile
 40458;India;BSNL Mobile
+40562;India;BSNL Mobile
 40475;India;BSNL Mobile
+40534;India;BSNL Mobile
 40451;India;BSNL Mobile
+40573;India;BSNL Mobile
 40466;India;BSNL Mobile
+40555;India;BSNL Mobile
+40580;India;BSNL Mobile
 40457;India;BSNL Mobile
+40564;India;BSNL Mobile
 40474;India;BSNL Mobile
+40538;India;BSNL Mobile
 40438;India;BSNL Mobile
+40574;India;BSNL Mobile
 40464;India;BSNL Mobile
+40557;India;BSNL Mobile
+40581;India;BSNL Mobile
+40455;India;BSNL Mobile
+40566;India;BSNL Mobile
+40473;India;BSNL Mobile
+40551;India;BSNL Mobile
+40434;India;BSNL Mobile
+40481;India;BSNL Mobile
+40575;India;BSNL Mobile
+40462;India;BSNL Mobile
+40558;India;BSNL Mobile
+40477;India;BSNL Mobile
+40454;India;BSNL Mobile
+40569;India;Dolphin
 40469;India;Dolphin
 404299;India;Failed Calls
-404999;India;Fix Line
+404999;India;Fix Line 
+405999;India;Fix Line
 40468;India;Garuda
-40404;India;Idea
-40478;India;Idea
-40487;India;Idea
-40419;India;Idea
-404848;India;Idea
-40456;India;Idea
-404853;India;Idea
+40568;India;Garuda
 40414;India;Idea
+405849;India;Idea
 404846;India;Idea
+40522;India;Idea
+40589;India;Idea
 40444;India;Idea
+40582;India;Idea
 404852;India;Idea
+40507;India;Idea
 40412;India;Idea
+405850;India;Idea
 404845;India;Idea
+40524;India;Idea
 40424;India;Idea
+405845;India;Idea
 404850;India;Idea
+40512;India;Idea
 40407;India;Idea
+405852;India;Idea
 40482;India;Idea
+40544;India;Idea
 40489;India;Idea
 40422;India;Idea
+405846;India;Idea
 404849;India;Idea
-404873;India;Jio
-404864;India;Jio
+40514;India;Idea
+40404;India;Idea
+405853;India;Idea
+40478;India;Idea
+40556;India;Idea
+40487;India;Idea
+40419;India;Idea
+405848;India;Idea
+404848;India;Idea
+40519;India;Idea
+40587;India;Idea
+40456;India;Idea
+40578;India;Idea
+404853;India;Idea
+40504;India;Idea
 404856;India;Jio
-404869;India;Jio
-404860;India;Jio
-404865;India;Jio
-404857;India;Jio
-404870;India;Jio
-404861;India;Jio
-404854;India;Jio
-404874;India;Jio
 404866;India;Jio
+405866;India;Jio
+405857;India;Jio
+404860;India;Jio
 404871;India;Jio
 404862;India;Jio
-404855;India;Jio
+405871;India;Jio
+405862;India;Jio
+404857;India;Jio
 404867;India;Jio
-404858;India;Jio
+405867;India;Jio
+405858;India;Jio
 404872;India;Jio
+404854;India;Jio
 404863;India;Jio
+405872;India;Jio
+405863;India;Jio
+405854;India;Jio
 404868;India;Jio
+405868;India;Jio
+405859;India;Jio
+404873;India;Jio
+404855;India;Jio
+404864;India;Jio
+405873;India;Jio
+405864;India;Jio
+405855;India;Jio
+404858;India;Jio
+404869;India;Jio
+405869;India;Jio
+405861;India;Jio
+405860;India;Jio
+404865;India;Jio
+405874;India;Jio
+405865;India;Jio
+405856;India;Jio
 404859;India;Jio
+404870;India;Jio
+404861;India;Jio
+405870;India;Jio
+405861;India;Jio
+404874;India;Jio
+40521;India;Loop Mobile
 40421;India;Loop Mobile
-40452;India;Reliance Mobile
-40408;India;Reliance Mobile
-40418;India;Reliance Mobile
-40467;India;Reliance Mobile
 40409;India;Reliance Mobile
+40509;India;Reliance Mobile
 40423;India;Reliance Mobile
+40552;India;Reliance Mobile
 40483;India;Reliance Mobile
+40518;India;Reliance Mobile
 40436;India;Reliance Mobile
+40567;India;Reliance Mobile
 40485;India;Reliance Mobile
+40523;India;Reliance Mobile
 40450;India;Reliance Mobile
-40420;India;Vodafone
-40401;India;Vodafone
-40446;India;Vodafone
+40583;India;Reliance Mobile 
+40536;India;Reliance Mobile
+40452;India;Reliance Mobile
+40585;India;Reliance Mobile
+40408;India;Reliance Mobile
+40508;India;Reliance Mobile
+40418;India;Reliance Mobile
+40550;India;Reliance Mobile
+40467;India;Reliance Mobile
+40584;India;Vodafone
 40415;India;Vodafone
+40511;India;Vodafone
 40488;India;Vodafone
+40530;India;Vodafone
 40443;India;Vodafone
+40586;India;Vodafone
 40413;India;Vodafone
+40513;India;Vodafone
 40486;India;Vodafone
+40543;India;Vodafone
 40430;India;Vodafone
+40501;India;Vodafone
+40588;India;Vodafone
 40411;India;Vodafone
+40515;India;Vodafone
 40484;India;Vodafone
+40546;India;Vodafone
 40427;India;Vodafone
 40405;India;Vodafone
+40520;India;Vodafone
 40460;India;Vodafone
+40560;India;Vodafone
+40420;India;Vodafone
+40505;India;Vodafone
+40401;India;Vodafone
+40527;India;Vodafone
+40446;India;Vodafone
 51089;Indonesia;3
 510299;Indonesia;Failed Calls
 510999;Indonesia;Fix Line
-51021;Indonesia;Indosat Ooredoo
-51062;Indonesia;Indosat Ooredoo
 51001;Indonesia;Indosat Ooredoo
+51062;Indonesia;Indosat Ooredoo
+51021;Indonesia;Indosat Ooredoo
 51027;Indonesia;Net1
-51028;Indonesia;Smartfren
 51009;Indonesia;Smartfren
+51028;Indonesia;Smartfren
 51099;Indonesia;Smartfren
-51010;Indonesia;Telkomsel
 51020;Indonesia;Telkomsel
+51010;Indonesia;Telkomsel
 51008;Indonesia;XL
 51011;Indonesia;XL
 90167;International Networks;1NCE
@@ -1205,17 +1338,18 @@
 41845;Iraq;Mobitel
 41820;Iraq;Zain
 41830;Iraq;Zain
-27217;Ireland;3
 27205;Ireland;3
 27202;Ireland;3
+27217;Ireland;3
 272299;Ireland;BT
+27216;Ireland;Carphone Mobile
 272299;Ireland;Cubic Telecom
 272299;Ireland;Failed Calls
 272999;Ireland;Fix Line
 27213;Ireland;Lycamobile
 27207;Ireland;Meteor
-27208;Ireland;Meteor
 27203;Ireland;Meteor
+27208;Ireland;Meteor
 272299;Ireland;Net Feasa
 272299;Ireland;OGCIO
 27211;Ireland;Tesco Mobile
@@ -1236,8 +1370,8 @@
 42513;Israel;Ituran
 42522;Israel;Maskyoo
 42501;Israel;Orange
-42503;Israel;Pelephone
 42512;Israel;Pelephone
+42503;Israel;Pelephone
 42516;Israel;Rami Levy Communications
 425299;Israel;T2T
 42517;Israel;Von waves
@@ -1263,22 +1397,22 @@
 22239;Italy;SMS.it / LINK Mobility
 22235;Italy;Lycamobile
 22207;Italy;Noverca Italia
-22254;Italy;Plintron
+22254;Italy;Plintron 
 22233;Italy;Poste Mobile
 222999;Italy;Premium Numbers
 22258;Italy;rdcom
 22230;Italy;RFI
 22256;Italy;spusu
+22201;Italy;TIM
 22248;Italy;Telecom Italia Mobile
 22243;Italy;Telecom Italia Mobile
-22201;Italy;TIM
 222299;Italy;Sparkle
 222299;Italy;Tiscali
 22244;Italy;Mundio
 22251;Italy;ho.
 22249;Italy;Vianova Mobile
-22206;Italy;Vodafone
 22210;Italy;Vodafone
+22206;Italy;Vodafone
 222299;Italy;Vola
 222299;Italy;Webcom
 22288;Italy;WindTre / WIND
@@ -1291,13 +1425,10 @@
 33850;Jamaica;Digicel
 338299;Jamaica;Failed Calls
 338999;Jamaica;Fix Line
-338180;Jamaica;Flow
 338110;Jamaica;Flow
+338180;Jamaica;Flow
 440299;Japan;Failed Calls
 440999;Japan;Fix Line
-44051;Japan;KDDI
-44074;Japan;KDDI
-44052;Japan;KDDI
 44075;Japan;KDDI
 44053;Japan;KDDI
 44071;Japan;KDDI
@@ -1307,12 +1438,15 @@
 44050;Japan;KDDI
 44070;Japan;KDDI
 44073;Japan;KDDI
+44051;Japan;KDDI
+44074;Japan;KDDI
+44052;Japan;KDDI
 44010;Japan;NTT DoCoMo
 44078;Japan;Okinawa Cellular
 44011;Japan;Rakuten Mobile
 44020;Japan;SoftBank
-44021;Japan;SoftBank
 44000;Japan;SoftBank
+44021;Japan;SoftBank
 44005;Japan;SoftBank
 44001;Japan;SoftBank
 416299;Jordan;Failed Calls
@@ -1323,7 +1457,7 @@
 40107;Kazakhstan;Altel
 401299;Kazakhstan;Arna
 40101;Kazakhstan;Beeline
-401299;Kazakhstan;Failed Call(s)
+401299;Kazakhstan;Failed Calls
 401999;Kazakhstan;Fix Line
 40108;Kazakhstan;Kazakhstan Online
 40102;Kazakhstan;Kcell
@@ -1344,8 +1478,8 @@
 63907;Kenya;Telkom
 545299;Kiribati;Failed Calls
 545999;Kiribati;Fix Line
-54509;Kiribati;FrigateNet
 54501;Kiribati;FrigateNet
+54509;Kiribati;FrigateNet
 545299;Kiribati;Ocean Link
 22107;Kosovo;D3 mobile
 221299;Kosovo;Failed Calls
@@ -1362,11 +1496,11 @@
 43701;Kyrgyzstan;Beeline
 437299;Kyrgyzstan;Failed Calls
 437999;Kyrgyzstan;Fix Line
-43702;Kyrgyzstan;KT Mobile
-43705;Kyrgyzstan;MegaCom
+43706;Kyrgyzstan;KT Mobile
+43705;Kyrgyzstan;MegaCom 
 43709;Kyrgyzstan;O!
 43710;Kyrgyzstan;Saima
-43703;Kyrgyzstan;Sem Mobile
+43703;Kyrgyzstan;Fonex
 45708;Laos;Beeline
 45702;Laos;ETL Mobile
 457299;Laos;Failed Calls
@@ -1376,8 +1510,8 @@
 24705;Latvia;Bite
 247299;Latvia;Failed Calls
 247999;Latvia;Fix Line
-24710;Latvia;LMT
 24701;Latvia;LMT
+24710;Latvia;LMT
 247299;Latvia;Premium Numbers
 24702;Latvia;Tele2
 24704;Latvia;Tet
@@ -1435,8 +1569,8 @@
 27077;Luxembourg;Tango
 45503;Macao;3
 45505;Macao;3
-45502;Macao;China Telecom
 45507;Macao;China Telecom
+45502;Macao;China Telecom
 45504;Macao;CTM
 45501;Macao;CTM
 455299;Macao;Failed Calls
@@ -1463,7 +1597,7 @@
 502299;Malaysia;Failed Calls
 502999;Malaysia;Fix Line
 502299;Malaysia;MKN
-50217;Malaysia;Maxis
+50217;Malaysia;Maxis 
 50212;Malaysia;Maxis
 502299;Malaysia;Maxis Broadband
 502299;Malaysia;OCESB
@@ -1485,11 +1619,11 @@
 61001;Mali;Malitel
 61002;Mali;Orange
 61003;Mali;Telecel
-27801;Malta;Vodafone
+27801;Malta;Epic
 278299;Malta;Failed Calls
 278999;Malta;Fix Line
-27830;Malta;GO Mobile
 27821;Malta;GO Mobile
+27830;Malta;GO Mobile
 27877;Malta;Melita
 551299;Marshall Islands;Failed Calls
 551999;Marshall Islands;Fix Line
@@ -1512,7 +1646,8 @@
 334140;Mexico;ALTAN Redes
 334299;Mexico;Altcel
 33450;Mexico;AT&T / IUSACell
-334299;Mexico;Failed Call(s)
+33450;Mexico;AT&T / IUSACell
+334299;Mexico;Failed Calls
 334999;Mexico;Fix Line
 334299;Mexico;FreedomPop
 334299;Mexico;Ibo Cell
@@ -1521,9 +1656,9 @@
 33403;Mexico;Movistar
 33430;Mexico;Movistar
 334299;Mexico;NEUS Mobile
-33490;Mexico;Nextel
-33410;Mexico;Nextel
 33401;Mexico;Nextel
+33410;Mexico;Nextel
+33490;Mexico;Nextel
 334299;Mexico;QBOcel
 33460;Mexico;SAI PCS
 334299;Mexico;Servitron
@@ -1539,12 +1674,12 @@
 25902;Moldova;Moldcell
 25901;Moldova;Orange
 25903;Moldova;Unite
-25905;Moldova;Unite
 25999;Moldova;Unite
+25905;Moldova;Unite
 212299;Monaco;Failed Calls
 212999;Monaco;Fix Line
-21210;Monaco;Monaco Telecom
 21201;Monaco;Monaco Telecom
+21210;Monaco;Monaco Telecom
 428299;Mongolia;Failed Calls
 428999;Mongolia;Fix Line
 42898;Mongolia;G-Mobile
@@ -1562,20 +1697,20 @@
 354860;Montserrat;Flow
 604299;Morocco;Failed Calls
 604999;Morocco;Fix Line
-60401;Morocco;IAM
-60402;Morocco;inwi
+60401;Morocco;IAM 
 60405;Morocco;inwi
+60402;Morocco;inwi
 60400;Morocco;Orange
 643299;Mozambique;Failed Calls
 643999;Mozambique;Fix Line
 64303;Mozambique;Movitel
 64301;Mozambique;TMCEL
 64304;Mozambique;Vodacom
-414999;Myanmar;Failed Calls
+414299;Myanmar;Failed Calls
 414999;Myanmar;Fix Line
 41403;Myanmar;MecTel
-41401;Myanmar;MPT
 41400;Myanmar;MPT
+41401;Myanmar;MPT
 41409;Myanmar;Mytel
 41405;Myanmar;Ooredoo
 41406;Myanmar;Telenor
@@ -1607,18 +1742,17 @@
 204299;Netherlands;EziMobile
 204299;Netherlands;Failed Calls
 204999;Netherlands;Fix Line
-204999;Netherlands;Fix Line
 204299;Netherlands;interactive digital media / IDM
 20400;Netherlands;Intovoice
 204299;Netherlands;KeenMobile
 20423;Netherlands;KORE
+20410;Netherlands;KPN
 20469;Netherlands;KPN
 20412;Netherlands;KPN
 20408;Netherlands;KPN
-20410;Netherlands;KPN
 20427;Netherlands;L-mobi
-20498;Netherlands;Lancelot
 20428;Netherlands;Lancelot
+20498;Netherlands;Lancelot
 20409;Netherlands;Lycamobile
 20463;Netherlands;MessageBird
 204299;Netherlands;mGage
@@ -1631,12 +1765,12 @@
 20421;Netherlands;ProRail
 204299;Netherlands;Redworks
 20426;Netherlands;SpeakUp
-20420;Netherlands;T-Mobile
 20402;Netherlands;T-Mobile
+20420;Netherlands;T-Mobile
 20416;Netherlands;T-Mobile
 20429;Netherlands;Tismi
 20433;Netherlands;Truphone
-204299;Netherlands;Vectone Mobile
+20406;Netherlands;Vectone Mobile
 20404;Netherlands;Vodafone
 20403;Netherlands;Voiceworks Mobile
 20415;Netherlands;Ziggo
@@ -1663,11 +1797,11 @@
 530299;New Zealand;Vocus
 53001;New Zealand;Vodafone
 530299;New Zealand;Voxbone / Bandwidth
-530299;New Zealand;Voyager Internet
+530299;New Zealand;Voyager Internet 
 530299;New Zealand;WXC
 71073;Nicaragua;Claro
 71021;Nicaragua;Claro
-710299;Nicaragua;CooTel
+71068;Nicaragua;CooTel
 710299;Nicaragua;Failed Calls
 710999;Nicaragua;Fix Line
 71030;Nicaragua;Movistar
@@ -1744,7 +1878,7 @@
 410999;Pakistan;Fix Line
 41007;Pakistan;Jazz
 41001;Pakistan;Jazz
-41005;Pakistan;SCOM
+41005;Pakistan;SCO Mobile
 41006;Pakistan;Telenor
 41003;Pakistan;Ufone
 410299;Pakistan;Warid
@@ -1763,8 +1897,8 @@
 71404;Panama;Digicel
 714299;Panama;Failed Calls
 714999;Panama;Fix Line
+71420;Panama;Movistar 
 71402;Panama;Movistar
-71420;Panama;Movistar
 53701;Papua New Guinea;BeMobile Vodafone
 53702;Papua New Guinea;Citifon
 53703;Papua New Guinea;Digicel
@@ -1774,12 +1908,13 @@
 74402;Paraguay;Claro
 744299;Paraguay;Failed Calls
 744999;Paraguay;Fix Line
+74405;Paraguay;Personal
 74403;Paraguay;Personal
 74404;Paraguay;Tigo
 74401;Paraguay;VOX
 71670;Peru;Claro
-71620;Peru;Claro
 71610;Peru;Claro
+71620;Peru;Claro
 716299;Peru;Dolphin
 71617;Peru;Entel
 716299;Peru;Failed Calls
@@ -1791,15 +1926,15 @@
 51566;Philippines;DITO
 515299;Philippines;Failed Calls
 515999;Philippines;Fix Line
-51501;Philippines;Globe
 51502;Philippines;Globe
+51501;Philippines;Globe
 51503;Philippines;Smart
 51505;Philippines;Sun Cellular
 260299;Poland;3S
-26015;Poland;Aero2
-26004;Poland;Aero2
 26017;Poland;Aero2
 26016;Poland;Aero2
+26015;Poland;Aero2
+26004;Poland;Aero2
 26048;Poland;Agile Telecom
 26018;Poland;AMD Telecom
 260299;Poland;Benemen
@@ -1854,15 +1989,15 @@
 260299;Poland;SGT
 26047;Poland;SMSHIGHWAY
 260299;Poland;Softelnet
+26034;Poland;T-Mobile
 26002;Poland;T-Mobile
 26010;Poland;T-Mobile
-26034;Poland;T-Mobile
 26014;Poland;Telco Leaders
 260299;Poland;Tele GO
 260299;Poland;TeleCube
 260299;Poland;Telenabler
 260299;Poland;TELGAM
-26020;Poland;Tismi
+26020;Poland;Tismi 
 260299;Poland;TOYAmobilna
 26022;Poland;Twilio
 260299;Poland;UPC
@@ -1886,20 +2021,20 @@
 26891;Portugal;Vodafone
 26801;Portugal;Vodafone
 33030;Puerto Rico;AT&T Mobility
-33011;Puerto Rico;Claro
 330110;Puerto Rico;Claro
+33011;Puerto Rico;Claro
 330299;Puerto Rico;Failed Calls
 330999;Puerto Rico;Fix Line
 330490;Puerto Rico;T-Mobile
 427299;Qatar;Failed Calls
 427999;Qatar;Fix Line
-42701;Qatar;Ooredoo
 42706;Qatar;Ooredoo
+42701;Qatar;Ooredoo
 42702;Qatar;Vodafone
 647299;Reunion;Failed Calls
 647999;Reunion;Fix Line
-64703;Reunion;Only
 64702;Reunion;Only
+64703;Reunion;Only
 64700;Reunion;Orange
 64704;Reunion;ZEOP Mobile
 22605;Romania;Digi Mobil
@@ -1962,7 +2097,7 @@
 250299;Russia;Reteyl Innovatsii
 250299;Russia;Sberbank-Telecom
 25033;Russia;SEVTELECOM
-250299;Russia;Sim Sim
+250299;Russia;Sim Sim 
 250299;Russia;Sintonik
 250299;Russia;Sky Networks
 25009;Russia;Skylink
@@ -1974,8 +2109,8 @@
 250299;Russia;Surgutneftegaz
 250299;Russia;Svyazresurs-Mobile
 250299;Russia;Tander
-25012;Russia;Tele2
 25020;Russia;Tele2
+25012;Russia;Tele2
 250299;Russia;Tinkoff Mobile
 250299;Russia;TMT
 250299;Russia;TransMobilCom
@@ -2021,6 +2156,7 @@
 308299;Saint Pierre and Miquelon;Failed Calls
 308999;Saint Pierre and Miquelon;Fix Line
 30802;Saint Pierre and Miquelon;Globaltel
+36070;Saint Vincent and the Grenadines;Digicel
 36050;Saint Vincent and the Grenadines;Digicel
 360299;Saint Vincent and the Grenadines;Failed Calls
 360999;Saint Vincent and the Grenadines;Fix Line
@@ -2061,7 +2197,7 @@
 22011;Serbia;Globaltel
 22003;Serbia;MTS
 22001;Serbia;Telenor
-22005;Serbia;VIP
+22005;Serbia;VIP 
 22020;Serbia;VIP
 63310;Seychelles;Airtel
 63301;Seychelles;Cable & Wireless
@@ -2069,9 +2205,12 @@
 633999;Seychelles;Fix Line
 63305;Seychelles;Intelvision
 61903;Sierra Leone;Africell
+61905;Sierra Leone;Africell
+61904;Sierra Leone;Comium
 619299;Sierra Leone;Failed Calls
 619999;Sierra Leone;Fix Line
 619299;Sierra Leone;IPTel
+61925;Sierra Leone;Mobitel
 619299;Sierra Leone;Onlime
 61901;Sierra Leone;Orange
 61907;Sierra Leone;Qcell
@@ -2080,8 +2219,8 @@
 525299;Singapore;Failed Calls
 525999;Singapore;Fix Line
 52512;Singapore;GRID
-52511;Singapore;M1
 52503;Singapore;M1
+52511;Singapore;M1
 525299;Singapore;MyRepublic
 525299;Singapore;Nexwave
 525299;Singapore;redONE
@@ -2090,8 +2229,8 @@
 52501;Singapore;SingTel
 525299;Singapore;Smart Pinoy
 52506;Singapore;Starhub
-52508;Singapore;Starhub
 52505;Singapore;Starhub
+52508;Singapore;Starhub
 52510;Singapore;TPG Telecom
 525299;Singapore;VivoBee
 525299;Singapore;Zero1
@@ -2099,12 +2238,12 @@
 231999;Slovakia;Fix Line
 23106;Slovakia;O2
 23101;Slovakia;Orange
-23105;Slovakia;Orange
 23107;Slovakia;Orange
+23105;Slovakia;Orange
 23103;Slovakia;Swan / 4ka
 23102;Slovakia;Telekom
-23104;Slovakia;Telekom
 23150;Slovakia;Telekom
+23104;Slovakia;Telekom
 23108;Slovakia;Uniphone
 231299;Slovakia;Vonage
 23199;Slovakia;ZSR
@@ -2147,9 +2286,9 @@
 655299;South Africa;Lycamobile
 65510;South Africa;MTN
 65512;South Africa;MTN
-65574;South Africa;Rain
 65519;South Africa;Rain
 65573;South Africa;Rain
+65574;South Africa;Rain
 65538;South Africa;Rain
 65505;South Africa;Telkom
 65502;South Africa;Telkom
@@ -2158,12 +2297,12 @@
 450299;South Korea;Failed Calls
 450999;South Korea;Fix Line
 45007;South Korea;KT Powertel
-45006;South Korea;LG U+
+45006;South Korea;LG U+ 
+45004;South Korea;olleh / KT
 45008;South Korea;olleh / KT
 45002;South Korea;olleh / KT
-45004;South Korea;olleh / KT
-45005;South Korea;SK Telecom
 45012;South Korea;SK Telecom
+45005;South Korea;SK Telecom
 45011;South Korea;SK Telecom
 659299;South Sudan;Digitel
 659299;South Sudan;Failed Calls
@@ -2200,8 +2339,8 @@
 214299;Spain;On Movil
 214299;Spain;Oniti Telecom
 214299;Spain;OperadorsCat
-21421;Spain;Orange
 21409;Spain;Orange
+21421;Spain;Orange
 21403;Spain;Orange
 214299;Spain;Pepephone
 214299;Spain;Premium Numbers
@@ -2221,8 +2360,9 @@
 21401;Spain;Vodafone
 21437;Spain;Vodafone
 21406;Spain;Vodafone
-21423;Spain;Yoigo
+214299;Spain;Vodafone Enabler
 21433;Spain;Yoigo
+21423;Spain;Yoigo
 21429;Spain;Yoigo
 21404;Spain;Yoigo
 214299;Spain;You Mobile
@@ -2244,14 +2384,14 @@
 63403;Sudan;MTN
 63402;Sudan;MTN
 63407;Sudan;Sudani One
-63401;Sudan;Zain
 63406;Sudan;Zain
+63401;Sudan;Zain
 74603;Suriname;Digicel
 746299;Suriname;Failed Calls
 746999;Suriname;Fix Line
 74602;Suriname;Telesur
 65302;Swaziland;Eswatini Mobile
-65301;Swaziland;EswatiniTelecom
+65301;Swaziland;Eswatini Telecom
 653299;Swaziland;Failed Calls
 653999;Swaziland;Fix Line
 65310;Swaziland;Swazi MTN
@@ -2263,7 +2403,7 @@
 240299;Sweden;Allo Telecom
 240299;Sweden;Bahnhof
 240299;Sweden;Benemen
-240299;Sweden;Biztel
+240299;Sweden;Biztel 
 240299;Sweden;BM Sverige
 240299;Sweden;Bredband 2
 240299;Sweden;Bredbandsson
@@ -2333,9 +2473,9 @@
 240299;Sweden;Svea Billing Services
 240299;Sweden;Svensk Konsumentmobil
 240299;Sweden;TelaVox
-24014;Sweden;Tele2
-24005;Sweden;Tele2
 24007;Sweden;Tele2
+24005;Sweden;Tele2
+24014;Sweden;Tele2
 240299;Sweden;Telecom3 Sverige AB
 240299;Sweden;Teledigit Scandinavia AB
 240299;Sweden;Telekometen
@@ -2363,10 +2503,11 @@
 240299;Sweden;Weelia
 240299;Sweden;Wifi.se
 240299;Sweden;Wifog Sverige
-240299;Sweden;XPLORA
+240299;Sweden;XPLORA 
 22858;Switzerland;Beeone
-22809;Switzerland;Comfone
 22805;Switzerland;Comfone
+22809;Switzerland;Comfone
+228299;Switzerland;Failed Calls
 228999;Switzerland;Fix Line
 22866;Switzerland;Inovia
 22854;Switzerland;Lycamobile
@@ -2375,15 +2516,15 @@
 22851;Switzerland;relario
 22803;Switzerland;Salt Mobile
 22806;Switzerland;SBB
-22802;Switzerland;Sunrise
 22808;Switzerland;Sunrise
-22853;Switzerland;Sunrise
-22860;Switzerland;Sunrise
 22807;Switzerland;Sunrise
 22812;Switzerland;Sunrise
+22802;Switzerland;Sunrise
+22860;Switzerland;Sunrise
 22801;Switzerland;Swisscom
 22862;Switzerland;Telecom26
 22870;Switzerland;Tismi
+22853;Switzerland;UPC
 22859;Switzerland;Vectone Mobile
 417299;Syria;Failed Calls
 417999;Syria;Fix Line
@@ -2391,23 +2532,24 @@
 41701;Syria;Syriatel
 46612;Taiwan;APT
 46605;Taiwan;APT
-46611;Taiwan;Chunghwa Telecom
 46692;Taiwan;Chunghwa Telecom
+46611;Taiwan;Chunghwa Telecom
 466299;Taiwan;Failed Calls
+46601;Taiwan;Far EasTone
 46603;Taiwan;Far EasTone
 46688;Taiwan;Far EasTone
-46601;Taiwan;Far EasTone
 466999;Taiwan;Fix Line
 46689;Taiwan;T Star
 46697;Taiwan;Taiwan Mobile
 43604;Tajikistan;Babilon-Mobile
-43605;Tajikistan;Beeline
 436299;Tajikistan;Failed Calls
 436999;Tajikistan;Fix Line
 43603;Tajikistan;Megafon
+43615;Tajikistan;O-Mobile
 436299;Tajikistan;Premium Numbers
-43601;Tajikistan;Tcell
 43602;Tajikistan;Tcell
+43601;Tajikistan;Tcell
+43605;Tajikistan;Zet-Mobile
 64005;Tanzania;Airtel
 640299;Tanzania;Failed Calls
 640999;Tanzania;Fix Line
@@ -2420,15 +2562,15 @@
 64004;Tanzania;Vodacom
 64013;Tanzania;WiAfrica
 64003;Tanzania;Zanzibar Telecom / Zantel
-52001;Thailand;AIS
 52003;Thailand;AIS
+52001;Thailand;AIS
 52018;Thailand;dtac
 52005;Thailand;dtac TriNet
 520299;Thailand;Failed Calls
 520999;Thailand;Fix Line
 52000;Thailand;my
-52015;Thailand;TOTmobile
 52047;Thailand;TOTmobile
+52015;Thailand;TOTmobile
 52004;Thailand;TrueMove H
 61503;Togo;Atlantique Telecom / Moov
 615299;Togo;Failed Calls
@@ -2455,12 +2597,13 @@
 28604;Turkiye;Avea
 286299;Turkiye;BasakCell
 286299;Turkiye;Compatel
+286299;Turkiye;Failed Calls
 286299;Turkiye;Fenix Telekom
 286999;Turkiye;Fix Line
 286299;Turkiye;Foniva
 286299;Turkiye;IsNet
 286299;Turkiye;Maxiphone
-286299;Turkiye;Medium Telekom
+286299;Turkiye;Medium Telekom 
 286299;Turkiye;Mobilisim
 286299;Turkiye;Netgsm
 286299;Turkiye;Nida
@@ -2513,9 +2656,11 @@
 23400;United Kingdom;BT Group
 23408;United Kingdom;BT OnePhone
 23418;United Kingdom;Cloud9
-23430;United Kingdom;T-Mobile
-23432;United Kingdom;T-Mobile
-23431;United Kingdom;T-Mobile
+23430;United Kingdom;EE/Everything Everywhere
+23432;United Kingdom;EE/Everything Everywhere
+23433;United Kingdom;EE/Everything Everywhere
+23431;United Kingdom;EE/Everything Everywhere
+234299;United Kingdom;Failed Calls
 234999;United Kingdom;Fix Line
 23417;United Kingdom;FlexTel
 23404;United Kingdom;FMS Solutions
@@ -2540,7 +2685,6 @@
 23413;United Kingdom;Network Rail
 23451;United Kingdom;now broadband
 23434;United Kingdom;Orange
-23433;United Kingdom;Orange
 23474;United Kingdom;Pareteum
 23457;United Kingdom;Sky
 23440;United Kingdom;spusu
@@ -2559,80 +2703,80 @@
 23425;United Kingdom;Truphone
 23401;United Kingdom;Vectone Mobile
 23438;United Kingdom;Virgin Mobile
-23489;United Kingdom;Vodafone
+23491;United Kingdom;Vodafone 
 23407;United Kingdom;Vodafone
 23415;United Kingdom;Vodafone
-23491;United Kingdom;Vodafone
-23477;United Kingdom;Vodafone
 23492;United Kingdom;Vodafone
+23477;United Kingdom;Vodafone
+23489;United Kingdom;Vodafone
 310130;United States of America;Appalachian Wireless
 310750;United States of America;Appalachian Wireless
 312130;United States of America;Appalachian Wireless
 312750;United States of America;Appalachian Wireless
-312760;United States of America;ASTAC Cellular
 312710;United States of America;ASTAC Cellular
 310710;United States of America;ASTAC Cellular
 310760;United States of America;ASTAC Cellular
-31090;United States of America;AT&T Mobility
-313150;United States of America;AT&T Mobility
-31180;United States of America;AT&T Mobility
-312410;United States of America;AT&T Mobility
-31270;United States of America;AT&T Mobility
-310210;United States of America;AT&T Mobility
-313410;United States of America;AT&T Mobility
-311210;United States of America;AT&T Mobility
-31330;United States of America;AT&T Mobility
-312180;United States of America;AT&T Mobility
-310680;United States of America;AT&T Mobility
-311680;United States of America;AT&T Mobility
-310150;United States of America;AT&T Mobility
-313170;United States of America;AT&T Mobility
-31190;United States of America;AT&T Mobility
-312670;United States of America;AT&T Mobility
-31280;United States of America;AT&T Mobility
-310280;United States of America;AT&T Mobility
-313670;United States of America;AT&T Mobility
-311280;United States of America;AT&T Mobility
-31116;United States of America;AT&T Mobility
-31370;United States of America;AT&T Mobility
-312210;United States of America;AT&T Mobility
-310950;United States of America;AT&T Mobility
-311950;United States of America;AT&T Mobility
-310170;United States of America;AT&T Mobility
-313180;United States of America;AT&T Mobility
-311150;United States of America;AT&T Mobility
-312680;United States of America;AT&T Mobility
+312760;United States of America;ASTAC Cellular
 31290;United States of America;AT&T Mobility
-310380;United States of America;AT&T Mobility
-313680;United States of America;AT&T Mobility
-31016;United States of America;AT&T Mobility
+310210;United States of America;AT&T Mobility
 311380;United States of America;AT&T Mobility
-31070;United States of America;AT&T Mobility
-31380;United States of America;AT&T Mobility
+313680;United States of America;AT&T Mobility
 31130;United States of America;AT&T Mobility
+31380;United States of America;AT&T Mobility
+310680;United States of America;AT&T Mobility
 312280;United States of America;AT&T Mobility
-31030;United States of America;AT&T Mobility
 31216;United States of America;AT&T Mobility
-310180;United States of America;AT&T Mobility
-313210;United States of America;AT&T Mobility
+310150;United States of America;AT&T Mobility
 311170;United States of America;AT&T Mobility
+313210;United States of America;AT&T Mobility
 312950;United States of America;AT&T Mobility
+310280;United States of America;AT&T Mobility
 312150;United States of America;AT&T Mobility
-310410;United States of America;AT&T Mobility
-313950;United States of America;AT&T Mobility
 311410;United States of America;AT&T Mobility
-31080;United States of America;AT&T Mobility
-31390;United States of America;AT&T Mobility
+313950;United States of America;AT&T Mobility
+31016;United States of America;AT&T Mobility
 31170;United States of America;AT&T Mobility
+31390;United States of America;AT&T Mobility
+310950;United States of America;AT&T Mobility
 312380;United States of America;AT&T Mobility
 31230;United States of America;AT&T Mobility
-313280;United States of America;AT&T Mobility
-313380;United States of America;AT&T Mobility
+310170;United States of America;AT&T Mobility
 311180;United States of America;AT&T Mobility
+313380;United States of America;AT&T Mobility
 31316;United States of America;AT&T Mobility
+310380;United States of America;AT&T Mobility
 312170;United States of America;AT&T Mobility
-310670;United States of America;AT&T Mobility
 311670;United States of America;AT&T Mobility
+31070;United States of America;AT&T Mobility
+31030;United States of America;AT&T Mobility
+31180;United States of America;AT&T Mobility
+313150;United States of America;AT&T Mobility
+312410;United States of America;AT&T Mobility
+31270;United States of America;AT&T Mobility
+310180;United States of America;AT&T Mobility
+311210;United States of America;AT&T Mobility
+313410;United States of America;AT&T Mobility
+31330;United States of America;AT&T Mobility
+310410;United States of America;AT&T Mobility
+312180;United States of America;AT&T Mobility
+311680;United States of America;AT&T Mobility
+31080;United States of America;AT&T Mobility
+31190;United States of America;AT&T Mobility
+313170;United States of America;AT&T Mobility
+312670;United States of America;AT&T Mobility
+31280;United States of America;AT&T Mobility
+313280;United States of America;AT&T Mobility
+311280;United States of America;AT&T Mobility
+313670;United States of America;AT&T Mobility
+31116;United States of America;AT&T Mobility
+31370;United States of America;AT&T Mobility
+310670;United States of America;AT&T Mobility
+312210;United States of America;AT&T Mobility
+311950;United States of America;AT&T Mobility
+31090;United States of America;AT&T Mobility
+311150;United States of America;AT&T Mobility
+313180;United States of America;AT&T Mobility
+312680;United States of America;AT&T Mobility
 310600;United States of America;Cellcom
 310630;United States of America;Choice Wireless
 310700;United States of America;cv cellular
@@ -2644,279 +2788,280 @@
 311370;United States of America;GCI Wireless
 310430;United States of America;GCI Wireless
 311430;United States of America;GCI Wireless
+310340;United States of America;Limitless
+312690;United States of America;Limitless
 310690;United States of America;Limitless
 311340;United States of America;Limitless
 311690;United States of America;Limitless
 312340;United States of America;Limitless
-310340;United States of America;Limitless
-312690;United States of America;Limitless
-312299;United States of America;Northstar Technology
 313299;United States of America;Northstar Technology
 314299;United States of America;Northstar Technology
 310299;United States of America;Northstar Technology
 315299;United States of America;Northstar Technology
 311299;United States of America;Northstar Technology
 316299;United States of America;Northstar Technology
+312299;United States of America;Northstar Technology
 310540;United States of America;OWTC
-311570;United States of America;Pioneer Cellular
-310570;United States of America;Pioneer Cellular
-313280;United States of America;Pioneer Cellular
-313360;United States of America;Pioneer Cellular
-310280;United States of America;Pioneer Cellular
-311280;United States of America;Pioneer Cellular
-313570;United States of America;Pioneer Cellular
 311360;United States of America;Pioneer Cellular
+310280;United States of America;Pioneer Cellular 
+311570;United States of America;Pioneer Cellular
+313280;United States of America;Pioneer Cellular
 310360;United States of America;Pioneer Cellular
-312190;United States of America;T-Mobile
-316880;United States of America;T-Mobile
-310660;United States of America;T-Mobile
-310200;United States of America;T-Mobile
-311800;United States of America;T-Mobile
-316250;United States of America;T-Mobile
-311230;United States of America;T-Mobile
-312882;United States of America;T-Mobile
-310882;United States of America;T-Mobile
-312260;United States of America;T-Mobile
-311940;United States of America;T-Mobile
-316660;United States of America;T-Mobile
-310270;United States of America;T-Mobile
-310190;United States of America;T-Mobile
-311311;United States of America;T-Mobile
-316190;United States of America;T-Mobile
-311120;United States of America;T-Mobile
-312800;United States of America;T-Mobile
-312200;United States of America;T-Mobile
-316882;United States of America;T-Mobile
-310800;United States of America;T-Mobile
-310230;United States of America;T-Mobile
-311830;United States of America;T-Mobile
-316260;United States of America;T-Mobile
-311240;United States of America;T-Mobile
-312940;United States of America;T-Mobile
-310940;United States of America;T-Mobile
-312270;United States of America;T-Mobile
-31210;United States of America;T-Mobile
-316800;United States of America;T-Mobile
-310310;United States of America;T-Mobile
-310160;United States of America;T-Mobile
-311490;United States of America;T-Mobile
-316200;United States of America;T-Mobile
-311160;United States of America;T-Mobile
-312830;United States of America;T-Mobile
-316940;United States of America;T-Mobile
-310830;United States of America;T-Mobile
-312230;United States of America;T-Mobile
-310240;United States of America;T-Mobile
-311870;United States of America;T-Mobile
-316270;United States of America;T-Mobile
-311250;United States of America;T-Mobile
+313360;United States of America;Pioneer Cellular
+311280;United States of America;Pioneer Cellular
+310570;United States of America;Pioneer Cellular
+313570;United States of America;Pioneer Cellular
 31610;United States of America;T-Mobile
+311250;United States of America;T-Mobile
+310882;United States of America;T-Mobile
 312490;United States of America;T-Mobile
+310270;United States of America;T-Mobile
 312120;United States of America;T-Mobile
 316830;United States of America;T-Mobile
-310490;United States of America;T-Mobile
-310120;United States of America;T-Mobile
+310190;United States of America;T-Mobile
 311530;United States of America;T-Mobile
 316230;United States of America;T-Mobile
-311190;United States of America;T-Mobile
 312870;United States of America;T-Mobile
-310870;United States of America;T-Mobile
+311190;United States of America;T-Mobile
+310800;United States of America;T-Mobile
 312240;United States of America;T-Mobile
-310250;United States of America;T-Mobile
+310230;United States of America;T-Mobile
 311880;United States of America;T-Mobile
 316490;United States of America;T-Mobile
-311260;United States of America;T-Mobile
 316120;United States of America;T-Mobile
+311260;United States of America;T-Mobile
+310940;United States of America;T-Mobile
 312530;United States of America;T-Mobile
+310310;United States of America;T-Mobile
 312160;United States of America;T-Mobile
 316870;United States of America;T-Mobile
-310530;United States of America;T-Mobile
-31010;United States of America;T-Mobile
+310160;United States of America;T-Mobile
 311660;United States of America;T-Mobile
 316240;United States of America;T-Mobile
-311200;United States of America;T-Mobile
 312880;United States of America;T-Mobile
-310880;United States of America;T-Mobile
+311200;United States of America;T-Mobile
+310830;United States of America;T-Mobile
 312250;United States of America;T-Mobile
+310240;United States of America;T-Mobile
 311882;United States of America;T-Mobile
 316530;United States of America;T-Mobile
-310260;United States of America;T-Mobile
-311270;United States of America;T-Mobile
 316160;United States of America;T-Mobile
-31110;United States of America;T-Mobile
+311270;United States of America;T-Mobile
 312660;United States of America;T-Mobile
+31110;United States of America;T-Mobile
+310490;United States of America;T-Mobile
+312190;United States of America;T-Mobile
+316880;United States of America;T-Mobile
+310120;United States of America;T-Mobile
+311800;United States of America;T-Mobile
+316250;United States of America;T-Mobile
+312882;United States of America;T-Mobile
+311230;United States of America;T-Mobile
+310870;United States of America;T-Mobile
+312260;United States of America;T-Mobile
+310250;United States of America;T-Mobile
+311940;United States of America;T-Mobile
+316660;United States of America;T-Mobile
+316190;United States of America;T-Mobile
+311311;United States of America;T-Mobile
+312800;United States of America;T-Mobile
+311120;United States of America;T-Mobile
+310530;United States of America;T-Mobile
+312200;United States of America;T-Mobile
+316882;United States of America;T-Mobile
+31010;United States of America;T-Mobile
+311830;United States of America;T-Mobile
+316260;United States of America;T-Mobile
+312940;United States of America;T-Mobile
+311240;United States of America;T-Mobile
+310880;United States of America;T-Mobile
+312270;United States of America;T-Mobile
+310260;United States of America;T-Mobile
+31210;United States of America;T-Mobile
+316800;United States of America;T-Mobile
+316200;United States of America;T-Mobile
+311490;United States of America;T-Mobile
+312830;United States of America;T-Mobile
+311160;United States of America;T-Mobile
+310660;United States of America;T-Mobile
+312230;United States of America;T-Mobile
+316940;United States of America;T-Mobile
+310200;United States of America;T-Mobile
+311870;United States of America;T-Mobile
+316270;United States of America;T-Mobile
 31020;United States of America;Union Wireless
-310895;United States of America;Verizon Wireless
-31212;United States of America;Verizon Wireless
-310287;United States of America;Verizon Wireless
-311481;United States of America;Verizon Wireless
-312487;United States of America;Verizon Wireless
-310598;United States of America;Verizon Wireless
-311892;United States of America;Verizon Wireless
-312898;United States of America;Verizon Wireless
-311284;United States of America;Verizon Wireless
-312350;United States of America;Verizon Wireless
-311275;United States of America;Verizon Wireless
-312281;United States of America;Verizon Wireless
-310278;United States of America;Verizon Wireless
-310489;United States of America;Verizon Wireless
-311595;United States of America;Verizon Wireless
-312820;United States of America;Verizon Wireless
-310910;United States of America;Verizon Wireless
-312272;United States of America;Verizon Wireless
-310110;United States of America;Verizon Wireless
-310480;United States of America;Verizon Wireless
-311486;United States of America;Verizon Wireless
-312592;United States of America;Verizon Wireless
-310891;United States of America;Verizon Wireless
-311897;United States of America;Verizon Wireless
-310283;United States of America;Verizon Wireless
-311289;United States of America;Verizon Wireless
-312483;United States of America;Verizon Wireless
-312286;United States of America;Verizon Wireless
-310594;United States of America;Verizon Wireless
-311770;United States of America;Verizon Wireless
-312894;United States of America;Verizon Wireless
-311280;United States of America;Verizon Wireless
-311271;United States of America;Verizon Wireless
-312277;United States of America;Verizon Wireless
-310274;United States of America;Verizon Wireless
-310485;United States of America;Verizon Wireless
-311591;United States of America;Verizon Wireless
-312597;United States of America;Verizon Wireless
-310896;United States of America;Verizon Wireless
-31213;United States of America;Verizon Wireless
-310288;United States of America;Verizon Wireless
-311482;United States of America;Verizon Wireless
-312488;United States of America;Verizon Wireless
-310599;United States of America;Verizon Wireless
-311893;United States of America;Verizon Wireless
-312899;United States of America;Verizon Wireless
-311285;United States of America;Verizon Wireless
-312390;United States of America;Verizon Wireless
-311276;United States of America;Verizon Wireless
-312282;United States of America;Verizon Wireless
-310279;United States of America;Verizon Wireless
-310590;United States of America;Verizon Wireless
-311596;United States of America;Verizon Wireless
-312890;United States of America;Verizon Wireless
-31112;United States of America;Verizon Wireless
-312273;United States of America;Verizon Wireless
-310481;United States of America;Verizon Wireless
-311487;United States of America;Verizon Wireless
-312593;United States of America;Verizon Wireless
-310892;United States of America;Verizon Wireless
-311898;United States of America;Verizon Wireless
-310284;United States of America;Verizon Wireless
-311350;United States of America;Verizon Wireless
-312484;United States of America;Verizon Wireless
-312287;United States of America;Verizon Wireless
-310595;United States of America;Verizon Wireless
-311820;United States of America;Verizon Wireless
-312895;United States of America;Verizon Wireless
-311281;United States of America;Verizon Wireless
-311272;United States of America;Verizon Wireless
-312278;United States of America;Verizon Wireless
-310275;United States of America;Verizon Wireless
-310486;United States of America;Verizon Wireless
-311592;United States of America;Verizon Wireless
-312598;United States of America;Verizon Wireless
-310897;United States of America;Verizon Wireless
-312110;United States of America;Verizon Wireless
-310289;United States of America;Verizon Wireless
-311483;United States of America;Verizon Wireless
-312489;United States of America;Verizon Wireless
 310770;United States of America;Verizon Wireless
 311894;United States of America;Verizon Wireless
-312910;United States of America;Verizon Wireless
+310280;United States of America;Verizon Wireless
 311286;United States of America;Verizon Wireless
 312480;United States of America;Verizon Wireless
-311277;United States of America;Verizon Wireless
-312283;United States of America;Verizon Wireless
-310280;United States of America;Verizon Wireless
+312591;United States of America;Verizon Wireless
 310591;United States of America;Verizon Wireless
 311597;United States of America;Verizon Wireless
-312891;United States of America;Verizon Wireless
-31113;United States of America;Verizon Wireless
-312274;United States of America;Verizon Wireless
 310271;United States of America;Verizon Wireless
+311277;United States of America;Verizon Wireless
+312283;United States of America;Verizon Wireless
 310482;United States of America;Verizon Wireless
 311488;United States of America;Verizon Wireless
-312594;United States of America;Verizon Wireless
+312893;United States of America;Verizon Wireless 
+31113;United States of America;Verizon Wireless
+312274;United States of America;Verizon Wireless
 310893;United States of America;Verizon Wireless
 311899;United States of America;Verizon Wireless
 310285;United States of America;Verizon Wireless
 311390;United States of America;Verizon Wireless
 312485;United States of America;Verizon Wireless
+312596;United States of America;Verizon Wireless
 310596;United States of America;Verizon Wireless
 311890;United States of America;Verizon Wireless
-312896;United States of America;Verizon Wireless
+310276;United States of America;Verizon Wireless
 311282;United States of America;Verizon Wireless
 312288;United States of America;Verizon Wireless
-311273;United States of America;Verizon Wireless
-312279;United States of America;Verizon Wireless
-310276;United States of America;Verizon Wireless
+312487;United States of America;Verizon Wireless
 310487;United States of America;Verizon Wireless
 311593;United States of America;Verizon Wireless
-312599;United States of America;Verizon Wireless
-310898;United States of America;Verizon Wireless
+312898;United States of America;Verizon Wireless
 31012;United States of America;Verizon Wireless
+311273;United States of America;Verizon Wireless
+312279;United States of America;Verizon Wireless
 310350;United States of America;Verizon Wireless
 311484;United States of America;Verizon Wireless
-312590;United States of America;Verizon Wireless
+312820;United States of America;Verizon Wireless
+310898;United States of America;Verizon Wireless
 310820;United States of America;Verizon Wireless
 311895;United States of America;Verizon Wireless
+310281;United States of America;Verizon Wireless
 311287;United States of America;Verizon Wireless
 312481;United States of America;Verizon Wireless
-312284;United States of America;Verizon Wireless
-310281;United States of America;Verizon Wireless
+312592;United States of America;Verizon Wireless
 310592;United States of America;Verizon Wireless
 311598;United States of America;Verizon Wireless
-312892;United States of America;Verizon Wireless
-311278;United States of America;Verizon Wireless
-311110;United States of America;Verizon Wireless
-312275;United States of America;Verizon Wireless
 310272;United States of America;Verizon Wireless
+311278;United States of America;Verizon Wireless
+312284;United States of America;Verizon Wireless
 310483;United States of America;Verizon Wireless
 311489;United States of America;Verizon Wireless
-312595;United States of America;Verizon Wireless
+312894;United States of America;Verizon Wireless
+311110;United States of America;Verizon Wireless
+312275;United States of America;Verizon Wireless
 310894;United States of America;Verizon Wireless
 311910;United States of America;Verizon Wireless
 310286;United States of America;Verizon Wireless
 311480;United States of America;Verizon Wireless
-312486;United States of America;Verizon Wireless
+312597;United States of America;Verizon Wireless
 310597;United States of America;Verizon Wireless
 311891;United States of America;Verizon Wireless
-312897;United States of America;Verizon Wireless
+310277;United States of America;Verizon Wireless
 311283;United States of America;Verizon Wireless
 312289;United States of America;Verizon Wireless
-311274;United States of America;Verizon Wireless
-312280;United States of America;Verizon Wireless
-310277;United States of America;Verizon Wireless
+312488;United States of America;Verizon Wireless
 310488;United States of America;Verizon Wireless
 311594;United States of America;Verizon Wireless
-312770;United States of America;Verizon Wireless
-310899;United States of America;Verizon Wireless
-312271;United States of America;Verizon Wireless
+312899;United States of America;Verizon Wireless
 31013;United States of America;Verizon Wireless
+311274;United States of America;Verizon Wireless
+312280;United States of America;Verizon Wireless
+312271;United States of America;Verizon Wireless
 310390;United States of America;Verizon Wireless
 311485;United States of America;Verizon Wireless
-312591;United States of America;Verizon Wireless
+312890;United States of America;Verizon Wireless
+310899;United States of America;Verizon Wireless
 310890;United States of America;Verizon Wireless
 311896;United States of America;Verizon Wireless
 310282;United States of America;Verizon Wireless
 311288;United States of America;Verizon Wireless
 312482;United States of America;Verizon Wireless
-312285;United States of America;Verizon Wireless
+312593;United States of America;Verizon Wireless
 310593;United States of America;Verizon Wireless
 311599;United States of America;Verizon Wireless
-312893;United States of America;Verizon Wireless
-311279;United States of America;Verizon Wireless
-312276;United States of America;Verizon Wireless
 310273;United States of America;Verizon Wireless
+311279;United States of America;Verizon Wireless
+312285;United States of America;Verizon Wireless
 310484;United States of America;Verizon Wireless
 311590;United States of America;Verizon Wireless
-312596;United States of America;Verizon Wireless
+312895;United States of America;Verizon Wireless
+312276;United States of America;Verizon Wireless
+310895;United States of America;Verizon Wireless
+31212;United States of America;Verizon Wireless
+310287;United States of America;Verizon Wireless
+311481;United States of America;Verizon Wireless
+312598;United States of America;Verizon Wireless
+310598;United States of America;Verizon Wireless
+311892;United States of America;Verizon Wireless
+310278;United States of America;Verizon Wireless
+311284;United States of America;Verizon Wireless
+312350;United States of America;Verizon Wireless
+312489;United States of America;Verizon Wireless
+310489;United States of America;Verizon Wireless
+311595;United States of America;Verizon Wireless
+312910;United States of America;Verizon Wireless
+310110;United States of America;Verizon Wireless
+311275;United States of America;Verizon Wireless
+312281;United States of America;Verizon Wireless
+310480;United States of America;Verizon Wireless
+311486;United States of America;Verizon Wireless
+312891;United States of America;Verizon Wireless
+310910;United States of America;Verizon Wireless
+312272;United States of America;Verizon Wireless
+310891;United States of America;Verizon Wireless
+311897;United States of America;Verizon Wireless
+31004;United States of America;Verizon Wireless
+310283;United States of America;Verizon Wireless
+311289;United States of America;Verizon Wireless
+312483;United States of America;Verizon Wireless
+312594;United States of America;Verizon Wireless
+310594;United States of America;Verizon Wireless
+311770;United States of America;Verizon Wireless
+310274;United States of America;Verizon Wireless
+311280;United States of America;Verizon Wireless
+312286;United States of America;Verizon Wireless
+310485;United States of America;Verizon Wireless
+311591;United States of America;Verizon Wireless
+312896;United States of America;Verizon Wireless
+311271;United States of America;Verizon Wireless
+312277;United States of America;Verizon Wireless
+31213;United States of America;Verizon Wireless
+310288;United States of America;Verizon Wireless
+311482;United States of America;Verizon Wireless
+312599;United States of America;Verizon Wireless
+310896;United States of America;Verizon Wireless
+310599;United States of America;Verizon Wireless
+311893;United States of America;Verizon Wireless
+310279;United States of America;Verizon Wireless
+311285;United States of America;Verizon Wireless
+312390;United States of America;Verizon Wireless
+312590;United States of America;Verizon Wireless
+310590;United States of America;Verizon Wireless
+311596;United States of America;Verizon Wireless
+311276;United States of America;Verizon Wireless
+312282;United States of America;Verizon Wireless
+310481;United States of America;Verizon Wireless
+311487;United States of America;Verizon Wireless
+312892;United States of America;Verizon Wireless
+31112;United States of America;Verizon Wireless
+312273;United States of America;Verizon Wireless
+310892;United States of America;Verizon Wireless
+311898;United States of America;Verizon Wireless
+310284;United States of America;Verizon Wireless
+311350;United States of America;Verizon Wireless
+312484;United States of America;Verizon Wireless
+312595;United States of America;Verizon Wireless
+310595;United States of America;Verizon Wireless
+311820;United States of America;Verizon Wireless
+310275;United States of America;Verizon Wireless
+311281;United States of America;Verizon Wireless
+312287;United States of America;Verizon Wireless
+312486;United States of America;Verizon Wireless
+310486;United States of America;Verizon Wireless
+311592;United States of America;Verizon Wireless
+312897;United States of America;Verizon Wireless
+311272;United States of America;Verizon Wireless
+312278;United States of America;Verizon Wireless
+312110;United States of America;Verizon Wireless
+310289;United States of America;Verizon Wireless
+311483;United States of America;Verizon Wireless
+312770;United States of America;Verizon Wireless
+310897;United States of America;Verizon Wireless
 310740;United States of America;Viaero Wireless
 310450;United States of America;Viaero Wireless
 310860;United States of America;West Central Wireless
@@ -2958,7 +3103,7 @@
 543299;Wallis and Futuna;Failed Calls
 543999;Wallis and Futuna;Fix Line
 54301;Wallis and Futuna;Manuia
-421299;Yemen;Failed Calls
+421299;Yemen;Failed Calls 
 421999;Yemen;Fix Line
 42101;Yemen;SabaFon
 42102;Yemen;Spacetel

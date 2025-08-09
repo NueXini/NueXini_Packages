@@ -1,0 +1,5 @@
+#!/bin/sh
+
+[ -x "/etc/init.d/ddns-go" ] || chmod +x /etc/init.d/ddns-go
+
+exit 0

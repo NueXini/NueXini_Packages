@@ -250,7 +250,7 @@ o.validate = port_validate
 o:depends({ use_global_config = true })
 o:depends({ _udp_node_bool = "1" })
 
-o = s:option(DummyValue, "tips", " ")
+o = s:option(DummyValue, "tips", "　")
 o.rawhtml = true
 o.cfgvalue = function(t, n)
 	return string.format('<font color="red">%s</font>',
@@ -300,9 +300,10 @@ o:depends({ _tcp_node_bool = "1" })
 
 ---- DNS
 o = s:option(ListValue, "dns_shunt", "DNS " .. translate("Shunt"))
-o:depends({ _tcp_node_bool = "1" })
+o.default = "chinadns-ng"
 o:value("dnsmasq", "Dnsmasq")
 o:value("chinadns-ng", translate("ChinaDNS-NG (recommended)"))
+o:depends({ _tcp_node_bool = "1" })
 
 o = s:option(DummyValue, "view_chinadns_log", " ")
 o.template = appname .. "/acl/view_chinadns_log"
@@ -312,7 +313,10 @@ o.default = "0"
 o:depends({ _tcp_node_bool = "1" })
 
 ---- DNS Forward Mode
-o = s:option(ListValue, "dns_mode", translate("Filter Mode"))
+o = s:option(ListValue, "dns_mode", translate("Filter Mode"),
+			 "<font color='red'>" .. translate(
+				 "If the node uses Xray/Sing-Box shunt, select the matching filter mode (Xray/Sing-Box).") ..
+				 "</font>")
 o:depends({ _tcp_node_bool = "1" })
 if api.is_finded("dns2socks") then
 	o:value("dns2socks", "dns2socks")

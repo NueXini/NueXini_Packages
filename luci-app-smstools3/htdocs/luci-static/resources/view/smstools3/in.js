@@ -38,6 +38,7 @@ return view.extend({
 	render: function (data) {
 		var obj = JSON.parse(data);
 		let tableHeaders = [
+			_('Modem'),
 			_('Send Date'),
 			_('Recv.Date'),
 			_('From'),
@@ -46,10 +47,11 @@ return view.extend({
 
 		let tableSMS = E('table', { 'class': 'table' },
 			 E('tr', { 'class': 'tr table-titles' }, [
-				E('th', { 'class': 'th left', 'width': '15%' }, tableHeaders[0]),
-				E('th', { 'class': 'th left', 'width': '15%' }, tableHeaders[1]),
-				E('th', { 'class': 'th left', 'width': '20%' }, tableHeaders[2]),
-				E('th', { 'class': 'th left', 'width': '50%' }, tableHeaders[3]),
+				E('th', { 'class': 'th left', 'width': '10%' }, tableHeaders[0]),
+				E('th', { 'class': 'th left', 'width': '10%' }, tableHeaders[1]),
+				E('th', { 'class': 'th left', 'width': '10%' }, tableHeaders[2]),
+				E('th', { 'class': 'th left', 'width': '20%' }, tableHeaders[3]),
+				E('th', { 'class': 'th left', 'width': '50%' }, tableHeaders[4]),
 			]),
 		);
 		
@@ -61,10 +63,11 @@ return view.extend({
 				var from = obj.recv[i].from;
 			}
 			tableSMS.append(E('tr', { 'class': 'tr cbi-rowstyle-'+s }, [
-				E('td', { 'class': 'td left', 'data-title': tableHeaders[0], 'width': '15%' }, obj.recv[i].srecv),
-					E('td', { 'class': 'td left', 'data-title': tableHeaders[1], 'width': '15%' }, obj.recv[i].drecv),
-					E('td', { 'class': 'td left', 'data-title': tableHeaders[2], 'width': '20%' }, from),
-					E('td', { 'class': 'td left', 'data-title': tableHeaders[3], 'width': '50%' }, obj.recv[i].content),
+					E('td', { 'class': 'td left', 'data-title': tableHeaders[0], 'width': '10%' }, obj.recv[i].modem),
+					E('td', { 'class': 'td left', 'data-title': tableHeaders[1], 'width': '10%' }, obj.recv[i].srecv),
+					E('td', { 'class': 'td left', 'data-title': tableHeaders[2], 'width': '10%' }, obj.recv[i].drecv),
+					E('td', { 'class': 'td left', 'data-title': tableHeaders[3], 'width': '20%' }, from),
+					E('td', { 'class': 'td left', 'data-title': tableHeaders[4], 'width': '50%' }, obj.recv[i].content),
 				]),
 			);
 			s = (s % 2) + 1;

@@ -9,6 +9,11 @@ if not arg[1] or not m:get(arg[1]) then
 	luci.http.redirect(m.redirect)
 end
 
+m.render = function(self, ...)
+	Map.render(self, ...)
+	api.optimize_cbi_ui()
+end
+
 local has_ss = api.is_finded("ss-redir")
 local has_ss_rust = api.is_finded("sslocal")
 local has_singbox = api.finded_com("sing-box")
@@ -61,6 +66,12 @@ o.rmempty = false
 o = s:option(TextValue, "url", translate("Subscribe URL"))
 o.rows = 5
 o.rmempty = false
+o.validate = function(self, value)
+	if not value or value == "" then
+		return nil, translate("URL cannot be empty")
+	end
+	return value:gsub("%s+", ""):gsub("%z", "")
+end
 
 o = s:option(Flag, "allowInsecure", translate("allowInsecure"), translate("Whether unsafe connections are allowed. When checked, Certificate validation will be skipped."))
 o.default = "1"

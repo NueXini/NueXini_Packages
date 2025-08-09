@@ -9,7 +9,6 @@ require "nixio"
 require "luci.util"
 require "luci.sys"
 require "luci.jsonc"
-require "luci.model.ipkg"
 
 -- these global functions are accessed all the time by the event handler
 -- so caching them is worth the effort
@@ -29,10 +28,11 @@ local allow_insecure = ucic:get_first(name, 'server_subscribe', 'allow_insecure'
 local subscribe_url = ucic:get_first(name, 'server_subscribe', 'subscribe_url', {})
 local filter_words = ucic:get_first(name, 'server_subscribe', 'filter_words', '过期时间/剩余流量')
 local save_words = ucic:get_first(name, 'server_subscribe', 'save_words', '')
+local user_agent = ucic:get_first(name, 'server_subscribe', 'user_agent', 'v2rayN/9.99')
 -- 读取 ss_type 设置
 local ss_type = ucic:get_first(name, 'server_subscribe', 'ss_type', 'ss-rust')
 -- 根据 ss_type 选择对应的程序
-local ss_program = ""
+local ss_program = "sslocal"
 if ss_type == "ss-rust" then
     ss_program = "sslocal"  -- Rust 版本使用 sslocal
 elseif ss_type == "ss-libev" then
@@ -177,8 +177,10 @@ end
 local function processData(szType, content)
 	local result = {type = szType, local_port = 1234, kcp_param = '--nocomp'}
 	-- 检查JSON的格式如不完整丢弃
-	if not isCompleteJSON(content) then
-		return nil
+	if not (szType == "sip008" or szType == "ssd") then
+		if not isCompleteJSON(content) then
+			return nil
+		end
 	end
 
 	if szType == "hysteria2" or szType == "hy2" then
@@ -188,8 +190,13 @@ local function processData(szType, content)
 		-- 调试输出所有参数
 		-- log("Hysteria2 原始参数:")
 		-- for k,v in pairs(params) do
-			-- log(k.."="..v)
+		--	log(k.."="..v)
 		-- end
+
+		-- 如果 hy2 程序未安装则跳过订阅	
+		if not hy2_type then
+		 return nil
+		end
 
 		result.alias = url.fragment and UrlDecode(url.fragment) or nil
 		result.type = hy2_type
@@ -200,9 +207,9 @@ local function processData(szType, content)
 			result.transport_protocol = params.protocol or "udp"
 		end
 		result.hy2_auth = url.user
-		result.uplink_capacity = params.upmbps or "5"
-		result.downlink_capacity = params.downmbps or "20"
-		if params.obfs then
+		result.uplink_capacity = tonumber((params.upmbps or ""):match("^(%d+)")) or nil
+		result.downlink_capacity = tonumber((params.downmbps or ""):match("^(%d+)")) or nil
+		if params.obfs and params.obfs ~= "none" then
 			result.flag_obfs = "1"
 			result.obfs_type = params.obfs
 			result.salamander = params["obfs-password"] or params["obfs_password"]
@@ -344,79 +351,170 @@ local function processData(szType, content)
 			result.tls = "0"
 		end
 	elseif szType == "ss" then
-		local idx_sp = 0
+		local idx_sp = content:find("#") or 0
 		local alias = ""
-		if content:find("#") then
-			idx_sp = content:find("#")
-			alias = content:sub(idx_sp + 1, -1)
+		if idx_sp > 0 then
+			alias = UrlDecode(content:sub(idx_sp + 1))
 		end
-		local info = content:sub(1, idx_sp > 0 and idx_sp - 1 or #content)
-		local hostInfo = split(base64Decode(info), "@")
-		if #hostInfo < 2 then
-			--log("SS节点格式错误，解码后内容:", base64Decode(info))
+		local info = content:sub(1, idx_sp > 0 and idx_sp - 1 or #content):gsub("/%?", "?")
+
+		-- 拆 base64 主体和 ? 参数部分
+		local uri_main, query_str = info:match("^([^?]+)%??(.*)$")
+		--log("SS 节点格式:", uri_main)
+		local params = {}
+		if query_str and query_str ~= "" then
+			for _, v in ipairs(split(query_str, '&')) do
+				local t = split(v, '=')
+				if #t >= 2 then
+					params[t[1]] = UrlDecode(t[2])
+				end
+			end
+		end
+
+		local is_old_format = uri_main:find("@") and not uri_main:find("://.*@")
+		local base64_str, host_port, userinfo, server, port, method, password
+
+		if is_old_format then
+			-- 旧格式：base64(method:pass)@host:port
+			base64_str, host_port = uri_main:match("^([^@]+)@(.-)$")
+			log("SS 节点旧格式解析:", base64_str)
+			if not base64_str or not host_port then
+				log("SS 节点旧格式解析失败:", uri_main)
+				return nil
+			end
+			local decoded = base64Decode(UrlDecode(base64_str))
+			if not decoded then
+				log("SS base64 解码失败（旧格式）:", base64_str)
+				return nil
+			end
+			userinfo = decoded
+		else
+			-- 新格式：base64(method:pass@host:port)
+			local decoded = base64Decode(UrlDecode(uri_main))
+			if not decoded then
+				log("SS base64 解码失败（新格式）:", uri_main)
+				return nil
+			end
+			userinfo, host_port = decoded:match("^(.-)@(.-)$")
+			if not userinfo or not host_port then
+				log("SS 解码内容缺失 @ 分隔:", decoded)
+				return nil
+			end
+		end
+
+		-- 解析加密方式和密码（允许密码包含冒号）
+		local split_pos = userinfo:find(":")
+		if not split_pos then
+			log("SS 用户信息格式错误:", userinfo)
 			return nil
 		end
-		local host = split(hostInfo[2], ":")
-		if #host < 2 then
-			--log("SS节点主机格式错误:", hostInfo[2])
+		method = userinfo:sub(1, split_pos - 1)
+		password = userinfo:sub(split_pos + 1)
+
+		-- 判断密码是否经过url编码
+		local function isURLEncodedPassword(pwd)
+			if not pwd:find("%%[0-9A-Fa-f][0-9A-Fa-f]") then
+				return false
+			end
+				local ok, decoded = pcall(UrlDecode, pwd)
+				return ok and urlEncode(decoded) == pwd
+		end
+
+		local decoded = UrlDecode(password)
+			if isURLEncodedPassword(password) and decoded then
+				password = decoded
+		end
+
+		-- 解析服务器地址和端口（兼容 IPv6）
+		if host_port:find("^%[.*%]:%d+$") then
+			server, port = host_port:match("^%[(.*)%]:(%d+)$")
+		else
+			server, port = host_port:match("^(.-):(%d+)$")
+		end
+		if not server or not port then
+			log("SS 节点服务器信息格式错误:", host_port)
 			return nil
-		end  
-		-- 提取用户信息
-		local userinfo = base64Decode(hostInfo[1])
-		local method, password = userinfo:match("^([^:]*):(.*)$")   
-		-- 填充结果
-		result.alias = UrlDecode(alias)
+		end
+		
+		-- 如果 SS 程序未安装则跳过订阅	
+		if not (v2_ss or has_ss_type) then
+		 return nil
+		end
+
+		-- 填充 result
+		result.alias = alias
 		result.type = v2_ss
 		result.v2ray_protocol = (v2_ss == "v2ray") and "shadowsocks" or nil
 		result.has_ss_type = has_ss_type
 		result.encrypt_method_ss = method
 		result.password = password
-		result.server = host[1]
-		-- 处理端口和插件
-		local port_part = host[2]
-		if port_part:find("/%?") then
-			local query = split(port_part, "/%?")
-			result.server_port = query[1]
-			if query[2] then
-				local params = {}
-				for _, v in pairs(split(query[2], '&')) do
-					local t = split(v, '=')
-					if #t >= 2 then
-						params[t[1]] = t[2]
-					end
-				end
-				if params.plugin then
-					local plugin_info = UrlDecode(params.plugin)
-					local idx_pn = plugin_info:find(";")
-					if idx_pn then
-						result.plugin = plugin_info:sub(1, idx_pn - 1)
-						result.plugin_opts = plugin_info:sub(idx_pn + 1, #plugin_info)
-					else
-						result.plugin = plugin_info
-						result.plugin_opts = ""
-					end
-					-- 部分机场下发的插件名为 simple-obfs，这里应该改为 obfs-local
-					if result.plugin == "simple-obfs" then
-						result.plugin = "obfs-local"
-					end
-					-- 如果插件不为 none，确保 enable_plugin 为 1
-					if result.plugin ~= "none" and result.plugin ~= "" then
+		result.server = server
+		result.server_port = port
+
+		-- 插件处理
+		if params.plugin then
+			local plugin_info = UrlDecode(params.plugin)
+			local idx_pn = plugin_info:find(";")
+			if idx_pn then
+				result.plugin = plugin_info:sub(1, idx_pn - 1)
+				result.plugin_opts = plugin_info:sub(idx_pn + 1, #plugin_info)
+			else
+				result.plugin = plugin_info
+				result.plugin_opts = ""
+			end
+			-- 部分机场下发的插件名为 simple-obfs，这里应该改为 obfs-local
+			if result.plugin == "simple-obfs" then
+				result.plugin = "obfs-local"
+			end
+			-- 如果插件不为 none，确保 enable_plugin 为 1
+			if result.plugin ~= "none" and result.plugin ~= "" then
+				result.enable_plugin = 1
+			end
+		elseif has_ss_type and has_ss_type ~= "ss-libev" then
+			if params["shadow-tls"] then
+				-- 特别处理 shadow-tls 作为插件
+				-- log("原始 shadow-tls 参数:", params["shadow-tls"])
+				local decoded_tls = base64Decode(UrlDecode(params["shadow-tls"]))
+				--log("SS 节点 shadow-tls 解码后:", decoded_tls or "nil")
+				if decoded_tls then
+					local ok, st = pcall(jsonParse, decoded_tls)
+					if ok and st then
+
+						result.plugin = "shadow-tls"
 						result.enable_plugin = 1
+					
+						local version_flag = ""
+						if st.version and tonumber(st.version) then
+					    	version_flag = string.format("v%s=1;", st.version)
+						end
+					
+						-- 合成 plugin_opts 格式：v%s=1;host=xxx;password=xxx
+						result.plugin_opts = string.format("%shost=%s;passwd=%s",
+					    	version_flag,
+							st.host or "",
+							st.password or "")
+					else
+						log("shadow-tls JSON 解析失败")
 					end
 				end
 			end
 		else
-			result.server_port = port_part:gsub("/","")
+			if params["shadow-tls"] then
+				log("错误：ShadowSocks-libev 不支持使用 shadow-tls 插件")
+				return nil, "ShadowSocks-libev 不支持使用 shadow-tls 插件"
+			end
 		end
-		-- 检查加密方法
+
+		-- 检查加密方法是否受支持
 		if not checkTabValue(encrypt_methods_ss)[method] then
-        		-- 1202 年了还不支持 SS AEAD 的屑机场
-        		-- log("不支持的SS加密方法:", method)
-        		result.server = nil
+			-- 1202 年了还不支持 SS AEAD 的屑机场
+			-- log("不支持的SS加密方法:", method)
+			result.server = nil
 		end
 	elseif szType == "sip008" then
 		result.type = v2_ss
 		result.v2ray_protocol = (v2_ss == "v2ray") and "shadowsocks" or nil
+		result.has_ss_type = has_ss_type
 		result.server = content.server
 		result.server_port = content.server_port
 		result.password = content.password
@@ -430,6 +528,7 @@ local function processData(szType, content)
 	elseif szType == "ssd" then
 		result.type = v2_ss
 		result.v2ray_protocol = (v2_ss == "v2ray") and "shadowsocks" or nil
+		result.has_ss_type = has_ss_type
 		result.server = content.server
 		result.server_port = content.port
 		result.password = content.password
@@ -520,6 +619,11 @@ local function processData(szType, content)
 		else
 			result.server_port = port
 		end
+		
+		-- 如果 Tojan 程序未安装则跳过订阅	
+		if not v2_tj then
+		 return nil
+		end
 
 		if v2_tj ~= "trojan" then
 			if params.fp then
@@ -606,6 +710,9 @@ local function processData(szType, content)
 		result.reality_publickey = params.pbk and UrlDecode(params.pbk) or nil
 		result.reality_shortid = params.sid
 		result.reality_spiderx = params.spx and UrlDecode(params.spx) or nil
+		-- 检查 pqv 参数是否存在且非空
+		result.enable_mldsa65verify = (params.pqv and params.pqv ~= "") and "1" or nil
+		result.reality_mldsa65verify = (params.pqv and params.pqv ~= "") and params.pqv or nil
 		if result.transport == "ws" then
 			result.ws_host = (result.tls ~= "1") and (params.host and UrlDecode(params.host)) or nil
 			result.ws_path = params.path and UrlDecode(params.path) or "/"
@@ -678,13 +785,54 @@ local function processData(szType, content)
 	result.switch_enable = switch_enable
 	return result
 end
--- wget
-local function wget(url)
-	-- 清理URL中的隐藏字符
+
+-- 计算、储存和读取 md5 值
+-- 计算 md5 值
+local function md5_string(data)
+	-- 生成临时文件名
+	local tmp = "/tmp/md5_tmp_" .. os.time() .. "_" .. math.random(1000,9999) -- os.time 保证每秒唯一，但不足以避免全部冲突；math.random(1000,9999) 增加文件名唯一性，避免并发时冲突
+	nixio.fs.writefile(tmp, data) -- 写入临时文件
+	-- 执行 md5sum 命令
+	local md5 = luci.sys.exec(string.format('md5sum "%s" 2>/dev/null | cut -d " " -f1', tmp)):gsub("%s+", "")
+	nixio.fs.remove(tmp) -- 删除临时文件
+	return md5
+end
+
+-- 返回临时文件路径，用来存储订阅的 MD5 值，以便判断订阅内容是否发生变化。
+local function get_md5_path(groupHash)
+	return "/tmp/sub_md5_" .. groupHash
+end
+
+-- 读取上次订阅时记录的 MD5 值，以便和当前内容的 MD5 进行对比，从而判断是否需要更新节点列表。
+local function read_old_md5(groupHash)
+	local path = get_md5_path(groupHash)
+	if nixio.fs.access(path) then
+		return trim(nixio.fs.readfile(path) or "")
+	end
+	return ""
+end
+
+-- 将订阅分组最新内容的 MD5 值保存到对应的临时文件中，以便下次更新时进行对比。
+local function write_new_md5(groupHash, md5)
+	nixio.fs.writefile(get_md5_path(groupHash), md5)
+end
+
+-- curl
+local function curl(url)
+	-- 清理 URL 中的隐藏字符
 	url = url:gsub("%s+$", ""):gsub("^%s+", ""):gsub("%z", "")
 
-	local stdout = luci.sys.exec('wget-ssl --timeout=20 --tries=3 -q --user-agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36" --no-check-certificate -O- "' .. url .. '"')
-	return trim(stdout)
+	-- 构建curl命令（确保 user_agent 为空时不添加 -A 参数）
+	local cmd = string.format(
+		'curl -sSL --connect-timeout 20 --max-time 30 --retry 3 %s --insecure --location "%s"',
+		user_agent ~= "" and ('-A "' .. user_agent .. '"') or "",  -- 添加 or "" 处理 nil 情况
+		url:gsub('["$`\\]', '\\%0')  -- 安全转义
+	)
+
+	local stdout = luci.sys.exec(cmd)
+	stdout = trim(stdout)
+	local md5 = md5_string(stdout)
+	return stdout, md5
 end
 
 local function check_filer(result)
@@ -729,85 +877,148 @@ local function check_filer(result)
 	end
 end
 
+-- 加载订阅未变化的节点用于防止被误删
+local function loadOldNodes(groupHash)
+	local nodes = {}
+	cache[groupHash] = {}
+	nodeResult[#nodeResult + 1] = nodes
+	local index = #nodeResult
+
+	ucic:foreach(name, uciType, function(s)
+		if s.grouphashkey == groupHash and s.hashkey then
+			local section = setmetatable({}, {__index = s})
+			nodes[s.hashkey] = section
+			cache[groupHash][s.hashkey] = section
+		end
+	end)
+end
+
 local execute = function()
 	-- exec
 	do
-		if proxy == '0' then -- 不使用代理更新的话先暂停
-			log('服务正在暂停')
-			luci.sys.init.stop(name)
-		end
+		--local updated = false 
+		local service_stopped = false
 		for k, url in ipairs(subscribe_url) do
-			local raw = wget(url)
+			local raw, new_md5 = curl(url)
+			log("raw 长度: "..#raw)
+			local groupHash = md5(url)
+			local old_md5 = read_old_md5(groupHash)
+
+			log("处理订阅: " .. url)
+			log("groupHash: " .. groupHash)
+			log("old_md5: " .. tostring(old_md5))
+			log("new_md5: " .. tostring(new_md5))
+
 			if #raw > 0 then
-				local nodes, szType
-				local groupHash = md5(url)
-				cache[groupHash] = {}
-				tinsert(nodeResult, {})
-				local index = #nodeResult
-				-- SSD 似乎是这种格式 ssd:// 开头的
-				if raw:find('ssd://') then
-					szType = 'ssd'
-					local nEnd = select(2, raw:find('ssd://'))
-					nodes = base64Decode(raw:sub(nEnd + 1, #raw))
-					nodes = jsonParse(nodes)
-					local extra = {airport = nodes.airport, port = nodes.port, encryption = nodes.encryption, password = nodes.password}
-					local servers = {}
-					-- SS里面包着 干脆直接这样
-					for _, server in ipairs(nodes.servers) do
-						tinsert(servers, setmetatable(server, {__index = extra}))
-					end
-					nodes = servers
-				-- SS SIP008 直接使用 Json 格式
-				elseif jsonParse(raw) then
-					nodes = jsonParse(raw).servers or jsonParse(raw)
-					if nodes[1].server and nodes[1].method then
-						szType = 'sip008'
-					end
+				if old_md5 and new_md5 == old_md5 then
+					log("订阅未变化, 跳过无需更新的订阅: " .. url)
+					-- 防止 diff 阶段误删未更新订阅节点
+					loadOldNodes(groupHash)
+					--ucic:foreach(name, uciType, function(s)
+					--	if s.grouphashkey == groupHash and s.hashkey then
+					--		cache[groupHash][s.hashkey] = s
+					--		tinsert(nodeResult[index], s)
+					--	end
+					--end)
 				else
-					-- ssd 外的格式
-					nodes = split(base64Decode(raw):gsub(" ", "_"), "\n")
-				end
-				for _, v in ipairs(nodes) do
-					if v then
-						local result
-						if szType then
-							result = processData(szType, v)
-						elseif not szType then
-							local node = trim(v)
-							local dat = split(node, "://")
-							if dat and dat[1] and dat[2] then
-								local dat3 = ""
-								if dat[3] then
-									dat3 = "://" .. dat[3]
-								end
-								if dat[1] == 'ss' or dat[1] == 'trojan' then
-									result = processData(dat[1], dat[2] .. dat3)
-								else
-									result = processData(dat[1], base64Decode(dat[2]))
-								end
-							end
-						else
-							log('跳过未知类型: ' .. szType)
+					updated = true
+					-- 保存更新后的 MD5 值到以 groupHash 为标识的临时文件中，用于下次订阅更新时进行对比
+					write_new_md5(groupHash, new_md5)
+
+					-- 暂停服务（仅当 MD5 有变化时才执行）
+					if proxy == '0' and not service_stopped then
+						log('服务正在暂停')
+						luci.sys.init.stop(name)
+						service_stopped = true
+					end
+
+					cache[groupHash] = {}
+					tinsert(nodeResult, {})
+					local index = #nodeResult
+					local nodes, szType
+
+					-- SSD 似乎是这种格式 ssd:// 开头的
+					if raw:find('ssd://') then
+						szType = 'ssd'
+						local nEnd = select(2, raw:find('ssd://'))
+						nodes = base64Decode(raw:sub(nEnd + 1, #raw))
+						nodes = jsonParse(nodes)
+						local extra = {
+							airport = nodes.airport,
+							port = nodes.port,
+							encryption = nodes.encryption,
+							password = nodes.password
+						}
+						local servers = {}
+						-- SS里面包着 干脆直接这样
+						for _, server in ipairs(nodes.servers or {}) do
+							tinsert(servers, setmetatable(server, {__index = extra}))
 						end
-						-- log(result)
-						if result then
-							-- 中文做地址的 也没有人拿中文域名搞，就算中文域也有Puny Code SB 机场
-							if not result.server or not result.server_port or result.alias == "NULL" or check_filer(result) or result.server:match("[^0-9a-zA-Z%-_%.%s]") or cache[groupHash][result.hashkey] then
-								log('丢弃无效节点: ' .. result.alias)
+						nodes = servers
+					-- SS SIP008 直接使用 Json 格式
+					elseif jsonParse(raw) then
+						nodes = jsonParse(raw).servers or jsonParse(raw)
+						if nodes[1] and nodes[1].server and nodes[1].method then
+							szType = 'sip008'
+						end
+					-- 其他 base64 格式
+					else
+						-- ssd 外的格式
+						nodes = split(base64Decode(raw):gsub(" ", "_"), "\n")
+					end
+					for _, v in ipairs(nodes) do
+						if v then
+							local result
+							if szType then
+								result = processData(szType, v)
+							elseif not szType then
+								local node = trim(v)
+								local dat = split(node, "://")
+								if dat and dat[1] and dat[2] then
+									local dat3 = ""
+									if dat[3] then
+										dat3 = "://" .. dat[3]
+									end
+									if dat[1] == 'ss' or dat[1] == 'trojan' then
+										result = processData(dat[1], dat[2] .. dat3)
+									else
+										result = processData(dat[1], base64Decode(dat[2]))
+									end
+								end
 							else
-								-- log('成功解析: ' .. result.type ..' 节点, ' .. result.alias)
-								result.grouphashkey = groupHash
-								tinsert(nodeResult[index], result)
-								cache[groupHash][result.hashkey] = nodeResult[index][#nodeResult[index]]
+								log('跳过未知类型: ' .. szType)
+							end
+							-- log(result)
+							if result then
+								-- 中文做地址的 也没有人拿中文域名搞，就算中文域也有Puny Code SB 机场
+								if not result.server or not result.server_port
+									or result.alias == "NULL"
+									or check_filer(result)
+									or result.server:match("[^0-9a-zA-Z%-_%.%s]")
+									or cache[groupHash][result.hashkey]
+								then
+									log('丢弃无效节点: ' .. result.alias)
+								else
+									-- log('成功解析: ' .. result.type ..' 节点, ' .. result.alias)
+									result.grouphashkey = groupHash
+									tinsert(nodeResult[index], result)
+									cache[groupHash][result.hashkey] = nodeResult[index][#nodeResult[index]]
+								end
 							end
 						end
 					end
+					log('成功解析节点数量: ' .. #nodes)
 				end
-				log('成功解析节点数量: ' .. #nodes)
 			else
 				log(url .. ': 获取内容为空')
 			end
 		end
+	end
+	-- 输出日志并判断是否需要进行 diff
+	if not updated then
+		log("订阅未变化，无需更新节点信息。")
+		log('保留手动添加的节点。')
+		return
 	end
 	-- diff
 	do
@@ -863,7 +1074,7 @@ local execute = function()
 				if not ucic:get(name, globalServer) then
 					luci.sys.call("/etc/init.d/" .. name .. " stop > /dev/null 2>&1 &")
 					ucic:commit(name)
-					ucic:set(name, ucic:get_first(name, 'global'), 'global_server', ucic:get_first(name, uciType))
+					ucic:set(name, ucic:get_first(name, 'global'), 'global_server', firstServer)
 					ucic:commit(name)
 					log('当前主服务器节点已被删除，正在自动更换为第一个节点。')
 					luci.sys.call("/etc/init.d/" .. name .. " start > /dev/null 2>&1 &")

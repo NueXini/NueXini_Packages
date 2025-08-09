@@ -9,7 +9,7 @@ if [ -z "$REG" ] || [ "x$MODE_NUM" = "x11" ]; then
 	O=$(sms_tool -d $DEVICE at "at+c5greg=2;+c5greg?")
 
 	# C5GREG
-	eval $(echo "$O" | awk -F[,] '/^\+C5GREG/ {gsub(/[[:space:]"]+/,"");printf "T=\"%d\";TAC_HEX=\"%X\";CID_HEX=\"%s\";TAC_DEC=\"%d\";MODE_NUM=\"%d\"", $2, "0x"$3, $4, "0x"$3, $5}')
+	eval $(echo "$O" | busybox awk -F[,] '/^\+C5GREG/ {gsub(/[[:space:]"]+/,"");printf "T=\"%d\";TAC_HEX=\"%X\";CID_HEX=\"%s\";TAC_DEC=\"%d\";MODE_NUM=\"%d\"", $2, "0x"$3, $4, "0x"$3, $5}')
 	case "$T" in
 		0*) REG="0";;
 		1*) REG="1";;
@@ -50,6 +50,7 @@ case "$MODE_NUM" in
 				MODE="LTE |"
 
 					OTS=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
+#					OTS=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | xargs)
 					SINR=$OTS
 
 					TDX=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
@@ -60,6 +61,7 @@ case "$MODE_NUM" in
 					MODE="LTE-A |"
 
 						OTS=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
+#						OTS=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | xargs)
 						SINR=$OTS
 
 						TDX=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $14}')
@@ -116,6 +118,7 @@ if [ "x$MODE_NUM" = "x7" ]; then
 		TAC_DEC=$(printf "%d" "0x$T")
 		TAC_HEX="$T"
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
+#		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | xargs)
 		SINR="$T"
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $12}')
 		case $T in
@@ -207,6 +210,7 @@ if [ "x$MODE_NUM" = "x13" ]; then
 			TAC_HEX=$T
 
 			T=$(echo "$LINE" | awk -F[,:] '/^\+QENG:/ {print $16}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
+#			T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | xargs)
 			SINR="$T"
 			T=$(echo "$LINE" | awk -F[,:] '/^\+QENG:/ {print $10}')
 			case $T in
@@ -236,6 +240,7 @@ if [ "x$MODE_NUM" = "x13" ]; then
 				T_DEC=$(printf "%d" "0x$T")
 				T_HEX="$T"
 				T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.1f\n", 0.2*$1*10 - 20}')
+#				T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | xargs)
 				SINR="$T"
 				T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $12}')
 				case $T in
@@ -458,7 +463,7 @@ fi
 
 fi
 
-MODE=$(echo $MODE | sed 's,/,+,'| sed 's,LTE B,LTE | B,')
+MODE=$(echo $MODE | sed 's,/,+,' | sed 's,LTE B,LTE | B,' | sed 's,LTE_A,LTE-A,' | sed 's,LTE-A B,LTE-A | B,')
 
 if [ "${LAC_DEC}" = "0" ]; then
 	LAC_DEC="-"

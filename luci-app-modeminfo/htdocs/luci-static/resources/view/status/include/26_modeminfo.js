@@ -30,25 +30,22 @@ return baseclass.extend({
 		
 		if (json.modem && index[0].index == "1"){
 			for (var i = 0; i < json.modem.length; i++) {
-				var icon;
-				var p = (json.modem[i].csq_per);
 				var signal = document.createElement('div');
-				
-				if (p < 0)
-					icon = L.resource('icons/signal-none.png');
-				else if (p == 0)
-					icon = L.resource('icons/signal-none.png');
-					else if (p < 10)
-					icon = L.resource('icons/signal-0.png');
-				else if (p < 25)
-					icon = L.resource('icons/signal-0-25.png');
-				else if (p < 50)
-					icon = L.resource('icons/signal-25-50.png');
-				else if (p < 75)
-					icon = L.resource('icons/signal-50-75.png');
-				else
-					icon = L.resource('icons/signal-75-100.png');
-			
+				var icn;
+				var signalIcons = [
+					{ max: -1, icn: 'signal-000-000.svg' },
+					{ max: 0, icn: 'signal-000-000.svg' },
+					{ max: 10, icn: 'signal-000-000.svg' },
+					{ max: 25, icn: 'signal-000-025.svg' },
+					{ max: 50, icn: 'signal-025-050.svg' },
+					{ max: 75, icn: 'signal-050-075.svg' },
+					{ max: Infinity, icn: 'signal-075-100.svg' }
+				];
+
+				var p = json.modem[i].csq_per || 0;
+				var { icn } = signalIcons.find(({ max }) => p <= max);
+				var icon = L.resource(`view/modem/icons/${icn}`);
+
 				var per = p+'%';
 				
 				var ca;

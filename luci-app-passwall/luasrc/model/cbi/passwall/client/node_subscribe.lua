@@ -66,6 +66,11 @@ if api.is_js_luci() then
 	end
 end
 
+m.render = function(self, ...)
+	Map.render(self, ...)
+	api.optimize_cbi_ui()
+end
+
 -- [[ Subscribe Settings ]]--
 s = m:section(TypedSection, "global_subscribe", "")
 s.anonymous = true
@@ -134,22 +139,23 @@ o:value("ipv4_only", translate("IPv4 Only"))
 o:value("ipv6_only", translate("IPv6 Only"))
 
 ---- Subscribe Delete All
-o = s:option(Button, "_stop", translate("Delete All Subscribe Node"))
-o.inputstyle = "remove"
-function o.write(e, e)
-	luci.sys.call("lua /usr/share/" .. appname .. "/subscribe.lua truncate > /dev/null 2>&1")
-	m.no_commit = true
+o = s:option(DummyValue, "_stop", translate("Delete All Subscribe Node"))
+o.rawhtml = true
+function o.cfgvalue(self, section)
+	return string.format(
+		[[<button type="button" class="cbi-button cbi-button-remove" onclick="return confirmDeleteAll()">%s</button>]],
+		translate("Delete All Subscribe Node"))
 end
 
-o = s:option(Button, "_update", translate("Manual subscription All"))
-o.inputstyle = "apply"
-function o.write(t, n)
-	luci.sys.call("lua /usr/share/" .. appname .. "/subscribe.lua start > /dev/null 2>&1 &")
-	m.no_commit = true
-	luci.http.redirect(api.url("log"))
+o = s:option(DummyValue, "_update", translate("Manual subscription All"))
+o.rawhtml = true
+o.cfgvalue = function(self, section)
+    return string.format([[
+        <button type="button" class="cbi-button cbi-button-apply" onclick="ManualSubscribeAll()">%s</button>]],
+	 translate("Manual subscription All"))
 end
 
-s = m:section(TypedSection, "subscribe_list", "", "<font color='red'>" .. translate("Please input the subscription url first, save and submit before manual subscription.") .. "</font>")
+s = m:section(TypedSection, "subscribe_list", "", "<font color='red'>" .. translate("When adding a new subscription, please save and apply before manually subscribing. If you only change the subscription URL, you can subscribe manually, and the system will save it automatically.") .. "</font>")
 s.addremove = true
 s.anonymous = true
 s.sortable = true
@@ -202,20 +208,23 @@ o = s:option(Value, "url", translate("Subscribe URL"))
 o.width = "auto"
 o.rmempty = false
 
-o = s:option(Button, "_remove", translate("Delete the subscribed node"))
-o.inputstyle = "remove"
-function o.write(t, n)
-	local remark = m:get(n, "remark") or ""
-	luci.sys.call("lua /usr/share/" .. appname .. "/subscribe.lua truncate " .. remark .. " > /dev/null 2>&1")
-	m.no_commit = true
+o = s:option(DummyValue, "_remove", translate("Delete the subscribed node"))
+o.rawhtml = true
+function o.cfgvalue(self, section)
+	local remark = m:get(section, "remark") or ""
+	return string.format(
+		[[<button type="button" class="cbi-button cbi-button-remove" onclick="return confirmDeleteNode('%s')">%s</button>]],
+		remark, translate("Delete the subscribed node"))
 end
 
-o = s:option(Button, "_update", translate("Manual subscription"))
-o.inputstyle = "apply"
-function o.write(t, n)
-	luci.sys.call("lua /usr/share/" .. appname .. "/subscribe.lua start " .. n .. " > /dev/null 2>&1 &")
-	m.no_commit = true
-	luci.http.redirect(api.url("log"))
+o = s:option(DummyValue, "_update", translate("Manual subscription"))
+o.rawhtml = true
+o.cfgvalue = function(self, section)
+    return string.format([[
+        <button type="button" class="cbi-button cbi-button-apply" onclick="ManualSubscribe('%s')">%s</button>]],
+	section, translate("Manual subscription"))
 end
+
+s:append(Template(appname .. "/node_subscribe/js"))
 
 return m

@@ -85,7 +85,7 @@ The table below will provide a detailed introduction:
 
 ## Version History
 
-The latest version is v2.3.1 [Click here][en-us-release-log] to view the full version history record.
+The latest version is v2.4.3 [Click here][en-us-release-log] to view the full version history record.
 
 ## Getting started
 
@@ -127,7 +127,7 @@ opkg install luci-theme-argon*.ipk
 ### Install luci-app-argon-config
 
 ```bash
-wget --no-check-certificate https://github.com/jerrykuku/luci-app-argon-config/releases/download/v0.9/luci-app-argon-config_0.9_all.ipk
+wget --no-check-certificate -O luci-app-argon-config_0.9_all.ipk https://github.com/jerrykuku/luci-app-argon-config/releases/download/v0.9/luci-app-argon-config_0.9_all.ipk
 opkg install luci-app-argon-config*.ipk
 ```
 

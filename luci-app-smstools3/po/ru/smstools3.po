@@ -110,8 +110,8 @@ msgstr "Отредактируйте пользовательский сцена
 msgid "Edit User script smstools3.<br />File stored in <code>/etc/smstools3.user</code>"
 msgstr "Сценарий smstools3.<br />Файл находиться в <code>/etc/smstools3.user</code>"
 
-msgid "User interface for sending SMS via smsd."
-msgstr "Отправить СМС через smsd"
+msgid "User interface for sending SMS via smsd. If use multiplie modems, every next sending sms outgoing round robin."
+msgstr "Отправить СМС через smsd. При использовании нескольких модемов, каждое последующее сообщение будет отправлено через следущий модем."
 
 msgid "Smstools3: send message"
 msgstr "Smstools3: отправить сообщение"

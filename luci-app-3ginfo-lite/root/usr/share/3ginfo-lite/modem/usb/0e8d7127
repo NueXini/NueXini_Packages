@@ -258,6 +258,12 @@ if [ -z "$T_MODE" ]; then
   fi
 fi
 
+# Modem data forcing
+if [ "$CSQ" = "0" ]; then
+$CSQ="1"
+$CSQ_PER="10"
+fi
+
 # Modem
 OA=$(sms_tool -d $DEVICE at "AT+CGMM?")
 MODELA=$(echo "$OA" | awk -F [:,] '/\+CGMM/{print $2}' | xargs)

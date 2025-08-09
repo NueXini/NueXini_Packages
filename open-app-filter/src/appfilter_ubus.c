@@ -1140,6 +1140,15 @@ void all_users_callback(void *arg, dev_node_t *dev)
             json_object_array_add(app_array, app_obj);
         }
         json_object_object_add(user_obj, "applist", app_array);
+
+        if (strlen(dev->visiting_url) > 0)
+            json_object_object_add(user_obj, "url", json_object_new_string(dev->visiting_url));
+        else
+            json_object_object_add(user_obj, "url", json_object_new_string(""));
+        if (dev->visiting_app > 0)
+            json_object_object_add(user_obj, "app", json_object_new_string(get_app_name_by_id(dev->visiting_app)));
+        else
+            json_object_object_add(user_obj, "app", json_object_new_string(""));
     }
     json_object_array_add(users_array, user_obj);
 }
@@ -1217,7 +1226,7 @@ static int handle_get_all_users(struct ubus_context *ctx, struct ubus_object *ob
     struct json_object *users_array = json_object_new_array();
 
     update_dev_nickname();
-
+    update_dev_visiting_info();
     dev_foreach(&au_info, all_users_callback);
     
     // 对 users_array 进行排序
@@ -1228,6 +1237,8 @@ static int handle_get_all_users(struct ubus_context *ctx, struct ubus_object *ob
     json_object_object_add(response, "data", data_obj);
     
     uci_free_context(uci_ctx);
+    
+
     
     struct blob_buf b = {};
     blob_buf_init(&b, 0);
@@ -1525,7 +1536,18 @@ static int handle_get_oaf_status(struct ubus_context *ctx, struct ubus_object *o
     }
  
     json_object_object_add(data_obj, "enable", json_object_new_int(enable));
+    json_object_object_add(data_obj, "version", json_object_new_string(OAF_VERSION));
+
     json_object_object_add(data_obj, "engine_status", json_object_new_int(engine_status));
+
+    ret = exec_with_result_line("cat /proc/sys/oaf/version", kernel_version, sizeof(kernel_version));
+    if (ret >= 0){
+        json_object_object_add(data_obj, "engine_version", json_object_new_string(kernel_version));
+    }
+    else{
+        json_object_object_add(data_obj, "engine_version", json_object_new_string(""));
+    }
+
     ret = exec_with_result_line("uname -r", kernel_version, sizeof(kernel_version));
     if (ret >= 0){
         json_object_object_add(data_obj, "kernel_version", json_object_new_string(kernel_version));
@@ -1533,6 +1555,7 @@ static int handle_get_oaf_status(struct ubus_context *ctx, struct ubus_object *o
     else{
         json_object_object_add(data_obj, "kernel_version", json_object_new_string(""));
     }
+
 
     json_object_object_add(data_obj, "config_enable", json_object_new_int(g_af_config.global.enable));
     json_object_object_add(data_obj, "time_mode", json_object_new_int(g_af_config.time.time_mode));

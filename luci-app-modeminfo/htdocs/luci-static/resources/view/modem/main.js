@@ -28,250 +28,178 @@ return view.extend({
 			var json = JSON.parse(res);
 			for (var i = 0; i < json.modem.length; i++) {
 				// progressbar cellular metric
-				function rssi_bar(v, m) {
-					var pg = document.querySelector('#rssi'+i)
-					var vn = parseInt(v) || 0;
-					var mn = parseInt(m) || 100;
-					if (vn > -50) { vn = -50 };
-					if (vn < -110) { vn = -110 };
-					var pc =  Math.floor(100*(1-(-50 - vn)/(-50 - mn)));
-					pg.firstElementChild.style.width = pc + '%';
+				const progressConfig = {
+					rssi: {
+						selector: '#rssi', min: -110, max: -50,
+						calc: (vn, mn) => Math.floor(100 * (1 - (-50 - vn) / (-50 - mn)))
+					},
+					rsrp: {
+						selector: '#rsrp', min: -140, max: -50,
+						calc: (vn, mn) => Math.floor(120 * (1 - (-50 - vn) / (-70 - mn)))
+					},
+					sinr: {
+						selector: '#sinr', min: -20, max: 30,
+						calc: (vn, mn) => Math.floor(100 - (100 * (1 - ((mn - vn) / (mn - 30)))))
+					},
+					rsrq: {
+						selector: '#rsrq', min: -20, max: 0,
+						calc: (vn, mn) => Math.floor(115 - (100 / mn) * vn)
+					},
+					ecio: {
+						selector: '#sinr', min: -24, max: 0,
+						calc: (vn, mn) => Math.floor(100 - (100 / mn) * vn)
+					}
+				};
+
+
+				function updateProgressBar(type, value, max, i) {
+					const config = progressConfig[type];
+					if (!config) return;
+
+					const pg = document.querySelector(`${config.selector}${i}`);
+					if (!pg) return;
+
+					const vn = Math.max(config.min, Math.min(config.max, parseInt(value) || 0));
+					const mn = parseInt(max) || 100;
+					const pc = config.calc(vn, mn);
+
+					pg.firstElementChild.style.width = `${pc}%`;
 					pg.style.width = '%d%%';
 					pg.firstElementChild.style.animationDirection = "reverse";
-					pg.setAttribute('title', '%s'.format(v));
+					pg.setAttribute('title', '%s'.format(value));
 				}
-				function rsrp_bar(v, m) {
-					var pg = document.querySelector('#rsrp'+i)
-					var vn = parseInt(v) || 0;
-					var mn = parseInt(m) || 100;
-					if (vn > -50) { vn = -50 };
-					if (vn < -140) { vn = -140 };
-					var pc =  Math.floor(120*(1-(-50 - vn)/(-70 - mn)));
-					pg.firstElementChild.style.width = pc + '%';
-					pg.style.width = '%d%%';
-					pg.firstElementChild.style.animationDirection = "reverse";
-					pg.setAttribute('title', '%s'.format(v));
-				}
-				function sinr_bar(v, m) {
-					var pg = document.querySelector('#sinr'+i)
-					var vn = parseInt(v) || 0;
-					var mn = parseInt(m) || 100;
-					var pc = Math.floor(100-(100*(1-((mn - vn)/(mn - 30)))));
-					pg.firstElementChild.style.width = pc + '%';
-					pg.style.width = '%d%%';
-					pg.firstElementChild.style.animationDirection = "reverse";
-					pg.setAttribute('title', '%s'.format(v));
-				}
-				function rsrq_bar(v, m) {
-					var pg = document.querySelector('#rsrq'+i)
-					var vn = parseInt(v) || 0;
-					var mn = parseInt(m) || 100;
-					var pc = Math.floor(115-(100/mn)*vn);
-					pg.firstElementChild.style.width = pc + '%';
-					pg.style.width = '%d%%';
-					pg.firstElementChild.style.animationDirection = "reverse";
-					pg.setAttribute('title', '%s'.format(v));
-				}
-				function ecio_bar(v,m) {
-					var pg = document.querySelector('#sinr'+i)
-					var vn = parseInt(v) || 0
-					var mn = parseInt(m) || 100
-					var pc = Math.floor(100-(100/mn)*vn);
-					pg.firstElementChild.style.width = pc + '%';
-					pg.style.width = '%d%%';
-					pg.firstElementChild.style.animationDirection = "reverse";
-					pg.setAttribute('title', '%s'.format(v));
-				}
-				// icon signal streigh
-				var icon;
-				var p = (json.modem[i].csq_per);
-				if (p < 0)
-					icon = L.resource('icons/signal-none.png');
-				else if (p == 0)
-					icon = L.resource('icons/signal-none.png');
-				else if (p < 10)
-					icon = L.resource('icons/signal-0.png');
-				else if (p < 25)
-					icon = L.resource('icons/signal-0-25.png');
-				else if (p < 50)
-					icon = L.resource('icons/signal-25-50.png');
-				else if (p < 75)
-					icon = L.resource('icons/signal-50-75.png');
-				else
-					icon = L.resource('icons/signal-75-100.png');
-				// get reg state
-				var reg;
-				var rg = (json.modem[i].reg)
-				if (rg == 0)
-					reg = _('No Registration');
-				else if (rg == 2 || rg == 8)
-					reg = _('Searching');
-				else if (rg == 3)
-					reg = _('Denied');
-				else if (rg == 4)
-					reg = _('Unknown');
-				else if (rg == 5 || rg == 7 || rg == 10)
-					reg = _('Roaming');
-				else
-					reg = _('No Data');
+
+				// icon signal strength
+				var icn;
+
+				var signalIcons = [
+                                        { max: -1, icn: 'signal-000-000.svg' },
+                                        { max: 0, icn: 'signal-000-000.svg' },
+                                        { max: 10, icn: 'signal-000-000.svg' },
+                                        { max: 25, icn: 'signal-000-025.svg' },
+                                        { max: 50, icn: 'signal-025-050.svg' },
+                                        { max: 75, icn: 'signal-050-075.svg' },
+                                        { max: Infinity, icn: 'signal-075-100.svg' }
+                                ];
+				
+				var p = json.modem[i].csq_per || 0;
+
+				var { icn } = signalIcons.find(({ max }) => p <= max);
+				var icon = L.resource(`view/modem/icons/${icn}`);
+
+				// Registration Status
+				var regStatuses = new Map([
+					[0, _('No Registration')],
+					[2, _('Searching')], [8, _('Searching')],
+					[3, _('Denied')],
+					[4, _('Unknown')],
+					[5, _('Roaming')], [7, _('Roaming')], [10, _('Roaming')]
+				]);
+
+				var rg = json.modem[i].reg;
+				var reg = regStatuses.get(rg) || _('No Data');
+				
 				// frequency band calculator
-				var frul;
-				var frdl;
-				var offset;
-				var band;
+				var offset, band, bw, frdl, frul;
 				var netmode = (json.modem[i].mode)
 				var rfcn = (json.modem[i].arfcn)
-				if (netmode == "LTE") {
-					if (rfcn >= 0 && rfcn <= 599) {
-						var frdl = 2110;
-						var frul = 1920;
-						var offset = 0;
-						var band = "1";
-					} else if (rfcn >= 600 && rfcn <= 1199) {
-						var frdl = 1930;
-						var frul = 1850;
-						var offset = 600;
-						var band = "2";
-					} else if (rfcn >= 1200 && rfcn <= 1949) {
-						var frdl = 1805;
-						var frul = 1710;
-						var offset = 1200;
-						var band = "3";
-					} else if (rfcn >= 1950 && rfcn <= 2399) {
-						var frdl = 2110;
-						var frul = 1710;
-						var offset = 1950;
-						var band = "4";
-					} else if (rfcn >= 2400 && rfcn <= 2469) {
-						var rfdl = 869;
-						var frul = 824;
-						var offset = 2400;
-						var band = "5";
-					} else if (rfcn >= 2750 && rfcn <= 3449) {
-						var frdl = 2620;
-						var frul = 2500;
-						var offset = 2750;
-						var band = "7";
-					} else if (rfcn >= 3450 && rfcn <= 3799) {
-						var frdl = 925;
-						var frul = 880;
-						var offset = 3450;
-						var band = "8";
-					} else if (rfcn >= 6150 && rfcn <= 6449) {
-						var frdl = 791;
-						var frul = 832;
-						var offset = 6150;
-						var band = "20";
-					} else if (rfcn >= 9210 && rfcn <= 9659) {
-						var frdl = 758;
-						var frul = 703;
-						var offset = 9210;
-						var band = "28";
-					} else if (rfcn >= 9870 && rfcn <= 9919) {
-						var frdl = 452.5;
-						var frul = 462.5;
-						var offset = 9870;
-						var band = "31";
-					} else if (rfcn >= 37750 && rfcn <= 38249) {
-						var frdl = 2570;
-						var frul = 2570;
-						var offset = 37750;
-						var band = "38";
-					} else if (rfcn >= 38650 && rfcn <= 39649) {
-						var frdl = 2300;
-						var frul = 2300;
-						var offset = 38650;
-						var band = "40";
-					} else {
-						var offset = 0;
-						var frdl = 0;
-						var frul = 0;
-						var rfcn = 0;
-						var band = (rfcn);
-					}
-					var bwdld = (json.modem[i].bwdl);
-					if (bwdld == 0) {
-						var bw = 1.4;
-					} else if (bwdld == 1) {
-						var bw = 3;
-					} else if (bwdld == 2) {
-						var bw = 5;
-					} else if (bwdld == 3) {
-						var bw = 10;
-					} else if (bwdld == 4) {
-						var bw = 15;
-					} else if (bwdld == 5) {
-						var bw = 20;
-					} else {
-						var bw = "";
-					}
-						var dlfreq = (frdl + (rfcn - offset)/10);
-						var ulfreq = (frul + (rfcn - offset)/10);
-					} else {
-						if (rfcn >= 10562 && rfcn <= 10838) {
-							var offset = 950;
-							var dlfreq = (rfcn/5);
-							var ulfreq = ((rfcn - offset)/5);
-							var band = "IMT2100";
-						} else if (rfcn >= 2937 && rfcn <= 3088) {
-							var frul = 925;
-							var offset = 340;
-							var ulfreq = (offset + (rfcn/5));
-							var dlfreq = (ulfreq - 45);
-							var band = "UMTS900";
-						} else if (rfcn >= 955 && rfcn <= 1023) {
-							var frul = 890;
-							var ulfreq = (frul + ((rfcn - 1024)/5));
-							var dlfreq = (ulfreq + 45);
-							var band = "DSC900";
-						} else if (rfcn >= 512 && rfcn <= 885) {
-							var frul = 1710;
-							var ulfreq = (frul + (rfcn - 512)/5);
-							var dlfreq = (ulfreq + 95);
-							var band = "DCS1800";
-						} else if (rfcn >= 1 && rfcn <= 124) {
-							var frul = 890;
-							var ulfreq = (frul + (rfcn/5));
-							var dlfreq = (ulfreq + 45);
-							var band = "GSM900";
-						} else {
-							var ulfreq = 0;
-							var dlfreq = 0;
-							var band = (rfcn);
+				if (netmode === "LTE") {
+				// list LTE-bans
+					var lteBands = [
+						{ min: 0, max: 599, frdl: 2110, frul: 1920, offset: 0, band: "1" },
+						{ min: 600, max: 1199, frdl: 1930, frul: 1850, offset: 600, band: "2" },
+						{ min: 1200, max: 1949, frdl: 1805, frul: 1710, offset: 1200, band: "3" },
+						{ min: 1950, max: 2399, frdl: 2110, frul: 1710, offset: 1950, band: "4" },
+						{ min: 2400, max: 2469, frdl: 869, frul: 824, offset: 2400, band: "5" },
+						{ min: 2750, max: 3449, frdl: 2620, frul: 2500, offset: 2750, band: "7" },
+						{ min: 3450, max: 3799, frdl: 925, frul: 880, offset: 3450, band: "8" },
+						{ min: 6150, max: 6449, frdl: 791, frul: 832, offset: 6150, band: "20" },
+						{ min: 9210, max: 9659, frdl: 758, frul: 703, offset: 9210, band: "28" },
+						{ min: 9870, max: 9919, frdl: 452.5, frul: 462.5, offset: 9870, band: "31" },
+						{ min: 37750, max: 38249, frdl: 2570, frul: 2570, offset: 37750, band: "38" },
+						{ min: 38650, max: 39649, frdl: 2300, frul: 2300, offset: 38650, band: "40" }
+					];
+
+					var bandConfig = lteBands.find(b => rfcn >= b.min && rfcn <= b.max) || {
+						frdl: 0, frul: 0, offset: 0, band: rfcn
+					};
+					({ frdl, frul, offset, band } = bandConfig);
+
+					// Bandwidth channel (bw)
+					var bandwidths = [1.4, 3, 5, 10, 15, 20];
+					var bw = bandwidths[json.modem[i].bwdl] || "";
+
+					// Calc frequency
+					var dlfreq = frdl + (rfcn - offset) / 10;
+					var ulfreq = frul + (rfcn - offset) / 10;
+				} else {
+					var nonLteBands = [
+						{ 
+							condition: (rfcn) => rfcn >= 10562 && rfcn <= 10838,
+							calc: (rfcn) => ({ offset: 950, dlfreq: rfcn / 5, ulfreq: (rfcn - 950) / 5, band: "IMT2100" })
+						},
+						{ 
+							condition: (rfcn) => rfcn >= 2937 && rfcn <= 3088,
+							calc: (rfcn) => ({ frul: 925, offset: 340, ulfreq: 340 + (rfcn / 5), dlfreq: (340 + (rfcn / 5)) - 45, band: "UMTS900" })
+						},
+						{ 
+							condition: (rfcn) => rfcn >= 955 && rfcn <= 1023,
+							calc: (rfcn) => ({ frul: 890, ulfreq: 890 + ((rfcn - 1024) / 5), dlfreq: (890 + ((rfcn - 1024) / 5)) + 45, band: "DSC900" })
+						},
+						{ 
+							condition: (rfcn) => rfcn >= 512 && rfcn <= 885,
+							calc: (rfcn) => ({ frul: 1710, ulfreq: 1710 + ((rfcn - 512) / 5), dlfreq: (1710 + ((rfcn - 512) / 5)) + 95, band: "DCS1800" })
+						},
+						{ 
+							condition: (rfcn) => rfcn >= 1 && rfcn <= 124,
+							calc: (rfcn) => ({ frul: 890, ulfreq: 890 + (rfcn / 5), dlfreq: (890 + (rfcn / 5)) + 45,  band: "GSM900" })
 						}
-					}
+				];
+
+					var bandConfig = nonLteBands.find(b => b.condition(rfcn))?.calc(rfcn) || { ulfreq: 0, dlfreq: 0, band: String(rfcn) };
+
+					// CALC BANDS
+					({ frul, offset, ulfreq, dlfreq, band } = bandConfig);
+
+				}
+
 					var carrier = "";
-					var bcc;
-					var freq;
-					var distance;
-					var lactac;
-					var calte;
-					var namebnd;
+					var bcc, freq, distance, calte, namebnd;
 					var dist = (json.modem[i].distance)
-					if (json.modem[i].enbid && json.modem[i].cell && json.modem[i].pci) {
-						var namecid = "LAC/CID/eNB ID-Cell/PCI";
-						var lactac = json.modem[i].lac + " / " + json.modem[i].cid + " / " + json.modem[i].enbid + "-" + json.modem[i].cell +" / " +json.modem[i].pci;
-					} else if (json.modem[i].enbid && json.modem[i].cell) { 
-						var namecid = "LAC/CID/eNB ID-Cell";
-						var lactac = json.modem[i].lac + " / " + json.modem[i].cid + " / " + json.modem[i].enbid + "-" + json.modem[i].cell;
-					} else if (json.modem[i].enbid) {
-						var namecid = "LAC/CID/eNB ID";
-						var lactac = json.modem[i].lac + " / " + json.modem[i].cid + " / " + json.modem[i].enbid;
-					} else {
-						var namecid = "LAC/CID";
-						var lactac = json.modem[i].lac + " / " + json.modem[i].cid;
+
+					var { enbid, cell, pci, lac, cid } = json.modem[i];
+
+					const parts = [lac, cid];
+					var namecid = "LAC/CID";
+
+					if (enbid) {
+					    parts.push(enbid);
+					    namecid += "/eNB ID";
+
+					    if (cell) {
+					        parts.push(`/${cell}`);
+					        namecid += "/Cell";
+
+					        if (pci) {
+					            parts.push(`/${pci}`);
+					            namecid += "/PCI";
+					        }
+					    }
 					}
-					var carrier;
-					var bcc;
+
+					var lactac = parts.join(' / ').replace(' ', ' ').replace('/ /', '/ ').replace('/ /', '/ ')
+
+					var UMTS_MODES = new Set([
+						"3G", "UMTS", "HSPA", "HSUPA", "HSDPA", "HSPA+", 
+						"WCDMA", "DC-HSPA+", "HSDPA+HSUPA", "HSDPA,HSUPA"
+					]);
+
+					var bcc, scc, cid;
 					var bca = "";
-					var scc;
-					var cid;
 					var arfcn = json.modem[i].arfcn + " (" + dlfreq + " / " + ulfreq + " MHz)";
 					// name channels and signal/noise  
 					if (netmode == "LTE") {
 						var calte = (json.modem[i].lteca)
-						var carrier;
-						var scc;
 						var bwca = json.modem[i].bwca;
 						distance = " ~"+ dist +" km";
 						if (calte > 0) {
@@ -291,17 +219,7 @@ return view.extend({
 						}
 						var namech = "EARFCN";
 						var namesnr = "SINR";
-					} else if (netmode == 
-						"3G" || netmode == 
-						"UMTS" || netmode == 
-						"HSPA" || netmode == 
-						"HSUPA" || netmode == 
-						"HSDPA" || netmode == 
-						"HSPA+" || netmode == 
-						"WCDMA" || netmode == 
-						"DC-HSPA+" || netmode == 
-						"HSDPA+HSUPA" || netmode ==
-						"HSDPA,HSUPA") {
+					} else if (UMTS_MODES.has(netmode)) {
 						var namech = "UARFCN";
 						var namesnr = "ECIO";
 						var namecid = "LAC/CID";
@@ -319,7 +237,8 @@ return view.extend({
 					} else {
 						namebnd = _('Network/Band');
 				}
-				
+
+				// data by element	
 				if (document.getElementById('status'+i)){
 					var view = document.getElementById('status'+i);
 					if (rg == 1 || rg == 6 || rg == 9) {
@@ -387,8 +306,7 @@ return view.extend({
 					if (json.modem[i].rssi == '') {
 						view = document.getElementById('--');
 					} else {
-						var rssi_min = -110;
-						rssi_bar(json.modem[i].rssi + ' dBm', rssi_min);
+						updateProgressBar('rssi', json.modem[i].rssi + ' dBm', -110, i);
 					}
 				}
 				if (document.getElementById('sinr'+i)) {
@@ -397,11 +315,9 @@ return view.extend({
 						view = document.getElementById('--');
 					} else {
 						if (netmode == "LTE") {
-							var sinr_min = -20;
-							sinr_bar(json.modem[i].sinr + " dB", sinr_min);
+							updateProgressBar('sinr', json.modem[i].sinr + ' dB', -20, i);
 						} else {
-							var sinr_min = -24;
-							ecio_bar(json.modem[i].sinr + " dB", sinr_min);
+							updateProgressBar('ecio', json.modem[i].sinr + ' dB', -24, i);
 						}
 					}
 				}
@@ -411,8 +327,7 @@ return view.extend({
 					if (json.modem[i].rsrp == "--") {
 						view = document.getElementById('--');
 					} else {
-						var rsrp_min = -140;
-						rsrp_bar(json.modem[i].rsrp + " dBm", rsrp_min);
+						updateProgressBar('rsrp', json.modem[i].rsrp + ' dBm', -140, i);
 					}
 				}
 
@@ -421,8 +336,7 @@ return view.extend({
 					if (json.modem[i].rsrq == "--") {
 						view = document.getElementById('--');
 					} else {
-						var rsrq_min = -20;
-						rsrq_bar(json.modem[i].rsrq + " dB", rsrq_min);
+						updateProgressBar('rsrq', json.modem[i].rsrq + ' dB', -20, i);
 					}
 				}
 			};

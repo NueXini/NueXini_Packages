@@ -1,6 +1,7 @@
 -- Licensed to the public under the GNU General Public License v3.
 require "luci.http"
 require "luci.sys"
+require "nixio.fs"
 require "luci.dispatcher"
 require "luci.model.uci"
 local uci = require "luci.model.uci".cursor()
@@ -117,6 +118,7 @@ o.inputstyle = "reload"
 o.description = translate("Update subscribe url list first")
 o.write = function()
 	uci:commit("shadowsocksr")
+	luci.sys.exec("rm -rf /tmp/sub_md5_*")
 	luci.http.redirect(luci.dispatcher.build_url("admin", "services", "shadowsocksr", "servers"))
 end
 
@@ -151,9 +153,19 @@ o.write = function()
 	end)
 	uci:save("shadowsocksr")
 	uci:commit("shadowsocksr")
+	for file in nixio.fs.glob("/tmp/sub_md5_*") do
+		nixio.fs.remove(file)
+	end
 	luci.http.redirect(luci.dispatcher.build_url("admin", "services", "shadowsocksr", "delete"))
 	return
 end
+
+o = s:option(Value, "user_agent", translate("User-Agent"))
+o.default = "v2rayN/9.99"
+o:value("curl", "Curl")
+o:value("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0", "Edge for Linux")
+o:value("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0", "Edge for Windows")
+o:value("v2rayN/9.99", "v2rayN")
 
 -- [[ Servers Manage ]]--
 s = m:section(TypedSection, "servers")

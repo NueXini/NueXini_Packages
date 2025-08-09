@@ -72,14 +72,13 @@ config global_rules
 	list chnlist_url 'https://fastly.jsdelivr.net/gh/felixonmars/dnsmasq-china-list/accelerated-domains.china.conf'
 	list chnlist_url 'https://fastly.jsdelivr.net/gh/felixonmars/dnsmasq-china-list/apple.china.conf'
 	option v2ray_location_asset '/usr/share/v2ray/'
-	option geoip_url 'https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases/latest'
-	option geosite_url 'https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases/latest'
+	option geoip_url 'https://github.com/Loyalsoldier/geoip/releases/latest/download/geoip.dat'
+	option geosite_url 'https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat'
 
 config global_app
-	option singbox_file '/usr/bin/sing-box'
+	option sing_box_file '/usr/bin/sing-box'
 	option xray_file '/usr/bin/xray'
 	option hysteria_file '/usr/bin/hysteria'
-	option chinadns_ng '/usr/bin/chinadns-ng'
 
 config global_subscribe
 	option filter_keyword_mode '1'

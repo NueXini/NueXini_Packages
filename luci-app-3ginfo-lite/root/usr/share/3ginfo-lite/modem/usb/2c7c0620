@@ -39,6 +39,7 @@ if [ "x$MODE_NUM" = "x7" ]; then
 			T_DEC=$(printf "%d" "0x$T")
 			T_HEX=$T
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | awk '{printf "%.0f\n", 0.2*$1*10 - 20}')
+#		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $18}' | xargs)
 		SINR=$T
 
 		T=$(echo "$O" | awk -F[,:] '/^\+QENG:/ {print $17}' | xargs)
@@ -198,7 +199,7 @@ if [ -n "$T" ]; then
 	done
 fi
 
-MODE=$(echo $MODE | sed 's,/,+,'| sed 's,LTE B,LTE | B,')
+MODE=$(echo $MODE | sed 's,/,+,' | sed 's,LTE B,LTE | B,' | sed 's,LTE_A,LTE-A,' | sed 's,LTE-A B,LTE-A | B,')
 
 # Modem
 FWA=$(sms_tool -d $DEVICE at "AT+GMR" | tr -s "\n" | xargs)

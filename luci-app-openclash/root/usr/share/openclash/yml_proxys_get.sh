@@ -516,11 +516,7 @@ ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "
                threads << Thread.new{
                #cipher
                if x.key?('cipher') then
-                  if x['cipher'].to_s == 'none' then
-                     uci_commands << uci_set + 'cipher_ssr=dummy'
-                  else
-                     uci_commands << uci_set + 'cipher_ssr=\"' + x['cipher'].to_s + '\"'
-                  end
+                  uci_commands << uci_set + 'cipher_ssr=\"' + x['cipher'].to_s + '\"'
                end
                };
                
@@ -730,7 +726,7 @@ ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "
                };
             end;
 
-            #Mieru
+             #Mieru
             if x['type'] == 'mieru' then
                threads << Thread.new{
                #port-range
@@ -757,6 +753,69 @@ ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "
                #multiplexing
                if x.key?('multiplexing') then
                   uci_commands << uci_set + 'multiplexing=\"' + x['multiplexing'].to_s + '\"'
+               end
+               };
+            end;
+
+            #AnyTLS
+            if x['type'] == 'anytls' then
+               threads << Thread.new{
+               if x.key?('password') then
+                  uci_commands << uci_set + 'password=\"' + x['password'].to_s + '\"'
+               end
+               };
+               
+               #idle-session-check-interval
+               threads << Thread.new{
+               if x.key?('idle-session-check-interval') then
+                  uci_commands << uci_set + 'idle_session_check_interval=\"' + x['idle-session-check-interval'].to_s + '\"'
+               end
+               };
+
+               #idle-session-timeout
+               threads << Thread.new{
+               if x.key?('idle-session-timeout') then
+                  uci_commands << uci_set + 'idle_session_timeout=\"' + x['idle-session-timeout'].to_s + '\"'
+               end
+               };
+
+               #min-idle-session
+               threads << Thread.new{
+               if x.key?('min-idle-session') then
+                  uci_commands << uci_set + 'min_idle_session=\"' + x['min-idle-session'].to_s + '\"'
+               end
+               };
+
+               #alpn
+               threads << Thread.new{
+               if x.key?('alpn') then
+                  alpn = uci_del + 'alpn >/dev/null 2>&1'
+                  system(alpn)
+                  x['alpn'].each{
+                  |x|
+                     uci_commands << uci_add + 'alpn=\"' + x.to_s + '\"'
+                  }
+                  end
+               };
+
+               #sni
+               threads << Thread.new{
+               if x.key?('sni') then
+                  uci_commands << uci_set + 'sni=\"' + x['sni'].to_s + '\"'
+               end
+               };
+
+               #skip-cert-verify
+               threads << Thread.new{
+               if x.key?('skip-cert-verify') then
+                  uci_commands << uci_set + 'skip_cert_verify=\"' + x['skip-cert-verify'].to_s + '\"'
+               end
+               };
+
+               #client_fingerprint
+               threads << Thread.new{
+               if x.key?('client-fingerprint') then
+                  uci_commands << uci_set + 'client_fingerprint=\"' + x['client-fingerprint'].to_s + '\"'
                end
                };
             end;
@@ -1263,6 +1322,56 @@ ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "
                if x.key?('version') then
                   uci_commands << uci_set + 'snell_version=\"' + x['version'].to_s + '\"'
                end
+               };
+            end;
+
+            if x['type'] == 'ssh' then
+               threads << Thread.new{
+               if x.key?('username') then
+                  uci_commands << uci_set + 'auth_name=\"' + x['username'].to_s + '\"'
+               end
+               };
+               
+               threads << Thread.new{
+               if x.key?('password') then
+                  uci_commands << uci_set + 'auth_pass=\"' + x['password'].to_s + '\"'
+               end
+               };
+
+               threads << Thread.new{
+               if x.key?('private-key') then
+                  uci_commands << uci_set + 'private_key=\"' + x['private-key'].to_s + '\"'
+               end
+               };
+
+               threads << Thread.new{
+               if x.key?('private-key-passphrase') then
+                  uci_commands << uci_set + 'private_key_passphrase=\"' + x['private-key-passphrase'].to_s + '\"'
+               end
+               };
+
+               threads << Thread.new{
+               #host-key-algorithms
+               if x.key?('host-key-algorithms') then
+                  host_key_algorithms = uci_del + 'host_key_algorithms >/dev/null 2>&1'
+                  system(host_key_algorithms)
+                  x['host-key-algorithms'].each{
+                  |x|
+                     uci_commands << uci_add + 'host_key_algorithms=\"' + x.to_s + '\"'
+                  }
+                  end
+               };
+
+               threads << Thread.new{
+               #host-key
+               if x.key?('host-key') then
+                  host_key = uci_del + 'host_key >/dev/null 2>&1'
+                  system(host_key)
+                  x['host-key'].each{
+                  |x|
+                     uci_commands << uci_add + 'host_key=\"' + x.to_s + '\"'
+                  }
+                  end
                };
             end;
 

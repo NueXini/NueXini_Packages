@@ -4,20 +4,42 @@ local api = require "luci.passwall.api"
 
 <script type="text/javascript">
 	//<![CDATA[
-	function ajax_add_node(link) {
-		if (link) {
-			XHR.get('<%=api.url("link_add_node")%>', {
-				'link': link
-			},
-			function(x, data) {
-				if(x && x.status == 200) {
-					window.location.href = '<%=api.url("node_list")%>';
-				}
-				else {
-					alert("<%:Error%>");
-				}
-			});
+	function getXHR() {
+		if (typeof XHR === 'object' && typeof XHR.create === 'function') {
+			return XHR.create();
+		} else if (typeof XHR === 'function') {
+			return new XHR();
+		} else {
+			throw new Error("XHR is not supported in this environment.");
 		}
+	}
+
+	function ajax_add_node(link) {
+		var chunkSize = 1000;  // 分片发送以突破uhttpd的限制，每块1000字符
+		var totalChunks = Math.ceil(link.length / chunkSize);
+		var currentChunk = 0;
+
+		function sendNextChunk() {
+			if (currentChunk < totalChunks) {
+				var chunk = link.substring(currentChunk * chunkSize, (currentChunk + 1) * chunkSize);
+				var xhr = getXHR();
+				xhr.post('<%=api.url("link_add_node")%>', {
+					'chunk': chunk,
+					'chunk_index': currentChunk,
+					'total_chunks': totalChunks
+				}, function(x, data) {
+					if (x && x.status === 200) {
+						currentChunk++;
+						sendNextChunk();
+					} else {
+						alert("<%:Error%>");
+					}
+				});
+			} else {
+				window.location.href = '<%=api.url("node_list")%>';
+			}
+		}
+		sendNextChunk();
 	}
 
 	function open_add_link_div() {

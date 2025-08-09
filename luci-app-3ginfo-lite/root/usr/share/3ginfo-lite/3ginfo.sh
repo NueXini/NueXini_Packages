@@ -1,9 +1,9 @@
 #!/bin/sh
 
 #
-# (c) 2010-2024 Cezary Jackiewicz <cezary@eko.one.pl>
+# (c) 2010-2025 Cezary Jackiewicz <cezary@eko.one.pl>
 #
-# (c) 2021-2024 modified by Rafał Wabik - IceG - From eko.one.pl forum
+# (c) 2021-2025 modified by Rafał Wabik - IceG - From eko.one.pl forum
 #
 
 
@@ -288,7 +288,7 @@ fi
 
 # COPS numeric
 # see https://mcc-mnc.com/
-# Update: 28/04/2024 items: 2970
+# Update: 11/11/2024 items: 3121
 COPS=""
 COPS_MCC=""
 COPS_MNC=""
@@ -331,6 +331,7 @@ case "$COPS" in
         fi
 	;;
 esac
+
 
 # operator location from temporary config
 LOCATIONFILE=/tmp/location
@@ -389,7 +390,7 @@ if [ -n "$T" ]; then
 fi
 
 # CREG
-eval $(echo "$O" | awk -F[,] '/^\+CREG/ {gsub(/[[:space:]"]+/,"");printf "T=\"%d\";LAC_HEX=\"%X\";CID_HEX=\"%X\";LAC_DEC=\"%d\";CID_DEC=\"%d\";MODE_NUM=\"%d\"", $2, "0x"$3, "0x"$4, "0x"$3, "0x"$4, $5}')
+eval $(echo "$O" | busybox awk -F[,] '/^\+CREG/ {gsub(/[[:space:]"]+/,"");printf "T=\"%d\";LAC_HEX=\"%X\";CID_HEX=\"%X\";LAC_DEC=\"%d\";CID_DEC=\"%d\";MODE_NUM=\"%d\"", $2, "0x"$3, "0x"$4, "0x"$3, "0x"$4, $5}')
 case "$T" in
 	0*) REG="0";;
 	1*) REG="1";;
@@ -403,7 +404,8 @@ esac
 
 # MODE
 if [ -z "$MODE_NUM" ] || [ "x$MODE_NUM" == "x0" ]; then
-	MODE_NUM=$(echo "$O" | awk -F[,] '/^\+COPS/ {print $4;exit}' | xargs)
+#	MODE_NUM=$(echo "$O" | awk -F[,] '/^\+COPS/ {print $4;exit}' | xargs)
+	MODE_NUM=$(echo "$O" | awk -F[,] '/^\+COPS: 0,2/ {print $4;exit}' | xargs)
 fi
 case "$MODE_NUM" in
 	2*) MODE="UMTS";;
@@ -458,58 +460,65 @@ fi
 
 fi
 
+sanitize_string() {
+[ -z "$1" ] && echo "-" || echo "$1" | tr -d '\r\n'
+}
+sanitize_number() {
+[ -z "$1" ] && echo "-" || echo "$1"
+}
 
 cat <<EOF
 {
-"conn_time":"$CONN_TIME",
-"conn_time_sec":"$CT",
-"conn_time_since":"$CONN_TIME_SINCE",
-"rx":"$RX",
-"tx":"$TX",
-"modem":"$MODEL",
-"mtemp":"$TEMP",
-"firmware":"$FW",
-"cport":"$DEVICE",
-"protocol":"$PROTO",
-"csq":"$CSQ",
-"signal":"$CSQ_PER",
-"operator_name":"$COPS",
-"operator_mcc":"$COPS_MCC",
-"operator_mnc":"$COPS_MNC",
-"location":"$LOC",
-"mode":"$MODE",
-"registration":"$REG",
-"simslot":"$SSIM",
-"imei":"$NR_IMEI",
-"imsi":"$NR_IMSI",
-"iccid":"$NR_ICCID",
-"lac_dec":"$LAC_DEC",
-"lac_hex":"$LAC_HEX",
-"tac_dec":"$TAC_DEC",
-"tac_hex":"$TAC_HEX",
-"tac_h":"$T_HEX",
-"tac_d":"$T_DEC",
-"cid_dec":"$CID_DEC",
-"cid_hex":"$CID_HEX",
-"pci":"$PCI",
-"earfcn":"$EARFCN",
-"pband":"$PBAND",
-"s1band":"$S1BAND",
-"s1pci":"$S1PCI",
-"s1earfcn":"$S1EARFCN",
-"s2band":"$S2BAND",
-"s2pci":"$S2PCI",
-"s2earfcn":"$S2EARFCN",
-"s3band":"$S3BAND",
-"s3pci":"$S3PCI",
-"s3earfcn":"$S3EARFCN",
-"s4band":"$S4BAND",
-"s4pci":"$S4PCI",
-"s4earfcn":"$S4EARFCN",
-"rsrp":"$RSRP",
-"rsrq":"$RSRQ",
-"rssi":"$RSSI",
-"sinr":"$SINR"
+"conn_time":"$(sanitize_string "$CONN_TIME")",
+"conn_time_sec":"$(sanitize_number "$CT")",
+"conn_time_since":"$(sanitize_string "$CONN_TIME_SINCE")",
+"rx":"$(sanitize_number "$RX")",
+"tx":"$(sanitize_number "$TX")",
+"modem":"$(sanitize_string "$MODEL")",
+"mtemp":"$(sanitize_string "$TEMP")",
+"firmware":"$(sanitize_string "$FW")",
+"cport":"$(sanitize_string "$DEVICE")",
+"protocol":"$(sanitize_string "$PROTO")",
+"csq":"$(sanitize_number "$CSQ")",
+"signal":"$(sanitize_number "$CSQ_PER")",
+"operator_name":"$(sanitize_string "$COPS")",
+"operator_mcc":"$(sanitize_string "$COPS_MCC")",
+"operator_mnc":"$(sanitize_string "$COPS_MNC")",
+"location":"$(sanitize_string "$LOC")",
+"mode":"$(sanitize_string "$MODE")",
+"registration":"$(sanitize_string "$REG")",
+"simslot":"$(sanitize_string "$SSIM")",
+"imei":"$(sanitize_string "$NR_IMEI")",
+"imsi":"$(sanitize_string "$NR_IMSI")",
+"iccid":"$(sanitize_string "$NR_ICCID")",
+"lac_dec":"$(sanitize_number "$LAC_DEC")",
+"lac_hex":"$(sanitize_string "$LAC_HEX")",
+"tac_dec":"$(sanitize_number "$TAC_DEC")",
+"tac_hex":"$(sanitize_string "$TAC_HEX")",
+"tac_h":"$(sanitize_string "$T_HEX")",
+"tac_d":"$(sanitize_number "$T_DEC")",
+"cid_dec":"$(sanitize_number "$CID_DEC")",
+"cid_hex":"$(sanitize_string "$CID_HEX")",
+"pci":"$(sanitize_number "$PCI")",
+"earfcn":"$(sanitize_number "$EARFCN")",
+"pband":"$(sanitize_string "$PBAND")",
+"s1band":"$(sanitize_string "$S1BAND")",
+"s1pci":"$(sanitize_number "$S1PCI")",
+"s1earfcn":"$(sanitize_number "$S1EARFCN")",
+"s2band":"$(sanitize_string "$S2BAND")",
+"s2pci":"$(sanitize_number "$S2PCI")",
+"s2earfcn":"$(sanitize_number "$S2EARFCN")",
+"s3band":"$(sanitize_string "$S3BAND")",
+"s3pci":"$(sanitize_number "$S3PCI")",
+"s3earfcn":"$(sanitize_number "$S3EARFCN")",
+"s4band":"$(sanitize_string "$S4BAND")",
+"s4pci":"$(sanitize_number "$S4PCI")",
+"s4earfcn":"$(sanitize_number "$S4EARFCN")",
+"rsrp":"$(sanitize_number "$RSRP")",
+"rsrq":"$(sanitize_number "$RSRQ")",
+"rssi":"$(sanitize_number "$RSSI")",
+"sinr":"$(sanitize_number "$SINR")"
 }
 EOF
 exit 0
+
