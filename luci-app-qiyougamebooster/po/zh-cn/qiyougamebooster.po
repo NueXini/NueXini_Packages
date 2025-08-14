@@ -1,0 +1,38 @@
+msgid "QiYou Game Booster"
+msgstr "奇游联机宝"
+
+msgid "Play console games online with less lag and more stability."
+msgstr "加速主机游戏，实现满速下载、稳定联机、飞快匹配体验。"
+
+msgid "— now supporting PS, Switch, Xbox, PC, and mobile."
+msgstr "—— 现已支持 PS、Switch、Xbox、PC 与移动端。"
+
+msgid "Enable"
+msgstr "启用"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "NOT ENABLED"
+msgstr "未启用"
+
+msgid "CLOSED"
+msgstr "已关闭"
+
+msgid "BOOSTING"
+msgstr "加速中"
+
+msgid "RUNNING"
+msgstr "运行中"
+
+msgid "NOT SUPPORTED"
+msgstr "不支持"
+
+msgid "DOWNLOADING"
+msgstr "下载中"
+
+msgid "INSTALLING"
+msgstr "安装中"
+
+msgid "NOT RUNNING"
+msgstr "未运行"

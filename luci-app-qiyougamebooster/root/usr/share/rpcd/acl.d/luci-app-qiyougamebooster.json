@@ -1,0 +1,11 @@
+{
+	"luci-app-qiyougamebooster": {
+		"description": "Grant UCI access for luci-app-qiyougamebooster",
+		"read": {
+			"uci": [ "qiyougamebooster" ]
+		},
+		"write": {
+			"uci": [ "qiyougamebooster" ]
+		}
+	}
+}

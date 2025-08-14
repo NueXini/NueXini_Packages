@@ -1,0 +1,11 @@
+#!/bin/sh
+
+uci -q batch <<-EOF >/dev/null
+	delete ucitrack.@qiyougamebooster[-1]
+	add ucitrack qiyougamebooster
+	set ucitrack.@qiyougamebooster[-1].init=qiyougamebooster
+	commit ucitrack
+EOF
+
+rm -f /tmp/luci-indexcache
+exit 0
