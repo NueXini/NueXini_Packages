@@ -5,19 +5,19 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=uugamebooster
-PKG_VERSION:=9.6.12
+PKG_VERSION:=9.8.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(ARCH).tar.gz
-PKG_SOURCE_URL:=http://uurouter.gdl.netease.com/uuplugin/openwrt-$(ARCH)/v$(PKG_VERSION)/uu.tar.gz?
+PKG_SOURCE_URL:=https://uurouter.gdl.netease.com/uuplugin/openwrt-$(ARCH)/v$(PKG_VERSION)/uu.tar.gz?
 ifeq ($(ARCH),aarch64)
-  PKG_HASH:=6e7281eb6d1998946e9b25070c8f5cd6dffc2b821a9e4bfbe27d37ff6507f869
+  PKG_HASH:=f4483c13dff4bd72abef05d762d456ca4f1a8f9f064a6a6d8d705290d7bcdf70
 else ifeq ($(ARCH),arm)
-  PKG_HASH:=eb1e61022d8d7fd7d684e13cb76ffdce36503d08872fe69cb54aff620593a91b
+  PKG_HASH:=2cfb51dd2aafdfb616b776d24978baccd433e34e00eb80610a37f99ab524601b
 else ifeq ($(ARCH),mipsel)
-  PKG_HASH:=3c89c23cb1afdc24b41684dcd62fdd4d01c39cb8c313d0827a6c4a89995d047b
+  PKG_HASH:=e61b7092741d63486154cac2804dc2926fcd3db681f55f1c9a709c5e0e4e5df8
 else ifeq ($(ARCH),x86_64)
-  PKG_HASH:=63598cba6f05f159b5e4379dd0c323f48a5e559335309f876b9868c123daf0f7
+  PKG_HASH:=3316043ccc3b2cd6dad087ac735bad867feaac04860d28f3ba71024cac9340e9
 endif
 
 PKG_LICENSE:=Proprietary
@@ -57,8 +57,8 @@ define Package/uugamebooster/install
 	$(INSTALL_CONF) $(PKG_BUILD_DIR)/uu.conf $(1)/usr/share/uugamebooster/uu.conf
 
 	$(INSTALL_DIR) $(1)/etc/config $(1)/etc/init.d
-	$(INSTALL_CONF) ./files/uugamebooster.config $(1)/etc/config/uugamebooster
-	$(INSTALL_BIN) ./files/uugamebooster.init $(1)/etc/init.d/uugamebooster
+	$(INSTALL_CONF) $(CURDIR)/files/uugamebooster.config $(1)/etc/config/uugamebooster
+	$(INSTALL_BIN) $(CURDIR)/files/uugamebooster.init $(1)/etc/init.d/uugamebooster
 endef
 
 $(eval $(call BuildPackage,uugamebooster))
