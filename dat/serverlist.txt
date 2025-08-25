@@ -8629,6 +8629,10 @@ ads-api.videy.co
 ads-bitcoin.com
 ads-collector.luizalabs.com
 ads-go.adroi.com.cn
+ads-i1.xhscdn.com
+ads-i2.xhscdn.com
+ads-i3.xhscdn.com
+ads-i4.xhscdn.com
 ads-img-al.xhscdn.com
 ads-img-qc.xhscdn.com
 ads-jp.tiktok.com
@@ -8640,6 +8644,7 @@ ads-sdk-cn.upltv.com
 ads-sdk.upltv.com
 ads-sg.tiktok.com
 ads-static.conde.digital
+ads-static.xhscdn.com
 ads-tracking.beop.io
 ads-tracking.collectiveaudience.co
 ads-trk.vidible.tv
