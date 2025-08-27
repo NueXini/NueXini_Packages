@@ -1,0 +1,22 @@
+<script type="text/javascript">//<![CDATA[
+XHR.poll(3, '<%=url([[admin]], [[services]], [[openlist]], [[status]])%>', null,
+	function(x, data) {
+		var tb = document.getElementById('openlist_status');
+		if (data && tb) {
+			if (data.running) {
+				var button = String.format('&#160;<a class="btn cbi-button" href="http://%s:%s" target="_blank" rel="noreferrer noopener">%s</a>', window.location.hostname, '<%=luci.model.uci.cursor():get("openlist", "config", "listen_http_port")%>', '<%:Open Web Interface%>')
+				tb.innerHTML = '<em><b><font color=green>OpenList <%:RUNNING%></font></b></em>' + button;
+			} else {
+				tb.innerHTML = '<em><b><font color=red>OpenList <%:NOT RUNNING%></font></b></em>';
+			}
+		}
+	}
+);
+//]]>
+</script>
+<style>.mar-10 {margin-left: 50px; margin-right: 10px;}</style>
+<fieldset class="cbi-section">
+	<p id="openlist_status">
+		<em><%:Collecting data...%></em>
+	</p>
+</fieldset>

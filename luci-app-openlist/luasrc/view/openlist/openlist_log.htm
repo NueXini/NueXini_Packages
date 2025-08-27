@@ -1,0 +1,48 @@
+<%+header%>
+<style>
+    #log_textarea {
+        padding: 10px;
+        text-align: left;
+    }
+    #log_textarea pre {
+        padding: .5rem;
+        word-break: break-all;
+        margin: 0;
+    }
+    .description {
+        background-color: #33ccff;
+    }
+</style>
+<div class="cbi-map">
+    <div class="cbi-section">
+        <div id="log_textarea">
+            <img src="icons/loading.svg" alt="Loading..." style="vertical-align:middle" /> <%:Collecting data...%>
+        </div>
+        <div style="text-align:right">
+            <small><%:Refresh every 5 seconds.%></small>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    XHR.poll(5, '<%=url([[admin]], [[services]], [[openlist]], [[get_log]])%>', null,
+        function(x, data) {
+            var tb = document.getElementById('log_textarea');
+            if (data && tb) {
+                var pre = document.createElement('pre');
+                pre.setAttribute('wrap', 'pre');
+                if (data.error) {
+                    if (data.error.trim() === "2") {
+                        pre.textContent = '<%:Log file does not exist.%>' || '<%:Unknown error: %>' + data.error.trim();
+                    }
+                }
+                else if (data.log) {
+                    pre.textContent = data.log.trim() || '<%:Log is empty.%>';
+                }
+
+                tb.innerHTML = '';
+                tb.appendChild(pre);
+            }
+        }
+    );
+</script>

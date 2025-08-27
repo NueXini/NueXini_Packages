@@ -1,0 +1,104 @@
+msgid ""
+"A file list/WebDAV program that supports multiple storages, powered by Gin "
+"and Solidjs."
+msgstr "一个支持多存储的 文件列表/WebDAV 程序，使用 Gin 和 Solidjs。"
+
+msgid ""
+"Allow connection even if the remote TLS certificate is invalid (<strong>not "
+"recommended</strong>)."
+msgstr "即使远程 TLS 证书无效，也允许连接（<strong>不推荐</strong>）。"
+
+msgid "Allow insecure connection"
+msgstr "允许不安全连接"
+
+msgid "Collecting data..."
+msgstr "正在收集数据中..."
+
+msgid "Default webUI/WebDAV login username is %s and password is %s."
+msgstr "默认 webUI/WebDAV 登录用户名 %s 密码 %s。"
+
+msgid "Enable"
+msgstr "启用"
+
+msgid "Enable logging"
+msgstr "启用日志"
+
+msgid "Expecting: %s"
+msgstr "请输入：%s"
+
+msgid "Grant UCI access for luci-app-openlist"
+msgstr "授予 luci-app-openlist 访问 UCI 配置的权限"
+
+msgid "Listen address"
+msgstr "监听地址"
+
+msgid "Listen port"
+msgstr "监听端口"
+
+msgid "Loading..."
+msgstr "加载中..."
+
+msgid "Log"
+msgstr "日志"
+
+msgid "Log file does not exist."
+msgstr "日志文件不存在。"
+
+msgid "Log is empty."
+msgstr "日志为空。"
+
+msgid "Login expiration time"
+msgstr "登录过期时间"
+
+msgid "Max connections"
+msgstr "最大连接数"
+
+msgid "Max log age"
+msgstr "日志最长保留时间"
+
+msgid "Max log backups"
+msgstr "日志最大备份数"
+
+msgid "Max log size"
+msgstr "日志最大大小"
+
+msgid "NOT RUNNING"
+msgstr "未在运行"
+
+msgid "Open Web Interface"
+msgstr "打开 Web 界面"
+
+msgid "OpenList"
+msgstr "OpenList"
+
+msgid "RUNNING"
+msgstr "运行中"
+
+msgid "Refresh every 5 seconds."
+msgstr "每 5 秒刷新。"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "The maximum days of the log file to retain."
+msgstr "日志文件的最长保存天数。"
+
+msgid ""
+"The maximum number of concurrent connections at the same time (0 = "
+"unlimited)."
+msgstr "允许的最大并发连接数（0 = 不限制）。"
+
+msgid "The maximum number of old log files to retain."
+msgstr "要保留的最大旧日志文件数量。"
+
+msgid "The maximum size in megabytes of the log file before it gets rotated."
+msgstr "轮换前的最大日志大小（单位：MB）。"
+
+msgid "Unknown error: "
+msgstr "未知错误："
+
+msgid "User login expiration time (in hours)."
+msgstr "用户登录过期时间（单位：小时）。"
+
+msgid "valid IP address"
+msgstr "有效 IP 地址"
