@@ -1602,6 +1602,7 @@ amazonaws.org
 amazonaws.tv
 amazonbusiness.org
 amazonbusinessblog.com
+amazoncognito.com
 amazondevicesupport.com
 amazonfctours.com
 amazonianblog.com
@@ -2886,6 +2887,8 @@ awlc.ac.uk
 aws
 aws-iot-hackathon.com
 aws.com
+awsapprunner.com
+awsapps.com
 awsautopilot.com
 awsautoscaling.com
 awsbraket.com
