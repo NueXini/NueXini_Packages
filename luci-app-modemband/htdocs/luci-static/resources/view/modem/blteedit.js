@@ -7,7 +7,7 @@
 'require tools.widgets as widgets';
 
 /*
-	Copyright 2022-2024 Rafał Wabik - IceG - From eko.one.pl forum
+	Copyright 2022-2025 Rafał Wabik - IceG - From eko.one.pl forum
 	
 	MIT License
 */
@@ -76,9 +76,9 @@ return view.extend({
 				modems.sort((a, b) => a.name > b.name);
 					modems.forEach(function(element) {
         				if (element !== modems[0]) {
-						if (!isNaN(element.name.charAt(0))){
+						    if (!isNaN(element.name.charAt(0))){
  							 o.value(element.name);
-						}
+						    }
         				}
     				});
 				}

@@ -1,5 +1,5 @@
 #
-# Copyright 2022-2024 Rafał Wabik - IceG - From eko.one.pl forum
+# Copyright 2022-2025 Rafał Wabik - IceG - From eko.one.pl forum
 # 
 # MIT License
 #
@@ -8,12 +8,12 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-modemband
 LUCI_TITLE:=LuCI JS Support for modemband application
-MAINTAINER:=Rafał Wabik <4Rafal@gmail.com>
+PKG_MAINTAINER:=Rafał Wabik <4Rafal@gmail.com>
 LUCI_DESCRIPTION:=LuCI JS interface for the modemband. The package allows set LTE/5G bands for selected 4G/5G modems.
 LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+sms-tool +modemband
-PKG_VERSION:=1.0.25
-PKG_RELEASE:=20241111
+PKG_VERSION:=1.0.27
+PKG_RELEASE:=20250906
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

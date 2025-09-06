@@ -7,7 +7,7 @@
 'require tools.widgets as widgets'
 
 /*
-	Copyright 2022-2024 Rafał Wabik - IceG - From eko.one.pl forum
+	Copyright 2022-2025 Rafał Wabik - IceG - From eko.one.pl forum
 */
 
 return view.extend({
@@ -65,18 +65,6 @@ return view.extend({
 		);
 		o.default = 'AT+CFUN=1,1';
 		o.depends("modemrestart", "1");
-		o.rmempty = false;
-
-		s = m.section(form.TypedSection, 'modemband', null);
-		s.anonymous = true;
-		s.addremove = false;
-
-		s.tab('opt', _('Appearance and action settings'));
-		s.anonymous = true;
-
-		o = s.taboption('opt', form.Flag, 'notify', _('Turn off notifications'),
-		_('Checking this option disables the notification that appears every time the bands are changed.')
-		);
 		o.rmempty = false;
 
 		return m.render();

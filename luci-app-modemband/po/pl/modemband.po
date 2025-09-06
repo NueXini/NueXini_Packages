@@ -248,3 +248,6 @@ msgstr "Pasma są wyłączone..."
 msgid "Check if you have selected the bands correctly."
 msgstr "Sprawdź, czy prawidłowo wybrałeś pasma."
 
+msgid "No bands data available."
+msgstr "Brak dostępnych danych o pasmach."
+

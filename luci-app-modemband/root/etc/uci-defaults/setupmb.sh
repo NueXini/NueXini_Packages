@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2020-2023 Rafał Wabik (IceG) - From eko.one.pl forum
+# Copyright 2022-2025 Rafał Wabik (IceG) - From eko.one.pl forum
 # MIT License
 
 chmod +x /usr/bin/modemband.sh 2>&1 &

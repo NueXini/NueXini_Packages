@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Copyright 2022-2023 Rafał Wabik (IceG) - From eko.one.pl forum
+# Copyright 2022-2025 Rafał Wabik (IceG) - From eko.one.pl forum
 #
 # MIT License
 #
@@ -15,18 +15,21 @@ MDM=$(uci -q get modemband.@modemband[0].modemid)
 
 if [ "${MDM}" == "" ]; then
 
-		_DEVS=$(awk '/Vendor=/{gsub(/.*Vendor=| ProdID=| Rev.*/,"");print}' /sys/kernel/debug/usb/devices | sort -u)
-			for _DEV in $_DEVS; do
-				if [ -e "$RES/$_DEV" ]; then
-					echo "$_DEV"
-					break
-				fi
-		done
+_DEVS=$(awk '{gsub("="," ");
+if ($0 ~ /Bus.*Lev.*Prnt.*Port.*/) {T=$0}
+if ($0 ~ /Vendor.*ProdID/) {idvendor[T]=$3; idproduct[T]=$5}
+if ($0 ~ /Product/) {product[T]=$3}}
+END {for (idx in idvendor) {printf "%s%s\n%s%s%s\n", idvendor[idx], idproduct[idx], idvendor[idx], idproduct[idx], product[idx]}}' /sys/kernel/debug/usb/devices)
+	for _DEV in $_DEVS; do
+		if [ -e "$RES/$_DEV" ]; then
+			echo "$_DEV"
+			break
+		fi
+	done
 
 else
-  		echo "$MDM"
+  	echo "$MDM"
 fi
-
 }
 
 case $1 in
@@ -42,3 +45,4 @@ case $1 in
 esac
 
 exit 0
+
