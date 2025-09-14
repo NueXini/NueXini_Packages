@@ -155,9 +155,16 @@ function updateTileColorsFromEnabled5gsa(enabledArray) {
             node.style.backgroundColor = isOn ? '#34c759' : '#7f8c8d';
             node.style.color = '#ffffff';
         });
-    } catch (e) {
-        console.log('updateTileColorsFromEnabled5gsa error:', e);
-    }
+    } catch (e) {}
+}
+
+function isValid5gData(json) {
+    return json && 
+           json.supported5gsa && 
+           Array.isArray(json.supported5gsa) && 
+           json.supported5gsa.length > 0 &&
+           json.enabled5gsa && 
+           Array.isArray(json.enabled5gsa);
 }
 
 let pollId;
@@ -170,16 +177,21 @@ return view.extend({
     },
 
     render: function (data) {
-        let m, s, o;
         let json = null;
 
         if (data != null) {
             try {
                 json = JSON.parse(data);
             } catch (err) {
-                console.log('Error parsing JSON: ', err.message);
+                return E('div', {}, _('5G bands cannot be read. Check if your modem supports this technology and if it is in the list of supported modems.'));
             }
         }
+
+        if (!isValid5gData(json)) {
+            return E('div', {}, _('5G bands cannot be read. Check if your modem supports this technology and if it is in the list of supported modems.'));
+        }
+
+        let m, s, o;
 
         let info = _('Configuration modem frequency bands. More information about the modemband application on the %seko.one.pl forum%s.')
             .format('<a href="https://eko.one.pl/?p=openwrt-modemband" target="_blank">', '</a>');
@@ -189,88 +201,83 @@ return view.extend({
         s = m.section(form.TypedSection, 'modemband', '', _(''));
         s.anonymous = true;
         s.render = L.bind(function (view, section_id) {
-            if (json && json.enabled5gsa && json.supported5gsa) {
-                const TILE_W = 50, TILE_H = 25, RADIUS = 4;
-                let textShadow = '0 1px 2px rgba(0,0,0,.4),0 2px 6px rgba(0,0,0,.25)';
+            const TILE_W = 50, TILE_H = 25, RADIUS = 4;
+            let textShadow = '0 1px 2px rgba(0,0,0,.4),0 2px 6px rgba(0,0,0,.25)';
 
-                let modemContainer = E('div', {
-                    'class': 'ifacebox',
-                    'style': 'margin:.25em;width:100%;text-align:center;'
-                }, [
-                    E('div', {
-                        'id': 'modem-title',
-                        'class': 'ifacebox-head',
-                        'style': 'font-weight:bold;background:#f8f8f8;padding:8px'
-                    }, [json.modem || '-']),
-                ]);
+            let modemContainer = E('div', {
+                'class': 'ifacebox',
+                'style': 'margin:.25em;width:100%;text-align:center;'
+            }, [
+                E('div', {
+                    'id': 'modem-title',
+                    'class': 'ifacebox-head',
+                    'style': 'font-weight:bold;background:#f8f8f8;padding:8px'
+                }, [json.modem || '-']),
+            ]);
 
-                let blockWrap = E('div', { 'style': 'margin-inline:20px;' });
+            let blockWrap = E('div', { 'style': 'margin-inline:20px;' });
 
-                let container = E('div', {
-                    'id': 'bands-grid',
+            let container = E('div', {
+                'id': 'bands-grid',
+                'style':
+                    'display:grid;' +
+                    'grid-template-columns:repeat(auto-fill, ' + TILE_W + 'px);' +
+                    'grid-auto-rows:' + TILE_H + 'px;' +
+                    'justify-content:flex-start;' +
+                    'gap:6px;' +
+                    'margin-top:10px;padding:10px;margin-bottom:10px;'
+            });
+
+            (json.supported5gsa || []).forEach(function (supported) {
+                let band = supported.band.toString();
+                let numb = band.match(/\d+$/);
+                let bandName = 'n' + (numb ? numb[0] : band);
+                let isEnabled = (json.enabled5gsa || []).includes(supported.band);
+                let color = isEnabled ? '#34c759' : '#7f8c8d';
+                let textColor = '#ffffff';
+
+                let bandDiv = E('div', {
+                    'data-band': bandName,
                     'style':
-                        'display:grid;' +
-                        'grid-template-columns:repeat(auto-fill, ' + TILE_W + 'px);' +
-                        'grid-auto-rows:' + TILE_H + 'px;' +
-                        'justify-content:flex-start;' +
-                        'gap:6px;' +
-                        'margin-top:10px;padding:10px;margin-bottom:10px;'
-                });
+                        'background-color:' + color + ';' +
+                        'color:' + textColor + ';' +
+                        'width:' + TILE_W + 'px;min-width:' + TILE_W + 'px;max-width:' + TILE_W + 'px;' +
+                        'height:' + TILE_H + 'px;min-height:' + TILE_H + 'px;max-height:' + TILE_H + 'px;' +
+                        'border-radius:' + RADIUS + 'px;' +
+                        'font-weight:600;text-align:center;' +
+                        'display:flex;align-items:center;justify-content:center;' +
+                        'text-shadow:' + textShadow + ';' +
+                        'user-select:none;'
+                }, [bandName]);
 
-                (json.supported5gsa || []).forEach(function (supported) {
-                    let band = supported.band.toString();
-                    let numb = band.match(/\d+$/);
-                    let bandName = 'n' + (numb ? numb[0] : band);
-                    let isEnabled = (json.enabled5gsa || []).includes(supported.band);
-                    let color = isEnabled ? '#34c759' : '#7f8c8d';
-                    let textColor = '#ffffff';
+                container.appendChild(bandDiv);
+            });
 
-                    let bandDiv = E('div', {
-                        'data-band': bandName,
+            const legendItems = [
+                { color: '#34c759', label: _('Currently set 5G SA bands') },
+                { color: '#7f8c8d', label: _('Supported 5G SA bands') }
+            ];
+
+            let legend = E('div', {
+                'style': 'display:flex;flex-direction:column;align-items:flex-start;' +
+                    'gap:8px;margin-left:12px;margin-top:10px;margin-bottom:14px;'
+            }, legendItems.map(function (item) {
+                return E('div', { 'style': 'display:flex;align-items:center;gap:10px;' }, [
+                    E('div', {
                         'style':
-                            'background-color:' + color + ';' +
-                            'color:' + textColor + ';' +
+                            'background-color:' + item.color + ';' +
                             'width:' + TILE_W + 'px;min-width:' + TILE_W + 'px;max-width:' + TILE_W + 'px;' +
                             'height:' + TILE_H + 'px;min-height:' + TILE_H + 'px;max-height:' + TILE_H + 'px;' +
-                            'border-radius:' + RADIUS + 'px;' +
-                            'font-weight:600;text-align:center;' +
-                            'display:flex;align-items:center;justify-content:center;' +
-                            'text-shadow:' + textShadow + ';' +
-                            'user-select:none;'
-                    }, [bandName]);
+                            'border-radius:' + RADIUS + 'px;'
+                    }),
+                    E('label', {}, item.label)
+                ]);
+            }));
 
-                    container.appendChild(bandDiv);
-                });
-
-                const legendItems = [
-                    { color: '#34c759', label: _('Currently set 5G SA bands') },
-                    { color: '#7f8c8d', label: _('Supported 5G SA bands') }
-                ];
-
-                let legend = E('div', {
-                    'style': 'display:flex;flex-direction:column;align-items:flex-start;' +
-                        'gap:8px;margin-left:12px;margin-top:10px;margin-bottom:14px;'
-                }, legendItems.map(function (item) {
-                    return E('div', { 'style': 'display:flex;align-items:center;gap:10px;' }, [
-                        E('div', {
-                            'style':
-                                'background-color:' + item.color + ';' +
-                                'width:' + TILE_W + 'px;min-width:' + TILE_W + 'px;max-width:' + TILE_W + 'px;' +
-                                'height:' + TILE_H + 'px;min-height:' + TILE_H + 'px;max-height:' + TILE_H + 'px;' +
-                                'border-radius:' + RADIUS + 'px;'
-                        }),
-                        E('label', {}, item.label)
-                    ]);
-                }));
-
-                blockWrap.appendChild(container);
-                blockWrap.appendChild(legend);
-                modemContainer.appendChild(blockWrap);
-                return modemContainer;
-            }
-            else {
-                return E('div', {}, _('5G bands cannot be read. Check if your modem supports this technology and if it is in the list of supported modems.'));
-            }
+            blockWrap.appendChild(container);
+            blockWrap.appendChild(legend);
+            modemContainer.appendChild(blockWrap);
+            return modemContainer;
         }, o, this);
 
         s = m.section(form.TypedSection, 'modemband', _(''));
@@ -279,33 +286,31 @@ return view.extend({
 
         s.tab('bandset', _('Preferred bands settings'));
 
-        if (json && json.supported5gsa) {
-            let bandList = s.taboption('bandset', cbiRichListValue, 'set_5gsabands',
-                _('Modification of the bands'),
-                _("Select the preferred band(s) for the modem.")
-            );
+        let bandList = s.taboption('bandset', cbiRichListValue, 'set_5gsabands',
+            _('Modification of the bands'),
+            _("Select the preferred band(s) for the modem.")
+        );
 
-            (json.supported5gsa || []).forEach(function (band) {
-                bandList.value(band.band, _('n') + band.band, band.txt);
-            });
+        (json.supported5gsa || []).forEach(function (band) {
+            bandList.value(band.band, _('n') + band.band, band.txt);
+        });
 
-            bandList.multiple = true;
-            bandList.placeholder = _('Please select a band(s)');
-            bandList.cfgvalue = function (section_id) {
-                return L.toArray((json.enabled5gsa || []).join(' '));
-            };
+        bandList.multiple = true;
+        bandList.placeholder = _('Please select a band(s)');
+        bandList.cfgvalue = function (section_id) {
+            return L.toArray((json.enabled5gsa || []).join(' '));
+        };
 
-            s.taboption('bandset', CBISelectswitch, '_switch', _('Band selection switch'));
+        s.taboption('bandset', CBISelectswitch, '_switch', _('Band selection switch'));
 
-            let bfresh = s.taboption('bandset', form.Button, '_refreshbands');
-            bfresh.title = _('Bands configuration');
-            bfresh.inputtitle = _('Refresh');
-            bfresh.onclick = function () { location.reload(); };
+        let bfresh = s.taboption('bandset', form.Button, '_refreshbands');
+        bfresh.title = _('Bands configuration');
+        bfresh.inputtitle = _('Refresh');
+        bfresh.onclick = function () { location.reload(); };
 
-            let s2 = m.section(form.TypedSection);
-            s2.anonymous = true;
-            s2.option(BANDmagic);
-        }
+        let s2 = m.section(form.TypedSection);
+        s2.anonymous = true;
+        s2.option(BANDmagic);
 
         pollId = poll.add(function () {
             return L.resolveDefault(fs.exec_direct('/usr/bin/modemband.sh', ['json'])).then(function (res) {
@@ -314,9 +319,7 @@ return view.extend({
                     let head = document.getElementById('modem-title');
                     if (head) head.textContent = (data.modem || '-');
                     updateTileColorsFromEnabled5gsa(data.enabled5gsa || []);
-                } catch (e) {
-                    console.log('poll update error:', e);
-                }
+                } catch (e) {}
             });
         });
 
@@ -341,34 +344,32 @@ return view.extend({
                         let picked = ax.length ? ax.split(/\s+/) : [];
                         window.__set5gsaBandsDropdown.setValue(picked);
                     }
-                } catch (e) {
-                    console.log('set dropdown selection error:', e);
-                }
+                } catch (e) {}
 
                 if (ax.length >= 1) {
                     fs.exec_direct('/usr/bin/modemband.sh', ['setbands5gsa', ax]);
                     popTimeout(null, E('p', _('The new bands settings have been sent to the modem. If the changes are not visible, a restart of the connection, modem or router may be required.')), 5000, 'info');
                     
                     return uci.load('modemband').then(function() {
-				            var wrestart = (uci.get('modemband', '@modemband[0]', 'wanrestart'));
-				            var mrestart = (uci.get('modemband', '@modemband[0]', 'modemrestart'));
-				            var cmdrestart = (uci.get('modemband', '@modemband[0]', 'restartcmd'));
-				            var wname = (uci.get('modemband', '@modemband[0]', 'iface'));
-			            
-				            var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
-				            
-				            if (wrestart == '1') {
-				            fs.exec('/sbin/ifdown', [ wname ]);
-				            fs.exec('sleep 3');
-				            fs.exec('/sbin/ifup', [ wname ]);
-				            }
+                        try {
+                            var wrestart = (uci.get('modemband', '@modemband[0]', 'wanrestart'));
+                            var mrestart = (uci.get('modemband', '@modemband[0]', 'modemrestart'));
+                            var cmdrestart = (uci.get('modemband', '@modemband[0]', 'restartcmd'));
+                            var wname = (uci.get('modemband', '@modemband[0]', 'iface'));
+                            var sport = (uci.get('modemband', '@modemband[0]', 'set_port'));
+                            
+                            if (wrestart == '1') {
+                                fs.exec('/sbin/ifdown', [ wname ]);
+                                fs.exec('sleep 3');
+                                fs.exec('/sbin/ifup', [ wname ]);
+                            }
 
-				            if (mrestart == '1') {
-				            fs.exec('sleep 20');
-				            //sms_tool -d $_DEVICE at "cmd"
-				            fs.exec_direct('/usr/bin/sms_tool', [ '-d' , sport , 'at' , cmdrestart ]);
-				            }
-        			});
+                            if (mrestart == '1') {
+                                fs.exec('sleep 20');
+                                fs.exec_direct('/usr/bin/sms_tool', [ '-d' , sport , 'at' , cmdrestart ]);
+                            }
+                        } catch (e) {}
+                    });
 
                 } else {
                     ui.addNotification(null, E('p', _('Check if you have selected the bands correctly.')), 'info');
@@ -385,13 +386,10 @@ return view.extend({
                             let current = (fresh.enabled5gsa || []).map(String);
                             window.__set5gsaBandsDropdown.setValue(current);
                         }
-                    } catch (e) {
-                        console.log('post-save refresh error:', e);
-                    }
+                    } catch (e) {}
                 });
             })
             .finally(function () {
-                // przywróć poll
                 poll.start();
             });
     },
