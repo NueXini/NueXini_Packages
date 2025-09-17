@@ -368,7 +368,7 @@ o:value("h3,h2")
 o:value("http/1.1")
 o:value("h2,http/1.1")
 o:value("h3,h2,http/1.1")
-o:depends({ [_n("tls")] = true })
+o:depends({ [_n("tls")] = true, [_n("reality")] = false })
 
 -- o = s:option(Value, _n("minversion"), translate("minversion"))
 -- o.default = "1.3"
@@ -618,6 +618,7 @@ o.custom_write = function(self, section, value)
 		local address = (data.extra and data.extra.downloadSettings and data.extra.downloadSettings.address)
 			or (data.downloadSettings and data.downloadSettings.address)
 		if address and address ~= "" then
+			address = address:gsub("^%[", ""):gsub("%]$", "")
 			m:set(section, "download_address", address)
 		else
 			m:del(section, "download_address")
