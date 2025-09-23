@@ -21,7 +21,7 @@ EOF
 }
 
 get_config() {
-	config_get_bool enabled $1 enabled 1
+	config_get_bool enabled $1 enabled 0
 	config_get port $1 port 5443
 	config_get adminport $1 adminport 5003
   config_get cache $1 cache
@@ -40,6 +40,9 @@ start_service() {
   fi
 	
 	if [ ! -f $cache/kspeeder.yml ]; then
+		parent_dir=$(dirname "$cache")
+		[ -d "$parent_dir" ] || mkdir "$parent_dir"
+		[ -d "$cache" ] || mkdir "$cache"
 		write_mirrors_config $cache/kspeeder.yml
 	fi
 
