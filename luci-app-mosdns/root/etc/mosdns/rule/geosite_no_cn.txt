@@ -4660,6 +4660,7 @@ bnef.com
 bnext.com.tw
 bnn.co
 bnrmetal.com
+bntrace.com
 bnu.ac.uk
 boa.ac.uk
 boardreader.com
@@ -5889,6 +5890,7 @@ cepacol.com
 ceramics-cadcam.com
 cercia.ac.uk
 cerdas.com
+cerebras.ai
 ceredigion.ac.uk
 ceri.ac.uk
 cerlim.ac.uk
@@ -6389,6 +6391,8 @@ classicnike.com
 classics.ac.uk
 classymomsex.com
 claude.ai
+claude.com
+claudemcpclient.com
 claudeusercontent.com
 clb.org.hk
 clc-london.ac.uk
@@ -15102,6 +15106,7 @@ jasper.ai
 jav-angel.net
 jav-subtitles.com
 jav-vr.net
+jav.app
 jav.com
 jav.dog
 jav.gallery
@@ -17114,6 +17119,7 @@ marlab.ac.uk
 marlin.ac.uk
 marplecollege.ac.uk
 marranazas.com
+marscode.com
 martau.com
 martsangkagyuofficial.org
 maruta.be
@@ -19454,6 +19460,7 @@ nfsc.global
 nfscdict.com
 nfscofficial.com
 nfsworld.com
+nftstatic.com
 nftstorage.link
 nga.mil
 ngc.ac.uk
@@ -26705,6 +26712,7 @@ tracker.network
 tracking-location.com
 tradevip1.com
 tradingview.com
+trae.ai
 traffcoll.ac.uk
 trafficmanager.net
 trafford.ac.uk
@@ -31039,6 +31047,7 @@ full:gamedownloads-rockstargames-com.akamaized.net
 full:gamer-cds.cdn.hinet.net
 full:gamer2-cds.cdn.hinet.net
 full:gigabyte2.azureedge.net
+full:github-api.arkoselabs.com
 full:github-cloud.s3.amazonaws.com
 full:gitlab-assets.oss-cn-hongkong.aliyuncs.com
 full:google-ohttp-relay-safebrowsing.fastly-edge.com
@@ -31256,6 +31265,7 @@ full:statics-marketingsites-eus-ms-com.akamaized.net
 full:statics-marketingsites-wcus-ms-com.akamaized.net
 full:steambroadcast.akamaized.net
 full:steamcdn-a.akamaihd.net
+full:steamcloudsweden.blob.core.windows.net
 full:steamcommunity-a.akamaihd.net
 full:steamcommunity-a.akamaihd.net.edgesuite.net
 full:steammobile.akamaized.net
@@ -31446,6 +31456,7 @@ full:wwis-dubc1-vip98.adobe.com
 full:wwis-dubc1-vip99.adobe.com
 full:www-cdn.icloud.com.akadns.net
 full:yangzhi.app
+full:yt3.googleusercontent.com
 full:zeenews-fonts.s3.amazonaws.com
 full:ztedevices.com
 regexp:(^|\.)13mei[5-7]\.buzz$
@@ -31590,6 +31601,7 @@ regexp:(^|\.)[a-z]?fulibl\.(cc|com|org|net|xyz)$
 regexp:(^|\.)[a-z][1-9][0-9][a-z]\.com$
 regexp:.+\.awsdns-[0-9][0-9]\.(co\.uk|com|net|org)$
 regexp:.+\.dkr\.ecr\.[^\.]+\.amazonaws\.com$
+regexp:javdb\d+\.com$
 regexp:^chatgpt-async-webps-prod-\S+-\d+\.webpubsub\.azure\.com$
 regexp:^epicgames-download\d\.akamaized\.net$
 regexp:^ewcdn[0-9]+\.nowe\.com$
