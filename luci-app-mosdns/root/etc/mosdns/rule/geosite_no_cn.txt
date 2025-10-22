@@ -1453,6 +1453,7 @@ alphabet.uk
 alphabet.us
 alphabetfinance.net
 alphaporno.com
+alphaxiv.org
 alphera-finance.co.in
 alphera-finance.com.hk
 alphera-finance.in
@@ -1736,6 +1737,10 @@ androidpolice.com
 androidtv.com
 andygod.com
 andysparis.com
+anexia-engine.com
+anexia-it.com
+anexia.at
+anexia.com
 anfutong.com
 angel-gto.com
 angel.ac.uk
@@ -2787,6 +2792,7 @@ av6k.vip
 avaaz.org
 avail.googleflights.net
 avant.ac.uk
+avast.com
 avatara.com
 avbebe.com
 avcar.vip
@@ -2817,6 +2823,7 @@ avhu.com
 avidemux.org
 avinetworks.com
 avinin.com
+avira.com
 avizoon.site
 avizoone.com
 avjb.com
@@ -3979,6 +3986,7 @@ bitchute.com
 bitcoin.org
 bitcointalk.org
 bitcoinworld.com
+bitdefender.com
 bite.ac.uk
 bitfinex.com
 bitflyer.com
@@ -6376,6 +6384,7 @@ clackmannan-college.ac.uk
 clacks.ac.uk
 clacton.ac.uk
 clad.ac.uk
+clamwin.com
 clannad-movie.jp
 claravenger.com
 clarendon.ac.uk
@@ -8662,6 +8671,7 @@ e-tugra.com
 e-zone.com.hk
 e123.hk
 e3an.ac.uk
+e5.sk
 e53w.com
 e621.net
 ea-anz-press.com
@@ -9495,6 +9505,11 @@ esdi.ac.uk
 esds.ac.uk
 ese.ac.uk
 eselondon.ac.uk
+eset.com
+eset.eu
+eset.sk
+eset.systems
+esetsoftware.com
 esg.ac.uk
 esg.t91y.com
 eshcru.ac.uk
@@ -9704,6 +9719,7 @@ f-boro-sfc.ac.uk
 f-dro1d.org
 f-droid.com
 f-droid.org
+f-secure.com
 f2pool.com
 f5pf.com
 f6988.com
@@ -10350,6 +10366,7 @@ fifastreet.com
 fifastreet3.com
 fife.ac.uk
 fifeglen.ac.uk
+fifthns.com
 fightforux.com
 figma.com
 figprayer.com
@@ -10493,6 +10510,7 @@ first-ns.de
 firstanalvideos.com
 firstchancesfife.ac.uk
 firstgynexam.com
+firstns.cc
 firstpelvicexam.com
 firstpost.com
 firstprivatebank.com.mm
@@ -10665,6 +10683,7 @@ foundationdb.org
 foundationyear.ac.uk
 fountmedia.io
 fourthinternational.org
+fourthns.systems
 fox
 fox-corporation.com
 fox-news.com
@@ -13245,6 +13264,7 @@ hotbeatsonsale.com
 hotbed.ac.uk
 hotcandyland.com
 hotcoin.com
+hotcrp.com
 hotcuckoldwife.com
 hotcumporn.com
 hotels.cn
@@ -15644,6 +15664,8 @@ karmapa-teachings.org
 karmapa.org
 karupsha.com
 karupspc.com
+kaspersky-labs.com
+kaspersky.com
 kastatic.org
 katestube.com
 kavkazr.com
@@ -17357,6 +17379,7 @@ mc6.ac.uk
 mca.ac.uk
 mcadforums.com
 mcaf.ee
+mcafee.com
 mcb.com.mm
 mcc.ac.uk
 mcd
@@ -19861,6 +19884,7 @@ northtrafford.ac.uk
 northumberland-acl.ac.uk
 northumberland.ac.uk
 northumbria.ac.uk
+norton.com
 norwichresearchpark.ac.uk
 nos.nl
 notepad-plus-plus.org
@@ -20546,6 +20570,7 @@ openlibrary.org
 openmaps.org
 openreality.com
 openresty.org
+openreview.net
 openrouter.ai
 opensciencelab.ac.uk
 opensciencelaboratory.ac.uk
@@ -20837,6 +20862,7 @@ pandamovies.pw
 pandanet-igs.com
 pandapow.co
 pandapow.net
+pandasecurity.com
 pandavpn-jp.com
 pandavpnpro.com
 pandora.com
@@ -23695,6 +23721,7 @@ secom.co.jp
 secomtrust.net
 second-ns.com
 second-ns.de
+secondns.at
 secret-flirt-hub.com
 secretbabes.co.uk
 secretchina.com
@@ -24273,6 +24300,7 @@ siege-amazon.com
 sierrafriendsoftibet.org
 sifa.ac.uk
 sifangclub.com
+sigcomm.org
 sigma-cetl.ac.uk
 sigma-network.ac.uk
 sigmoidoscopeexam.com
@@ -24288,6 +24316,7 @@ signalbar.com
 signalprocessingsociety.org
 signalr.net
 signalusers.org
+sigops.org
 sihe.ac.uk
 sijihuisuo.club
 sijihuisuo.com
@@ -26322,6 +26351,7 @@ thinkquarterly.com
 thinkwales.ac.uk
 thinkwithgoogle.com
 thirdmill.org
+thirdns.de
 thisav.com
 thisismoney.co.uk
 thisispolaris.com
@@ -27600,6 +27630,7 @@ uscg.mil
 uscnpm.org
 use-of-mans.ac.uk
 uselessjunk.com
+usenix.org
 useplannr.com
 userapi.com
 usercontent.dev
@@ -31032,12 +31063,14 @@ full:eaassets-a.akamaihd.net
 full:ebay-25-assets.s3-us-west-1.amazonaws.com
 full:ecapi-pchome.cdn.hinet.net
 full:elib.maruzen.co.jp
+full:epc-de-agent-proxy.germanywestcentral.cloudapp.azure.com
 full:ereg.adobe.com
 full:ereg.wip.adobe.com
 full:ereg.wip1.adobe.com
 full:ereg.wip2.adobe.com
 full:ereg.wip3.adobe.com
 full:ereg.wip4.adobe.com
+full:eset-prod-ca48648d0ce7cadf.elb.eu-central-1.amazonaws.com
 full:espn.api.edge.bamgrid.com
 full:espn.hb.omtrdc.net
 full:espndotcom.tt.omtrdc.net
