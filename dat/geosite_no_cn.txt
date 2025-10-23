@@ -7800,6 +7800,7 @@ deviantart.net
 deviantclip.com
 device-manager.us
 devilsfilm.com
+devin.ai
 devio.us
 devm2m.com
 devolution.ac.uk
@@ -8190,6 +8191,7 @@ docker.com
 docker.io
 dockerizer.com
 dockerstatic.com
+dockerstatus.com
 docleradn.com
 doclercdn.com
 docs.com
@@ -15836,6 +15838,7 @@ kinkypeepz.com
 kinmen.org.tw
 kinmen.travel
 kinokuniya.com
+kinopoisk.ru
 kir.jp
 kir2kos.net
 kirbysepicyarn.com
@@ -25375,6 +25378,7 @@ stpadarns.ac.uk
 straightouttasomewhere.com
 straightpornstuds.com
 straitstimes.com
+straitsx.com
 stran.ac.uk
 stranabg.com
 straplessdildo.com
@@ -26271,6 +26275,7 @@ theopportunityproject.org
 thepaypalshop.com
 thepervs.com
 thepiratebay.org
+thepoizon.ru
 theporn.cc
 thepornarea.com
 thepornbest.com
@@ -28786,6 +28791,7 @@ warddogs.com
 wariolandshakeit.com
 wariowarediy.com
 warkscol.ac.uk
+warnerbrosgames.com
 warp.plus
 warr.ac.uk
 warrington.ac.uk
@@ -28832,9 +28838,12 @@ waverleyabbeycollege.ac.uk
 waybig.com
 waymo.com
 waze.com
+wbagora.com
 wballiance.com
 wbd.ms
 wbdnbo.net
+wbgames.com
+wbinsights.com
 wbrks.com
 wbs.ac.uk
 wbvm4s.com
@@ -31030,11 +31039,13 @@ full:d33wubrfki0l68.cloudfront.net
 full:d36nr0u3xmc4mm.cloudfront.net
 full:d3aqoihi2n8ty8.cloudfront.net
 full:d3c27h4odz752x.cloudfront.net
+full:d3r7nsslvs6aaf.cloudfront.net
 full:d3vd9lfkzbru3h.cloudfront.net
 full:d6d4ismr40iw.cloudfront.net
 full:d6tizftlrpuof.cloudfront.net
 full:databank.worldbank.org
 full:database.asahi.com
+full:datarouter.apps.netherrealm.com
 full:ddacn6pr5v0tl.cloudfront.net
 full:default.exp-tas.com
 full:dell.my.site.com
@@ -31327,6 +31338,7 @@ full:steamstore-a.akamaihd.net
 full:steamusercontent-a.akamaihd.net
 full:steamuserimages-a.akamaihd.net
 full:steamvideo-a.akamaihd.net
+full:straitsx-826709081262441084-b790f87a2ae6fd417434295.freshchat.com
 full:t21.nikkei.co.jp
 full:t21ipau.nikkei.co.jp
 full:teamviewer.com.cdn.cloudflare.net
@@ -31399,6 +31411,7 @@ full:vscode-sync.trafficmanager.net
 full:vscode.blob.core.windows.net
 full:vscode.search.windows.net
 full:vsmarketplacebadge.apphb.com
+full:wb-agora-hydra-file-storage-k1.s3.amazonaws.com
 full:webchannel-alkalimakersuite-pa.clients6.google.com
 full:weblive-hamivideo.cdn.hinet.net
 full:wetv.qq.com
