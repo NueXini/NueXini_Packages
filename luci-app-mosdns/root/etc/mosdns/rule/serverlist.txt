@@ -8922,7 +8922,6 @@ ads.passiontimes.hk
 ads.pinterest.com
 ads.planetwin365affiliate.com
 ads.playboy.com
-ads.privacy.qq.com
 ads.pubmatic.com
 ads.raidrive.com
 ads.reader.yueyouxs.com
@@ -30212,7 +30211,6 @@ dvypar.com
 dw-collect.ksosoft.com
 dw-online.ksosoft.com
 dw.com.com
-dw.iask.com.cn
 dw.koudaibl.com
 dw.xcar.com.cn
 dw0c.sfr.fr
@@ -43073,8 +43071,6 @@ iamiraqi.com
 ianjumb.com
 iareascebc.life
 iasbetaffiliates.com
-iask.cn
-iask.com.cn
 iask.qq.com
 iatoex.kahve.com
 iatspayments.actonservice.com
@@ -67689,7 +67685,6 @@ pic.ea3w.com
 pic.eduancm.com
 pic.fastapi.net
 pic.haowj.com.cn
-pic.iask.cn
 pic.jd-bbs.com
 pic.jdbbs.com
 pic.jdunion.com
