@@ -5,6 +5,7 @@ if [ ! -f /etc/config/smstools3 ]; then
 	touch /etc/smstools3.user
 	touch /etc/smstools3.pb
         uci add smstools3 sms
+	uci set smstools3.@sms[-1].decode_utf='1'
 	uci add smstools3 root_phone
 	uci commit smstools3
 fi

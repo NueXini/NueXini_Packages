@@ -4,7 +4,7 @@ LUCI_TITLE:=Web UI for smstools3
 LUCI_DEPENDS:=+smstools3 +iconv +jq
 PKG_LICENSE:=GPLv3
 PKG_VERSION:=0.1.2
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 
 define Package/luci-app-smstools3/postrm
 	rm -f /etc/config/smstools3
