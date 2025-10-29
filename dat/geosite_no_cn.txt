@@ -15487,6 +15487,7 @@ joinclubhouse.com
 joinmaidez.com
 joinmastodon.org
 joinside.org
+joinsquad.com
 joinup.ac.uk
 jokerlu-go.buzz
 jokerlu.asia
@@ -20381,6 +20382,8 @@ officialheadphone.com
 offresspecialesbmw.ca
 offrezdesipods.com
 offshorerenewables.ac.uk
+offworldindustries.com
+offworldindustries.net
 ofile.org
 ofs.ac.uk
 ogakikyoritsu.co.jp
