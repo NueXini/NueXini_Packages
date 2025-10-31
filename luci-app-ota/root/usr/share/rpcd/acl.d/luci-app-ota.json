@@ -1,0 +1,18 @@
+{
+	"luci-app-ota": {
+	"description": "OTA Update access",
+	"read": {
+	"file": {
+			"/usr/share/ota.sh": ["exec"],
+			"/tmp/changelog.txt": ["read"],
+			"/tmp/profiles.json": ["read"],
+			"/tmp/update.lock": ["read"]
+		}
+	},
+	"write": {
+		"file": {
+			"/usr/share/ota.sh": ["exec"]
+			}
+		}
+	}
+}

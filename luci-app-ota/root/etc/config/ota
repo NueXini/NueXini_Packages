@@ -1,0 +1,2 @@
+config ota
+	option url 'https://openwrt.132lan.ru/releases_cell/latest'

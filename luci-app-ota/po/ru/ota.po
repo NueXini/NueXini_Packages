@@ -1,0 +1,37 @@
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Konstantine Shevlakov <shevlakov@132lan.ru>\n"
+
+msgid "OTA update"
+msgstr "Обновление OTA"
+
+msgid "Update Available"
+msgstr "Доступно обновление"
+
+msgid "OTA System Update"
+msgstr "Обновление через OTA"
+
+msgid "Check for Updates"
+msgstr "Проверить"
+
+msgid "Upgrade"
+msgstr "Обновить"
+
+msgid "Checking for updates..."
+msgstr "Проверка обновлений..."
+
+msgid "No updates available or check failed"
+msgstr "Нет доступных обновлений"
+
+msgid "Check failed: "
+msgstr "Неудачно: "
+
+msgid "Download completed successfully! Start upgrade.<br />DO NOT POWER OFF THIS DEVICE!<br />System will be upgrade completed after reboot!"
+msgstr "Загрузка обновления завершена. Запущен процесс обновления.<br />НЕ ВЫКЛЮЧАЙТЕ УСТРОЙСТВО!<br />Система будет обновлена после перезагрузки!"
+
+msgid "Upgrade failed: "
+msgstr "Обновление прервано: "
+
+msgid "Download completed! Prepare upgrade..."
+msgstr "Загрузка выполнена. Подготовка..."
