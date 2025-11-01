@@ -1,0 +1,10 @@
+{
+	"admin/network/mwan3/led": {
+		"title": "LED",
+		"order": 55,
+		"action": {
+			"type": "view",
+			"path": "mwan3/network/led"
+		}
+	}
+}
